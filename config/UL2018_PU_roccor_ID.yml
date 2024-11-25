@@ -1,0 +1,188 @@
+Z:
+  MassCut: 10
+
+Muon:
+  LeadingMuonPt: 26
+  SubLeadingMuonPt: 10
+  Eta: 2.4
+  ID: TightID
+  ISO: TightPFRelIso
+  Charge: opposite
+  doRoccoR: true
+  RoccoR: /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241001/DYHighMass/RoccoR/RoccoR2018UL.txt
+
+Electron:
+  Pt: 10
+  Eta: 2.4
+  SCEtaVeto: true
+  ID: TightID
+
+Jet:
+  Pt: 30
+  Eta: 2.4
+  ID: Loose
+  BTag: 0.5426
+  Cleaning: true
+
+Trigger:
+  IsoMu24
+
+Correction:
+  ID: true
+  ISO: false
+  Trigger: false
+  PileUp: true
+  L1PreFiring: false
+
+Efficiency:
+  IDCorr: true
+  ID: Run2018_UL_ID.txt
+  ISOCorr: false
+  ISO: Run2018_UL_ISO.txt
+  TIRGGCorr: false
+  Trigger_data: Run2018_UL_TRIG_DATAeff.txt
+  Trigger_MC: Run2018_UL_TRIG_MCeff.txt
+
+Pileup:
+  doPileUp: true
+  Data: PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root
+  MC: MC_2018.root
+
+Info:
+  Era: 2018
+
+Sample:
+  NNLO_inc:
+    Name: DYJetsToMuMu_M-50
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_10to50:
+    Name: DYJetsToMuMu_M-10to50_v1
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_10to50_v2:
+    Name: DYJetsToMuMu_M-10to50_ext1-v1
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_100to200:
+    Name: DYJetsToMuMu_M-100to200
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_200to400:
+    Name: DYJetsToMuMu_M-200to400
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_400to500:
+    Name: DYJetsToMuMu_M-400to500
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_500to700:
+    Name: DYJetsToMuMu_M-500to700
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_700to800:
+    Name: DYJetsToMuMu_M-700to800
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_800to1000:
+    Name: DYJetsToMuMu_M-800to1000
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_1000to1500:
+    Name: DYJetsToMuMu_M-1000to1500
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_1500to2000:
+    Name: DYJetsToMuMu_M-1500to2000
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_2000toInf:
+    Name: DYJetsToMuMu_M-2000toInf
+    IsMC: true
+    UnitPerJob: 1
+
+  NNLO_tautau:
+    Name: DYJetsToTauTau_M-50_AtLeastOneEorMuDecay
+    IsMC: true
+    UnitPerJob: 1
+
+  ST_s:
+    Name: ST_s-channel_4f_leptonDecays
+    IsMC: true
+    UnitPerJob: 1
+
+  ST_t_AntiTop:
+    Name: ST_t-channel_anitop_4f_InclusiveDecays
+    IsMC: true
+    UnitPerJob: 1
+
+  ST_t_Top:
+    Name: ST_t-channel_top_4f_InclusiveDecays
+    IsMC: true
+    UnitPerJob: 1
+
+  ST_tW_AntiTop:
+    Name: ST_tW_antitop_5f_inclusiveDecays
+    IsMC: true
+    UnitPerJob: 1
+
+  ST_tW_Top:
+    Name: ST_tW_top_5f_inclusiveDecays
+    IsMC: true
+    UnitPerJob: 1
+
+  TTTo2L2Nu:
+    Name: TTTo2L2Nu
+    IsMC: true
+    UnitPerJob: 1
+
+  WJetsToLNu:
+    Name: WJetsToLNu
+    IsMC: true
+    UnitPerJob: 1
+
+  WW:
+    Name: WWTo2L2Nu
+    IsMC: true
+    UnitPerJob: 1
+
+  WZ:
+    Name: WZTo3LNu
+    IsMC: true
+    UnitPerJob: 1
+
+  ZZ:
+    Name: ZZ
+    IsMC: true
+    UnitPerJob: 1
+
+  Run2018A:
+    Name: SingleMuon_Run2018A
+    IsMC: false
+    UnitPerJob: 1
+
+  Run2018B:
+    Name: SingleMuon_Run2018B
+    IsMC: false
+    UnitPerJob: 1
+
+  Run2018C:
+    Name: SingleMuon_Run2018C
+    IsMC: false
+    UnitPerJob: 1
+
+  Run2018D:
+    Name: SingleMuon_Run2018D
+    IsMC: false
+    UnitPerJob: 1

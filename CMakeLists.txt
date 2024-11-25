@@ -43,6 +43,17 @@ install(TARGETS DYHighMassLIB EXPORT DYHighMassTarget
   PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" COMPONENT dev
 )
 
+add_executable(analysis main/analysis.cc ${sources} ${headers})
+
+target_link_libraries(
+  analysis
+  ${ROOT_LIBRARIES}
+  ${YAML_CPP_LIBRARIES}
+  ${CMAKE_DL_LIBS}
+)
+
 install(FILES
   DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
+
+install(TARGETS analysis DESTINATION bin)
