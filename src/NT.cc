@@ -61,6 +61,43 @@ std::vector<TLorentzVector> NT::GetLHE(int fPID) {
   return returnVec;
 }
 
+void NT::init_trigger_2016() {
+  HLT_IsoMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24");
+  HLT_IsoTkMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoTkMu24");
+  // HLT_IsoMu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27");
+  // HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
+  // HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
+  // HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
+}
+
+void NT::init_trigger_2017() {
+  // HLT_IsoMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24");
+  // HLT_IsoTkMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoTkMu24");
+  HLT_IsoMu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27");
+  // HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
+  // HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
+  // HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
+}
+
+void NT::init_trigger_2018() {
+  HLT_IsoMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24");
+  // HLT_IsoTkMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoTkMu24");
+  // HLT_IsoMu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27");
+  // HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
+  // HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
+  // HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
+}
+
+void NT::init_trigger() {
+
+  if (fEra == "2016_preVFP") return init_trigger_2016();
+  if (fEra == "2016_postVFP") return init_trigger_2016();
+  if (fEra == "2017") return init_trigger_2017();
+  if (fEra == "2018") return init_trigger_2018();
+
+
+}
+
 void NT::init_LHE() {
 
   LHE_HT = new TTreeReaderValue<float>(*fTreeReader, "LHE_HT");
@@ -487,8 +524,8 @@ void NT::init() {
   // PV_z = new TTreeReaderValue<float>(*fTreeReader, "PV_z");
   // PV_chi2 = new TTreeReaderValue<float>(*fTreeReader, "PV_chi2");
   // PV_score = new TTreeReaderValue<float>(*fTreeReader, "PV_score");
-  // PV_npvs = new TTreeReaderValue<int>(*fTreeReader, "PV_npvs");
-  // PV_npvsGood = new TTreeReaderValue<int>(*fTreeReader, "PV_npvsGood");
+  PV_npvs = new TTreeReaderValue<int>(*fTreeReader, "PV_npvs");
+  PV_npvsGood = new TTreeReaderValue<int>(*fTreeReader, "PV_npvsGood");
   // nSV = new TTreeReaderValue<unsigned int>(*fTreeReader, "nSV");
   // SV_dlen = new TTreeReaderArray<float>(*fTreeReader, "SV_dlen");
   // SV_dlenSig = new TTreeReaderArray<float>(*fTreeReader, "SV_dlenSig");
@@ -947,10 +984,10 @@ void NT::init() {
   // HLT_IsoMu27_MediumChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27_MediumChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1");
   // HLT_IsoMu27_TightChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27_TightChargedIsoPFTauHPS20_Trk1_eta2p1_SingleL1");
   // HLT_IsoMu20 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu20");
-  HLT_IsoMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24");
+  // HLT_IsoMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24");
   // HLT_IsoTkMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoTkMu24");
   // HLT_IsoMu24_eta2p1 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24_eta2p1");
-  HLT_IsoMu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27");
+  // HLT_IsoMu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27");
   // HLT_IsoMu30 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu30");
   // HLT_L1SingleMu18 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_L1SingleMu18");
   // HLT_L1SingleMu25 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_L1SingleMu25");
@@ -980,11 +1017,11 @@ void NT::init() {
   // HLT_Mu15 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu15");
   // HLT_Mu20 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu20");
   // HLT_Mu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu27");
-  HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
+  // HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
   // HLT_TkMu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu50");
   // HLT_Mu55 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu55");
-  HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
-  HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
+  // HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
+  // HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
   // HLT_PFMET110_PFMHT110_IDTight = new TTreeReaderValue<bool>(*fTreeReader, "HLT_PFMET110_PFMHT110_IDTight");
   // HLT_PFMET120_PFMHT120_IDTight = new TTreeReaderValue<bool>(*fTreeReader, "HLT_PFMET120_PFMHT120_IDTight");
   // HLT_PFMET130_PFMHT130_IDTight = new TTreeReaderValue<bool>(*fTreeReader, "HLT_PFMET130_PFMHT130_IDTight");
@@ -1207,5 +1244,6 @@ void NT::init() {
 
   if (fIsMC) init_MC();
   if (fIsMC && fSampleName.Contains("NNLO")) init_LHE();
+  init_trigger();
 
 }

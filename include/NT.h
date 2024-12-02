@@ -79,6 +79,11 @@ public:
   void init();
   void init_MC();
   void init_LHE();
+  void init_trigger();
+  void init_trigger_2016();
+  void init_trigger_2017();
+  void init_trigger_2018();
+
   bool GetNext();
 
   double GetEntries() {
