@@ -9,7 +9,7 @@ Muon:
   ISO: TightPFRelIso
   Charge: opposite
   doRoccoR: false
-  RoccoR: /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241001/DYHighMass/RoccoR/RoccoR2018UL.txt
+  RoccoR: /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241001/DYHighMass/RoccoR/RoccoR2016bUL.txt
 
 Electron:
   Pt: 10
@@ -21,7 +21,7 @@ Jet:
   Pt: 30
   Eta: 2.4
   ID: Loose
-  BTag: 0.4168
+  BTag: 0.5847
   Cleaning: true
 
 Trigger:
@@ -35,21 +35,17 @@ Correction:
   L1PreFiring: false
 
 Efficiency:
-  IDCorr: false
-  ID: Run2018_UL_ID.txt
-  ISOCorr: false
-  ISO: Run2018_UL_ISO.txt
-  TIRGGCorr: false
-  Trigger_data: Run2018_UL_TRIG_DATAeff.txt
-  Trigger_MC: Run2018_UL_TRIG_MCeff.txt
+  ID: Run2016_UL_ID.txt
+  ISO: Run2016_UL_ISO.txt
+  Trigger_data: Run2016_UL_TRIG_DATAeff.txt
+  Trigger_MC: Run2016_UL_TRIG_MCeff.txt
 
 Pileup:
-  doPileUp: false
-  Data: PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root
-  MC: MC_2018.root
+  Data: PileupHistogram-goldenJSON-13tev-2016-postVFP-69200ub-99bins.root
+  MC: MC_2016.root
 
 Info:
-  Era: 2018
+  Era: 2016_postVFP
 
 Sample:
   NNLO_inc:
@@ -167,22 +163,17 @@ Sample:
     IsMC: true
     UnitPerJob: 1
 
-  Run2018A:
-    Name: SingleMuon_Run2018A
+  Run2016F:
+    Name: SingleMuon_Run2016F
     IsMC: false
     UnitPerJob: 1
 
-  Run2018B:
-    Name: SingleMuon_Run2018B
+  Run2016G:
+    Name: SingleMuon_Run2016G
     IsMC: false
     UnitPerJob: 1
 
-  Run2018C:
-    Name: SingleMuon_Run2018C
-    IsMC: false
-    UnitPerJob: 1
-
-  Run2018D:
-    Name: SingleMuon_Run2018D
+  Run2016H:
+    Name: SingleMuon_Run2016H
     IsMC: false
     UnitPerJob: 1

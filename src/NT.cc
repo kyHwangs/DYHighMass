@@ -6,15 +6,15 @@ bool NT::GetNext() {
 
 bool NT::PassingTrigger() {
 
-  if (fEra == "2016preAPV")  return (**HLT_IsoMu24 && **HLT_IsoTkMu24);
-  if (fEra == "2016postAPV") return (**HLT_IsoMu24 && **HLT_IsoTkMu24);
-  if (fEra == "2017")        return (**HLT_IsoMu27);
-  if (fEra == "2018")        return (**HLT_IsoMu24);
+  if (fEra == "2016_preVFP")  return (**HLT_IsoMu24 && **HLT_IsoTkMu24);
+  if (fEra == "2016_postVFP") return (**HLT_IsoMu24 && **HLT_IsoTkMu24);
+  if (fEra == "2017")         return (**HLT_IsoMu27);
+  if (fEra == "2018")         return (**HLT_IsoMu24);
 
-  // if (fEra == "2016preAPV")  return (**HLT_Mu50 && **HLT_TkMu50);
-  // if (fEra == "2016postAPV") return (**HLT_Mu50 && **HLT_TkMu50);
-  // if (fEra == "2017")        return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
-  // if (fEra == "2018")        return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
+  // if (fEra == "2016_preVFP")  return (**HLT_Mu50 && **HLT_TkMu50);
+  // if (fEra == "2016_postVFP") return (**HLT_Mu50 && **HLT_TkMu50);
+  // if (fEra == "2017")         return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
+  // if (fEra == "2018")         return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
 
   return false;
 }
