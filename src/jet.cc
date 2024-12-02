@@ -2,6 +2,8 @@
 #include <vector>
 
 #include "jet.h"
+#include "muon.h"
+#include "electron.h"
 
 #include "TChain.h"
 #include "TTreeReaderArray.h"
@@ -14,11 +16,11 @@ bool JET::PrepareJet(
   TTreeReaderArray<float>* Jet_eta,
   TTreeReaderArray<float>* Jet_phi,
   TTreeReaderArray<float>* Jet_mass,
-  TTreeReaderArray<bool>* Jet_jetId,
+  TTreeReaderArray<int>* Jet_jetId,
   TTreeReaderArray<float>* Jet_btagCSVV2
 ) {
 
-  return JET::PrepareJet(nJet, Jet_pt, Jet_eta, Jet_phi, Jet_mass, Jet_jetId, Jet_btagCSVV2, std::vector<StdMuon>{}, std::vector<StdElec>{});
+  return PrepareJet(nJet, Jet_pt, Jet_eta, Jet_phi, Jet_mass, Jet_jetId, Jet_btagCSVV2, std::vector<MUON::StdMuon>{}, std::vector<ELEC::StdElec>{});
 }
 
 bool JET::PrepareJet(
@@ -29,8 +31,8 @@ bool JET::PrepareJet(
   TTreeReaderArray<float>* Jet_mass,
   TTreeReaderArray<int>* Jet_jetId,
   TTreeReaderArray<float>* Jet_btagCSVV2,
-  std::vector<StdMuon> tMuons,
-  std::vector<StdElec> tElecs
+  std::vector<MUON::StdMuon> tMuons,
+  std::vector<ELEC::StdElec> tElecs
 ) {
 
   fFVecJets.clear();
@@ -38,12 +40,13 @@ bool JET::PrepareJet(
 
   for (int i = 0; i < nJet; i++) {
 
-    std::cout << i << " " << Jet_jetId << std::endl;
-
     if (!(Jet_pt->At(i) > fJetPt))
       continue;
 
     if (!(std::fabs(Jet_eta->At(i)) < fEta))
+      continue;
+
+    if (!(Jet_jetId->At(i) > 0))
       continue;
 
     TLorentzVector jets;
@@ -52,19 +55,34 @@ bool JET::PrepareJet(
     bool isCleanJet = true;
     if (fCleaning) {
       for (int i = 0; i < tMuons.size(); i++) {
-        if (tMuons.at(i).fVec.deltaR(jets))
+        if (tMuons.at(i).fVec.DeltaR(jets) < 0.4) {
+          isCleanJet = false;
+          break;
+        }
+      }
+
+      if (isCleanJet) {
+        for (int i = 0; i < tElecs.size(); i++) {
+          if (tElecs.at(i).fVec.DeltaR(jets) < 0.4) {
+            isCleanJet = false;
+            break;
+          }
+        }
       }
     }
 
+    if (!isCleanJet)
+      continue;
 
-    // struct StdJet {
-    //   TLorentzVector fVec;
-    //   bool fPassingBJetTagger;
+    bool isBJet = false;
+    if (Jet_btagCSVV2->At(i) > fBJetTaggerCut)
+      isBJet = true;
 
-    //   StdJet(TLorentzVector fVec_, bool fPassingBJetTagger_)
-    //   : fVec(fVec_), fPassingBJetTagger(fPassingBJetTagger_)
-    //   { };
-    // };
+    fFVecJets.push_back(StdJet(jets, isBJet));
+    if (isBJet)
+      fFVecBJets.push_back(StdJet(jets, isBJet));
+
   }
 
+  return true;
 }

@@ -14,88 +14,49 @@
 #include "TLorentzVector.h"
 
 
-class MUON
+class ELEC
 {
 public:
-  MUON(YAML::Node fConfig) {
+  ELEC(YAML::Node fConfig) {
 
-    YAML::Node fMuonConf = fConfig["Muon"];
-    YAML::Node fZConf = fConfig["Z"];
+    YAML::Node fElecConf = fConfig["Electron"];
 
-    fLeadingMuonPt = fMuonConf["LeadingMuonPt"].as<float>();
-    fSubLeadingMuonPt = fMuonConf["SubLeadingMuonPt"].as<float>();
-    fEta = fMuonConf["Eta"].as<float>();
-    fZMassCut = fZConf["MassCut"].as<float>();
-
-    fOppositeCharge = true;
-    if (fMuonConf["Charge"].as<std::string>() == "same")
-      fOppositeCharge == false;
-
-    fDoRoccoR = true;
-    if (!fMuonConf["doRoccoR"].as<bool>())
-      fDoRoccoR = false;
-
-    fRoccoR = new RoccoR(fMuonConf["RoccoR"].as<std::string>());
-
+    fPt = fElecConf["Pt"].as<float>();
+    fEta = fElecConf["Eta"].as<float>();
+    fSCEtaVeto = fElecConf["SCEtaVeto"].as<bool>();
   }
-  ~MUON() {}
+  ~ELEC() {}
 
-  struct StdMuon {
+  struct StdElec {
     TLorentzVector fVec;
-    TLorentzVector fVecRaw;
-    int fCharge;
-    bool fPassingID;
-    float fISO;
 
-    StdMuon(TLorentzVector fVec_, TLorentzVector fVecRaw_, int fCharge_, bool fPassingID_, float fISO_)
-    : fVec(fVec_), fVecRaw(fVecRaw_), fCharge(fCharge_), fPassingID(fPassingID_), fISO(fISO_)
+    StdElec(TLorentzVector fVec_)
+    : fVec(fVec_)
     { };
   };
 
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
 
-  bool PrepareMuon(
-    int nMuon,
-    TTreeReaderArray<float>* Muon_pt,
-    TTreeReaderArray<float>* Muon_eta,
-    TTreeReaderArray<float>* Muon_phi,
-    TTreeReaderArray<int>* Muon_charge,
-    TTreeReaderArray<float>* Muon_mass,
-    TTreeReaderArray<bool>* Muon_tightId,
-    TTreeReaderArray<float>* Muon_pfRelIso04_all,
-    TTreeReaderArray<int>* Muon_nTrackerLayers
+  bool PrepareElec(
+    int nElectron,
+    TTreeReaderArray<float>* Electron_pt,
+    TTreeReaderArray<float>* Electron_eta,
+    TTreeReaderArray<float>* Electron_deltaEtaSC,
+    TTreeReaderArray<float>* Electron_phi,
+    TTreeReaderArray<float>* Electron_mass,
+    TTreeReaderArray<int>* Electron_cutBased,
+    TTreeReaderArray<float>* Electron_pfRelIso03_all
   );
 
-  void PrepareGenMuon(
-    int nGenPart,
-    TTreeReaderArray<float>* GenPart_pt,
-    TTreeReaderArray<float>* GenPart_eta,
-    TTreeReaderArray<float>* GenPart_phi,
-    TTreeReaderArray<float>* GenPart_mass,
-    TTreeReaderArray<int>* GenPart_pdgId
-  );
-
-  std::vector<StdMuon> GetMuons() { return fFVecMuons; }
-  std::vector<StdMuon> GetGenMuons() { return fFVecGenMuons; }
-  StdMuon GetLeadingMuon() { return fFVecMuons.at(0); }
-  StdMuon GetSubLeadingMuon() { return fFVecMuons.at(fSubLeadingIdx); }
+  std::vector<StdElec> GetElecs() { return fFVecElecs; }
 
 private:
 
-  std::vector<StdMuon> fFVecMuons;
-  std::vector<StdMuon> fFVecGenMuons;
+  std::vector<StdElec> fFVecElecs;
 
-  float fLeadingMuonPt;
-  float fSubLeadingMuonPt;
+  float fPt;
   float fEta;
-  bool fOppositeCharge;
-  float fZMassCut;
-
-  RoccoR* fRoccoR;
-  bool fDoRoccoR;
-
-  int fLeadingIdx;
-  int fSubLeadingIdx;
+  bool fSCEtaVeto;
 
   bool fIsMC;
 

@@ -21,12 +21,12 @@ class JET
 public:
   JET(YAML::Node fConfig) {
 
-    YAML::Node fMuonConf = fConfig["Jet"];
+    YAML::Node fJetConf = fConfig["Jet"];
 
-    fJetPt = fMuonConf["Pt"].as<float>();
-    fEta = fMuonConf["Eta"].as<float>();
-    fBJetTaggerCut = fMuonConf["BTag"].as<float>();
-    fCleaning = fZConf["Cleaning"].as<bool>();
+    fJetPt = fJetConf["Pt"].as<float>();
+    fEta = fJetConf["Eta"].as<float>();
+    fBJetTaggerCut = fJetConf["BTag"].as<float>();
+    fCleaning = fJetConf["Cleaning"].as<bool>();
   }
   ~JET() {}
 
@@ -49,8 +49,8 @@ public:
     TTreeReaderArray<float>* Jet_mass,
     TTreeReaderArray<int>* Jet_jetId,
     TTreeReaderArray<float>* Jet_btagCSVV2,
-    std::vector<StdMuon> tMuons,
-    std::vector<StdElec> tElecs
+    std::vector<MUON::StdMuon> tMuons,
+    std::vector<ELEC::StdElec> tElecs
   );
 
   bool PrepareJet(
@@ -59,7 +59,7 @@ public:
     TTreeReaderArray<float>* Jet_eta,
     TTreeReaderArray<float>* Jet_phi,
     TTreeReaderArray<float>* Jet_mass,
-    TTreeReaderArray<bool>* Jet_jetId,
+    TTreeReaderArray<int>* Jet_jetId,
     TTreeReaderArray<float>* Jet_btagCSVV2
   );
 
@@ -68,8 +68,8 @@ public:
 
 private:
 
-  std::vector<StdMuon> fFVecJets;
-  std::vector<StdMuon> fFVecBJets;
+  std::vector<StdJet> fFVecJets;
+  std::vector<StdJet> fFVecBJets;
 
   float fJetPt;
   float fEta;

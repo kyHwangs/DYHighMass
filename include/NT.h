@@ -6,6 +6,8 @@
 #include <string>
 
 #include "muon.h"
+#include "electron.h"
+#include "jet.h"
 
 #include "TFile.h"
 #include "TROOT.h"
@@ -32,6 +34,12 @@ public:
 
     fMuons = new MUON(fConfig);
     fMuons->IsMC(fIsMC);
+
+    fElecs = new ELEC(fConfig);
+    fElecs->IsMC(fIsMC);
+
+    fJets = new JET(fConfig);
+    fJets->IsMC(fIsMC);
   }
 
   ~NT() {
@@ -130,12 +138,61 @@ public:
     );
   }
 
+  bool PrepareElec() {
+
+    return fElecs->PrepareElec(
+      **nElectron,
+      Electron_pt,
+      Electron_eta,
+      Electron_deltaEtaSC,
+      Electron_phi,
+      Electron_mass,
+      Electron_cutBased,
+      Electron_pfRelIso03_all
+    );
+  }
+
+  bool PrepareJet(std::vector<MUON::StdMuon> tMuons, std::vector<ELEC::StdElec> tElecs) {
+
+    return fJets->PrepareJet(
+      **nJet,
+      Jet_pt,
+      Jet_eta,
+      Jet_phi,
+      Jet_mass,
+      Jet_jetId,
+      Jet_btagCSVV2,
+      tMuons,
+      tElecs
+    );
+  }
+
+  bool PrepareJet() {
+
+      return fJets->PrepareJet(
+        **nJet,
+        Jet_pt,
+        Jet_eta,
+        Jet_phi,
+        Jet_mass,
+        Jet_jetId,
+        Jet_btagCSVV2,
+        std::vector<MUON::StdMuon>{},
+        std::vector<ELEC::StdElec>{}
+      );
+    }
+
   std::vector<TLorentzVector> GetLHE(int fPID);
 
   std::vector<MUON::StdMuon> GetMuons() { return fMuons->GetMuons(); }
   std::vector<MUON::StdMuon> GetGenMuons() { return fMuons->GetGenMuons(); }
   MUON::StdMuon GetLeadingMuon() { return fMuons->GetLeadingMuon(); }
   MUON::StdMuon GetSubLeadingMuon() { return fMuons->GetSubLeadingMuon(); }
+
+  std::vector<ELEC::StdElec> GetElecs() { return fElecs->GetElecs(); }
+
+  std::vector<JET::StdJet> GetJets() { return fJets->GetJets(); }
+  std::vector<JET::StdJet> GetBJets() { return fJets->GetBJets(); }
 
   TTreeReaderValue<unsigned int>* run;
   TTreeReaderValue<unsigned int>* luminosityBlock;
@@ -1284,6 +1341,8 @@ private:
   std::vector<double> fMaxEventVec;
 
   MUON* fMuons;
+  ELEC* fElecs;
+  JET* fJets;
 
 };
 

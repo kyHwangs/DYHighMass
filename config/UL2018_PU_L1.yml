@@ -31,8 +31,8 @@ Correction:
   ID: false
   ISO: false
   Trigger: false
-  PileUp: false
-  L1PreFiring: false
+  PileUp: true
+  L1PreFiring: true
 
 Efficiency:
   ID: Run2018_UL_ID.txt

@@ -2,19 +2,29 @@
 
 mkdir ROOT
 
-for FILE in ./*
+ERAS=(
+"2016_preVFP"
+"2016_postVFP"
+"2017"
+"2018"
+)
+
+for era in ${ERAS[@]}
 do
-	if [ -d $FILE ]
-	then
-	  # echo ${FILE}
-		echo ./ROOT/${FILE}.root
-		hadd ./ROOT/${FILE}.root ${FILE}/*.root
-	fi
+  mkdir -p ROOT/$era
+  cd $era
+
+  for FILE in ./*
+  do
+  	if [ -d $FILE ]
+  	then
+      echo $FILE
+  		hadd ../ROOT/$era/${FILE}.root ${FILE}/*.root
+  	fi
+  done
+
+  cd ..
+  hadd ./ROOT/$era/Data.root ./ROOT/$era/Run*.root
+  mv ./ROOT/$era/NNLO_10to50.root ./ROOT/$era/NNLO_10to50_v1.root
+  hadd ./ROOT/$era/NNLO_10to50.root ./ROOT/$era/NNLO_10to50_v1.root ./ROOT/$era/NNLO_10to50_v2.root
 done
-
-
-rm ./ROOT/ROOT.root
-
-hadd ./ROOT/Data.root ./ROOT/Run2018*.root
-mv ./ROOT/NNLO_10to50.root ./ROOT/NNLO_10to50_v1.root
-hadd ./ROOT/NNLO_10to50.root ./ROOT/NNLO_10to50_v1.root ./ROOT/NNLO_10to50_v2.root

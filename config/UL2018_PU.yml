@@ -21,7 +21,7 @@ Jet:
   Pt: 30
   Eta: 2.4
   ID: Loose
-  BTag: 0.5426
+  BTag: 0.4168
   Cleaning: true
 
 Trigger:

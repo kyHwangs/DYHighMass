@@ -6,11 +6,11 @@ arguments             = ../../install/bin/analysis --config $(config) --base ../
 
 request_memory        = 500 MB
 should_transfer_files = YES
-transfer_input_files = /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241001/DYHighMass/envset.sh, \
-                       /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241001/DYHighMass/install/lib, \
-                       /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241001/DYHighMass/install/bin
+transfer_input_files = /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241202_JetFolding/DYHighMass/envset.sh, \
+                       /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241202_JetFolding/DYHighMass/install/lib, \
+                       /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241202_JetFolding/DYHighMass/install/bin
 
-JobBatchName          = 240917_2018_10GeV_noCorrection
+JobBatchName          = 241202_FullRun2_noCorrection
 
 output                = log/$(era)/$(sample)/$(era)_$(sample)_$(id).out
 error                 = log/$(era)/$(sample)/$(era)_$(sample)_$(id).err
