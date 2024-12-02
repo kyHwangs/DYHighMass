@@ -130,12 +130,10 @@ private:
 
   TH1D* h_EventInfo;
 
-  TH1D* h_PV_Count_before_corr;
-  TH1D* h_PileUp_Count_Interaction_before_corr;
-  TH1D* h_PileUp_Count_Intime_before_corr;
-  TH1D* h_PV_Count_after_corr;
-  TH1D* h_PileUp_Count_Interaction_after_corr;
-  TH1D* h_PileUp_Count_Intime_after_corr;
+  TH1D* h_nPV_Count;
+  TH1D* h_nPVGood_Count;
+  TH1D* h_PileUp_Count_Interaction;
+  TH1D* h_PileUp_Count_Intime;
 
   TH1D* h_LHEDimuonMass;
   TH1D* h_GenWeight;

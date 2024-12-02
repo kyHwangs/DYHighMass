@@ -31,7 +31,7 @@ Correction:
   ID: false
   ISO: false
   Trigger: false
-  PileUp: false
+  PileUp: true
   L1PreFiring: false
 
 Efficiency:

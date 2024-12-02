@@ -545,8 +545,8 @@ public:
   // TTreeReaderValue<float>* PV_z;
   // TTreeReaderValue<float>* PV_chi2;
   // TTreeReaderValue<float>* PV_score;
-  // TTreeReaderValue<int>* PV_npvs;
-  // TTreeReaderValue<int>* PV_npvsGood;
+  TTreeReaderValue<int>* PV_npvs;
+  TTreeReaderValue<int>* PV_npvsGood;
   // TTreeReaderValue<unsigned int>* nSV;
   // TTreeReaderArray<float>* SV_dlen;
   // TTreeReaderArray<float>* SV_dlenSig;

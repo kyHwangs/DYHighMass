@@ -53,13 +53,11 @@ void DYLoop::Loop() {
       h_LHEDimuonMass->Fill(tDiMuonMassLHE, tEventGenWeight);
     }
 
+    float tPUReweightingFactor = 1;
     if (fIsMC && fDoPU) {
 
-      float tPUReweightingFactor = fPuReweighting->weight(**(fNtuples->Pileup_nTrueInt));
-
-      h_PileUp_Count_Interaction_before_corr->Fill(**(fNtuples->Pileup_nTrueInt), tEventGenWeight);
+      tPUReweightingFactor = fPuReweighting->weight(**(fNtuples->Pileup_nTrueInt));
       tEventGenWeight *= tPUReweightingFactor;
-      h_PileUp_Count_Interaction_after_corr->Fill(**(fNtuples->Pileup_nTrueInt), tEventGenWeight);
     }
 
     if (fIsMC && fDoL1Pre) {
@@ -124,6 +122,9 @@ void DYLoop::Loop() {
 
     tTotalGenWeight += tEventGenWeight;
 
+    h_nPV_Count->Fill(**(fNtuples->PV_npvs), tEventGenWeight);
+    h_nPVGood_Count->Fill(**(fNtuples->PV_npvsGood), tEventGenWeight);
+
     h_LeadingMuonPt->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
     h_LeadingMuonEta->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
     h_LeadingMuonPhi->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
@@ -166,19 +167,14 @@ void DYLoop::PrepareHist() {
   h_LHEnMuon = new TH1D(Form("h_LHEnMuon"), Form("h_LHEnMuon"), 10, 0., 10.);
   h_LHEnMuon->Sumw2();
 
-  h_PV_Count_before_corr = new TH1D(Form("h_PV_Count_before_PUcorr"), Form("PV_Count"), 100, 0., 100.);
-  h_PV_Count_before_corr->Sumw2();
-  h_PileUp_Count_Interaction_before_corr = new TH1D(Form("h_PileUp_Count_Interaction_before_PUcorr"), Form("PileUp_Count_Interaction"), 1000, 0., 100.);
-  h_PileUp_Count_Interaction_before_corr->Sumw2();
-  h_PileUp_Count_Intime_before_corr = new TH1D(Form("h_PileUp_Count_Intime_before_PUcorr"), Form("PileUp_Count_Intime"), 1000, 0., 100.);
-  h_PileUp_Count_Intime_before_corr->Sumw2();
-
-  h_PV_Count_after_corr = new TH1D(Form("h_PV_Count_after_PUcorr"), Form("PV_Count"), 100, 0., 100.);
-  h_PV_Count_after_corr->Sumw2();
-  h_PileUp_Count_Interaction_after_corr = new TH1D(Form("h_PileUp_Count_Interaction_after_PUcorr"), Form("PileUp_Count_Interaction"), 1000, 0., 100.);
-  h_PileUp_Count_Interaction_after_corr->Sumw2();
-  h_PileUp_Count_Intime_after_corr = new TH1D(Form("h_PileUp_Count_Intime_after_PUcorr"), Form("PileUp_Count_Intime"), 1000, 0., 100.);
-  h_PileUp_Count_Intime_after_corr->Sumw2();
+  h_nPV_Count = new TH1D(Form("h_nPV_Count"), Form("PV_Count"), 100, 0., 100.);
+  h_nPV_Count->Sumw2();
+  h_nPVGood_Count = new TH1D(Form("h_nPVGood_Count"), Form("PV_Count"), 100, 0., 100.);
+  h_nPVGood_Count->Sumw2();
+  h_PileUp_Count_Interaction = new TH1D(Form("h_PileUp_Count_Interaction"), Form("PileUp_Count_Interaction"), 1000, 0., 100.);
+  h_PileUp_Count_Interaction->Sumw2();
+  h_PileUp_Count_Intime = new TH1D(Form("h_PileUp_Count_Intime"), Form("PileUp_Count_Intime"), 1000, 0., 100.);
+  h_PileUp_Count_Intime->Sumw2();
 
   h_nJet_before = new TH1D(Form("h_nJet_before"), Form("nJet_before"), 20, 0., 20.);
   h_nJet_before->Sumw2();
@@ -249,6 +245,12 @@ void DYLoop::EndOfJob() {
 
   TFile* fOutputFile = new TFile(fOutputDir + fEra + "/" + fSampleName + "/output_" + std::to_string(fJobID) + ".root", "RECREATE");
   h_EventInfo->Write();
+
+  h_nPV_Count->Write();
+  h_nPVGood_Count->Write();
+  h_PileUp_Count_Interaction->Write();
+  h_PileUp_Count_Intime->Write();
+
   h_LHEDimuonMass->Write();
   h_GenWeight->Write();
   h_LHEnMuon->Write();
@@ -275,13 +277,6 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide->Write();
   h_dimuonPt->Write();
   h_dimuonRap->Write();
-
-  h_PV_Count_before_corr->Write();
-  h_PileUp_Count_Interaction_before_corr->Write();
-  h_PileUp_Count_Intime_before_corr->Write();
-  h_PV_Count_after_corr->Write();
-  h_PileUp_Count_Interaction_after_corr->Write();
-  h_PileUp_Count_Intime_after_corr->Write();
 
   fOutputFile->Close();
 }
