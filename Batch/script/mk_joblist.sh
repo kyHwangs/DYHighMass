@@ -66,7 +66,7 @@ echo -e WJetsToLNu $RUNNUMBER
 RUNNUMBER=`ll ../../input/$ERA/WWTo2L2Nu | grep list | wc -l`
 echo -e WW $RUNNUMBER
 # WZ
-RUNNUMBER=`ll ../../input/$ERA/WZTo3LNu | grep list | wc -l`
+RUNNUMBER=`ll ../../input/$ERA/WZ | grep list | wc -l`
 echo -e WZ $RUNNUMBER
 # ZZ
 RUNNUMBER=`ll ../../input/$ERA/ZZ | grep list | wc -l`

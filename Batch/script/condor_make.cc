@@ -59,7 +59,7 @@ int condor_make() {
   fileMap_2016_preVFP.insert(std::make_pair("TTTo2L2Nu",  4));
   fileMap_2016_preVFP.insert(std::make_pair("WJetsToLNu",  6));
   fileMap_2016_preVFP.insert(std::make_pair("WW",  2));
-  fileMap_2016_preVFP.insert(std::make_pair("WZ",  7));
+  fileMap_2016_preVFP.insert(std::make_pair("WZ",  2));
   fileMap_2016_preVFP.insert(std::make_pair("ZZ",  1));
   fileMap_2016_preVFP.insert(std::make_pair("Run2016B_APV_ver2", 7));
   fileMap_2016_preVFP.insert(std::make_pair("Run2016C_APV", 3));
@@ -120,7 +120,7 @@ int condor_make() {
   fileMap_2016_postVFP.insert(std::make_pair("TTTo2L2Nu", 5));
   fileMap_2016_postVFP.insert(std::make_pair("WJetsToLNu", 3));
   fileMap_2016_postVFP.insert(std::make_pair("WW", 1));
-  fileMap_2016_postVFP.insert(std::make_pair("WZ", 4));
+  fileMap_2016_postVFP.insert(std::make_pair("WZ", 2));
   fileMap_2016_postVFP.insert(std::make_pair("ZZ", 2));
   fileMap_2016_postVFP.insert(std::make_pair("Run2016F", 1));
   fileMap_2016_postVFP.insert(std::make_pair("Run2016G", 7));
@@ -180,13 +180,13 @@ int condor_make() {
   fileMap_2017.insert(std::make_pair("TTTo2L2Nu", 10));
   fileMap_2017.insert(std::make_pair("WJetsToLNu", 5));
   fileMap_2017.insert(std::make_pair("WW", 5));
-  fileMap_2017.insert(std::make_pair("WZ", 4));
+  fileMap_2017.insert(std::make_pair("WZ", 3));
   fileMap_2017.insert(std::make_pair("ZZ", 1));
   fileMap_2017.insert(std::make_pair("Run2017B", 6));
   fileMap_2017.insert(std::make_pair("Run2017C", 10));
   fileMap_2017.insert(std::make_pair("Run2017D", 4));
   fileMap_2017.insert(std::make_pair("Run2017E", 9));
-  fileMap_2017.insert(std::make_pair("Run2017F", 10));
+  fileMap_2017.insert(std::make_pair("Run2017F", 14));
 
 
   // 2018
