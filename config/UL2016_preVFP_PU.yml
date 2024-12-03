@@ -154,7 +154,7 @@ Sample:
     UnitPerJob: 2
 
   WZ:
-    Name: WZTo3LNu
+    Name: WZ
     IsMC: true
     UnitPerJob: 7
 
