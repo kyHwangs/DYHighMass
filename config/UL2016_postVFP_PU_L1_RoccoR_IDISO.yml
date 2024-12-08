@@ -9,7 +9,7 @@ Muon:
   ISO: TightPFRelIso
   Charge: opposite
   doRoccoR: true
-  RoccoR: /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241001/DYHighMass/RoccoR/RoccoR2016bUL.txt
+  RoccoR: ../../RoccoR/RoccoR2016bUL.txt
 
 Electron:
   Pt: 10
