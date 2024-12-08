@@ -33,9 +33,10 @@ public:
   struct StdJet {
     TLorentzVector fVec;
     bool fPassingBJetTagger;
+    int fID;
 
-    StdJet(TLorentzVector fVec_, bool fPassingBJetTagger_)
-    : fVec(fVec_), fPassingBJetTagger(fPassingBJetTagger_)
+    StdJet(TLorentzVector fVec_, bool fPassingBJetTagger_, int fID_)
+    : fVec(fVec_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_)
     { };
   };
 

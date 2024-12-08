@@ -78,9 +78,9 @@ bool JET::PrepareJet(
     if (Jet_btagCSVV2->At(i) > fBJetTaggerCut)
       isBJet = true;
 
-    fFVecJets.push_back(StdJet(jets, isBJet));
+    fFVecJets.push_back(StdJet(jets, isBJet, Jet_jetId->At(i)));
     if (isBJet)
-      fFVecBJets.push_back(StdJet(jets, isBJet));
+      fFVecBJets.push_back(StdJet(jets, isBJet, Jet_jetId->At(i)));
 
   }
 

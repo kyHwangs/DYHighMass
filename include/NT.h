@@ -147,8 +147,7 @@ public:
       Electron_deltaEtaSC,
       Electron_phi,
       Electron_mass,
-      Electron_cutBased,
-      Electron_pfRelIso03_all
+      Electron_cutBased
     );
   }
 

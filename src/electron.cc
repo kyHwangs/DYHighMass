@@ -14,8 +14,7 @@ bool ELEC::PrepareElec(
   TTreeReaderArray<float>* Electron_deltaEtaSC,
   TTreeReaderArray<float>* Electron_phi,
   TTreeReaderArray<float>* Electron_mass,
-  TTreeReaderArray<int>* Electron_cutBased,
-  TTreeReaderArray<float>* Electron_pfRelIso03_all
+  TTreeReaderArray<int>* Electron_cutBased
 ) {
 
   fFVecElecs.clear();
@@ -33,9 +32,6 @@ bool ELEC::PrepareElec(
       continue;
 
     if (Electron_cutBased->At(i) != 4)
-      continue;
-
-    if (!(Electron_pfRelIso03_all->At(i) < 0.0821))
       continue;
 
     TLorentzVector elecs;

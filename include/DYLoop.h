@@ -332,6 +332,8 @@ private:
   TH1D* h_dimuonPt_bVeto_mt1J;
   TH1D* h_dimuonRap_bVeto_mt1J;
 
+  TH1D* h_jetID;
+
 };
 
 #endif

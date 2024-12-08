@@ -44,8 +44,7 @@ public:
     TTreeReaderArray<float>* Electron_deltaEtaSC,
     TTreeReaderArray<float>* Electron_phi,
     TTreeReaderArray<float>* Electron_mass,
-    TTreeReaderArray<int>* Electron_cutBased,
-    TTreeReaderArray<float>* Electron_pfRelIso03_all
+    TTreeReaderArray<int>* Electron_cutBased
   );
 
   std::vector<StdElec> GetElecs() { return fFVecElecs; }

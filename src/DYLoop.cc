@@ -133,6 +133,10 @@ void DYLoop::Loop() {
       tEventGenWeight *= eventTriggerEffSF;
     }
 
+    for (int i = 0; i < nJets; i++) {
+      h_jetID->Fill(vJets.at(i).fID, tEventGenWeight);
+    }
+
     h_nJet->Fill(nJets, tEventGenWeight);
     h_nBJet->Fill(nBJets, tEventGenWeight);
 
@@ -790,6 +794,8 @@ void DYLoop::PrepareHist() {
   h_dimuonPt_bVeto_mt1J = new TH1D(Form("h_dimuonPt_bVeto_mt1J"), Form("dimuon_pT"), 1000, 0., 1000.);
   h_dimuonRap_bVeto_mt1J = new TH1D(Form("h_dimuonRap_bVeto_mt1J"), Form("dimuon_rap"), 60, -3., 3.);
 
+  h_jetID = new TH1D(Form("h_jetID"), Form("jetID"), 20, -0.5, 19.5);
+
 }
 
 
@@ -1000,6 +1006,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_bVeto_mt1J->Write();
   h_dimuonPt_bVeto_mt1J->Write();
   h_dimuonRap_bVeto_mt1J->Write();
+
+  h_jetID->Write();
 
   fOutputFile->Close();
 }
