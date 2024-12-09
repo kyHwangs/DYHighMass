@@ -24,6 +24,15 @@ public:
     fPt = fElecConf["Pt"].as<float>();
     fEta = fElecConf["Eta"].as<float>();
     fSCEtaVeto = fElecConf["SCEtaVeto"].as<bool>();
+
+    std::cout << "######################################################################" << std::endl;
+    std::cout << "                          Electron selection                          " << std::endl;
+    std::cout << "----------------------------------------------------------------------" << std::endl;
+    std::cout << " Electron pT: " << fPt << std::endl;
+    std::cout << " Electron eta: " << fEta << std::endl;
+    std::cout << " Electron SC eta veto: " << fSCEtaVeto << std::endl;
+    std::cout << "######################################################################" << std::endl;
+    std::cout << " " << std::endl;
   }
   ~ELEC() {}
 

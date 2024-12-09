@@ -18,11 +18,11 @@ Electron:
   ID: TightID
 
 Jet:
-  Pt: 30
+  Pt: 50
   Eta: 2.4
-  ID: 2
+  ID: 6
   BTag: 0.6001
-  Cleaning: true
+  Cleaning: false
 
 Trigger:
   IsoMu24

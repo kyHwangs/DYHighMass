@@ -18,7 +18,7 @@ Electron:
   ID: TightID
 
 Jet:
-  Pt: 30
+  Pt: 50
   Eta: 2.4
   ID: 2
   BTag: 0.6001

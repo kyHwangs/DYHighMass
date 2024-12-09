@@ -37,13 +37,17 @@ public:
 
     fRoccoR = new RoccoR(fMuonConf["RoccoR"].as<std::string>());
 
-    std::cout <<"LeadingMuonPt: " << fLeadingMuonPt << std::endl;
-    std::cout <<"SubleadingMuonPt: " << fSubLeadingMuonPt << std::endl;
-    std::cout <<"Eta: " << fEta << std::endl;
-    std::cout <<"MassCut: " << fZMassCut << std::endl;
-    std::cout <<"OppositeCharge: " << fOppositeCharge << std::endl;
-    std::cout <<"doRoccoR: " << fDoRoccoR << std::endl;
-
+    std::cout << "######################################################################" << std::endl;
+    std::cout << "                            Muon selection                            " << std::endl;
+    std::cout << "----------------------------------------------------------------------" << std::endl;
+    std::cout << " LeadingMuonPt: " << fLeadingMuonPt << std::endl;
+    std::cout << " SubleadingMuonPt: " << fSubLeadingMuonPt << std::endl;
+    std::cout << " Eta: " << fEta << std::endl;
+    std::cout << " MassCut: " << fZMassCut << std::endl;
+    std::cout << " OppositeCharge: " << fOppositeCharge << std::endl;
+    std::cout << " doRoccoR: " << fDoRoccoR << std::endl;
+    std::cout << "######################################################################" << std::endl;
+    std::cout << " " << std::endl;
   }
   ~MUON() {}
 

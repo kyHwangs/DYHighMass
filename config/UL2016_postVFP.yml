@@ -20,7 +20,7 @@ Electron:
 Jet:
   Pt: 30
   Eta: 2.4
-  ID: Loose
+  ID: 2
   BTag: 0.5847
   Cleaning: true
 

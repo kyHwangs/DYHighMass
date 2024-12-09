@@ -27,6 +27,18 @@ public:
     fEta = fJetConf["Eta"].as<float>();
     fBJetTaggerCut = fJetConf["BTag"].as<float>();
     fCleaning = fJetConf["Cleaning"].as<bool>();
+    fJetID = fJetConf["ID"].as<int>();
+
+    std::cout << "######################################################################" << std::endl;
+    std::cout << "                            Jet selection                             " << std::endl;
+    std::cout << "----------------------------------------------------------------------" << std::endl;
+    std::cout << " jet pT: " << fJetPt << std::endl;
+    std::cout << " jet eta: " << fEta << std::endl;
+    std::cout << " jet ID: " << fJetID << std::endl;
+    std::cout << " b-tagger WP: " << fBJetTaggerCut << std::endl;
+    std::cout << " jet cleaning: " << fCleaning << std::endl;
+    std::cout << "######################################################################" << std::endl;
+    std::cout << " " << std::endl;
   }
   ~JET() {}
 
@@ -75,6 +87,7 @@ private:
   float fJetPt;
   float fEta;
   float fBJetTaggerCut;
+  int fJetID;
   bool fCleaning;
   bool fIsMC;
 };

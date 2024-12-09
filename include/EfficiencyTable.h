@@ -29,19 +29,19 @@ std::vector<record> _recd;
 public:
 
   explicit EffTable() = default;
-	explicit EffTable(const std::string &fFilename_)
-	:fFilename(fFilename_) {
-		std::cout << "loading efficiency SF table of " << fFilename_ << std::endl;
-		init();
-	};
+  explicit EffTable(const std::string &fFilename_)
+  :fFilename(fFilename_) {
 
-	double getEfficiency(double pt, double eta);
+    init();
+  };
+
+  double getEfficiency(double pt, double eta);
 
 private:
 
-	void init();
+  void init();
 
-	std::string fFilename;
+  std::string fFilename;
 
 };
 

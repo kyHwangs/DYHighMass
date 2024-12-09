@@ -63,13 +63,7 @@ public:
       "pileup"
     );
 
-    std::cout << fDoID << " " << fConfig["Efficiency"]["ID"].as<std::string>() << std::endl;
-    std::cout << fDoISO << " " << fConfig["Efficiency"]["ISO"].as<std::string>() << std::endl;
-    std::cout << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger_data"].as<std::string>() << std::endl;
-    std::cout << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger_MC"].as<std::string>() << std::endl;
-    std::cout << fDoPU << " " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
-    std::cout << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
-    std::cout << fDoL1Pre << std::endl;
+    Print();
 
     PrepareHist();
 
@@ -77,17 +71,22 @@ public:
     fNtuples->SetSampleName(fSampleName);
     fNtuples->SetEra(fEra);
     fNtuples->AddChain(fSampleName, fJobID);
-
   }
 
   void Print() {
-    std::cout << "config: " << fConfigPath << std::endl;
-    std::cout << "era: " << fEra << std::endl;
-    std::cout << "id: " << fJobID << std::endl;
-    std::cout << "sample: " << fSampleName << std::endl;
-    std::cout << "output: " << fOutputDir << std::endl;
-    std::cout << "base: " << fBaseDir << std::endl;
-    std::cout << "fIsMC: " << fIsMC << std::endl;
+
+    std::cout << "######################################################################" << std::endl;
+    std::cout << "                             Loop setting                             " << std::endl;
+    std::cout << "----------------------------------------------------------------------" << std::endl;
+    std::cout << " fDoID: " << fDoID << " " << fConfig["Efficiency"]["ID"].as<std::string>() << std::endl;
+    std::cout << " fDoISO: " << fDoISO << " " << fConfig["Efficiency"]["ISO"].as<std::string>() << std::endl;
+    std::cout << " fDoTRIGG: " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger_data"].as<std::string>() << std::endl;
+    std::cout << "             " << fConfig["Efficiency"]["Trigger_MC"].as<std::string>()  << std::endl;
+    std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
+    std::cout << "          " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
+    std::cout << " fDoL1Pre: " << fDoL1Pre << " " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
+    std::cout << "######################################################################" << std::endl;
+    std::cout << " " << std::endl;
   }
 
   void SetEra(TString fEra_) { fEra = fEra_; }

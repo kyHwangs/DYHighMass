@@ -6,7 +6,11 @@
 
 void EffTable::init() {
 
-  std::cout << " Loading " << fFilename << std::endl;
+  std::cout << "######################################################################" << std::endl;
+  std::cout << "                           Effciency tables                           " << std::endl;
+  std::cout << "----------------------------------------------------------------------" << std::endl;
+  std::cout << " Loading: " << fFilename << std::endl;
+
   std::ifstream file(fFilename);
 
   if (!file) {
@@ -35,8 +39,9 @@ void EffTable::init() {
     if (data.size() == 7) _recd.push_back(record{data[0], data[1], data[2], data[3], data[4], data[5], data[6]});
   }
 
-  std::cout << "Eff table low : " << _recd.size() << std::endl;
-
+  std::cout << " Efficiency tables low: " << _recd.size() << std::endl;
+  std::cout << "######################################################################" << std::endl;
+  std::cout << " " << std::endl;
 }
 
 bool EffTable::record::belongTo(double pt, double eta)

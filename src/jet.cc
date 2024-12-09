@@ -46,7 +46,7 @@ bool JET::PrepareJet(
     if (!(std::fabs(Jet_eta->At(i)) < fEta))
       continue;
 
-    if (!(Jet_jetId->At(i) > 0))
+    if (!(Jet_jetId->At(i) >= fJetID))
       continue;
 
     TLorentzVector jets;
@@ -54,6 +54,7 @@ bool JET::PrepareJet(
 
     bool isCleanJet = true;
     if (fCleaning) {
+
       for (int i = 0; i < tMuons.size(); i++) {
         if (tMuons.at(i).fVec.DeltaR(jets) < 0.4) {
           isCleanJet = false;
