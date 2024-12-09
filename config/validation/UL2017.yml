@@ -2,14 +2,14 @@ Z:
   MassCut: 10
 
 Muon:
-  LeadingMuonPt: 26
+  LeadingMuonPt: 29
   SubLeadingMuonPt: 10
   Eta: 2.4
   ID: TightID
   ISO: TightPFRelIso
   Charge: opposite
-  doRoccoR: true
-  RoccoR: ../../RoccoR/RoccoR2016bUL.txt
+  doRoccoR: false
+  RoccoR: ../../RoccoR/RoccoR2017UL.txt
 
 Electron:
   Pt: 10
@@ -21,31 +21,31 @@ Jet:
   Pt: 30
   Eta: 2.4
   ID: Loose
-  BTag: 0.5847
+  BTag: 0.4506
   Cleaning: true
 
 Trigger:
   IsoMu24
 
 Correction:
-  ID: true
-  ISO: true
-  Trigger: true
-  PileUp: true
-  L1PreFiring: true
+  ID: false
+  ISO: false
+  Trigger: false
+  PileUp: false
+  L1PreFiring: false
 
 Efficiency:
-  ID: Run2016_UL_ID.txt
-  ISO: Run2016_UL_ISO.txt
-  Trigger_data: Run2016_UL_TRIG_DATAeff.txt
-  Trigger_MC: Run2016_UL_TRIG_MCeff.txt
+  ID: Run2017_UL_ID.txt
+  ISO: Run2017_UL_ISO.txt
+  Trigger_data: Run2017_UL_TRIG_DATAeff.txt
+  Trigger_MC: Run2017_UL_TRIG_MCeff.txt
 
 Pileup:
-  Data: PileupHistogram-goldenJSON-13tev-2016-postVFP-69200ub-99bins.root
-  MC: MC_2016.root
+  Data: PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root
+  MC: MC_2017.root
 
 Info:
-  Era: 2016_postVFP
+  Era: 2017
 
 Sample:
   NNLO_inc:
@@ -163,17 +163,27 @@ Sample:
     IsMC: true
     UnitPerJob: 1
 
-  Run2016F:
-    Name: SingleMuon_Run2016F
+  Run2017B:
+    Name: SingleMuon_Run2017B
     IsMC: false
     UnitPerJob: 1
 
-  Run2016G:
-    Name: SingleMuon_Run2016G
+  Run2017C:
+    Name: SingleMuon_Run2017C
     IsMC: false
     UnitPerJob: 1
 
-  Run2016H:
-    Name: SingleMuon_Run2016H
+  Run2017D:
+    Name: SingleMuon_Run2017D
+    IsMC: false
+    UnitPerJob: 1
+
+  Run2017E:
+    Name: SingleMuon_Run2017E
+    IsMC: false
+    UnitPerJob: 1
+
+  Run2017F:
+    Name: SingleMuon_Run2017F
     IsMC: false
     UnitPerJob: 1

@@ -8,7 +8,7 @@ Muon:
   ID: TightID
   ISO: TightPFRelIso
   Charge: opposite
-  doRoccoR: false
+  doRoccoR: true
   RoccoR: ../../RoccoR/RoccoR2018UL.txt
 
 Electron:
@@ -28,11 +28,11 @@ Trigger:
   IsoMu24
 
 Correction:
-  ID: false
-  ISO: false
-  Trigger: false
-  PileUp: false
-  L1PreFiring: false
+  ID: true
+  ISO: true
+  Trigger: true
+  PileUp: true
+  L1PreFiring: true
 
 Efficiency:
   ID: Run2018_UL_ID.txt
