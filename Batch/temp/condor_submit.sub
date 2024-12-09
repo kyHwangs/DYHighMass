@@ -1,0 +1,19 @@
+universe              = vanilla
+executable            = condor_wrapper.sh
+getenv                = True
+x509userproxy         = $ENV(X509_USER_PROXY)
+arguments             = ../../install/bin/analysis --config $(config) --base ../../ --era $(era) --sample $(sample) --id $(id) --output ./
+
+request_memory        = 500 MB
+should_transfer_files = YES
+transfer_input_files = /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241202_JetFolding/DYHighMass/envset.sh, \
+                       /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241202_JetFolding/DYHighMass/install/lib, \
+                       /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241202_JetFolding/DYHighMass/install/bin
+
+JobBatchName          = 241202_FullRun2_v5_trigger
+
+output                = log/$(era)/$(sample)/$(era)_$(sample)_$(id).out
+error                 = log/$(era)/$(sample)/$(era)_$(sample)_$(id).err
+log                   = log/$(era)/$(sample)/$(era)_$(sample)_$(id).log
+
+queue config,era,sample,id from joblist.txt
