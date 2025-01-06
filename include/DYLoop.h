@@ -1,5 +1,5 @@
 #ifndef DYLoop_h
-#define DYLoop_h
+#define DYLoop_h 1
 
 #include <iostream>
 #include <map>
@@ -7,6 +7,7 @@
 #include <typeinfo>
 
 #include "muon.h"
+#include "jet.h"
 #include "NT.h"
 #include "options.h"
 #include "LumiReWeighting.h"
@@ -71,6 +72,27 @@ public:
     fNtuples->SetSampleName(fSampleName);
     fNtuples->SetEra(fEra);
     fNtuples->AddChain(fSampleName, fJobID);
+
+    std::cout << " " << std::endl;
+
+    fMaxEntries = fNtuples->GetEntries();
+    fNtuples->init();
+
+    std::cout << " " << std::endl;
+
+    fMuons = new MUON(fConfig);
+    fMuons->IsMC(fIsMC);
+    fMuons->init(fNtuples->GetTreeReader());
+
+    fJets = new JET(fConfig);
+    fJets->IsMC(fIsMC);
+    fJets->init(fNtuples->GetTreeReader());
+
+    fElecs = new ELEC(fConfig);
+    fElecs->IsMC(fIsMC);
+    fElecs->init(fNtuples->GetTreeReader());
+
+    std::cout << std::fixed;
   }
 
   void Print() {
@@ -126,6 +148,12 @@ private:
 
   NT* fNtuples;
   YAML::Node fConfig;
+
+  MUON* fMuons;
+  JET* fJets;
+  ELEC* fElecs;
+
+  double fMaxEntries;
 
   TH1D* h_EventInfo;
 

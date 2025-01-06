@@ -1,5 +1,5 @@
 #ifndef LumiReWeighting_h
-#define LumiReWeighting_h
+#define LumiReWeighting_h 1
 
 #include <iostream>
 #include <cmath>

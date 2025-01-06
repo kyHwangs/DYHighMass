@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.8 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.11)
+
 project(DYHighMass)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -6,6 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(ROOT REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(correctionlib REQUIRED)
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(Threads)
+find_package(ZLIB)
 
 include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -23,12 +28,13 @@ include(${ROOT_USE_FILE})
 
 add_library(DYHighMassLIB SHARED ${sources})
 
-target_include_directories(DYHighMassLIB PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR})
+target_include_directories(DYHighMassLIB PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include ${ROOT_INCLUDE_DIRS} ${YAML_CPP_INCLUDE_DIR} ${CORRECTINOLIB_INCLUDE_DIR})
 
 target_link_libraries(
   DYHighMassLIB
   ${ROOT_LIBRARIES}
   ${YAML_CPP_LIBRARIES}
+  correctionlib
 )
 
 target_include_directories(DYHighMassLIB PUBLIC
@@ -49,6 +55,7 @@ target_link_libraries(
   analysis
   ${ROOT_LIBRARIES}
   ${YAML_CPP_LIBRARIES}
+  correctionlib
   ${CMAKE_DL_LIBS}
 )
 

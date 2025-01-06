@@ -7,19 +7,22 @@
 #include "TTreeReaderArray.h"
 #include "TRandom.h"
 
-bool ELEC::PrepareElec(
-  int nElectron,
-  TTreeReaderArray<float>* Electron_pt,
-  TTreeReaderArray<float>* Electron_eta,
-  TTreeReaderArray<float>* Electron_deltaEtaSC,
-  TTreeReaderArray<float>* Electron_phi,
-  TTreeReaderArray<float>* Electron_mass,
-  TTreeReaderArray<int>* Electron_cutBased
-) {
+void ELEC::init(TTreeReader* fTreeReader) {
+
+  nElectron = new TTreeReaderValue<unsigned int>(*fTreeReader, "nElectron");
+  Electron_pt = new TTreeReaderArray<float>(*fTreeReader, "Electron_pt");
+  Electron_eta = new TTreeReaderArray<float>(*fTreeReader, "Electron_eta");
+  Electron_deltaEtaSC = new TTreeReaderArray<float>(*fTreeReader, "Electron_deltaEtaSC");
+  Electron_phi = new TTreeReaderArray<float>(*fTreeReader, "Electron_phi");
+  Electron_mass = new TTreeReaderArray<float>(*fTreeReader, "Electron_mass");
+  Electron_cutBased = new TTreeReaderArray<int>(*fTreeReader, "Electron_cutBased");
+}
+
+bool ELEC::PrepareElec() {
 
   fFVecElecs.clear();
 
-  for (int i = 0; i < nElectron; i++) {
+  for (int i = 0; i < **nElectron; i++) {
 
     if (!(Electron_pt->At(i) > fPt))
       continue;

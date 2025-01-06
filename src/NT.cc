@@ -1,20 +1,12 @@
 #include "NT.h"
-
-bool NT::GetNext() {
-  return fTreeReader->Next();
-}
+#include "muon.h"
 
 bool NT::PassingTrigger() {
 
-  if (fEra == "2016_preVFP")  return (**HLT_IsoMu24 && **HLT_IsoTkMu24);
-  if (fEra == "2016_postVFP") return (**HLT_IsoMu24 && **HLT_IsoTkMu24);
-  if (fEra == "2017")         return (**HLT_IsoMu27);
-  if (fEra == "2018")         return (**HLT_IsoMu24);
-
-  // if (fEra == "2016_preVFP")  return (**HLT_Mu50 && **HLT_TkMu50);
-  // if (fEra == "2016_postVFP") return (**HLT_Mu50 && **HLT_TkMu50);
-  // if (fEra == "2017")         return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
-  // if (fEra == "2018")         return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
+  if (fEra == "2016_preVFP")  return (**HLT_Mu50 && **HLT_TkMu50);
+  if (fEra == "2016_postVFP") return (**HLT_Mu50 && **HLT_TkMu50);
+  if (fEra == "2017")         return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
+  if (fEra == "2018")         return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
 
   return false;
 }
@@ -42,19 +34,11 @@ std::vector<TLorentzVector> NT::GetLHE(int fPID) {
 
   for (int i = 0; i < **nLHEPart; i++) {
 
-    // std::cout << i << " "
-    //           << LHEPart_pdgId->At(i) << " "
-    //           << LHEPart_status->At(i) << " "
-    //           << LHEPart_pt->At(i) << " "
-    //           << LHEPart_eta->At(i) << " "
-    //           << LHEPart_phi->At(i) << std::endl;
-
     if (std::fabs(LHEPart_pdgId->At(i)) == fPID) {
+
       TLorentzVector lvec;
       lvec.SetPtEtaPhiM(LHEPart_pt->At(i), LHEPart_eta->At(i), LHEPart_phi->At(i), LHEPart_mass->At(i));
       returnVec.push_back(lvec);
-
-      // std::cout << i << " selected" << std::endl;
     }
   }
 
@@ -62,30 +46,23 @@ std::vector<TLorentzVector> NT::GetLHE(int fPID) {
 }
 
 void NT::init_trigger_2016() {
-  HLT_IsoMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24");
-  HLT_IsoTkMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoTkMu24");
-  // HLT_IsoMu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27");
-  // HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
-  // HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
-  // HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
+
+  HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
+  HLT_TkMu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu50");
 }
 
 void NT::init_trigger_2017() {
-  // HLT_IsoMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24");
-  // HLT_IsoTkMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoTkMu24");
-  HLT_IsoMu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27");
-  // HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
-  // HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
-  // HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
+
+  HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
+  HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
+  HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
 }
 
 void NT::init_trigger_2018() {
-  HLT_IsoMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu24");
-  // HLT_IsoTkMu24 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoTkMu24");
-  // HLT_IsoMu27 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_IsoMu27");
-  // HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
-  // HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
-  // HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
+
+  HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
+  HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
+  HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
 }
 
 void NT::init_trigger() {
@@ -141,15 +118,15 @@ void NT::init_MC() {
   GenJet_mass = new TTreeReaderArray<float>(*fTreeReader, "GenJet_mass");
   GenJet_phi = new TTreeReaderArray<float>(*fTreeReader, "GenJet_phi");
   GenJet_pt = new TTreeReaderArray<float>(*fTreeReader, "GenJet_pt");
-  nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
-  GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
-  GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
-  GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
-  GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
-  GenPart_genPartIdxMother = new TTreeReaderArray<int>(*fTreeReader, "GenPart_genPartIdxMother");
-  GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
-  GenPart_status = new TTreeReaderArray<int>(*fTreeReader, "GenPart_status");
-  GenPart_statusFlags = new TTreeReaderArray<int>(*fTreeReader, "GenPart_statusFlags");
+  // nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
+  // GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
+  // GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
+  // GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
+  // GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
+  // GenPart_genPartIdxMother = new TTreeReaderArray<int>(*fTreeReader, "GenPart_genPartIdxMother");
+  // GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
+  // GenPart_status = new TTreeReaderArray<int>(*fTreeReader, "GenPart_status");
+  // GenPart_statusFlags = new TTreeReaderArray<int>(*fTreeReader, "GenPart_statusFlags");
   Generator_binvar = new TTreeReaderValue<float>(*fTreeReader, "Generator_binvar");
   Generator_scalePDF = new TTreeReaderValue<float>(*fTreeReader, "Generator_scalePDF");
   Generator_weight = new TTreeReaderValue<float>(*fTreeReader, "Generator_weight");
@@ -327,47 +304,47 @@ void NT::init() {
   // FsrPhoton_pt = new TTreeReaderArray<float>(*fTreeReader, "FsrPhoton_pt");
   // FsrPhoton_relIso03 = new TTreeReaderArray<float>(*fTreeReader, "FsrPhoton_relIso03");
   // FsrPhoton_muonIdx = new TTreeReaderArray<int>(*fTreeReader, "FsrPhoton_muonIdx");
-  nJet = new TTreeReaderValue<unsigned int>(*fTreeReader, "nJet");
-  Jet_area = new TTreeReaderArray<float>(*fTreeReader, "Jet_area");
-  Jet_btagCSVV2 = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagCSVV2");
-  Jet_btagDeepB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepB");
-  Jet_btagDeepCvB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepCvB");
-  Jet_btagDeepCvL = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepCvL");
-  Jet_btagDeepFlavB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavB");
-  Jet_btagDeepFlavCvB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavCvB");
-  Jet_btagDeepFlavCvL = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavCvL");
-  Jet_btagDeepFlavQG = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavQG");
-  Jet_chEmEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_chEmEF");
-  Jet_chFPV0EF = new TTreeReaderArray<float>(*fTreeReader, "Jet_chFPV0EF");
-  Jet_chHEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_chHEF");
-  Jet_eta = new TTreeReaderArray<float>(*fTreeReader, "Jet_eta");
-  Jet_hfsigmaEtaEta = new TTreeReaderArray<float>(*fTreeReader, "Jet_hfsigmaEtaEta");
-  Jet_hfsigmaPhiPhi = new TTreeReaderArray<float>(*fTreeReader, "Jet_hfsigmaPhiPhi");
-  Jet_mass = new TTreeReaderArray<float>(*fTreeReader, "Jet_mass");
-  Jet_muEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_muEF");
-  Jet_muonSubtrFactor = new TTreeReaderArray<float>(*fTreeReader, "Jet_muonSubtrFactor");
-  Jet_neEmEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_neEmEF");
-  Jet_neHEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_neHEF");
-  Jet_phi = new TTreeReaderArray<float>(*fTreeReader, "Jet_phi");
-  Jet_pt = new TTreeReaderArray<float>(*fTreeReader, "Jet_pt");
-  Jet_puIdDisc = new TTreeReaderArray<float>(*fTreeReader, "Jet_puIdDisc");
-  Jet_qgl = new TTreeReaderArray<float>(*fTreeReader, "Jet_qgl");
-  Jet_rawFactor = new TTreeReaderArray<float>(*fTreeReader, "Jet_rawFactor");
-  Jet_bRegCorr = new TTreeReaderArray<float>(*fTreeReader, "Jet_bRegCorr");
-  Jet_bRegRes = new TTreeReaderArray<float>(*fTreeReader, "Jet_bRegRes");
-  Jet_cRegCorr = new TTreeReaderArray<float>(*fTreeReader, "Jet_cRegCorr");
-  Jet_cRegRes = new TTreeReaderArray<float>(*fTreeReader, "Jet_cRegRes");
-  Jet_electronIdx1 = new TTreeReaderArray<int>(*fTreeReader, "Jet_electronIdx1");
-  Jet_electronIdx2 = new TTreeReaderArray<int>(*fTreeReader, "Jet_electronIdx2");
-  Jet_hfadjacentEtaStripsSize = new TTreeReaderArray<int>(*fTreeReader, "Jet_hfadjacentEtaStripsSize");
-  Jet_hfcentralEtaStripSize = new TTreeReaderArray<int>(*fTreeReader, "Jet_hfcentralEtaStripSize");
-  Jet_jetId = new TTreeReaderArray<int>(*fTreeReader, "Jet_jetId");
-  Jet_muonIdx1 = new TTreeReaderArray<int>(*fTreeReader, "Jet_muonIdx1");
-  Jet_muonIdx2 = new TTreeReaderArray<int>(*fTreeReader, "Jet_muonIdx2");
-  Jet_nElectrons = new TTreeReaderArray<int>(*fTreeReader, "Jet_nElectrons");
-  Jet_nMuons = new TTreeReaderArray<int>(*fTreeReader, "Jet_nMuons");
-  Jet_puId = new TTreeReaderArray<int>(*fTreeReader, "Jet_puId");
-  Jet_nConstituents = new TTreeReaderArray<unsigned char>(*fTreeReader, "Jet_nConstituents");
+  // nJet = new TTreeReaderValue<unsigned int>(*fTreeReader, "nJet");
+  // Jet_area = new TTreeReaderArray<float>(*fTreeReader, "Jet_area");
+  // Jet_btagCSVV2 = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagCSVV2");
+  // Jet_btagDeepB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepB");
+  // Jet_btagDeepCvB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepCvB");
+  // Jet_btagDeepCvL = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepCvL");
+  // Jet_btagDeepFlavB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavB");
+  // Jet_btagDeepFlavCvB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavCvB");
+  // Jet_btagDeepFlavCvL = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavCvL");
+  // Jet_btagDeepFlavQG = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavQG");
+  // Jet_chEmEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_chEmEF");
+  // Jet_chFPV0EF = new TTreeReaderArray<float>(*fTreeReader, "Jet_chFPV0EF");
+  // Jet_chHEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_chHEF");
+  // Jet_eta = new TTreeReaderArray<float>(*fTreeReader, "Jet_eta");
+  // Jet_hfsigmaEtaEta = new TTreeReaderArray<float>(*fTreeReader, "Jet_hfsigmaEtaEta");
+  // Jet_hfsigmaPhiPhi = new TTreeReaderArray<float>(*fTreeReader, "Jet_hfsigmaPhiPhi");
+  // Jet_mass = new TTreeReaderArray<float>(*fTreeReader, "Jet_mass");
+  // Jet_muEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_muEF");
+  // Jet_muonSubtrFactor = new TTreeReaderArray<float>(*fTreeReader, "Jet_muonSubtrFactor");
+  // Jet_neEmEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_neEmEF");
+  // Jet_neHEF = new TTreeReaderArray<float>(*fTreeReader, "Jet_neHEF");
+  // Jet_phi = new TTreeReaderArray<float>(*fTreeReader, "Jet_phi");
+  // Jet_pt = new TTreeReaderArray<float>(*fTreeReader, "Jet_pt");
+  // Jet_puIdDisc = new TTreeReaderArray<float>(*fTreeReader, "Jet_puIdDisc");
+  // Jet_qgl = new TTreeReaderArray<float>(*fTreeReader, "Jet_qgl");
+  // Jet_rawFactor = new TTreeReaderArray<float>(*fTreeReader, "Jet_rawFactor");
+  // Jet_bRegCorr = new TTreeReaderArray<float>(*fTreeReader, "Jet_bRegCorr");
+  // Jet_bRegRes = new TTreeReaderArray<float>(*fTreeReader, "Jet_bRegRes");
+  // Jet_cRegCorr = new TTreeReaderArray<float>(*fTreeReader, "Jet_cRegCorr");
+  // Jet_cRegRes = new TTreeReaderArray<float>(*fTreeReader, "Jet_cRegRes");
+  // Jet_electronIdx1 = new TTreeReaderArray<int>(*fTreeReader, "Jet_electronIdx1");
+  // Jet_electronIdx2 = new TTreeReaderArray<int>(*fTreeReader, "Jet_electronIdx2");
+  // Jet_hfadjacentEtaStripsSize = new TTreeReaderArray<int>(*fTreeReader, "Jet_hfadjacentEtaStripsSize");
+  // Jet_hfcentralEtaStripSize = new TTreeReaderArray<int>(*fTreeReader, "Jet_hfcentralEtaStripSize");
+  // Jet_jetId = new TTreeReaderArray<int>(*fTreeReader, "Jet_jetId");
+  // Jet_muonIdx1 = new TTreeReaderArray<int>(*fTreeReader, "Jet_muonIdx1");
+  // Jet_muonIdx2 = new TTreeReaderArray<int>(*fTreeReader, "Jet_muonIdx2");
+  // Jet_nElectrons = new TTreeReaderArray<int>(*fTreeReader, "Jet_nElectrons");
+  // Jet_nMuons = new TTreeReaderArray<int>(*fTreeReader, "Jet_nMuons");
+  // Jet_puId = new TTreeReaderArray<int>(*fTreeReader, "Jet_puId");
+  // Jet_nConstituents = new TTreeReaderArray<unsigned char>(*fTreeReader, "Jet_nConstituents");
   L1PreFiringWeight_Dn = new TTreeReaderValue<float>(*fTreeReader, "L1PreFiringWeight_Dn");
   L1PreFiringWeight_ECAL_Dn = new TTreeReaderValue<float>(*fTreeReader, "L1PreFiringWeight_ECAL_Dn");
   L1PreFiringWeight_ECAL_Nom = new TTreeReaderValue<float>(*fTreeReader, "L1PreFiringWeight_ECAL_Nom");
@@ -389,61 +366,61 @@ void NT::init() {
   // MET_significance = new TTreeReaderValue<float>(*fTreeReader, "MET_significance");
   // MET_sumEt = new TTreeReaderValue<float>(*fTreeReader, "MET_sumEt");
   // MET_sumPtUnclustered = new TTreeReaderValue<float>(*fTreeReader, "MET_sumPtUnclustered");
-  nMuon = new TTreeReaderValue<unsigned int>(*fTreeReader, "nMuon");
-  Muon_dxy = new TTreeReaderArray<float>(*fTreeReader, "Muon_dxy");
-  Muon_dxyErr = new TTreeReaderArray<float>(*fTreeReader, "Muon_dxyErr");
-  Muon_dxybs = new TTreeReaderArray<float>(*fTreeReader, "Muon_dxybs");
-  Muon_dz = new TTreeReaderArray<float>(*fTreeReader, "Muon_dz");
-  Muon_dzErr = new TTreeReaderArray<float>(*fTreeReader, "Muon_dzErr");
-  Muon_eta = new TTreeReaderArray<float>(*fTreeReader, "Muon_eta");
-  Muon_ip3d = new TTreeReaderArray<float>(*fTreeReader, "Muon_ip3d");
-  Muon_jetPtRelv2 = new TTreeReaderArray<float>(*fTreeReader, "Muon_jetPtRelv2");
-  Muon_jetRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_jetRelIso");
-  Muon_mass = new TTreeReaderArray<float>(*fTreeReader, "Muon_mass");
-  Muon_miniPFRelIso_all = new TTreeReaderArray<float>(*fTreeReader, "Muon_miniPFRelIso_all");
-  Muon_miniPFRelIso_chg = new TTreeReaderArray<float>(*fTreeReader, "Muon_miniPFRelIso_chg");
-  Muon_pfRelIso03_all = new TTreeReaderArray<float>(*fTreeReader, "Muon_pfRelIso03_all");
-  Muon_pfRelIso03_chg = new TTreeReaderArray<float>(*fTreeReader, "Muon_pfRelIso03_chg");
-  Muon_pfRelIso04_all = new TTreeReaderArray<float>(*fTreeReader, "Muon_pfRelIso04_all");
-  Muon_phi = new TTreeReaderArray<float>(*fTreeReader, "Muon_phi");
-  Muon_pt = new TTreeReaderArray<float>(*fTreeReader, "Muon_pt");
-  Muon_ptErr = new TTreeReaderArray<float>(*fTreeReader, "Muon_ptErr");
-  Muon_segmentComp = new TTreeReaderArray<float>(*fTreeReader, "Muon_segmentComp");
-  Muon_sip3d = new TTreeReaderArray<float>(*fTreeReader, "Muon_sip3d");
-  Muon_softMva = new TTreeReaderArray<float>(*fTreeReader, "Muon_softMva");
-  Muon_tkRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_tkRelIso");
-  Muon_tunepRelPt = new TTreeReaderArray<float>(*fTreeReader, "Muon_tunepRelPt");
-  Muon_mvaLowPt = new TTreeReaderArray<float>(*fTreeReader, "Muon_mvaLowPt");
-  Muon_mvaTTH = new TTreeReaderArray<float>(*fTreeReader, "Muon_mvaTTH");
-  Muon_charge = new TTreeReaderArray<int>(*fTreeReader, "Muon_charge");
-  Muon_jetIdx = new TTreeReaderArray<int>(*fTreeReader, "Muon_jetIdx");
-  Muon_nStations = new TTreeReaderArray<int>(*fTreeReader, "Muon_nStations");
-  Muon_nTrackerLayers = new TTreeReaderArray<int>(*fTreeReader, "Muon_nTrackerLayers");
-  Muon_pdgId = new TTreeReaderArray<int>(*fTreeReader, "Muon_pdgId");
-  Muon_tightCharge = new TTreeReaderArray<int>(*fTreeReader, "Muon_tightCharge");
-  Muon_fsrPhotonIdx = new TTreeReaderArray<int>(*fTreeReader, "Muon_fsrPhotonIdx");
-  Muon_highPtId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_highPtId");
-  Muon_highPurity = new TTreeReaderArray<bool>(*fTreeReader, "Muon_highPurity");
-  Muon_inTimeMuon = new TTreeReaderArray<bool>(*fTreeReader, "Muon_inTimeMuon");
-  Muon_isGlobal = new TTreeReaderArray<bool>(*fTreeReader, "Muon_isGlobal");
-  Muon_isPFcand = new TTreeReaderArray<bool>(*fTreeReader, "Muon_isPFcand");
-  Muon_isStandalone = new TTreeReaderArray<bool>(*fTreeReader, "Muon_isStandalone");
-  Muon_isTracker = new TTreeReaderArray<bool>(*fTreeReader, "Muon_isTracker");
-  Muon_jetNDauCharged = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_jetNDauCharged");
-  Muon_looseId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_looseId");
-  Muon_mediumId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_mediumId");
-  Muon_mediumPromptId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_mediumPromptId");
-  Muon_miniIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_miniIsoId");
-  Muon_multiIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_multiIsoId");
-  Muon_mvaId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_mvaId");
-  Muon_mvaLowPtId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_mvaLowPtId");
-  Muon_pfIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_pfIsoId");
-  Muon_puppiIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_puppiIsoId");
-  Muon_softId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_softId");
-  Muon_softMvaId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_softMvaId");
-  Muon_tightId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_tightId");
-  Muon_tkIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_tkIsoId");
-  Muon_triggerIdLoose = new TTreeReaderArray<bool>(*fTreeReader, "Muon_triggerIdLoose");
+  // nMuon = new TTreeReaderValue<unsigned int>(*fTreeReader, "nMuon");
+  // Muon_dxy = new TTreeReaderArray<float>(*fTreeReader, "Muon_dxy");
+  // Muon_dxyErr = new TTreeReaderArray<float>(*fTreeReader, "Muon_dxyErr");
+  // Muon_dxybs = new TTreeReaderArray<float>(*fTreeReader, "Muon_dxybs");
+  // Muon_dz = new TTreeReaderArray<float>(*fTreeReader, "Muon_dz");
+  // Muon_dzErr = new TTreeReaderArray<float>(*fTreeReader, "Muon_dzErr");
+  // Muon_eta = new TTreeReaderArray<float>(*fTreeReader, "Muon_eta");
+  // Muon_ip3d = new TTreeReaderArray<float>(*fTreeReader, "Muon_ip3d");
+  // Muon_jetPtRelv2 = new TTreeReaderArray<float>(*fTreeReader, "Muon_jetPtRelv2");
+  // Muon_jetRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_jetRelIso");
+  // Muon_mass = new TTreeReaderArray<float>(*fTreeReader, "Muon_mass");
+  // Muon_miniPFRelIso_all = new TTreeReaderArray<float>(*fTreeReader, "Muon_miniPFRelIso_all");
+  // Muon_miniPFRelIso_chg = new TTreeReaderArray<float>(*fTreeReader, "Muon_miniPFRelIso_chg");
+  // Muon_pfRelIso03_all = new TTreeReaderArray<float>(*fTreeReader, "Muon_pfRelIso03_all");
+  // Muon_pfRelIso03_chg = new TTreeReaderArray<float>(*fTreeReader, "Muon_pfRelIso03_chg");
+  // Muon_pfRelIso04_all = new TTreeReaderArray<float>(*fTreeReader, "Muon_pfRelIso04_all");
+  // Muon_phi = new TTreeReaderArray<float>(*fTreeReader, "Muon_phi");
+  // Muon_pt = new TTreeReaderArray<float>(*fTreeReader, "Muon_pt");
+  // Muon_ptErr = new TTreeReaderArray<float>(*fTreeReader, "Muon_ptErr");
+  // Muon_segmentComp = new TTreeReaderArray<float>(*fTreeReader, "Muon_segmentComp");
+  // Muon_sip3d = new TTreeReaderArray<float>(*fTreeReader, "Muon_sip3d");
+  // Muon_softMva = new TTreeReaderArray<float>(*fTreeReader, "Muon_softMva");
+  // Muon_tkRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_tkRelIso");
+  // Muon_tunepRelPt = new TTreeReaderArray<float>(*fTreeReader, "Muon_tunepRelPt");
+  // Muon_mvaLowPt = new TTreeReaderArray<float>(*fTreeReader, "Muon_mvaLowPt");
+  // Muon_mvaTTH = new TTreeReaderArray<float>(*fTreeReader, "Muon_mvaTTH");
+  // Muon_charge = new TTreeReaderArray<int>(*fTreeReader, "Muon_charge");
+  // Muon_jetIdx = new TTreeReaderArray<int>(*fTreeReader, "Muon_jetIdx");
+  // Muon_nStations = new TTreeReaderArray<int>(*fTreeReader, "Muon_nStations");
+  // Muon_nTrackerLayers = new TTreeReaderArray<int>(*fTreeReader, "Muon_nTrackerLayers");
+  // Muon_pdgId = new TTreeReaderArray<int>(*fTreeReader, "Muon_pdgId");
+  // Muon_tightCharge = new TTreeReaderArray<int>(*fTreeReader, "Muon_tightCharge");
+  // Muon_fsrPhotonIdx = new TTreeReaderArray<int>(*fTreeReader, "Muon_fsrPhotonIdx");
+  // Muon_highPtId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_highPtId");
+  // Muon_highPurity = new TTreeReaderArray<bool>(*fTreeReader, "Muon_highPurity");
+  // Muon_inTimeMuon = new TTreeReaderArray<bool>(*fTreeReader, "Muon_inTimeMuon");
+  // Muon_isGlobal = new TTreeReaderArray<bool>(*fTreeReader, "Muon_isGlobal");
+  // Muon_isPFcand = new TTreeReaderArray<bool>(*fTreeReader, "Muon_isPFcand");
+  // Muon_isStandalone = new TTreeReaderArray<bool>(*fTreeReader, "Muon_isStandalone");
+  // Muon_isTracker = new TTreeReaderArray<bool>(*fTreeReader, "Muon_isTracker");
+  // Muon_jetNDauCharged = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_jetNDauCharged");
+  // Muon_looseId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_looseId");
+  // Muon_mediumId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_mediumId");
+  // Muon_mediumPromptId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_mediumPromptId");
+  // Muon_miniIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_miniIsoId");
+  // Muon_multiIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_multiIsoId");
+  // Muon_mvaId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_mvaId");
+  // Muon_mvaLowPtId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_mvaLowPtId");
+  // Muon_pfIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_pfIsoId");
+  // Muon_puppiIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_puppiIsoId");
+  // Muon_softId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_softId");
+  // Muon_softMvaId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_softMvaId");
+  // Muon_tightId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_tightId");
+  // Muon_tkIsoId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_tkIsoId");
+  // Muon_triggerIdLoose = new TTreeReaderArray<bool>(*fTreeReader, "Muon_triggerIdLoose");
   // nPhoton = new TTreeReaderValue<unsigned int>(*fTreeReader, "nPhoton");
   // Photon_dEscaleDown = new TTreeReaderArray<float>(*fTreeReader, "Photon_dEscaleDown");
   // Photon_dEscaleUp = new TTreeReaderArray<float>(*fTreeReader, "Photon_dEscaleUp");

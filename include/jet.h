@@ -1,5 +1,5 @@
 #ifndef JET_h
-#define JET_h
+#define JET_h 1
 
 #include <iostream>
 #include <vector>
@@ -11,6 +11,7 @@
 
 #include "yaml-cpp/yaml.h"
 
+#include "TTreeReader.h"
 #include "TTreeReaderArray.h"
 #include "TTreeReaderValue.h"
 #include "TLorentzVector.h"
@@ -52,32 +53,25 @@ public:
     { };
   };
 
+  void init(TTreeReader* fTreeReader);
+
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
 
   bool PrepareJet(
-    int nJet,
-    TTreeReaderArray<float>* Jet_pt,
-    TTreeReaderArray<float>* Jet_eta,
-    TTreeReaderArray<float>* Jet_phi,
-    TTreeReaderArray<float>* Jet_mass,
-    TTreeReaderArray<int>* Jet_jetId,
-    TTreeReaderArray<float>* Jet_btagCSVV2,
-    std::vector<MUON::StdMuon> tMuons,
-    std::vector<ELEC::StdElec> tElecs
-  );
-
-  bool PrepareJet(
-    int nJet,
-    TTreeReaderArray<float>* Jet_pt,
-    TTreeReaderArray<float>* Jet_eta,
-    TTreeReaderArray<float>* Jet_phi,
-    TTreeReaderArray<float>* Jet_mass,
-    TTreeReaderArray<int>* Jet_jetId,
-    TTreeReaderArray<float>* Jet_btagCSVV2
+    std::vector<MUON::StdMuon> tMuons = {},
+    std::vector<ELEC::StdElec> tElecs = {}
   );
 
   std::vector<StdJet> GetJets() { return fFVecJets; }
   std::vector<StdJet> GetBJets() { return fFVecBJets; }
+
+  TTreeReaderValue<unsigned int>* nJet;
+  TTreeReaderArray<float>* Jet_pt;
+  TTreeReaderArray<float>* Jet_eta;
+  TTreeReaderArray<float>* Jet_phi;
+  TTreeReaderArray<float>* Jet_mass;
+  TTreeReaderArray<int>* Jet_jetId;
+  TTreeReaderArray<float>* Jet_btagCSVV2;
 
 private:
 

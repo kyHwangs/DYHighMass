@@ -1,10 +1,12 @@
 #include <iostream>
 #include <vector>
+#include <chrono>
 
 #include "DYLoop.h"
 #include "muon.h"
 #include "jet.h"
 #include "electron.h"
+#include "muon.h"
 #include "NT.h"
 
 #include "TH1.h"
@@ -15,9 +17,7 @@ void DYLoop::SetNT() {
 
 void DYLoop::Loop() {
 
-
-  double tMaxEntries = fNtuples->GetEntries();
-  fNtuples->init();
+  std::chrono::time_point tTimeBegin = std::chrono::system_clock::now();
 
   double tMaxLoop = 0;
   double tTotalGenWeight = 0;
@@ -25,7 +25,7 @@ void DYLoop::Loop() {
     tMaxLoop++;
 
     if ( (int)tMaxLoop % 10000 == 0 )
-      std::cout << "Loop: " << tMaxLoop << " / " << tMaxEntries << " | " << (100. * tMaxLoop / tMaxEntries) << " %" << std::endl;
+      std::cout << "Loop: " << tMaxLoop << " / " << fMaxEntries << " | " << (100. * tMaxLoop / fMaxEntries) << " %" << std::endl;
 
     double tEventGenWeight = 1.;
     if (fIsMC) {
@@ -78,29 +78,29 @@ void DYLoop::Loop() {
     if ( !(fNtuples->PassingTrigger()) )
       continue;
 
-    if ( !(fNtuples->PrepareMuon()) )
+    if ( !(fMuons->PrepareMuon()) )
       continue;
 
-    if ( !(fNtuples->PrepareElec()) )
+    if ( !(fElecs->PrepareElec()) )
       continue;
 
-    auto tMuon = fNtuples->GetMuons();
-    auto tElec = fNtuples->GetElecs();
+    auto tMuon = fMuons->GetMuons();
+    auto tElec = fElecs->GetElecs();
 
-    if ( !(fNtuples->PrepareJet(tMuon, tElec)) )
+    if ( !(fJets->PrepareJet(tMuon, tElec)) )
       continue;
 
-    auto vJets = fNtuples->GetJets();
-    auto vBJets = fNtuples->GetBJets();
+    auto vJets = fJets->GetJets();
+    auto vBJets = fJets->GetBJets();
 
     int nJets = vJets.size();
     int nBJets = vBJets.size();
 
-    auto tLeadingMuon = fNtuples->GetLeadingMuon();
+    auto tLeadingMuon = fMuons->GetLeadingMuon();
     auto tFVecLedingMuon = tLeadingMuon.fVec;
     auto tFVecRawLeadingMuon = tLeadingMuon.fVecRaw;
 
-    auto tSubLeadingMuon = fNtuples->GetSubLeadingMuon();
+    auto tSubLeadingMuon = fMuons->GetSubLeadingMuon();
     auto tFVecSubLedingMuon = tSubLeadingMuon.fVec;
     auto tFVecRawSubLeadingMuon = tSubLeadingMuon.fVecRaw;
 
@@ -493,7 +493,22 @@ void DYLoop::Loop() {
 
   h_EventInfo->Fill(5, tTotalGenWeight);
   h_EventInfo->Fill(2, tMaxLoop);
-  h_EventInfo->Fill(3, tMaxEntries);
+  h_EventInfo->Fill(3, fMaxEntries);
+
+  std::chrono::duration tTimeTaken = std::chrono::system_clock::now() - tTimeBegin;
+  std::chrono::minutes tTimeMin = std::chrono::duration_cast<std::chrono::minutes>(tTimeTaken);
+  std::chrono::seconds tTimeSec = std::chrono::duration_cast<std::chrono::seconds>(tTimeTaken - tTimeMin);
+
+  std::cout << " " << std::endl;
+  std::cout << "######################################################################" << std::endl;
+  std::cout << "                             Loop summary                             " << std::endl;
+  std::cout << "----------------------------------------------------------------------" << std::endl;
+  std::cout << " Entries: " << fMaxEntries << std::endl;
+  std::cout << " nLoop: " << tMaxLoop << std::endl;
+  std::cout << " GenWeight: " << tTotalGenWeight << std::endl;
+  std::cout << " Time taken: " << tTimeMin.count() << "min " << int(tTimeSec.count()) << "sec" << std::endl;
+  std::cout << "######################################################################" << std::endl;
+  std::cout << " " << std::endl;
 
   EndOfJob();
 }

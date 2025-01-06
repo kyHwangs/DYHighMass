@@ -2,13 +2,13 @@ Z:
   MassCut: 10
 
 Muon:
-  LeadingMuonPt: 29
-  SubLeadingMuonPt: 10
+  LeadingMuonPt: 52
+  SubLeadingMuonPt: 15
   Eta: 2.4
-  ID: TightID
-  ISO: TightPFRelIso
+  ID: global
+  ISO: 0.1
   Charge: opposite
-  doRoccoR: true
+  doRoccoR: false
   RoccoR: ../../RoccoR/RoccoR2017UL.txt
 
 Electron:
@@ -24,15 +24,12 @@ Jet:
   BTag: 0.4506
   Cleaning: true
 
-Trigger:
-  IsoMu24
-
 Correction:
-  ID: true
-  ISO: true
-  Trigger: true
-  PileUp: true
-  L1PreFiring: true
+  ID: false
+  ISO: false
+  Trigger: false
+  PileUp: false
+  L1PreFiring: false
 
 Efficiency:
   ID: Run2017_UL_ID.txt

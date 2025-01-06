@@ -4,21 +4,39 @@
 #include "muon.h"
 
 #include "TChain.h"
+#include "TTreeReader.h"
 #include "TTreeReaderArray.h"
 #include "TRandom.h"
 
-void MUON::PrepareGenMuon(
-  int nGenPart,
-  TTreeReaderArray<float>* GenPart_pt,
-  TTreeReaderArray<float>* GenPart_eta,
-  TTreeReaderArray<float>* GenPart_phi,
-  TTreeReaderArray<float>* GenPart_mass,
-  TTreeReaderArray<int>* GenPart_pdgId
-) {
+void MUON::init(TTreeReader* fTreeReader) {
+
+  if (fIsMC) {
+
+    nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
+    GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
+    GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
+    GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
+    GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
+    GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
+  }
+
+  nMuon = new TTreeReaderValue<unsigned int>(*fTreeReader, "nMuon");
+  Muon_pt = new TTreeReaderArray<float>(*fTreeReader, "Muon_pt");
+  Muon_tunepRelPt = new TTreeReaderArray<float>(*fTreeReader, "Muon_tunepRelPt");
+  Muon_eta = new TTreeReaderArray<float>(*fTreeReader, "Muon_eta");
+  Muon_phi = new TTreeReaderArray<float>(*fTreeReader, "Muon_phi");
+  Muon_charge = new TTreeReaderArray<int>(*fTreeReader, "Muon_charge");
+  Muon_mass = new TTreeReaderArray<float>(*fTreeReader, "Muon_mass");
+  Muon_highPtId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_highPtId");
+  Muon_tkRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_tkRelIso");
+  Muon_nTrackerLayers = new TTreeReaderArray<int>(*fTreeReader, "Muon_nTrackerLayers");
+}
+
+void MUON::PrepareGenMuon() {
 
   fFVecGenMuons.clear();
 
-  for (int i  = 0; i < nGenPart; i++) {
+  for (int i  = 0; i < **nGenPart; i++) {
 
     if ( !(std::abs(GenPart_pdgId->At(i)) == 13) )
       continue;
@@ -26,7 +44,7 @@ void MUON::PrepareGenMuon(
     TLorentzVector mu;
     mu.SetPtEtaPhiM(GenPart_pt->At(i), GenPart_eta->At(i), GenPart_phi->At(i), GenPart_mass->At(i));
 
-    StdMuon mu_std = StdMuon(mu, mu, (-1) * (GenPart_pdgId->At(i) / std::abs(GenPart_pdgId->At(i))), 0, 0);
+    StdMuon mu_std = StdMuon(mu, mu, (-1) * (GenPart_pdgId->At(i) / std::abs(GenPart_pdgId->At(i))));
     fFVecGenMuons.push_back(mu_std);
   }
 
@@ -35,26 +53,20 @@ void MUON::PrepareGenMuon(
   });
 }
 
-bool MUON::PrepareMuon(
-  int nMuon,
-  TTreeReaderArray<float>* Muon_pt,
-  TTreeReaderArray<float>* Muon_eta,
-  TTreeReaderArray<float>* Muon_phi,
-  TTreeReaderArray<int>* Muon_charge,
-  TTreeReaderArray<float>* Muon_mass,
-  TTreeReaderArray<bool>* Muon_tightId,
-  TTreeReaderArray<float>* Muon_pfRelIso04_all,
-  TTreeReaderArray<int>* Muon_nTrackerLayers
-) {
+//     std::string highPtID_test = "null";
+//     // if (tNtuples->Muon_highPtId->At(i) == (UChar_t)(1)) highPtID_test = "tracker high pT";
+//     // if (tNtuples->Muon_highPtId->At(i) == (UChar_t)(2)) highPtID_test = "global high pT";
+
+bool MUON::PrepareMuon() {
 
   fFVecMuons.clear();
 
-  for (int i = 0; i < nMuon; i++) {
-    if ( !(Muon_tightId->At(i) && Muon_pfRelIso04_all->At(i) < 0.15) )
+  for (int i = 0; i < **nMuon; i++) {
+    if ( !(Muon_highPtId->At(i) == fID && Muon_tkRelIso->At(i) < 0.10) )
       continue;
 
     TLorentzVector mu;
-    mu.SetPtEtaPhiM(Muon_pt->At(i), Muon_eta->At(i), Muon_phi->At(i), Muon_mass->At(i));
+    mu.SetPtEtaPhiM(Muon_pt->At(i) * Muon_tunepRelPt->At(i), Muon_eta->At(i), Muon_phi->At(i), Muon_mass->At(i));
 
     TLorentzVector mu_corr = mu;
 
@@ -112,7 +124,7 @@ bool MUON::PrepareMuon(
     if ( !(mu_corr.Pt() > fSubLeadingMuonPt) || !(std::abs(mu_corr.Eta()) < 2.4) )
       continue;
 
-    StdMuon mu_std = StdMuon(mu_corr, mu, Muon_charge->At(i), Muon_tightId->At(i), Muon_pfRelIso04_all->At(i));
+    StdMuon mu_std = StdMuon(mu_corr, mu, Muon_charge->At(i));
     fFVecMuons.push_back(mu_std);
 
     std::sort(fFVecMuons.begin(), fFVecMuons.end(), [](const StdMuon &lhs, const StdMuon &rhs) {
@@ -131,6 +143,7 @@ bool MUON::PrepareMuon(
   int tSubLeadingIdx = -1;
   int tChargeSelection = 1;
   if (!fOppositeCharge) tChargeSelection = -1;
+
   for (int i = 1; i < fFVecMuons.size(); i++) {
     if (tChargeSelection * (fFVecMuons.at(0).fCharge * fFVecMuons.at(i).fCharge) > 0)
       continue;

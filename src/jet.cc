@@ -6,39 +6,41 @@
 #include "electron.h"
 
 #include "TChain.h"
+#include "TTreeReader.h"
 #include "TTreeReaderArray.h"
 #include "TRandom.h"
 
+void JET::init(TTreeReader* fTreeReader) {
 
-bool JET::PrepareJet(
-  int nJet,
-  TTreeReaderArray<float>* Jet_pt,
-  TTreeReaderArray<float>* Jet_eta,
-  TTreeReaderArray<float>* Jet_phi,
-  TTreeReaderArray<float>* Jet_mass,
-  TTreeReaderArray<int>* Jet_jetId,
-  TTreeReaderArray<float>* Jet_btagCSVV2
-) {
-
-  return PrepareJet(nJet, Jet_pt, Jet_eta, Jet_phi, Jet_mass, Jet_jetId, Jet_btagCSVV2, std::vector<MUON::StdMuon>{}, std::vector<ELEC::StdElec>{});
+  nJet = new TTreeReaderValue<unsigned int>(*fTreeReader, "nJet");
+  Jet_pt = new TTreeReaderArray<float>(*fTreeReader, "Jet_pt");
+  Jet_eta = new TTreeReaderArray<float>(*fTreeReader, "Jet_eta");
+  Jet_phi = new TTreeReaderArray<float>(*fTreeReader, "Jet_phi");
+  Jet_mass = new TTreeReaderArray<float>(*fTreeReader, "Jet_mass");
+  Jet_jetId = new TTreeReaderArray<int>(*fTreeReader, "Jet_jetId");
+  Jet_btagCSVV2 = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagCSVV2");
 }
 
+// bool JET::PrepareJet(
+//   int nJet,
+//   TTreeReaderArray<float>* Jet_pt,
+//   TTreeReaderArray<float>* Jet_eta,
+//   TTreeReaderArray<float>* Jet_phi,
+//   TTreeReaderArray<float>* Jet_mass,
+//   TTreeReaderArray<int>* Jet_jetId,
+//   TTreeReaderArray<float>* Jet_btagCSVV2
+// ) {
+
+//   return PrepareJet(nJet, Jet_pt, Jet_eta, Jet_phi, Jet_mass, Jet_jetId, Jet_btagCSVV2, std::vector<MUON::StdMuon>{}, std::vector<ELEC::StdElec>{});
+// }
+
 bool JET::PrepareJet(
-  int nJet,
-  TTreeReaderArray<float>* Jet_pt,
-  TTreeReaderArray<float>* Jet_eta,
-  TTreeReaderArray<float>* Jet_phi,
-  TTreeReaderArray<float>* Jet_mass,
-  TTreeReaderArray<int>* Jet_jetId,
-  TTreeReaderArray<float>* Jet_btagCSVV2,
-  std::vector<MUON::StdMuon> tMuons,
-  std::vector<ELEC::StdElec> tElecs
-) {
+  std::vector<MUON::StdMuon> tMuons, std::vector<ELEC::StdElec> tElecs) {
 
   fFVecJets.clear();
   fFVecBJets.clear();
 
-  for (int i = 0; i < nJet; i++) {
+  for (int i = 0; i < **nJet; i++) {
 
     if (!(Jet_pt->At(i) > fJetPt))
       continue;

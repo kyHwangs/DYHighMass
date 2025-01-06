@@ -1,5 +1,5 @@
 #ifndef EffTable_h
-#define EffTable_h
+#define EffTable_h 1
 
 #include <set>
 #include <string>

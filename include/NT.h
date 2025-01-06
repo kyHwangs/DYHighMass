@@ -1,13 +1,13 @@
 #ifndef NT_h
-#define NT_h
+#define NT_h 1
 
 #include <iostream>
 #include <map>
 #include <string>
 
-#include "muon.h"
+// #include "muon.h"
 #include "electron.h"
-#include "jet.h"
+// #include "jet.h"
 
 #include "TFile.h"
 #include "TROOT.h"
@@ -31,15 +31,6 @@ public:
 
     fChain = new TChain("Events");
     fEra = fConfig["Info"]["Era"].as<std::string>();
-
-    fMuons = new MUON(fConfig);
-    fMuons->IsMC(fIsMC);
-
-    fElecs = new ELEC(fConfig);
-    fElecs->IsMC(fIsMC);
-
-    fJets = new JET(fConfig);
-    fJets->IsMC(fIsMC);
   }
 
   ~NT() {
@@ -56,7 +47,12 @@ public:
         "../../input/" + (std::string)(fEra.Data()) + "/" + fConfig["Sample"][(std::string)(fSample.Data())]["Name"].as<std::string>() +
         "/input_" + std::to_string(fJobID) + ".list";
 
-    std::cout <<"Merge list: " << fListPath << std::endl;
+    std::cout << "######################################################################" << std::endl;
+    std::cout << "                             Merging list                             " << std::endl;
+    std::cout << "----------------------------------------------------------------------" << std::endl;
+    std::cout << fListPath << std::endl;
+    std::cout << "######################################################################" << std::endl;
+    std::cout << " " << std::endl;
 
     FILE *fList;
     char fFile[1000];
@@ -92,7 +88,9 @@ public:
   void init_trigger_2017();
   void init_trigger_2018();
 
-  bool GetNext();
+  TTreeReader* GetTreeReader() { return fTreeReader; }
+
+  bool GetNext() { return fTreeReader->Next(); }
 
   double GetEntries() {
 
@@ -104,94 +102,12 @@ public:
      return fMaxEventVec;
   }
 
-  void SetMC() {
-    fIsMC = true;
-    fMuons->IsMC(fIsMC);
-  }
+  void SetMC() { fIsMC = true; }
 
   bool PassingTrigger();
   bool PassinNoiseFilter();
 
-  bool PrepareMuon() {
-
-    if (fIsMC) {
-      fMuons->PrepareGenMuon(
-        **nGenPart,
-        GenPart_pt,
-        GenPart_eta,
-        GenPart_phi,
-        GenPart_mass,
-        GenPart_pdgId
-      );
-    }
-
-    return fMuons->PrepareMuon(
-      **nMuon,
-      Muon_pt,
-      Muon_eta,
-      Muon_phi,
-      Muon_charge,
-      Muon_mass,
-      Muon_tightId,
-      Muon_pfRelIso04_all,
-      Muon_nTrackerLayers
-    );
-  }
-
-  bool PrepareElec() {
-
-    return fElecs->PrepareElec(
-      **nElectron,
-      Electron_pt,
-      Electron_eta,
-      Electron_deltaEtaSC,
-      Electron_phi,
-      Electron_mass,
-      Electron_cutBased
-    );
-  }
-
-  bool PrepareJet(std::vector<MUON::StdMuon> tMuons, std::vector<ELEC::StdElec> tElecs) {
-
-    return fJets->PrepareJet(
-      **nJet,
-      Jet_pt,
-      Jet_eta,
-      Jet_phi,
-      Jet_mass,
-      Jet_jetId,
-      Jet_btagCSVV2,
-      tMuons,
-      tElecs
-    );
-  }
-
-  bool PrepareJet() {
-
-      return fJets->PrepareJet(
-        **nJet,
-        Jet_pt,
-        Jet_eta,
-        Jet_phi,
-        Jet_mass,
-        Jet_jetId,
-        Jet_btagCSVV2,
-        std::vector<MUON::StdMuon>{},
-        std::vector<ELEC::StdElec>{}
-      );
-    }
-
   std::vector<TLorentzVector> GetLHE(int fPID);
-
-  std::vector<MUON::StdMuon> GetMuons() { return fMuons->GetMuons(); }
-  std::vector<MUON::StdMuon> GetGenMuons() { return fMuons->GetGenMuons(); }
-  MUON::StdMuon GetLeadingMuon() { return fMuons->GetLeadingMuon(); }
-  MUON::StdMuon GetSubLeadingMuon() { return fMuons->GetSubLeadingMuon(); }
-
-  std::vector<ELEC::StdElec> GetElecs() { return fElecs->GetElecs(); }
-
-  std::vector<JET::StdJet> GetJets() { return fJets->GetJets(); }
-  std::vector<JET::StdJet> GetBJets() { return fJets->GetBJets(); }
 
   TTreeReaderValue<unsigned int>* run;
   TTreeReaderValue<unsigned int>* luminosityBlock;
@@ -342,15 +258,15 @@ public:
   TTreeReaderArray<float>* GenJet_mass;
   TTreeReaderArray<float>* GenJet_phi;
   TTreeReaderArray<float>* GenJet_pt;
-  TTreeReaderValue<unsigned int>* nGenPart;
-  TTreeReaderArray<float>* GenPart_eta;
-  TTreeReaderArray<float>* GenPart_mass;
-  TTreeReaderArray<float>* GenPart_phi;
-  TTreeReaderArray<float>* GenPart_pt;
-  TTreeReaderArray<int>* GenPart_genPartIdxMother;
-  TTreeReaderArray<int>* GenPart_pdgId;
-  TTreeReaderArray<int>* GenPart_status;
-  TTreeReaderArray<int>* GenPart_statusFlags;
+  // TTreeReaderValue<unsigned int>* nGenPart;
+  // TTreeReaderArray<float>* GenPart_eta;
+  // TTreeReaderArray<float>* GenPart_mass;
+  // TTreeReaderArray<float>* GenPart_phi;
+  // TTreeReaderArray<float>* GenPart_pt;
+  // TTreeReaderArray<int>* GenPart_genPartIdxMother;
+  // TTreeReaderArray<int>* GenPart_pdgId;
+  // TTreeReaderArray<int>* GenPart_status;
+  // TTreeReaderArray<int>* GenPart_statusFlags;
   TTreeReaderValue<float>* Generator_binvar;
   TTreeReaderValue<float>* Generator_scalePDF;
   TTreeReaderValue<float>* Generator_weight;
@@ -373,47 +289,47 @@ public:
   TTreeReaderArray<float>* LHEScaleWeight;
   TTreeReaderValue<unsigned int>* nPSWeight;
   TTreeReaderArray<float>* PSWeight;
-  TTreeReaderValue<unsigned int>* nJet;
-  TTreeReaderArray<float>* Jet_area;
-  TTreeReaderArray<float>* Jet_btagCSVV2;
-  TTreeReaderArray<float>* Jet_btagDeepB;
-  TTreeReaderArray<float>* Jet_btagDeepCvB;
-  TTreeReaderArray<float>* Jet_btagDeepCvL;
-  TTreeReaderArray<float>* Jet_btagDeepFlavB;
-  TTreeReaderArray<float>* Jet_btagDeepFlavCvB;
-  TTreeReaderArray<float>* Jet_btagDeepFlavCvL;
-  TTreeReaderArray<float>* Jet_btagDeepFlavQG;
-  TTreeReaderArray<float>* Jet_chEmEF;
-  TTreeReaderArray<float>* Jet_chFPV0EF;
-  TTreeReaderArray<float>* Jet_chHEF;
-  TTreeReaderArray<float>* Jet_eta;
-  TTreeReaderArray<float>* Jet_hfsigmaEtaEta;
-  TTreeReaderArray<float>* Jet_hfsigmaPhiPhi;
-  TTreeReaderArray<float>* Jet_mass;
-  TTreeReaderArray<float>* Jet_muEF;
-  TTreeReaderArray<float>* Jet_muonSubtrFactor;
-  TTreeReaderArray<float>* Jet_neEmEF;
-  TTreeReaderArray<float>* Jet_neHEF;
-  TTreeReaderArray<float>* Jet_phi;
-  TTreeReaderArray<float>* Jet_pt;
-  TTreeReaderArray<float>* Jet_puIdDisc;
-  TTreeReaderArray<float>* Jet_qgl;
-  TTreeReaderArray<float>* Jet_rawFactor;
-  TTreeReaderArray<float>* Jet_bRegCorr;
-  TTreeReaderArray<float>* Jet_bRegRes;
-  TTreeReaderArray<float>* Jet_cRegCorr;
-  TTreeReaderArray<float>* Jet_cRegRes;
-  TTreeReaderArray<int>* Jet_electronIdx1;
-  TTreeReaderArray<int>* Jet_electronIdx2;
-  TTreeReaderArray<int>* Jet_hfadjacentEtaStripsSize;
-  TTreeReaderArray<int>* Jet_hfcentralEtaStripSize;
-  TTreeReaderArray<int>* Jet_jetId;
-  TTreeReaderArray<int>* Jet_muonIdx1;
-  TTreeReaderArray<int>* Jet_muonIdx2;
-  TTreeReaderArray<int>* Jet_nElectrons;
-  TTreeReaderArray<int>* Jet_nMuons;
-  TTreeReaderArray<int>* Jet_puId;
-  TTreeReaderArray<unsigned char>* Jet_nConstituents;
+  // TTreeReaderValue<unsigned int>* nJet;
+  // TTreeReaderArray<float>* Jet_area;
+  // TTreeReaderArray<float>* Jet_btagCSVV2;
+  // TTreeReaderArray<float>* Jet_btagDeepB;
+  // TTreeReaderArray<float>* Jet_btagDeepCvB;
+  // TTreeReaderArray<float>* Jet_btagDeepCvL;
+  // TTreeReaderArray<float>* Jet_btagDeepFlavB;
+  // TTreeReaderArray<float>* Jet_btagDeepFlavCvB;
+  // TTreeReaderArray<float>* Jet_btagDeepFlavCvL;
+  // TTreeReaderArray<float>* Jet_btagDeepFlavQG;
+  // TTreeReaderArray<float>* Jet_chEmEF;
+  // TTreeReaderArray<float>* Jet_chFPV0EF;
+  // TTreeReaderArray<float>* Jet_chHEF;
+  // TTreeReaderArray<float>* Jet_eta;
+  // TTreeReaderArray<float>* Jet_hfsigmaEtaEta;
+  // TTreeReaderArray<float>* Jet_hfsigmaPhiPhi;
+  // TTreeReaderArray<float>* Jet_mass;
+  // TTreeReaderArray<float>* Jet_muEF;
+  // TTreeReaderArray<float>* Jet_muonSubtrFactor;
+  // TTreeReaderArray<float>* Jet_neEmEF;
+  // TTreeReaderArray<float>* Jet_neHEF;
+  // TTreeReaderArray<float>* Jet_phi;
+  // TTreeReaderArray<float>* Jet_pt;
+  // TTreeReaderArray<float>* Jet_puIdDisc;
+  // TTreeReaderArray<float>* Jet_qgl;
+  // TTreeReaderArray<float>* Jet_rawFactor;
+  // TTreeReaderArray<float>* Jet_bRegCorr;
+  // TTreeReaderArray<float>* Jet_bRegRes;
+  // TTreeReaderArray<float>* Jet_cRegCorr;
+  // TTreeReaderArray<float>* Jet_cRegRes;
+  // TTreeReaderArray<int>* Jet_electronIdx1;
+  // TTreeReaderArray<int>* Jet_electronIdx2;
+  // TTreeReaderArray<int>* Jet_hfadjacentEtaStripsSize;
+  // TTreeReaderArray<int>* Jet_hfcentralEtaStripSize;
+  // TTreeReaderArray<int>* Jet_jetId;
+  // TTreeReaderArray<int>* Jet_muonIdx1;
+  // TTreeReaderArray<int>* Jet_muonIdx2;
+  // TTreeReaderArray<int>* Jet_nElectrons;
+  // TTreeReaderArray<int>* Jet_nMuons;
+  // TTreeReaderArray<int>* Jet_puId;
+  // TTreeReaderArray<unsigned char>* Jet_nConstituents;
   TTreeReaderValue<float>* L1PreFiringWeight_Dn;
   TTreeReaderValue<float>* L1PreFiringWeight_ECAL_Dn;
   TTreeReaderValue<float>* L1PreFiringWeight_ECAL_Nom;
@@ -457,61 +373,61 @@ public:
   // TTreeReaderValue<float>* MET_significance;
   // TTreeReaderValue<float>* MET_sumEt;
   // TTreeReaderValue<float>* MET_sumPtUnclustered;
-  TTreeReaderValue<unsigned int>* nMuon;
-  TTreeReaderArray<float>* Muon_dxy;
-  TTreeReaderArray<float>* Muon_dxyErr;
-  TTreeReaderArray<float>* Muon_dxybs;
-  TTreeReaderArray<float>* Muon_dz;
-  TTreeReaderArray<float>* Muon_dzErr;
-  TTreeReaderArray<float>* Muon_eta;
-  TTreeReaderArray<float>* Muon_ip3d;
-  TTreeReaderArray<float>* Muon_jetPtRelv2;
-  TTreeReaderArray<float>* Muon_jetRelIso;
-  TTreeReaderArray<float>* Muon_mass;
-  TTreeReaderArray<float>* Muon_miniPFRelIso_all;
-  TTreeReaderArray<float>* Muon_miniPFRelIso_chg;
-  TTreeReaderArray<float>* Muon_pfRelIso03_all;
-  TTreeReaderArray<float>* Muon_pfRelIso03_chg;
-  TTreeReaderArray<float>* Muon_pfRelIso04_all;
-  TTreeReaderArray<float>* Muon_phi;
-  TTreeReaderArray<float>* Muon_pt;
-  TTreeReaderArray<float>* Muon_ptErr;
-  TTreeReaderArray<float>* Muon_segmentComp;
-  TTreeReaderArray<float>* Muon_sip3d;
-  TTreeReaderArray<float>* Muon_softMva;
-  TTreeReaderArray<float>* Muon_tkRelIso;
-  TTreeReaderArray<float>* Muon_tunepRelPt;
-  TTreeReaderArray<float>* Muon_mvaLowPt;
-  TTreeReaderArray<float>* Muon_mvaTTH;
-  TTreeReaderArray<int>* Muon_charge;
-  TTreeReaderArray<int>* Muon_jetIdx;
-  TTreeReaderArray<int>* Muon_nStations;
-  TTreeReaderArray<int>* Muon_nTrackerLayers;
-  TTreeReaderArray<int>* Muon_pdgId;
-  TTreeReaderArray<int>* Muon_tightCharge;
-  TTreeReaderArray<int>* Muon_fsrPhotonIdx;
-  TTreeReaderArray<unsigned char>* Muon_highPtId;
-  TTreeReaderArray<bool>* Muon_highPurity;
-  TTreeReaderArray<bool>* Muon_inTimeMuon;
-  TTreeReaderArray<bool>* Muon_isGlobal;
-  TTreeReaderArray<bool>* Muon_isPFcand;
-  TTreeReaderArray<bool>* Muon_isStandalone;
-  TTreeReaderArray<bool>* Muon_isTracker;
-  TTreeReaderArray<unsigned char>* Muon_jetNDauCharged;
-  TTreeReaderArray<bool>* Muon_looseId;
-  TTreeReaderArray<bool>* Muon_mediumId;
-  TTreeReaderArray<bool>* Muon_mediumPromptId;
-  TTreeReaderArray<unsigned char>* Muon_miniIsoId;
-  TTreeReaderArray<unsigned char>* Muon_multiIsoId;
-  TTreeReaderArray<unsigned char>* Muon_mvaId;
-  TTreeReaderArray<unsigned char>* Muon_mvaLowPtId;
-  TTreeReaderArray<unsigned char>* Muon_pfIsoId;
-  TTreeReaderArray<unsigned char>* Muon_puppiIsoId;
-  TTreeReaderArray<bool>* Muon_softId;
-  TTreeReaderArray<bool>* Muon_softMvaId;
-  TTreeReaderArray<bool>* Muon_tightId;
-  TTreeReaderArray<unsigned char>* Muon_tkIsoId;
-  TTreeReaderArray<bool>* Muon_triggerIdLoose;
+  // TTreeReaderValue<unsigned int>* nMuon;
+  // TTreeReaderArray<float>* Muon_dxy;
+  // TTreeReaderArray<float>* Muon_dxyErr;
+  // TTreeReaderArray<float>* Muon_dxybs;
+  // TTreeReaderArray<float>* Muon_dz;
+  // TTreeReaderArray<float>* Muon_dzErr;
+  // TTreeReaderArray<float>* Muon_eta;
+  // TTreeReaderArray<float>* Muon_ip3d;
+  // TTreeReaderArray<float>* Muon_jetPtRelv2;
+  // TTreeReaderArray<float>* Muon_jetRelIso;
+  // TTreeReaderArray<float>* Muon_mass;
+  // TTreeReaderArray<float>* Muon_miniPFRelIso_all;
+  // TTreeReaderArray<float>* Muon_miniPFRelIso_chg;
+  // TTreeReaderArray<float>* Muon_pfRelIso03_all;
+  // TTreeReaderArray<float>* Muon_pfRelIso03_chg;
+  // TTreeReaderArray<float>* Muon_pfRelIso04_all;
+  // TTreeReaderArray<float>* Muon_phi;
+  // TTreeReaderArray<float>* Muon_pt;
+  // TTreeReaderArray<float>* Muon_ptErr;
+  // TTreeReaderArray<float>* Muon_segmentComp;
+  // TTreeReaderArray<float>* Muon_sip3d;
+  // TTreeReaderArray<float>* Muon_softMva;
+  // TTreeReaderArray<float>* Muon_tkRelIso;
+  // TTreeReaderArray<float>* Muon_tunepRelPt;
+  // TTreeReaderArray<float>* Muon_mvaLowPt;
+  // TTreeReaderArray<float>* Muon_mvaTTH;
+  // TTreeReaderArray<int>* Muon_charge;
+  // TTreeReaderArray<int>* Muon_jetIdx;
+  // TTreeReaderArray<int>* Muon_nStations;
+  // TTreeReaderArray<int>* Muon_nTrackerLayers;
+  // TTreeReaderArray<int>* Muon_pdgId;
+  // TTreeReaderArray<int>* Muon_tightCharge;
+  // TTreeReaderArray<int>* Muon_fsrPhotonIdx;
+  // TTreeReaderArray<unsigned char>* Muon_highPtId;
+  // TTreeReaderArray<bool>* Muon_highPurity;
+  // TTreeReaderArray<bool>* Muon_inTimeMuon;
+  // TTreeReaderArray<bool>* Muon_isGlobal;
+  // TTreeReaderArray<bool>* Muon_isPFcand;
+  // TTreeReaderArray<bool>* Muon_isStandalone;
+  // TTreeReaderArray<bool>* Muon_isTracker;
+  // TTreeReaderArray<unsigned char>* Muon_jetNDauCharged;
+  // TTreeReaderArray<bool>* Muon_looseId;
+  // TTreeReaderArray<bool>* Muon_mediumId;
+  // TTreeReaderArray<bool>* Muon_mediumPromptId;
+  // TTreeReaderArray<unsigned char>* Muon_miniIsoId;
+  // TTreeReaderArray<unsigned char>* Muon_multiIsoId;
+  // TTreeReaderArray<unsigned char>* Muon_mvaId;
+  // TTreeReaderArray<unsigned char>* Muon_mvaLowPtId;
+  // TTreeReaderArray<unsigned char>* Muon_pfIsoId;
+  // TTreeReaderArray<unsigned char>* Muon_puppiIsoId;
+  // TTreeReaderArray<bool>* Muon_softId;
+  // TTreeReaderArray<bool>* Muon_softMvaId;
+  // TTreeReaderArray<bool>* Muon_tightId;
+  // TTreeReaderArray<unsigned char>* Muon_tkIsoId;
+  // TTreeReaderArray<bool>* Muon_triggerIdLoose;
   // TTreeReaderValue<unsigned int>* nPhoton;
   // TTreeReaderArray<float>* Photon_dEscaleDown;
   // TTreeReaderArray<float>* Photon_dEscaleUp;
@@ -1338,11 +1254,6 @@ private:
 
   double fMaxEvent;
   std::vector<double> fMaxEventVec;
-
-  MUON* fMuons;
-  ELEC* fElecs;
-  JET* fJets;
-
 };
 
 #endif

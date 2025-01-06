@@ -1,5 +1,5 @@
 #ifndef ELECTRON_h
-#define ELECTRON_h
+#define ELECTRON_h 1
 
 #include <iostream>
 #include <vector>
@@ -9,6 +9,7 @@
 
 #include "yaml-cpp/yaml.h"
 
+#include "TTreeReader.h"
 #include "TTreeReaderArray.h"
 #include "TTreeReaderValue.h"
 #include "TLorentzVector.h"
@@ -46,17 +47,19 @@ public:
 
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
 
-  bool PrepareElec(
-    int nElectron,
-    TTreeReaderArray<float>* Electron_pt,
-    TTreeReaderArray<float>* Electron_eta,
-    TTreeReaderArray<float>* Electron_deltaEtaSC,
-    TTreeReaderArray<float>* Electron_phi,
-    TTreeReaderArray<float>* Electron_mass,
-    TTreeReaderArray<int>* Electron_cutBased
-  );
+  void init(TTreeReader* fTreeReader);
+
+  bool PrepareElec();
 
   std::vector<StdElec> GetElecs() { return fFVecElecs; }
+
+  TTreeReaderValue<unsigned int>* nElectron;
+  TTreeReaderArray<float>* Electron_pt;
+  TTreeReaderArray<float>* Electron_eta;
+  TTreeReaderArray<float>* Electron_deltaEtaSC;
+  TTreeReaderArray<float>* Electron_phi;
+  TTreeReaderArray<float>* Electron_mass;
+  TTreeReaderArray<int>* Electron_cutBased;
 
 private:
 
