@@ -43,6 +43,8 @@ public:
 
   void AddChain(TString fSample, int fJobID) {
 
+    fID =fJobID;
+
     std::string fListPath =
         "../../input/" + (std::string)(fEra.Data()) + "/" + fConfig["Sample"][(std::string)(fSample.Data())]["Name"].as<std::string>() +
         "/input_" + std::to_string(fJobID) + ".list";
@@ -51,8 +53,7 @@ public:
     std::cout << "                             Merging list                             " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << fListPath << std::endl;
-    std::cout << "######################################################################" << std::endl;
-    std::cout << " " << std::endl;
+
 
     FILE *fList;
     char fFile[1000];
@@ -60,11 +61,15 @@ public:
 
     while (fscanf(fList, "%s", fFile) != EOF)
     {
+        std::cout << "  " << fFile << std::endl;
         fChain->Add(fFile);
         double tMaxEvent = fChain->GetEntries();
         fMaxEvent = tMaxEvent;
         fMaxEventVec.push_back(tMaxEvent);
     }
+
+    std::cout << "######################################################################" << std::endl;
+    std::cout << " " << std::endl;
   }
 
   void AddChain(TString fFileName) {
@@ -85,7 +90,9 @@ public:
   void init_LHE();
   void init_trigger();
   void init_trigger_2016();
+  void init_trigger_2016B();
   void init_trigger_2017();
+  void init_trigger_2017B();
   void init_trigger_2018();
 
   TTreeReader* GetTreeReader() { return fTreeReader; }
@@ -1251,6 +1258,7 @@ private:
   bool fIsMC;
   TString fEra;
   TString fSampleName;
+  int fID;
 
   double fMaxEvent;
   std::vector<double> fMaxEventVec;

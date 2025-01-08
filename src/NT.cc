@@ -1,12 +1,19 @@
 #include "NT.h"
 #include "muon.h"
 
+#include <exception>
+
 bool NT::PassingTrigger() {
 
-  if (fEra == "2016_preVFP")  return (**HLT_Mu50 && **HLT_TkMu50);
-  if (fEra == "2016_postVFP") return (**HLT_Mu50 && **HLT_TkMu50);
-  if (fEra == "2017")         return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
-  if (fEra == "2018")         return (**HLT_Mu50 && **HLT_TkMu100 && **HLT_OldMu100);
+  if (fEra == "2016_preVFP" && !(fSampleName == "Run2016B_APV_ver2" && fID == 8))  return (**HLT_Mu50 || **HLT_TkMu50);
+  if (fEra == "2016_preVFP" && (fSampleName == "Run2016B_APV_ver2" && fID == 8))  return **HLT_Mu50;
+
+  if (fEra == "2016_postVFP")  return (**HLT_Mu50 || **HLT_TkMu50);
+
+  if (fEra == "2017" && fSampleName != "Run2017B")  return (**HLT_Mu50 || **HLT_TkMu100 || **HLT_OldMu100);
+  if (fEra == "2017" && fSampleName == "Run2017B")  return **HLT_Mu50;
+
+  if (fEra == "2018")  return (**HLT_Mu50 || **HLT_TkMu100 || **HLT_OldMu100);
 
   return false;
 }
@@ -51,11 +58,21 @@ void NT::init_trigger_2016() {
   HLT_TkMu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu50");
 }
 
+void NT::init_trigger_2016B() {
+
+  HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
+}
+
 void NT::init_trigger_2017() {
 
   HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
   HLT_OldMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_OldMu100");
   HLT_TkMu100 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_TkMu100");
+}
+
+void NT::init_trigger_2017B() {
+
+  HLT_Mu50 = new TTreeReaderValue<bool>(*fTreeReader, "HLT_Mu50");
 }
 
 void NT::init_trigger_2018() {
@@ -67,12 +84,15 @@ void NT::init_trigger_2018() {
 
 void NT::init_trigger() {
 
-  if (fEra == "2016_preVFP") return init_trigger_2016();
+  if (fEra == "2016_preVFP" && !(fSampleName == "Run2016B_APV_ver2" && fID == 8)) return init_trigger_2016();
+  if (fEra == "2016_preVFP" && (fSampleName == "Run2016B_APV_ver2" && fID == 8)) return init_trigger_2016B();
+
   if (fEra == "2016_postVFP") return init_trigger_2016();
-  if (fEra == "2017") return init_trigger_2017();
+
+  if (fEra == "2017" && fSampleName != "Run2017B") return init_trigger_2017();
+  if (fEra == "2017" && fSampleName == "Run2017B") return init_trigger_2017B();
+
   if (fEra == "2018") return init_trigger_2018();
-
-
 }
 
 void NT::init_LHE() {

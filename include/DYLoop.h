@@ -111,6 +111,23 @@ public:
     std::cout << " " << std::endl;
   }
 
+  TH1D* GetHist(TString name, TString title, int nBin, float xlow, float xhigh) {
+
+    float binWidth = (xhigh - xlow) / (float)nBin;
+
+    return new TH1D(name, title, nBin + 2, xlow - binWidth, xhigh + binWidth);
+  }
+
+  void FillHisto(TH1D* hist, double value, double weight) {
+
+    float xMin = hist->GetBinLowEdge(1);
+    float xMax = hist->GetBinLowEdge(hist->GetNbinsX()) + hist->GetBinWidth(hist->GetNbinsX());
+
+    if (value < xMin) hist->Fill(hist->GetBinCenter(1), weight);
+    else if (value > xMax) hist->Fill(hist->GetBinCenter(hist->GetNbinsX()), weight);
+    else hist->Fill(value, weight);
+  }
+
   void SetEra(TString fEra_) { fEra = fEra_; }
   void SetSample(TString fSampleName_) { fSampleName = fSampleName_; }
   void SetJobID(int fJobID_) { fJobID = fJobID_; }

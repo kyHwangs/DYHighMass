@@ -145,349 +145,349 @@ void DYLoop::Loop() {
     h_nPV_Count->Fill(**(fNtuples->PV_npvs), tEventGenWeight);
     h_nPVGood_Count->Fill(**(fNtuples->PV_npvsGood), tEventGenWeight);
 
-    h_LeadingMuonPt->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-    h_LeadingMuonEta->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-    h_LeadingMuonPhi->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+    FillHisto(h_LeadingMuonPt, tFVecLedingMuon.Pt(), tEventGenWeight);
+    FillHisto(h_LeadingMuonEta, tFVecLedingMuon.Eta(), tEventGenWeight);
+    FillHisto(h_LeadingMuonPhi, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-    h_SubleadingMuonPt->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-    h_SubleadingMuonEta->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-    h_SubleadingMuonPhi->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+    FillHisto(h_SubleadingMuonPt, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+    FillHisto(h_SubleadingMuonEta, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+    FillHisto(h_SubleadingMuonPhi, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-    h_MuonPt->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-    h_MuonEta->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-    h_MuonPhi->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+    FillHisto(h_MuonPt, tFVecLedingMuon.Pt(), tEventGenWeight);
+    FillHisto(h_MuonEta, tFVecLedingMuon.Eta(), tEventGenWeight);
+    FillHisto(h_MuonPhi, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-    h_MuonPt->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-    h_MuonEta->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-    h_MuonPhi->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+    FillHisto(h_MuonPt, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+    FillHisto(h_MuonEta, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+    FillHisto(h_MuonPhi, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-    h_dimuonMass->Fill(tDiMuon.M(), tEventGenWeight);
-    h_dimuonMass_wide->Fill(tDiMuon.M(), tEventGenWeight);
-    h_dimuonPt->Fill(tDiMuon.Pt(), tEventGenWeight);
-    h_dimuonRap->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+    FillHisto(h_dimuonMass, tDiMuon.M(), tEventGenWeight);
+    FillHisto(h_dimuonMass_wide, tDiMuon.M(), tEventGenWeight);
+    FillHisto(h_dimuonPt, tDiMuon.Pt(), tEventGenWeight);
+    FillHisto(h_dimuonRap, tDiMuon.Rapidity(), tEventGenWeight);
 
     if (nJets == 0) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_0J->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_0J->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_0J->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_0J, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_0J, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_0J, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_0J->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_0J->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_0J->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_0J, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_0J, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_0J, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_0J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_0J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_0J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_0J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_0J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_0J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_0J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_0J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_0J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_0J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_0J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_0J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_0J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_0J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_0J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_0J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_0J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_0J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_0J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_0J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_0J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_0J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_0J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_0J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_0J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_0J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_0J->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_0J->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_0J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_0J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_0J, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_0J, tDiMuon.Rapidity(), tEventGenWeight);
     }
 
     if (nJets == 1) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_1J->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_1J->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_1J->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_1J, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_1J, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_1J, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_1J->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_1J->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_1J->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_1J, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_1J, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_1J, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_1J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_1J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_1J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_1J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_1J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_1J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_1J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_1J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_1J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_1J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_1J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_1J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_1J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_1J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_1J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_1J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_1J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_1J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_1J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_1J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_1J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_1J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_1J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_1J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_1J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_1J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_1J->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_1J->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_1J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_1J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_1J, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_1J, tDiMuon.Rapidity(), tEventGenWeight);
     }
 
     if (nJets > 1) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_mt1J->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_mt1J->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_mt1J->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_mt1J, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_mt1J, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_mt1J, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_mt1J->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_mt1J->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_mt1J->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_mt1J, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_mt1J, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_mt1J, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_mt1J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_mt1J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_mt1J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_mt1J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_mt1J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_mt1J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_mt1J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_mt1J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_mt1J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_mt1J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_mt1J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_mt1J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_mt1J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_mt1J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_mt1J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_mt1J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_mt1J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_mt1J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_mt1J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_mt1J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_mt1J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_mt1J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_mt1J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_mt1J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_mt1J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_mt1J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_mt1J->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_mt1J->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_mt1J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_mt1J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_mt1J, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_mt1J, tDiMuon.Rapidity(), tEventGenWeight);
     }
 
     if (nBJets == 0) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_0BJ->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_0BJ->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_0BJ->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_0BJ, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_0BJ, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_0BJ, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_0BJ->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_0BJ->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_0BJ->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_0BJ, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_0BJ, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_0BJ, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_0BJ->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_0BJ->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_0BJ->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_0BJ, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_0BJ, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_0BJ, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_0BJ->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_0BJ->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_0BJ->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_0BJ, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_0BJ, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_0BJ, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_0BJ->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_0BJ->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_0BJ->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_0BJ, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_0BJ, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_0BJ, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_0BJ->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_0BJ->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_0BJ->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_0BJ, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_0BJ, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_0BJ, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_0BJ->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_0BJ->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_0BJ->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_0BJ->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_0BJ, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_0BJ, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_0BJ, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_0BJ, tDiMuon.Rapidity(), tEventGenWeight);
     }
 
     if (nBJets == 1) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_1BJ->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_1BJ->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_1BJ->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_1BJ, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_1BJ, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_1BJ, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_1BJ->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_1BJ->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_1BJ->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_1BJ, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_1BJ, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_1BJ, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_1BJ->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_1BJ->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_1BJ->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_1BJ, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_1BJ, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_1BJ, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_1BJ->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_1BJ->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_1BJ->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_1BJ, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_1BJ, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_1BJ, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_1BJ->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_1BJ->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_1BJ->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_1BJ, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_1BJ, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_1BJ, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_1BJ->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_1BJ->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_1BJ->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_1BJ, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_1BJ, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_1BJ, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_1BJ->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_1BJ->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_1BJ->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_1BJ->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_1BJ, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_1BJ, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_1BJ, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_1BJ, tDiMuon.Rapidity(), tEventGenWeight);
     }
 
     if (nBJets > 1) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_mt1BJ->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_mt1BJ->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_mt1BJ->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_mt1BJ, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_mt1BJ, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_mt1BJ, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_mt1BJ->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_mt1BJ->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_mt1BJ->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_mt1BJ, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_mt1BJ, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_mt1BJ, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_mt1BJ->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_mt1BJ->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_mt1BJ->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_mt1BJ, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_mt1BJ, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_mt1BJ, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_mt1BJ->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_mt1BJ->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_mt1BJ->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_mt1BJ, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_mt1BJ, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_mt1BJ, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_mt1BJ->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_mt1BJ->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_mt1BJ->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_mt1BJ, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_mt1BJ, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_mt1BJ, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_mt1BJ->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_mt1BJ->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_mt1BJ->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_mt1BJ, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_mt1BJ, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_mt1BJ, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_mt1BJ->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_mt1BJ->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_mt1BJ->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_mt1BJ->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_mt1BJ, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_mt1BJ, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_mt1BJ, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_mt1BJ, tDiMuon.Rapidity(), tEventGenWeight);
     }
 
     if (nBJets == 0 && nJets == 0) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_bVeto_0J->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_bVeto_0J->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_bVeto_0J->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_bVeto_0J, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_bVeto_0J, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_bVeto_0J, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_bVeto_0J->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_bVeto_0J->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_bVeto_0J->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_bVeto_0J, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_bVeto_0J, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_bVeto_0J, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_bVeto_0J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_bVeto_0J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_bVeto_0J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_bVeto_0J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_bVeto_0J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_bVeto_0J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_bVeto_0J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_bVeto_0J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_bVeto_0J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_bVeto_0J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_bVeto_0J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_bVeto_0J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_bVeto_0J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_bVeto_0J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_bVeto_0J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_bVeto_0J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_bVeto_0J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_bVeto_0J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_bVeto_0J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_bVeto_0J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_bVeto_0J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_bVeto_0J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_bVeto_0J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_bVeto_0J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_bVeto_0J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_bVeto_0J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_bVeto_0J->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_bVeto_0J->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_bVeto_0J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_bVeto_0J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_bVeto_0J, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_bVeto_0J, tDiMuon.Rapidity(), tEventGenWeight);
     }
 
     if (nBJets == 0 && nJets == 1) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_bVeto_1J->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_bVeto_1J->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_bVeto_1J->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_bVeto_1J, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_bVeto_1J, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_bVeto_1J, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_bVeto_1J->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_bVeto_1J->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_bVeto_1J->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_bVeto_1J, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_bVeto_1J, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_bVeto_1J, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_bVeto_1J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_bVeto_1J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_bVeto_1J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_bVeto_1J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_bVeto_1J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_bVeto_1J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_bVeto_1J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_bVeto_1J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_bVeto_1J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_bVeto_1J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_bVeto_1J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_bVeto_1J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_bVeto_1J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_bVeto_1J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_bVeto_1J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_bVeto_1J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_bVeto_1J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_bVeto_1J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_bVeto_1J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_bVeto_1J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_bVeto_1J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_bVeto_1J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_bVeto_1J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_bVeto_1J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_bVeto_1J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_bVeto_1J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_bVeto_1J->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_bVeto_1J->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_bVeto_1J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_bVeto_1J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_bVeto_1J, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_bVeto_1J, tDiMuon.Rapidity(), tEventGenWeight);
     }
 
     if (nBJets == 0 && nJets > 1) {
 
       for (int i = 0; i < nJets; i++) {
-        h_JetPt_bVeto_mt1J->Fill(vJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_JetEta_bVeto_mt1J->Fill(vJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_JetPhi_bVeto_mt1J->Fill(vJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_JetPt_bVeto_mt1J, vJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_JetEta_bVeto_mt1J, vJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_JetPhi_bVeto_mt1J, vJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
       for (int i = 0; i < nBJets; i++) {
-        h_BJetPt_bVeto_mt1J->Fill(vBJets.at(i).fVec.Pt(), tEventGenWeight);
-        h_BJetEta_bVeto_mt1J->Fill(vBJets.at(i).fVec.Eta(), tEventGenWeight);
-        h_BJetPhi_bVeto_mt1J->Fill(vBJets.at(i).fVec.Phi(), tEventGenWeight);
+        FillHisto(h_BJetPt_bVeto_mt1J, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+        FillHisto(h_BJetEta_bVeto_mt1J, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+        FillHisto(h_BJetPhi_bVeto_mt1J, vBJets.at(i).fVec.Phi(), tEventGenWeight);
       }
 
-      h_LeadingMuonPt_bVeto_mt1J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_LeadingMuonEta_bVeto_mt1J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_LeadingMuonPhi_bVeto_mt1J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPt_bVeto_mt1J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_LeadingMuonEta_bVeto_mt1J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_LeadingMuonPhi_bVeto_mt1J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_SubleadingMuonPt_bVeto_mt1J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_SubleadingMuonEta_bVeto_mt1J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_SubleadingMuonPhi_bVeto_mt1J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPt_bVeto_mt1J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonEta_bVeto_mt1J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_SubleadingMuonPhi_bVeto_mt1J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_bVeto_mt1J->Fill(tFVecLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_bVeto_mt1J->Fill(tFVecLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_bVeto_mt1J->Fill(tFVecLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_bVeto_mt1J, tFVecLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_bVeto_mt1J, tFVecLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_bVeto_mt1J, tFVecLedingMuon.Phi(), tEventGenWeight);
 
-      h_MuonPt_bVeto_mt1J->Fill(tFVecSubLedingMuon.Pt(), tEventGenWeight);
-      h_MuonEta_bVeto_mt1J->Fill(tFVecSubLedingMuon.Eta(), tEventGenWeight);
-      h_MuonPhi_bVeto_mt1J->Fill(tFVecSubLedingMuon.Phi(), tEventGenWeight);
+      FillHisto(h_MuonPt_bVeto_mt1J, tFVecSubLedingMuon.Pt(), tEventGenWeight);
+      FillHisto(h_MuonEta_bVeto_mt1J, tFVecSubLedingMuon.Eta(), tEventGenWeight);
+      FillHisto(h_MuonPhi_bVeto_mt1J, tFVecSubLedingMuon.Phi(), tEventGenWeight);
 
-      h_dimuonMass_bVeto_mt1J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonMass_wide_bVeto_mt1J->Fill(tDiMuon.M(), tEventGenWeight);
-      h_dimuonPt_bVeto_mt1J->Fill(tDiMuon.Pt(), tEventGenWeight);
-      h_dimuonRap_bVeto_mt1J->Fill(tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_bVeto_mt1J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_bVeto_mt1J, tDiMuon.M(), tEventGenWeight);
+      FillHisto(h_dimuonPt_bVeto_mt1J, tDiMuon.Pt(), tEventGenWeight);
+      FillHisto(h_dimuonRap_bVeto_mt1J, tDiMuon.Rapidity(), tEventGenWeight);
     }
   } // End of event loop
 
@@ -525,9 +525,9 @@ void DYLoop::PrepareHist() {
 
   h_EventInfo = new TH1D("h_EventInfo", "h_EventInfo", 5, 0.5, 5.5);
 
-  h_LHEDimuonMass = new TH1D(Form("h_LHEDimuonMass"), Form("h_LHEDimuonMass"), 6000, 0., 6000.);
-  h_GenWeight = new TH1D(Form("h_GenWeight"), Form("h_GenWeight"), 20000, -10000., 10000.);
-  h_LHEnMuon = new TH1D(Form("h_LHEnMuon"), Form("h_LHEnMuon"), 10, 0., 10.);
+  h_LHEDimuonMass = GetHist(Form("h_LHEDimuonMass"), Form("h_LHEDimuonMass"), 6000, 0., 6000.);
+  h_GenWeight = GetHist(Form("h_GenWeight"), Form("h_GenWeight"), 20000, -10000., 10000.);
+  h_LHEnMuon = GetHist(Form("h_LHEnMuon"), Form("h_LHEnMuon"), 10, 0., 10.);
 
   h_nPV_Count = new TH1D(Form("h_nPV_Count"), Form("PV_Count"), 100, 0., 100.);
   h_nPVGood_Count = new TH1D(Form("h_nPVGood_Count"), Form("PV_Count"), 100, 0., 100.);
@@ -537,279 +537,279 @@ void DYLoop::PrepareHist() {
   h_nJet = new TH1D(Form("h_nJet"), Form("nJet"), 20, 0., 20.);
   h_nBJet = new TH1D(Form("h_nBJet"), Form("nJet"), 20, 0., 20.);
 
-  h_JetPt = new TH1D(Form("h_JetPt"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta = new TH1D(Form("h_JetEta"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi = new TH1D(Form("h_JetPhi"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt = GetHist(Form("h_JetPt"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta = GetHist(Form("h_JetEta"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi = GetHist(Form("h_JetPhi"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt = new TH1D(Form("h_BJetPt"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta = new TH1D(Form("h_BJetEta"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi = new TH1D(Form("h_BJetPhi"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt = GetHist(Form("h_BJetPt"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta = GetHist(Form("h_BJetEta"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi = GetHist(Form("h_BJetPhi"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt = new TH1D(Form("h_LeadingMuonPt"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta = new TH1D(Form("h_LeadingMuonEta"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi = new TH1D(Form("h_LeadingMuonPhi"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt = GetHist(Form("h_LeadingMuonPt"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta = GetHist(Form("h_LeadingMuonEta"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi = GetHist(Form("h_LeadingMuonPhi"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt = new TH1D(Form("h_SubleadingMuonPt"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta = new TH1D(Form("h_SubleadingMuonEta"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi = new TH1D(Form("h_SubleadingMuonPhi"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt = GetHist(Form("h_SubleadingMuonPt"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta = GetHist(Form("h_SubleadingMuonEta"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi = GetHist(Form("h_SubleadingMuonPhi"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt = new TH1D(Form("h_MuonPt"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta = new TH1D(Form("h_MuonEta"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi = new TH1D(Form("h_MuonPhi"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt = GetHist(Form("h_MuonPt"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta = GetHist(Form("h_MuonEta"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi = GetHist(Form("h_MuonPhi"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass = new TH1D(Form("h_dimuonMass"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass = GetHist(Form("h_dimuonMass"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide = new TH1D(Form("h_dimuonMass_wide"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt = new TH1D(Form("h_dimuonPt"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap = new TH1D(Form("h_dimuonRap"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt = GetHist(Form("h_dimuonPt"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap = GetHist(Form("h_dimuonRap"), Form("dimuon_rap"), 60, -3., 3.);
 
 
   // 0 jet
-  h_JetPt_0J = new TH1D(Form("h_JetPt_0J"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_0J = new TH1D(Form("h_JetEta_0J"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_0J = new TH1D(Form("h_JetPhi_0J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_0J = GetHist(Form("h_JetPt_0J"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_0J = GetHist(Form("h_JetEta_0J"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_0J = GetHist(Form("h_JetPhi_0J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_0J = new TH1D(Form("h_BJetPt_0J"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_0J = new TH1D(Form("h_BJetEta_0J"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_0J = new TH1D(Form("h_BJetPhi_0J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_0J = GetHist(Form("h_BJetPt_0J"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_0J = GetHist(Form("h_BJetEta_0J"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_0J = GetHist(Form("h_BJetPhi_0J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_0J = new TH1D(Form("h_LeadingMuonPt_0J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_0J = new TH1D(Form("h_LeadingMuonEta_0J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_0J = new TH1D(Form("h_LeadingMuonPhi_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_0J = GetHist(Form("h_LeadingMuonPt_0J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_0J = GetHist(Form("h_LeadingMuonEta_0J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_0J = GetHist(Form("h_LeadingMuonPhi_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_0J = new TH1D(Form("h_SubleadingMuonPt_0J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_0J = new TH1D(Form("h_SubleadingMuonEta_0J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_0J = new TH1D(Form("h_SubleadingMuonPhi_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_0J = GetHist(Form("h_SubleadingMuonPt_0J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_0J = GetHist(Form("h_SubleadingMuonEta_0J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_0J = GetHist(Form("h_SubleadingMuonPhi_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_0J = new TH1D(Form("h_MuonPt_0J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_0J = new TH1D(Form("h_MuonEta_0J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_0J = new TH1D(Form("h_MuonPhi_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_0J = GetHist(Form("h_MuonPt_0J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_0J = GetHist(Form("h_MuonEta_0J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_0J = GetHist(Form("h_MuonPhi_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_0J = new TH1D(Form("h_dimuonMass_0J"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_0J = GetHist(Form("h_dimuonMass_0J"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_0J = new TH1D(Form("h_dimuonMass_wide_0J"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_0J = new TH1D(Form("h_dimuonPt_0J"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_0J = new TH1D(Form("h_dimuonRap_0J"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_0J = GetHist(Form("h_dimuonPt_0J"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_0J = GetHist(Form("h_dimuonRap_0J"), Form("dimuon_rap"), 60, -3., 3.);
 
   // 1 jet
-  h_JetPt_1J = new TH1D(Form("h_JetPt_1J"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_1J = new TH1D(Form("h_JetEta_1J"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_1J = new TH1D(Form("h_JetPhi_1J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_1J = GetHist(Form("h_JetPt_1J"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_1J = GetHist(Form("h_JetEta_1J"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_1J = GetHist(Form("h_JetPhi_1J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_1J = new TH1D(Form("h_BJetPt_1J"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_1J = new TH1D(Form("h_BJetEta_1J"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_1J = new TH1D(Form("h_BJetPhi_1J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_1J = GetHist(Form("h_BJetPt_1J"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_1J = GetHist(Form("h_BJetEta_1J"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_1J = GetHist(Form("h_BJetPhi_1J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_1J = new TH1D(Form("h_LeadingMuonPt_1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_1J = new TH1D(Form("h_LeadingMuonEta_1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_1J = new TH1D(Form("h_LeadingMuonPhi_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_1J = GetHist(Form("h_LeadingMuonPt_1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_1J = GetHist(Form("h_LeadingMuonEta_1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_1J = GetHist(Form("h_LeadingMuonPhi_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_1J = new TH1D(Form("h_SubleadingMuonPt_1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_1J = new TH1D(Form("h_SubleadingMuonEta_1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_1J = new TH1D(Form("h_SubleadingMuonPhi_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_1J = GetHist(Form("h_SubleadingMuonPt_1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_1J = GetHist(Form("h_SubleadingMuonEta_1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_1J = GetHist(Form("h_SubleadingMuonPhi_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_1J = new TH1D(Form("h_MuonPt_1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_1J = new TH1D(Form("h_MuonEta_1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_1J = new TH1D(Form("h_MuonPhi_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_1J = GetHist(Form("h_MuonPt_1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_1J = GetHist(Form("h_MuonEta_1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_1J = GetHist(Form("h_MuonPhi_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_1J = new TH1D(Form("h_dimuonMass_1J"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_1J = GetHist(Form("h_dimuonMass_1J"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_1J = new TH1D(Form("h_dimuonMass_wide_1J"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_1J = new TH1D(Form("h_dimuonPt_1J"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_1J = new TH1D(Form("h_dimuonRap_1J"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_1J = GetHist(Form("h_dimuonPt_1J"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_1J = GetHist(Form("h_dimuonRap_1J"), Form("dimuon_rap"), 60, -3., 3.);
 
   // more than 1 jet
-  h_JetPt_mt1J = new TH1D(Form("h_JetPt_mt1J"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_mt1J = new TH1D(Form("h_JetEta_mt1J"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_mt1J = new TH1D(Form("h_JetPhi_mt1J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_mt1J = GetHist(Form("h_JetPt_mt1J"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_mt1J = GetHist(Form("h_JetEta_mt1J"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_mt1J = GetHist(Form("h_JetPhi_mt1J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_mt1J = new TH1D(Form("h_BJetPt_mt1J"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_mt1J = new TH1D(Form("h_BJetEta_mt1J"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_mt1J = new TH1D(Form("h_BJetPhi_mt1J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_mt1J = GetHist(Form("h_BJetPt_mt1J"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_mt1J = GetHist(Form("h_BJetEta_mt1J"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_mt1J = GetHist(Form("h_BJetPhi_mt1J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_mt1J = new TH1D(Form("h_LeadingMuonPt_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_mt1J = new TH1D(Form("h_LeadingMuonEta_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_mt1J = new TH1D(Form("h_LeadingMuonPhi_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_mt1J = GetHist(Form("h_LeadingMuonPt_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_mt1J = GetHist(Form("h_LeadingMuonEta_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_mt1J = GetHist(Form("h_LeadingMuonPhi_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_mt1J = new TH1D(Form("h_SubleadingMuonPt_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_mt1J = new TH1D(Form("h_SubleadingMuonEta_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_mt1J = new TH1D(Form("h_SubleadingMuonPhi_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_mt1J = GetHist(Form("h_SubleadingMuonPt_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_mt1J = GetHist(Form("h_SubleadingMuonEta_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_mt1J = GetHist(Form("h_SubleadingMuonPhi_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_mt1J = new TH1D(Form("h_MuonPt_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_mt1J = new TH1D(Form("h_MuonEta_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_mt1J = new TH1D(Form("h_MuonPhi_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_mt1J = GetHist(Form("h_MuonPt_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_mt1J = GetHist(Form("h_MuonEta_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_mt1J = GetHist(Form("h_MuonPhi_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_mt1J = new TH1D(Form("h_dimuonMass_mt1J"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_mt1J = GetHist(Form("h_dimuonMass_mt1J"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_mt1J = new TH1D(Form("h_dimuonMass_wide_mt1J"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_mt1J = new TH1D(Form("h_dimuonPt_mt1J"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_mt1J = new TH1D(Form("h_dimuonRap_mt1J"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_mt1J = GetHist(Form("h_dimuonPt_mt1J"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_mt1J = GetHist(Form("h_dimuonRap_mt1J"), Form("dimuon_rap"), 60, -3., 3.);
 
 
   // 0 Bjet
-  h_JetPt_0BJ = new TH1D(Form("h_JetPt_0BJ"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_0BJ = new TH1D(Form("h_JetEta_0BJ"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_0BJ = new TH1D(Form("h_JetPhi_0BJ"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_0BJ = GetHist(Form("h_JetPt_0BJ"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_0BJ = GetHist(Form("h_JetEta_0BJ"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_0BJ = GetHist(Form("h_JetPhi_0BJ"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_0BJ = new TH1D(Form("h_BJetPt_0BJ"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_0BJ = new TH1D(Form("h_BJetEta_0BJ"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_0BJ = new TH1D(Form("h_BJetPhi_0BJ"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_0BJ = GetHist(Form("h_BJetPt_0BJ"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_0BJ = GetHist(Form("h_BJetEta_0BJ"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_0BJ = GetHist(Form("h_BJetPhi_0BJ"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_0BJ = new TH1D(Form("h_LeadingMuonPt_0BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_0BJ = new TH1D(Form("h_LeadingMuonEta_0BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_0BJ = new TH1D(Form("h_LeadingMuonPhi_0BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_0BJ = GetHist(Form("h_LeadingMuonPt_0BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_0BJ = GetHist(Form("h_LeadingMuonEta_0BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_0BJ = GetHist(Form("h_LeadingMuonPhi_0BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_0BJ = new TH1D(Form("h_SubleadingMuonPt_0BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_0BJ = new TH1D(Form("h_SubleadingMuonEta_0BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_0BJ = new TH1D(Form("h_SubleadingMuonPhi_0BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_0BJ = GetHist(Form("h_SubleadingMuonPt_0BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_0BJ = GetHist(Form("h_SubleadingMuonEta_0BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_0BJ = GetHist(Form("h_SubleadingMuonPhi_0BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_0BJ = new TH1D(Form("h_MuonPt_0BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_0BJ = new TH1D(Form("h_MuonEta_0BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_0BJ = new TH1D(Form("h_MuonPhi_0BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_0BJ = GetHist(Form("h_MuonPt_0BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_0BJ = GetHist(Form("h_MuonEta_0BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_0BJ = GetHist(Form("h_MuonPhi_0BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_0BJ = new TH1D(Form("h_dimuonMass_0BJ"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_0BJ = GetHist(Form("h_dimuonMass_0BJ"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_0BJ = new TH1D(Form("h_dimuonMass_wide_0BJ"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_0BJ = new TH1D(Form("h_dimuonPt_0BJ"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_0BJ = new TH1D(Form("h_dimuonRap_0BJ"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_0BJ = GetHist(Form("h_dimuonPt_0BJ"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_0BJ = GetHist(Form("h_dimuonRap_0BJ"), Form("dimuon_rap"), 60, -3., 3.);
 
   // 1 bjet
-  h_JetPt_1BJ = new TH1D(Form("h_JetPt_1BJ"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_1BJ = new TH1D(Form("h_JetEta_1BJ"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_1BJ = new TH1D(Form("h_JetPhi_1BJ"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_1BJ = GetHist(Form("h_JetPt_1BJ"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_1BJ = GetHist(Form("h_JetEta_1BJ"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_1BJ = GetHist(Form("h_JetPhi_1BJ"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_1BJ = new TH1D(Form("h_BJetPt_1BJ"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_1BJ = new TH1D(Form("h_BJetEta_1BJ"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_1BJ = new TH1D(Form("h_BJetPhi_1BJ"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_1BJ = GetHist(Form("h_BJetPt_1BJ"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_1BJ = GetHist(Form("h_BJetEta_1BJ"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_1BJ = GetHist(Form("h_BJetPhi_1BJ"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_1BJ = new TH1D(Form("h_LeadingMuonPt_1BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_1BJ = new TH1D(Form("h_LeadingMuonEta_1BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_1BJ = new TH1D(Form("h_LeadingMuonPhi_1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_1BJ = GetHist(Form("h_LeadingMuonPt_1BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_1BJ = GetHist(Form("h_LeadingMuonEta_1BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_1BJ = GetHist(Form("h_LeadingMuonPhi_1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_1BJ = new TH1D(Form("h_SubleadingMuonPt_1BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_1BJ = new TH1D(Form("h_SubleadingMuonEta_1BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_1BJ = new TH1D(Form("h_SubleadingMuonPhi_1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_1BJ = GetHist(Form("h_SubleadingMuonPt_1BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_1BJ = GetHist(Form("h_SubleadingMuonEta_1BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_1BJ = GetHist(Form("h_SubleadingMuonPhi_1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_1BJ = new TH1D(Form("h_MuonPt_1BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_1BJ = new TH1D(Form("h_MuonEta_1BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_1BJ = new TH1D(Form("h_MuonPhi_1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_1BJ = GetHist(Form("h_MuonPt_1BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_1BJ = GetHist(Form("h_MuonEta_1BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_1BJ = GetHist(Form("h_MuonPhi_1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_1BJ = new TH1D(Form("h_dimuonMass_1BJ"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_1BJ = GetHist(Form("h_dimuonMass_1BJ"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_1BJ = new TH1D(Form("h_dimuonMass_wide_1BJ"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_1BJ = new TH1D(Form("h_dimuonPt_1BJ"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_1BJ = new TH1D(Form("h_dimuonRap_1BJ"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_1BJ = GetHist(Form("h_dimuonPt_1BJ"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_1BJ = GetHist(Form("h_dimuonRap_1BJ"), Form("dimuon_rap"), 60, -3., 3.);
 
   // more than 1 bjet
-  h_JetPt_mt1BJ = new TH1D(Form("h_JetPt_mt1BJ"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_mt1BJ = new TH1D(Form("h_JetEta_mt1BJ"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_mt1BJ = new TH1D(Form("h_JetPhi_mt1BJ"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_mt1BJ = GetHist(Form("h_JetPt_mt1BJ"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_mt1BJ = GetHist(Form("h_JetEta_mt1BJ"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_mt1BJ = GetHist(Form("h_JetPhi_mt1BJ"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_mt1BJ = new TH1D(Form("h_BJetPt_mt1BJ"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_mt1BJ = new TH1D(Form("h_BJetEta_mt1BJ"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_mt1BJ = new TH1D(Form("h_BJetPhi_mt1BJ"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_mt1BJ = GetHist(Form("h_BJetPt_mt1BJ"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_mt1BJ = GetHist(Form("h_BJetEta_mt1BJ"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_mt1BJ = GetHist(Form("h_BJetPhi_mt1BJ"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_mt1BJ = new TH1D(Form("h_LeadingMuonPt_mt1BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_mt1BJ = new TH1D(Form("h_LeadingMuonEta_mt1BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_mt1BJ = new TH1D(Form("h_LeadingMuonPhi_mt1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_mt1BJ = GetHist(Form("h_LeadingMuonPt_mt1BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_mt1BJ = GetHist(Form("h_LeadingMuonEta_mt1BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_mt1BJ = GetHist(Form("h_LeadingMuonPhi_mt1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_mt1BJ = new TH1D(Form("h_SubleadingMuonPt_mt1BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_mt1BJ = new TH1D(Form("h_SubleadingMuonEta_mt1BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_mt1BJ = new TH1D(Form("h_SubleadingMuonPhi_mt1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_mt1BJ = GetHist(Form("h_SubleadingMuonPt_mt1BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_mt1BJ = GetHist(Form("h_SubleadingMuonEta_mt1BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_mt1BJ = GetHist(Form("h_SubleadingMuonPhi_mt1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_mt1BJ = new TH1D(Form("h_MuonPt_mt1BJ"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_mt1BJ = new TH1D(Form("h_MuonEta_mt1BJ"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_mt1BJ = new TH1D(Form("h_MuonPhi_mt1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_mt1BJ = GetHist(Form("h_MuonPt_mt1BJ"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_mt1BJ = GetHist(Form("h_MuonEta_mt1BJ"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_mt1BJ = GetHist(Form("h_MuonPhi_mt1BJ"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_mt1BJ = new TH1D(Form("h_dimuonMass_mt1BJ"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_mt1BJ = GetHist(Form("h_dimuonMass_mt1BJ"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_mt1BJ = new TH1D(Form("h_dimuonMass_wide_mt1BJ"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_mt1BJ = new TH1D(Form("h_dimuonPt_mt1BJ"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_mt1BJ = new TH1D(Form("h_dimuonRap_mt1BJ"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_mt1BJ = GetHist(Form("h_dimuonPt_mt1BJ"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_mt1BJ = GetHist(Form("h_dimuonRap_mt1BJ"), Form("dimuon_rap"), 60, -3., 3.);
 
 
   // b-veto 0 jet
-  h_JetPt_bVeto_0J = new TH1D(Form("h_JetPt_bVeto_0J"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_bVeto_0J = new TH1D(Form("h_JetEta_bVeto_0J"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_bVeto_0J = new TH1D(Form("h_JetPhi_bVeto_0J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_bVeto_0J = GetHist(Form("h_JetPt_bVeto_0J"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_bVeto_0J = GetHist(Form("h_JetEta_bVeto_0J"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_bVeto_0J = GetHist(Form("h_JetPhi_bVeto_0J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_bVeto_0J = new TH1D(Form("h_BJetPt_bVeto_0J"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_bVeto_0J = new TH1D(Form("h_BJetEta_bVeto_0J"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_bVeto_0J = new TH1D(Form("h_BJetPhi_bVeto_0J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_bVeto_0J = GetHist(Form("h_BJetPt_bVeto_0J"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_bVeto_0J = GetHist(Form("h_BJetEta_bVeto_0J"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_bVeto_0J = GetHist(Form("h_BJetPhi_bVeto_0J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_bVeto_0J = new TH1D(Form("h_LeadingMuonPt_bVeto_0J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_bVeto_0J = new TH1D(Form("h_LeadingMuonEta_bVeto_0J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_bVeto_0J = new TH1D(Form("h_LeadingMuonPhi_bVeto_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_bVeto_0J = GetHist(Form("h_LeadingMuonPt_bVeto_0J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_bVeto_0J = GetHist(Form("h_LeadingMuonEta_bVeto_0J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_bVeto_0J = GetHist(Form("h_LeadingMuonPhi_bVeto_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_bVeto_0J = new TH1D(Form("h_SubleadingMuonPt_bVeto_0J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_bVeto_0J = new TH1D(Form("h_SubleadingMuonEta_bVeto_0J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_bVeto_0J = new TH1D(Form("h_SubleadingMuonPhi_bVeto_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_bVeto_0J = GetHist(Form("h_SubleadingMuonPt_bVeto_0J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_bVeto_0J = GetHist(Form("h_SubleadingMuonEta_bVeto_0J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_bVeto_0J = GetHist(Form("h_SubleadingMuonPhi_bVeto_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_bVeto_0J = new TH1D(Form("h_MuonPt_bVeto_0J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_bVeto_0J = new TH1D(Form("h_MuonEta_bVeto_0J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_bVeto_0J = new TH1D(Form("h_MuonPhi_bVeto_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_bVeto_0J = GetHist(Form("h_MuonPt_bVeto_0J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_bVeto_0J = GetHist(Form("h_MuonEta_bVeto_0J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_bVeto_0J = GetHist(Form("h_MuonPhi_bVeto_0J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_bVeto_0J = new TH1D(Form("h_dimuonMass_bVeto_0J"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_bVeto_0J = GetHist(Form("h_dimuonMass_bVeto_0J"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_bVeto_0J = new TH1D(Form("h_dimuonMass_wide_bVeto_0J"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_bVeto_0J = new TH1D(Form("h_dimuonPt_bVeto_0J"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_bVeto_0J = new TH1D(Form("h_dimuonRap_bVeto_0J"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_bVeto_0J = GetHist(Form("h_dimuonPt_bVeto_0J"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_bVeto_0J = GetHist(Form("h_dimuonRap_bVeto_0J"), Form("dimuon_rap"), 60, -3., 3.);
 
   // b-veto 1 jet
-  h_JetPt_bVeto_1J = new TH1D(Form("h_JetPt_bVeto_1J"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_bVeto_1J = new TH1D(Form("h_JetEta_bVeto_1J"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_bVeto_1J = new TH1D(Form("h_JetPhi_bVeto_1J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_bVeto_1J = GetHist(Form("h_JetPt_bVeto_1J"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_bVeto_1J = GetHist(Form("h_JetEta_bVeto_1J"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_bVeto_1J = GetHist(Form("h_JetPhi_bVeto_1J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_bVeto_1J = new TH1D(Form("h_BJetPt_bVeto_1J"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_bVeto_1J = new TH1D(Form("h_BJetEta_bVeto_1J"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_bVeto_1J = new TH1D(Form("h_BJetPhi_bVeto_1J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_bVeto_1J = GetHist(Form("h_BJetPt_bVeto_1J"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_bVeto_1J = GetHist(Form("h_BJetEta_bVeto_1J"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_bVeto_1J = GetHist(Form("h_BJetPhi_bVeto_1J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_bVeto_1J = new TH1D(Form("h_LeadingMuonPt_bVeto_1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_bVeto_1J = new TH1D(Form("h_LeadingMuonEta_bVeto_1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_bVeto_1J = new TH1D(Form("h_LeadingMuonPhi_bVeto_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_bVeto_1J = GetHist(Form("h_LeadingMuonPt_bVeto_1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_bVeto_1J = GetHist(Form("h_LeadingMuonEta_bVeto_1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_bVeto_1J = GetHist(Form("h_LeadingMuonPhi_bVeto_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_bVeto_1J = new TH1D(Form("h_SubleadingMuonPt_bVeto_1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_bVeto_1J = new TH1D(Form("h_SubleadingMuonEta_bVeto_1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_bVeto_1J = new TH1D(Form("h_SubleadingMuonPhi_bVeto_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_bVeto_1J = GetHist(Form("h_SubleadingMuonPt_bVeto_1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_bVeto_1J = GetHist(Form("h_SubleadingMuonEta_bVeto_1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_bVeto_1J = GetHist(Form("h_SubleadingMuonPhi_bVeto_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_bVeto_1J = new TH1D(Form("h_MuonPt_bVeto_1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_bVeto_1J = new TH1D(Form("h_MuonEta_bVeto_1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_bVeto_1J = new TH1D(Form("h_MuonPhi_bVeto_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_bVeto_1J = GetHist(Form("h_MuonPt_bVeto_1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_bVeto_1J = GetHist(Form("h_MuonEta_bVeto_1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_bVeto_1J = GetHist(Form("h_MuonPhi_bVeto_1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_bVeto_1J = new TH1D(Form("h_dimuonMass_bVeto_1J"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_bVeto_1J = GetHist(Form("h_dimuonMass_bVeto_1J"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_bVeto_1J = new TH1D(Form("h_dimuonMass_wide_bVeto_1J"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_bVeto_1J = new TH1D(Form("h_dimuonPt_bVeto_1J"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_bVeto_1J = new TH1D(Form("h_dimuonRap_bVeto_1J"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_bVeto_1J = GetHist(Form("h_dimuonPt_bVeto_1J"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_bVeto_1J = GetHist(Form("h_dimuonRap_bVeto_1J"), Form("dimuon_rap"), 60, -3., 3.);
 
   // b-veto more than 1 jet
-  h_JetPt_bVeto_mt1J = new TH1D(Form("h_JetPt_bVeto_mt1J"), Form("Jet_pT"), 1000, 0, 1000);
-  h_JetEta_bVeto_mt1J = new TH1D(Form("h_JetEta_bVeto_mt1J"), Form("Jet_Eta"), 60, -3., 3.);
-  h_JetPhi_bVeto_mt1J = new TH1D(Form("h_JetPhi_bVeto_mt1J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
+  h_JetPt_bVeto_mt1J = GetHist(Form("h_JetPt_bVeto_mt1J"), Form("Jet_pT"), 1000, 0, 1000);
+  h_JetEta_bVeto_mt1J = GetHist(Form("h_JetEta_bVeto_mt1J"), Form("Jet_Eta"), 60, -3., 3.);
+  h_JetPhi_bVeto_mt1J = GetHist(Form("h_JetPhi_bVeto_mt1J"), Form("Jet_Phi"), 60, -3.141594, 3.141594);
 
-  h_BJetPt_bVeto_mt1J = new TH1D(Form("h_BJetPt_bVeto_mt1J"), Form("BJet_pT"), 1000, 0, 1000);
-  h_BJetEta_bVeto_mt1J = new TH1D(Form("h_BJetEta_bVeto_mt1J"), Form("BJet_Eta"), 60, -3., 3.);
-  h_BJetPhi_bVeto_mt1J = new TH1D(Form("h_BJetPhi_bVeto_mt1J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
+  h_BJetPt_bVeto_mt1J = GetHist(Form("h_BJetPt_bVeto_mt1J"), Form("BJet_pT"), 1000, 0, 1000);
+  h_BJetEta_bVeto_mt1J = GetHist(Form("h_BJetEta_bVeto_mt1J"), Form("BJet_Eta"), 60, -3., 3.);
+  h_BJetPhi_bVeto_mt1J = GetHist(Form("h_BJetPhi_bVeto_mt1J"), Form("BJet_Phi"), 60, -3.141594, 3.141594);
 
-  h_LeadingMuonPt_bVeto_mt1J = new TH1D(Form("h_LeadingMuonPt_bVeto_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_LeadingMuonEta_bVeto_mt1J = new TH1D(Form("h_LeadingMuonEta_bVeto_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_LeadingMuonPhi_bVeto_mt1J = new TH1D(Form("h_LeadingMuonPhi_bVeto_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_LeadingMuonPt_bVeto_mt1J = GetHist(Form("h_LeadingMuonPt_bVeto_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_LeadingMuonEta_bVeto_mt1J = GetHist(Form("h_LeadingMuonEta_bVeto_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_LeadingMuonPhi_bVeto_mt1J = GetHist(Form("h_LeadingMuonPhi_bVeto_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_SubleadingMuonPt_bVeto_mt1J = new TH1D(Form("h_SubleadingMuonPt_bVeto_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_SubleadingMuonEta_bVeto_mt1J = new TH1D(Form("h_SubleadingMuonEta_bVeto_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_SubleadingMuonPhi_bVeto_mt1J = new TH1D(Form("h_SubleadingMuonPhi_bVeto_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_SubleadingMuonPt_bVeto_mt1J = GetHist(Form("h_SubleadingMuonPt_bVeto_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_SubleadingMuonEta_bVeto_mt1J = GetHist(Form("h_SubleadingMuonEta_bVeto_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_SubleadingMuonPhi_bVeto_mt1J = GetHist(Form("h_SubleadingMuonPhi_bVeto_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_MuonPt_bVeto_mt1J = new TH1D(Form("h_MuonPt_bVeto_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
-  h_MuonEta_bVeto_mt1J = new TH1D(Form("h_MuonEta_bVeto_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
-  h_MuonPhi_bVeto_mt1J = new TH1D(Form("h_MuonPhi_bVeto_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
+  h_MuonPt_bVeto_mt1J = GetHist(Form("h_MuonPt_bVeto_mt1J"), Form("Muon_pT"), 1000, 0, 1000);
+  h_MuonEta_bVeto_mt1J = GetHist(Form("h_MuonEta_bVeto_mt1J"), Form("Muon_Eta"), 60, -3., 3.);
+  h_MuonPhi_bVeto_mt1J = GetHist(Form("h_MuonPhi_bVeto_mt1J"), Form("Muon_Phi"), 60, -3.141594, 3.141594);
 
-  h_dimuonMass_bVeto_mt1J = new TH1D(Form("h_dimuonMass_bVeto_mt1J"), Form("inv_Mass"), 100, 41., 141.);
+  h_dimuonMass_bVeto_mt1J = GetHist(Form("h_dimuonMass_bVeto_mt1J"), Form("inv_Mass"), 100, 41., 141.);
   h_dimuonMass_wide_bVeto_mt1J = new TH1D(Form("h_dimuonMass_wide_bVeto_mt1J"), Form("inv_Mass"), xbins.size() - 1, &(xbins[0]));
 
-  h_dimuonPt_bVeto_mt1J = new TH1D(Form("h_dimuonPt_bVeto_mt1J"), Form("dimuon_pT"), 1000, 0., 1000.);
-  h_dimuonRap_bVeto_mt1J = new TH1D(Form("h_dimuonRap_bVeto_mt1J"), Form("dimuon_rap"), 60, -3., 3.);
+  h_dimuonPt_bVeto_mt1J = GetHist(Form("h_dimuonPt_bVeto_mt1J"), Form("dimuon_pT"), 1000, 0., 1000.);
+  h_dimuonRap_bVeto_mt1J = GetHist(Form("h_dimuonRap_bVeto_mt1J"), Form("dimuon_rap"), 60, -3., 3.);
 
-  h_jetID = new TH1D(Form("h_jetID"), Form("jetID"), 20, -0.5, 19.5);
+  h_jetID = GetHist(Form("h_jetID"), Form("jetID"), 20, -0.5, 19.5);
 
 }
 
