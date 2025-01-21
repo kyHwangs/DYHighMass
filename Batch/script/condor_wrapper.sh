@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "$@"
-cd /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241202_JetFolding/DYHighMass
+cd /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241215_HighPt/DYHighMass
 
 source /cvmfs/sft.cern.ch/lcg/views/LCG_102/x86_64-centos7-gcc11-opt/setup.sh
 
@@ -10,8 +10,9 @@ export INSTALL_DIR_PATH=$PWD/install
 export PATH=$PATH:$INSTALL_DIR_PATH/lib
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$INSTALL_DIR_PATH/lib
 export YAMLPATH=/cvmfs/sft.cern.ch/lcg/releases/yamlcpp/0.6.3-d05b2/x86_64-centos7-gcc11-opt/lib
+export CORRECTIONLIBPATH=/cvmfs/sft.cern.ch/lcg/releases/correctionlib/2.1.0-2256a/x86_64-centos7-gcc11-opt/lib
 
-cd /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241202_JetFolding/DYHighMass/Batch/241115_2018_noCorrection
+cd /u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_241215_HighPt/DYHighMass/Batch/250106_HighPt_v6_PU_L1_Roccor_ID_ISO_Trigger_200GeV
 echo $PWD
 
 echo "$@"

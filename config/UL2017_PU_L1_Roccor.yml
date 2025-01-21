@@ -8,7 +8,7 @@ Muon:
   ID: global
   ISO: 0.1
   Charge: opposite
-  doRoccoR: false
+  doRoccoR: true
   RoccoR: ../../RoccoR/RoccoR2017UL.txt
 
 Electron:
@@ -28,14 +28,19 @@ Correction:
   ID: false
   ISO: false
   Trigger: false
-  PileUp: false
-  L1PreFiring: false
+  PileUp: true
+  L1PreFiring: true
 
 Efficiency:
-  ID: Run2017_UL_ID.txt
-  ISO: Run2017_UL_ISO.txt
-  Trigger_data: Run2017_UL_TRIG_DATAeff.txt
-  Trigger_MC: Run2017_UL_TRIG_MCeff.txt
+  ID:
+    Path: ../../correctionlib/2017_muon_Z.json
+    Name: NUM_HighPtID_DEN_genTracks
+  ISO:
+    Path: ../../correctionlib/2017_muon_Z.json
+    Name: NUM_LooseRelTkIso_DEN_HighPtIDandIPCut
+  Trigger:
+    Path: ../../correctionlib/medium/2017.json
+    Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
 
 Pileup:
   Data: PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root

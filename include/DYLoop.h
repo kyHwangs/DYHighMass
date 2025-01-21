@@ -20,6 +20,8 @@
 #include "TLorentzVector.h"
 #include "TH1.h"
 
+#include "correction.h"
+
 #include "yaml-cpp/yaml.h"
 
 class DYLoop
@@ -42,18 +44,37 @@ public:
     fDoL1Pre = false;
     fDoL1Pre = fConfig["Correction"]["L1PreFiring"].as<bool>();
 
+
     fDoID = false;
     fDoID = fConfig["Correction"]["ID"].as<bool>();
-    fID_SF = EffTable("../../EfficiencyTable/" + fConfig["Efficiency"]["ID"].as<std::string>());
+    fID_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["ID"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["ID"]["Name"].as<std::string>());
 
     fDoISO = false;
     fDoISO = fConfig["Correction"]["ISO"].as<bool>();
-    fISO_SF = EffTable("../../EfficiencyTable/" + fConfig["Efficiency"]["ISO"].as<std::string>());
+    fISO_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["ISO"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["ISO"]["Name"].as<std::string>());
 
     fDoTRIGG = false;
     fDoTRIGG = fConfig["Correction"]["Trigger"].as<bool>();
-    fTRIG_DataEff = EffTable("../../EfficiencyTable/" + fConfig["Efficiency"]["Trigger_data"].as<std::string>());
-    fTRIG_MCEff = EffTable("../../EfficiencyTable/" + fConfig["Efficiency"]["Trigger_MC"].as<std::string>());
+    fTRIG_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>());
+
+
+    // auto inputs = fID_SF->inputs();
+
+    // for (int i = 0; i < inputs.size(); i++) {
+    //   std::cout << i << " " << inputs.at(i).name() << " " << inputs.at(i).description() << " " << inputs.at(i).typeStr() << std::endl;
+    // }
+
+    // inputs = fISO_SF->inputs();
+
+    // for (int i = 0; i < inputs.size(); i++) {
+    //   std::cout << i << " " << inputs.at(i).name() << " " << inputs.at(i).description() << " " << inputs.at(i).typeStr() << std::endl;
+    // }
+
+    // inputs = fTRIG_SF->inputs();
+
+    // for (int i = 0; i < inputs.size(); i++) {
+    //   std::cout << i << " " << inputs.at(i).name() << " " << inputs.at(i).description() << " " << inputs.at(i).typeStr() << std::endl;
+    // }
 
     fDoPU = false;
     fDoPU = fConfig["Correction"]["PileUp"].as<bool>();
@@ -100,13 +121,15 @@ public:
     std::cout << "######################################################################" << std::endl;
     std::cout << "                             Loop setting                             " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
-    std::cout << " fDoID: " << fDoID << " " << fConfig["Efficiency"]["ID"].as<std::string>() << std::endl;
-    std::cout << " fDoISO: " << fDoISO << " " << fConfig["Efficiency"]["ISO"].as<std::string>() << std::endl;
-    std::cout << " fDoTRIGG: " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger_data"].as<std::string>() << std::endl;
-    std::cout << "             " << fConfig["Efficiency"]["Trigger_MC"].as<std::string>()  << std::endl;
-    std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
+    std::cout << " fDoID: " << fDoID << " " << fConfig["Efficiency"]["ID"]["Path"].as<std::string>() << std::endl;
+    std::cout << "        " << fDoID << " " << fConfig["Efficiency"]["ID"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoISO: " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Path"].as<std::string>() << std::endl;
+    std::cout << "         " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoTRIGG: " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>() << std::endl;
+    std::cout << "           " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
     std::cout << "          " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
-    std::cout << " fDoL1Pre: " << fDoL1Pre << " " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
+    std::cout << " fDoL1Pre: " << fDoL1Pre << " " << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
   }
@@ -152,10 +175,9 @@ private:
   bool fIsMC;
 
   LumiReWeighting* fPuReweighting;
-  EffTable fID_SF;
-  EffTable fISO_SF;
-  EffTable fTRIG_DataEff;
-  EffTable fTRIG_MCEff;
+  std::shared_ptr<const correction::Correction> fID_SF;
+  std::shared_ptr<const correction::Correction> fISO_SF;
+  std::shared_ptr<const correction::Correction> fTRIG_SF;
 
   bool fDoID;
   bool fDoISO;
@@ -183,6 +205,7 @@ private:
   TH1D* h_GenWeight;
   TH1D* h_LHEnMuon;
   TH1D* h_nJet;
+  TH1D* h_nJet_bVeto;
   TH1D* h_nBJet;
   TH1D* h_JetPt;
   TH1D* h_JetEta;

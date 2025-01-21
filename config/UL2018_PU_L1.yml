@@ -28,14 +28,19 @@ Correction:
   ID: false
   ISO: false
   Trigger: false
-  PileUp: false
-  L1PreFiring: false
+  PileUp: true
+  L1PreFiring: true
 
 Efficiency:
-  ID: Run2018_UL_ID.txt
-  ISO: Run2018_UL_ISO.txt
-  Trigger_data: Run2018_UL_TRIG_DATAeff.txt
-  Trigger_MC: Run2018_UL_TRIG_MCeff.txt
+  ID:
+    Path: ../../correctionlib/2018_muon_Z.json
+    Name: NUM_HighPtID_DEN_genTracks
+  ISO:
+    Path: ../../correctionlib/2018_muon_Z.json
+    Name: NUM_LooseRelTkIso_DEN_HighPtIDandIPCut
+  Trigger:
+    Path: ../../correctionlib/medium/2018.json
+    Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
 
 Pileup:
   Data: PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root

@@ -107,21 +107,58 @@ void DYLoop::Loop() {
     auto tDiMuon = tFVecLedingMuon + tFVecSubLedingMuon;
 
     if (fIsMC && fDoID) {
-      tEventGenWeight *= fID_SF.getEfficiency(tFVecRawLeadingMuon.Pt(), std::abs(tFVecRawLeadingMuon.Eta()));
-      tEventGenWeight *= fID_SF.getEfficiency(tFVecRawSubLeadingMuon.Pt(), std::abs(tFVecRawSubLeadingMuon.Eta()));
+
+      if (tFVecRawLeadingMuon.Pt() < 15.) {
+        tEventGenWeight *= 0;
+      } else {
+        tEventGenWeight *= fID_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "nominal"});
+      }
+
+      if (tFVecRawSubLeadingMuon.Pt() < 15.) {
+        tEventGenWeight *= 0;
+      } else {
+        tEventGenWeight *= fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "nominal"});
+      } 
     }
 
     if (fIsMC && fDoISO) {
-      tEventGenWeight *= fISO_SF.getEfficiency(tFVecRawLeadingMuon.Pt(), std::abs(tFVecRawLeadingMuon.Eta()));
-      tEventGenWeight *= fISO_SF.getEfficiency(tFVecRawSubLeadingMuon.Pt(), std::abs(tFVecRawSubLeadingMuon.Eta()));
+
+      if (tFVecRawLeadingMuon.Pt() < 15.) {
+        tEventGenWeight *= 0;
+      } else {
+        tEventGenWeight *= fISO_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "nominal"});
+      }
+
+      if (tFVecRawSubLeadingMuon.Pt() < 15.) {
+        tEventGenWeight *= 0;
+      } else {
+        tEventGenWeight *= fISO_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "nominal"});
+      } 
     }
 
     if (fIsMC && fDoTRIGG) {
-      double mu_1_data = fTRIG_DataEff.getEfficiency(tFVecRawLeadingMuon.Pt(), std::abs(tFVecRawLeadingMuon.Eta()));
-      double mu_2_data = fTRIG_DataEff.getEfficiency(tFVecRawSubLeadingMuon.Pt(), std::abs(tFVecRawSubLeadingMuon.Eta()));
 
-      double mu_1_mc = fTRIG_MCEff.getEfficiency(tFVecRawLeadingMuon.Pt(), std::abs(tFVecRawLeadingMuon.Eta()));
-      double mu_2_mc = fTRIG_MCEff.getEfficiency(tFVecRawSubLeadingMuon.Pt(), std::abs(tFVecRawSubLeadingMuon.Eta()));
+      double mu_1_data = 0;
+      double mu_2_data = 0;
+
+      double mu_1_mc = 0;
+      double mu_2_mc = 0;
+
+      if (tFVecRawLeadingMuon.Pt() < 52.) {
+        mu_1_data = 0.;
+        mu_1_mc = 0.;
+      } else {
+        mu_1_data = fTRIG_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "dataEff"});
+        mu_1_mc = fTRIG_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "mcEff"});
+      }
+
+      if (tFVecRawSubLeadingMuon.Pt() < 52.) {
+        mu_2_data = 0.;
+        mu_2_mc = 0.;
+      } else {
+        mu_2_data = fTRIG_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "dataEff"});
+        mu_2_mc = fTRIG_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "mcEff"});
+      }
 
       double data_tot = 1. - (1. - mu_1_data) * (1. - mu_2_data);
       double mc_tot = 1. - (1. - mu_1_mc) * (1. - mu_2_mc);
@@ -140,10 +177,16 @@ void DYLoop::Loop() {
     h_nJet->Fill(nJets, tEventGenWeight);
     h_nBJet->Fill(nBJets, tEventGenWeight);
 
+    if (nBJets == 0)
+      h_nJet_bVeto->Fill(nJets, tEventGenWeight);
+
     tTotalGenWeight += tEventGenWeight;
 
     h_nPV_Count->Fill(**(fNtuples->PV_npvs), tEventGenWeight);
     h_nPVGood_Count->Fill(**(fNtuples->PV_npvsGood), tEventGenWeight);
+
+    if (fIsMC)
+      h_PileUp_Count_Interaction->Fill(**(fNtuples->Pileup_nTrueInt), tEventGenWeight);
 
     FillHisto(h_LeadingMuonPt, tFVecLedingMuon.Pt(), tEventGenWeight);
     FillHisto(h_LeadingMuonEta, tFVecLedingMuon.Eta(), tEventGenWeight);
@@ -521,7 +564,7 @@ void DYLoop::PrepareHist() {
       0,   10,  15,  20,  25,  30,  35,  40,   45,   50,   55,  60,
       64,  68,  72,  76,  81,  86,  91,  96,   101,  106,  110, 115,
       120, 126, 133, 141, 150, 160, 171, 185,  200,  220,  243, 273,
-      320, 380, 440, 510, 600, 700, 830, 1000, 1500, 3000, 3010};
+      320, 380, 440, 510, 600, 700, 830, 1000, 1500, 3000, 4000, 4010};
 
   h_EventInfo = new TH1D("h_EventInfo", "h_EventInfo", 5, 0.5, 5.5);
 
@@ -535,6 +578,7 @@ void DYLoop::PrepareHist() {
   h_PileUp_Count_Intime = new TH1D(Form("h_PileUp_Count_Intime"), Form("PileUp_Count_Intime"), 1000, 0., 100.);
 
   h_nJet = new TH1D(Form("h_nJet"), Form("nJet"), 20, 0., 20.);
+  h_nJet_bVeto = new TH1D(Form("h_nJet_bVeto"), Form("nJet"), 20, 0., 20.);
   h_nBJet = new TH1D(Form("h_nBJet"), Form("nJet"), 20, 0., 20.);
 
   h_JetPt = GetHist(Form("h_JetPt"), Form("Jet_pT"), 1000, 0, 1000);
@@ -829,6 +873,7 @@ void DYLoop::EndOfJob() {
   h_GenWeight->Write();
   h_LHEnMuon->Write();
   h_nJet->Write();
+  h_nJet_bVeto->Write();
   h_nBJet->Write();
   h_JetPt->Write();
   h_JetEta->Write();
