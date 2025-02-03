@@ -141,6 +141,6 @@ double JET::GetBTagSF() {
     // std::cout << tJetEff << " " << pMC << " " << tSFcentral << " " << tSFcentral * tJetEff << " " << pData << std::endl;
   }
 
-  std::cout << pData / pMC << std::endl;
+  // std::cout << pData / pMC << std::endl;
   return pData / pMC;
 }

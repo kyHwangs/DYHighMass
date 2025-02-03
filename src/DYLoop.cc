@@ -27,6 +27,11 @@ void DYLoop::Loop() {
     if ( (int)tMaxLoop % 10000 == 0 )
       std::cout << "Loop: " << tMaxLoop << " / " << fMaxEntries << " | " << (100. * tMaxLoop / fMaxEntries) << " %" << std::endl;
 
+    if (fIsMC) {
+      h_PileUp_Count_Interaction_before->Fill(**(fNtuples->Pileup_nTrueInt), 1.);
+      h_PileUp_Count_Interaction_after->Fill(**(fNtuples->Pileup_nTrueInt), fPuReweighting->weight(**(fNtuples->Pileup_nTrueInt)));
+    }
+
     double tEventGenWeight = 1.;
     if (fIsMC) {
       tEventGenWeight = **(fNtuples->genWeight);
@@ -226,9 +231,6 @@ void DYLoop::Loop() {
 
     h_nPV_Count->Fill(**(fNtuples->PV_npvs), tEventGenWeight);
     h_nPVGood_Count->Fill(**(fNtuples->PV_npvsGood), tEventGenWeight);
-
-    if (fIsMC)
-      h_PileUp_Count_Interaction->Fill(**(fNtuples->Pileup_nTrueInt), tEventGenWeight);
 
     FillHisto(h_LeadingMuonPt, tFVecLedingMuon.Pt(), tEventGenWeight);
     FillHisto(h_LeadingMuonEta, tFVecLedingMuon.Eta(), tEventGenWeight);
@@ -616,7 +618,8 @@ void DYLoop::PrepareHist() {
 
   h_nPV_Count = new TH1D(Form("h_nPV_Count"), Form("PV_Count"), 100, 0., 100.);
   h_nPVGood_Count = new TH1D(Form("h_nPVGood_Count"), Form("PV_Count"), 100, 0., 100.);
-  h_PileUp_Count_Interaction = new TH1D(Form("h_PileUp_Count_Interaction"), Form("PileUp_Count_Interaction"), 1000, 0., 100.);
+  h_PileUp_Count_Interaction_before = new TH1D(Form("h_PileUp_Count_Interaction_before"), Form("h_PileUp_Count_Interaction_before"), 1000, 0., 100.);
+  h_PileUp_Count_Interaction_after = new TH1D(Form("h_PileUp_Count_Interaction_after"), Form("h_PileUp_Count_Interaction_after"), 1000, 0., 100.);
   h_PileUp_Count_Intime = new TH1D(Form("h_PileUp_Count_Intime"), Form("PileUp_Count_Intime"), 1000, 0., 100.);
 
   h_nJet = new TH1D(Form("h_nJet"), Form("nJet"), 20, 0., 20.);
@@ -908,7 +911,8 @@ void DYLoop::EndOfJob() {
 
   h_nPV_Count->Write();
   h_nPVGood_Count->Write();
-  h_PileUp_Count_Interaction->Write();
+  h_PileUp_Count_Interaction_before->Write();
+  h_PileUp_Count_Interaction_after->Write();
   h_PileUp_Count_Intime->Write();
 
   h_LHEDimuonMass->Write();

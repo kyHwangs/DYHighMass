@@ -192,7 +192,8 @@ private:
 
   TH1D* h_nPV_Count;
   TH1D* h_nPVGood_Count;
-  TH1D* h_PileUp_Count_Interaction;
+  TH1D* h_PileUp_Count_Interaction_before;
+  TH1D* h_PileUp_Count_Interaction_after;
   TH1D* h_PileUp_Count_Intime;
 
   TH1D* h_LHEDimuonMass;
