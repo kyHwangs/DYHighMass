@@ -214,15 +214,13 @@ void DYLoop::Loop() {
     }
 
     if (fIsMC && fDoBTag) {
-      tEventGenWeight *= fJets->GetBTagSF();
+      double bTagWeight = fJets->GetBTagSF();
+      tEventGenWeight *= bTagWeight;
     }
 
     for (int i = 0; i < nJets; i++) {
       h_jetID->Fill(vJets.at(i).fID, tEventGenWeight);
     }
-
-    h_nJet->Fill(nJets, tEventGenWeight);
-    h_nBJet->Fill(nBJets, tEventGenWeight);
 
     if (nBJets == 0)
       h_nJet_bVeto->Fill(nJets, tEventGenWeight);
@@ -231,6 +229,9 @@ void DYLoop::Loop() {
 
     h_nPV_Count->Fill(**(fNtuples->PV_npvs), tEventGenWeight);
     h_nPVGood_Count->Fill(**(fNtuples->PV_npvsGood), tEventGenWeight);
+
+    h_nJet->Fill(nJets, tEventGenWeight);
+    h_nBJet->Fill(nBJets, tEventGenWeight);
 
     FillHisto(h_LeadingMuonPt, tFVecLedingMuon.Pt(), tEventGenWeight);
     FillHisto(h_LeadingMuonEta, tFVecLedingMuon.Eta(), tEventGenWeight);

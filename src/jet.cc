@@ -116,6 +116,9 @@ double JET::GetBTagSF() {
     double tJetPt = fFVecJets.at(i).fVec.Pt();
     int tHadFlav = fFVecJets.at(i).fHadFlav;
 
+    if (tJetPt >= 1000.)
+      tJetPt = 800.;
+
     // std::cout << fFVecJets.size() << " " << i << " " << tJetPt << " " << tJetEta << " " << tHadFlav << " " << fFVecJets.at(i).fPassingBJetTagger << " ";
 
     BTagEntry::JetFlavor jFLAV;
