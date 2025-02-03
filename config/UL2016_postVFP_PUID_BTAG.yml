@@ -31,8 +31,8 @@ Correction:
   Trigger: true
   PileUp: true
   L1PreFiring: true
-  JetPU: false
-  BTag: false
+  JetPU: true
+  BTag: true
 
 Efficiency:
   ID:

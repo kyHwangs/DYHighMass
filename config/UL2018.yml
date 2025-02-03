@@ -1,5 +1,5 @@
 Z:
-  MassCut: 10
+  MassCut: 200
 
 Muon:
   LeadingMuonPt: 52
@@ -8,7 +8,7 @@ Muon:
   ID: global
   ISO: 0.1
   Charge: opposite
-  doRoccoR: false
+  doRoccoR: true
   RoccoR: ../../RoccoR/RoccoR2018UL.txt
 
 Electron:
@@ -20,16 +20,19 @@ Electron:
 Jet:
   Pt: 30
   Eta: 2.4
-  ID: 2
+  ID: 6
+  PUID: 4
   BTag: 0.4168
-  Cleaning: true
+  Cleaning: false
 
 Correction:
-  ID: false
-  ISO: false
-  Trigger: false
-  PileUp: false
-  L1PreFiring: false
+  ID: true
+  ISO: true
+  Trigger: true
+  PileUp: true
+  L1PreFiring: true
+  JetPU: false
+  BTag: false
 
 Efficiency:
   ID:
@@ -41,6 +44,14 @@ Efficiency:
   Trigger:
     Path: ../../correctionlib/medium/2018.json
     Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+  JetPU:
+    Path: ../../EfficiencyTable/JetPUID/2018_L.csv
+  BTag:
+    Path: ../../EfficiencyTable/BTag/wp_deepCSV_2018.csv
+  BTagEff:
+    bQuark: ../../EfficiencyTable/BTagEff/btag-medium-b_2018.txt
+    cQuark: ../../EfficiencyTable/BTagEff/btag-medium-c_2018.txt
+    lQuark: ../../EfficiencyTable/BTagEff/btag-medium-udsg_2018.txt
 
 Pileup:
   Data: PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root

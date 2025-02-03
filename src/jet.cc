@@ -18,21 +18,14 @@ void JET::init(TTreeReader* fTreeReader) {
   Jet_phi = new TTreeReaderArray<float>(*fTreeReader, "Jet_phi");
   Jet_mass = new TTreeReaderArray<float>(*fTreeReader, "Jet_mass");
   Jet_jetId = new TTreeReaderArray<int>(*fTreeReader, "Jet_jetId");
+  Jet_puId = new TTreeReaderArray<int>(*fTreeReader, "Jet_puId");
   Jet_btagCSVV2 = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagCSVV2");
+
+  if (fIsMC) {
+
+    Jet_hadronFlavour = new TTreeReaderArray<int>(*fTreeReader, "Jet_hadronFlavour");
+  }
 }
-
-// bool JET::PrepareJet(
-//   int nJet,
-//   TTreeReaderArray<float>* Jet_pt,
-//   TTreeReaderArray<float>* Jet_eta,
-//   TTreeReaderArray<float>* Jet_phi,
-//   TTreeReaderArray<float>* Jet_mass,
-//   TTreeReaderArray<int>* Jet_jetId,
-//   TTreeReaderArray<float>* Jet_btagCSVV2
-// ) {
-
-//   return PrepareJet(nJet, Jet_pt, Jet_eta, Jet_phi, Jet_mass, Jet_jetId, Jet_btagCSVV2, std::vector<MUON::StdMuon>{}, std::vector<ELEC::StdElec>{});
-// }
 
 bool JET::PrepareJet(
   std::vector<MUON::StdMuon> tMuons, std::vector<ELEC::StdElec> tElecs) {
@@ -49,6 +42,9 @@ bool JET::PrepareJet(
       continue;
 
     if (!(Jet_jetId->At(i) >= fJetID))
+      continue;
+
+    if (Jet_pt->At(i) < 50. && !(Jet_puId->At(i) >= fJetPUID))
       continue;
 
     TLorentzVector jets;
@@ -77,15 +73,74 @@ bool JET::PrepareJet(
     if (!isCleanJet)
       continue;
 
+    int hadFlav = -1;
+    if (fIsMC)
+      hadFlav = Jet_hadronFlavour->At(i);
+
     bool isBJet = false;
     if (Jet_btagCSVV2->At(i) > fBJetTaggerCut)
       isBJet = true;
 
-    fFVecJets.push_back(StdJet(jets, isBJet, Jet_jetId->At(i)));
+    fFVecJets.push_back(StdJet(jets, isBJet, Jet_jetId->At(i), hadFlav));
     if (isBJet)
-      fFVecBJets.push_back(StdJet(jets, isBJet, Jet_jetId->At(i)));
+      fFVecBJets.push_back(StdJet(jets, isBJet, Jet_jetId->At(i), hadFlav));
 
   }
 
   return true;
+}
+
+double JET::GetPUIDSF() {
+
+  double weight = 1.;
+
+  for (int i = 0; i < fFVecJets.size(); i++) {
+
+    if (!(fFVecJets.at(i).fVec.Pt() < 50. && fFVecJets.at(i).fVec.Pt() >= 30.))
+      continue;
+
+    weight *= fJetPUIDTable.getEfficiency(fFVecJets.at(i).fVec.Pt(), fFVecJets.at(i).fVec.Eta());
+  }
+
+  return weight;
+}
+
+double JET::GetBTagSF() {
+
+  double pMC = 1.;
+  double pData = 1.;
+
+  for (int i = 0; i < fFVecJets.size(); i++) {
+
+    double tJetEta = fFVecJets.at(i).fVec.Eta();
+    double tJetPt = fFVecJets.at(i).fVec.Pt();
+    int tHadFlav = fFVecJets.at(i).fHadFlav;
+
+    // std::cout << fFVecJets.size() << " " << i << " " << tJetPt << " " << tJetEta << " " << tHadFlav << " " << fFVecJets.at(i).fPassingBJetTagger << " ";
+
+    BTagEntry::JetFlavor jFLAV;
+    if (tHadFlav == 5)        jFLAV = BTagEntry::FLAV_B;
+    else if (tHadFlav == 4)   jFLAV = BTagEntry::FLAV_C;
+    else                      jFLAV = BTagEntry::FLAV_UDSG;
+
+    double tSFcentral   = fBTagCalibReader->eval_auto_bounds("central", jFLAV, tJetEta, tJetPt);
+
+    double tJetEff = -1;
+    if (tHadFlav == 5)        tJetEff = fJetBTagEffB.getEfficiency(tJetEta, tJetPt);
+    else if (tHadFlav == 4)   tJetEff = fJetBTagEffC.getEfficiency(tJetEta, tJetPt);
+    else                      tJetEff = fJetBTagEffL.getEfficiency(tJetEta, tJetPt);
+
+    if (fFVecJets.at(i).fPassingBJetTagger) {
+      pMC *= tJetEff;
+      pData *= tJetEff * tSFcentral;
+    } else {
+      pMC *= (1 - tJetEff);
+      pData *= (1 - tJetEff * tSFcentral);
+    }
+
+    // std::cout << tJetEff << " " << pMC << " " << tSFcentral << " " << tSFcentral * tJetEff << " " << pData << std::endl;
+  }
+
+  std::cout << pData / pMC << std::endl;
+  return pData / pMC;
 }

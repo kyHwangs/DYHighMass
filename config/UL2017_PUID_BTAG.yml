@@ -9,7 +9,7 @@ Muon:
   ISO: 0.1
   Charge: opposite
   doRoccoR: true
-  RoccoR: ../../RoccoR/RoccoR2016bUL.txt
+  RoccoR: ../../RoccoR/RoccoR2017UL.txt
 
 Electron:
   Pt: 10
@@ -22,7 +22,7 @@ Jet:
   Eta: 2.4
   ID: 6
   PUID: 4
-  BTag: 0.5847
+  BTag: 0.4506
   Cleaning: false
 
 Correction:
@@ -31,34 +31,34 @@ Correction:
   Trigger: true
   PileUp: true
   L1PreFiring: true
-  JetPU: false
-  BTag: false
+  JetPU: true
+  BTag: true
 
 Efficiency:
   ID:
-    Path: ../../correctionlib/2016_postVFP_muon_Z.json
+    Path: ../../correctionlib/2017_muon_Z.json
     Name: NUM_HighPtID_DEN_genTracks
   ISO:
-    Path: ../../correctionlib/2016_postVFP_muon_Z.json
+    Path: ../../correctionlib/2017_muon_Z.json
     Name: NUM_LooseRelTkIso_DEN_HighPtIDandIPCut
   Trigger:
-    Path: ../../correctionlib/medium/2016_postVFP.json
-    Name: NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+    Path: ../../correctionlib/medium/2017.json
+    Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
   JetPU:
-    Path: ../../EfficiencyTable/JetPUID/2016_L.csv
+    Path: ../../EfficiencyTable/JetPUID/2017_L.csv
   BTag:
-    Path: ../../EfficiencyTable/BTag/wp_deepCSV_2016.csv
+    Path: ../../EfficiencyTable/BTag/wp_deepCSV_2017.csv
   BTagEff:
-    bQuark: ../../EfficiencyTable/BTagEff/btag-medium-b_2016.txt
-    cQuark: ../../EfficiencyTable/BTagEff/btag-medium-c_2016.txt
-    lQuark: ../../EfficiencyTable/BTagEff/btag-medium-udsg_2016.txt
+    bQuark: ../../EfficiencyTable/BTagEff/btag-medium-b_2017.txt
+    cQuark: ../../EfficiencyTable/BTagEff/btag-medium-c_2017.txt
+    lQuark: ../../EfficiencyTable/BTagEff/btag-medium-udsg_2017.txt
 
 Pileup:
-  Data: PileupHistogram-goldenJSON-13tev-2016-postVFP-69200ub-99bins.root
-  MC: MC_2016.root
+  Data: PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root
+  MC: MC_2017.root
 
 Info:
-  Era: 2016_postVFP
+  Era: 2017
 
 Sample:
   NNLO_inc:
@@ -176,17 +176,27 @@ Sample:
     IsMC: true
     UnitPerJob: 1
 
-  Run2016F:
-    Name: SingleMuon_Run2016F
+  Run2017B:
+    Name: SingleMuon_Run2017B
     IsMC: false
     UnitPerJob: 1
 
-  Run2016G:
-    Name: SingleMuon_Run2016G
+  Run2017C:
+    Name: SingleMuon_Run2017C
     IsMC: false
     UnitPerJob: 1
 
-  Run2016H:
-    Name: SingleMuon_Run2016H
+  Run2017D:
+    Name: SingleMuon_Run2017D
+    IsMC: false
+    UnitPerJob: 1
+
+  Run2017E:
+    Name: SingleMuon_Run2017E
+    IsMC: false
+    UnitPerJob: 1
+
+  Run2017F:
+    Name: SingleMuon_Run2017F
     IsMC: false
     UnitPerJob: 1

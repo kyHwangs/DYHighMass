@@ -8,6 +8,8 @@
 #include "RoccoR.h"
 #include "muon.h"
 #include "electron.h"
+#include "EfficiencyTable.h"
+#include "BTagCalibrationStandalone.h"
 
 #include "yaml-cpp/yaml.h"
 
@@ -29,6 +31,20 @@ public:
     fBJetTaggerCut = fJetConf["BTag"].as<float>();
     fCleaning = fJetConf["Cleaning"].as<bool>();
     fJetID = fJetConf["ID"].as<int>();
+    fJetPUID = fJetConf["PUID"].as<int>();
+
+    fJetPUIDTable = EffTable(fConfig["Efficiency"]["JetPU"]["Path"].as<std::string>());
+
+    fJetBTagEffB = EffTable(fConfig["Efficiency"]["BTagEff"]["bQuark"].as<std::string>());
+    fJetBTagEffC = EffTable(fConfig["Efficiency"]["BTagEff"]["cQuark"].as<std::string>());
+    fJetBTagEffL = EffTable(fConfig["Efficiency"]["BTagEff"]["lQuark"].as<std::string>());
+
+    BTagCalibration tCalibTable("DeepCSV", fConfig["Efficiency"]["BTag"]["Path"].as<std::string>());
+
+    fBTagCalibReader = new BTagCalibrationReader(BTagEntry::OP_MEDIUM, "central", {"up_correlated", "down_correlated", "up_uncorrelated", "down_uncorrelated"});
+    fBTagCalibReader->load(tCalibTable, BTagEntry::FLAV_UDSG, "incl");
+    fBTagCalibReader->load(tCalibTable, BTagEntry::FLAV_C, "mujets");
+    fBTagCalibReader->load(tCalibTable, BTagEntry::FLAV_B, "mujets");
 
     std::cout << "######################################################################" << std::endl;
     std::cout << "                            Jet selection                             " << std::endl;
@@ -36,6 +52,7 @@ public:
     std::cout << " jet pT: " << fJetPt << std::endl;
     std::cout << " jet eta: " << fEta << std::endl;
     std::cout << " jet ID: " << fJetID << std::endl;
+    std::cout << " jet PU ID: " << fJetPUID << std::endl;
     std::cout << " b-tagger WP: " << fBJetTaggerCut << std::endl;
     std::cout << " jet cleaning: " << fCleaning << std::endl;
     std::cout << "######################################################################" << std::endl;
@@ -47,9 +64,10 @@ public:
     TLorentzVector fVec;
     bool fPassingBJetTagger;
     int fID;
+    int fHadFlav;
 
-    StdJet(TLorentzVector fVec_, bool fPassingBJetTagger_, int fID_)
-    : fVec(fVec_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_)
+    StdJet(TLorentzVector fVec_, bool fPassingBJetTagger_, int fID_, int fHadFlav_)
+    : fVec(fVec_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_), fHadFlav(fHadFlav_)
     { };
   };
 
@@ -65,13 +83,18 @@ public:
   std::vector<StdJet> GetJets() { return fFVecJets; }
   std::vector<StdJet> GetBJets() { return fFVecBJets; }
 
+  double GetPUIDSF();
+  double GetBTagSF();
+
   TTreeReaderValue<unsigned int>* nJet;
   TTreeReaderArray<float>* Jet_pt;
   TTreeReaderArray<float>* Jet_eta;
   TTreeReaderArray<float>* Jet_phi;
   TTreeReaderArray<float>* Jet_mass;
   TTreeReaderArray<int>* Jet_jetId;
+  TTreeReaderArray<int>* Jet_puId;
   TTreeReaderArray<float>* Jet_btagCSVV2;
+  TTreeReaderArray<int>* Jet_hadronFlavour;
 
 private:
 
@@ -82,8 +105,16 @@ private:
   float fEta;
   float fBJetTaggerCut;
   int fJetID;
+  int fJetPUID;
   bool fCleaning;
   bool fIsMC;
+
+  EffTable fJetPUIDTable;
+  EffTable fJetBTagEffB;
+  EffTable fJetBTagEffC;
+  EffTable fJetBTagEffL;
+  BTagCalibrationReader* fBTagCalibReader;
+
 };
 
 #endif

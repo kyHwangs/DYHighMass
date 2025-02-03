@@ -57,25 +57,6 @@ public:
     fDoTRIGG = fConfig["Correction"]["Trigger"].as<bool>();
     fTRIG_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>());
 
-
-    // auto inputs = fID_SF->inputs();
-
-    // for (int i = 0; i < inputs.size(); i++) {
-    //   std::cout << i << " " << inputs.at(i).name() << " " << inputs.at(i).description() << " " << inputs.at(i).typeStr() << std::endl;
-    // }
-
-    // inputs = fISO_SF->inputs();
-
-    // for (int i = 0; i < inputs.size(); i++) {
-    //   std::cout << i << " " << inputs.at(i).name() << " " << inputs.at(i).description() << " " << inputs.at(i).typeStr() << std::endl;
-    // }
-
-    // inputs = fTRIG_SF->inputs();
-
-    // for (int i = 0; i < inputs.size(); i++) {
-    //   std::cout << i << " " << inputs.at(i).name() << " " << inputs.at(i).description() << " " << inputs.at(i).typeStr() << std::endl;
-    // }
-
     fDoPU = false;
     fDoPU = fConfig["Correction"]["PileUp"].as<bool>();
     fPuReweighting = new LumiReWeighting(
@@ -84,6 +65,12 @@ public:
       "pileup",
       "pileup"
     );
+
+    fDoJetPUID = false;
+    fDoJetPUID = fConfig["Correction"]["JetPU"].as<bool>();
+
+    fDoBTag = false;
+    fDoBTag = fConfig["Correction"]["BTag"].as<bool>();
 
     Print();
 
@@ -130,6 +117,11 @@ public:
     std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
     std::cout << "          " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
     std::cout << " fDoL1Pre: " << fDoL1Pre << " " << std::endl;
+    std::cout << " fDoJetPUID: " << fDoJetPUID << " " << fConfig["Efficiency"]["JetPU"]["Path"].as<std::string>() << std::endl;
+    std::cout << " fDoBTag: " << fDoBTag << " " << fConfig["Efficiency"]["BTag"]["Path"].as<std::string>() << std::endl;
+    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["bQuark"].as<std::string>() << std::endl;
+    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["cQuark"].as<std::string>() << std::endl;
+    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["lQuark"].as<std::string>() << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
   }
@@ -184,6 +176,8 @@ private:
   bool fDoTRIGG;
   bool fDoPU;
   bool fDoL1Pre;
+  bool fDoJetPUID;
+  bool fDoBTag;
 
   NT* fNtuples;
   YAML::Node fConfig;
