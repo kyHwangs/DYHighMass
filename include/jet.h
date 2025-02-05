@@ -62,12 +62,13 @@ public:
 
   struct StdJet {
     TLorentzVector fVec;
+    TLorentzVector fVecRaw;
     bool fPassingBJetTagger;
     int fID;
     int fHadFlav;
 
-    StdJet(TLorentzVector fVec_, bool fPassingBJetTagger_, int fID_, int fHadFlav_)
-    : fVec(fVec_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_), fHadFlav(fHadFlav_)
+    StdJet(TLorentzVector fVec_, TLorentzVector fVecRaw_, bool fPassingBJetTagger_, int fID_, int fHadFlav_)
+    : fVec(fVec_), fVecRaw(fVecRaw_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_), fHadFlav(fHadFlav_)
     { };
   };
 
@@ -75,10 +76,7 @@ public:
 
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
 
-  bool PrepareJet(
-    std::vector<MUON::StdMuon> tMuons = {},
-    std::vector<ELEC::StdElec> tElecs = {}
-  );
+  bool PrepareJet();
 
   std::vector<StdJet> GetJets() { return fFVecJets; }
   std::vector<StdJet> GetBJets() { return fFVecBJets; }
@@ -93,7 +91,7 @@ public:
   TTreeReaderArray<float>* Jet_mass;
   TTreeReaderArray<int>* Jet_jetId;
   TTreeReaderArray<int>* Jet_puId;
-  TTreeReaderArray<float>* Jet_btagCSVV2;
+  TTreeReaderArray<float>* Jet_btagDeepFlavB;
   TTreeReaderArray<int>* Jet_hadronFlavour;
 
 private:

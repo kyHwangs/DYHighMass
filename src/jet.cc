@@ -19,7 +19,7 @@ void JET::init(TTreeReader* fTreeReader) {
   Jet_mass = new TTreeReaderArray<float>(*fTreeReader, "Jet_mass");
   Jet_jetId = new TTreeReaderArray<int>(*fTreeReader, "Jet_jetId");
   Jet_puId = new TTreeReaderArray<int>(*fTreeReader, "Jet_puId");
-  Jet_btagCSVV2 = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagCSVV2");
+  Jet_btagDeepFlavB = new TTreeReaderArray<float>(*fTreeReader, "Jet_btagDeepFlavB");
 
   if (fIsMC) {
 
@@ -27,8 +27,7 @@ void JET::init(TTreeReader* fTreeReader) {
   }
 }
 
-bool JET::PrepareJet(
-  std::vector<MUON::StdMuon> tMuons, std::vector<ELEC::StdElec> tElecs) {
+bool JET::PrepareJet() {
 
   fFVecJets.clear();
   fFVecBJets.clear();
@@ -50,40 +49,17 @@ bool JET::PrepareJet(
     TLorentzVector jets;
     jets.SetPtEtaPhiM(Jet_pt->At(i), Jet_eta->At(i), Jet_phi->At(i), Jet_mass->At(i));
 
-    bool isCleanJet = true;
-    if (fCleaning) {
-
-      for (int i = 0; i < tMuons.size(); i++) {
-        if (tMuons.at(i).fVec.DeltaR(jets) < 0.4) {
-          isCleanJet = false;
-          break;
-        }
-      }
-
-      if (isCleanJet) {
-        for (int i = 0; i < tElecs.size(); i++) {
-          if (tElecs.at(i).fVec.DeltaR(jets) < 0.4) {
-            isCleanJet = false;
-            break;
-          }
-        }
-      }
-    }
-
-    if (!isCleanJet)
-      continue;
-
     int hadFlav = -1;
     if (fIsMC)
       hadFlav = Jet_hadronFlavour->At(i);
 
     bool isBJet = false;
-    if (Jet_btagCSVV2->At(i) > fBJetTaggerCut)
+    if (Jet_btagDeepFlavB->At(i) > fBJetTaggerCut)
       isBJet = true;
 
-    fFVecJets.push_back(StdJet(jets, isBJet, Jet_jetId->At(i), hadFlav));
+    fFVecJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav));
     if (isBJet)
-      fFVecBJets.push_back(StdJet(jets, isBJet, Jet_jetId->At(i), hadFlav));
+      fFVecBJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav));
 
   }
 
@@ -129,9 +105,9 @@ double JET::GetBTagSF() {
     double tSFcentral   = fBTagCalibReader->eval_auto_bounds("central", jFLAV, tJetEta, tJetPt);
 
     double tJetEff = -1;
-    if (tHadFlav == 5)        tJetEff = fJetBTagEffB.getEfficiency(tJetEta, tJetPt);
-    else if (tHadFlav == 4)   tJetEff = fJetBTagEffC.getEfficiency(tJetEta, tJetPt);
-    else                      tJetEff = fJetBTagEffL.getEfficiency(tJetEta, tJetPt);
+    if (tHadFlav == 5)        tJetEff = fJetBTagEffB.getEfficiency(tJetPt, tJetEta);
+    else if (tHadFlav == 4)   tJetEff = fJetBTagEffC.getEfficiency(tJetPt, tJetEta);
+    else                      tJetEff = fJetBTagEffL.getEfficiency(tJetPt, tJetEta);
 
     if (fFVecJets.at(i).fPassingBJetTagger) {
       pMC *= tJetEff;

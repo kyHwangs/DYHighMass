@@ -86,13 +86,13 @@ void DYLoop::Loop() {
     if ( !(fMuons->PrepareMuon()) )
       continue;
 
-    if ( !(fElecs->PrepareElec()) )
-      continue;
+    // if ( !(fElecs->PrepareElec()) )
+    //   continue;
 
-    auto tMuon = fMuons->GetMuons();
-    auto tElec = fElecs->GetElecs();
+    // auto tMuon = fMuons->GetMuons();
+    // auto tElec = fElecs->GetElecs();
 
-    if ( !(fJets->PrepareJet(tMuon, tElec)) )
+    if ( !(fJets->PrepareJet()) )
       continue;
 
     auto vJets = fJets->GetJets();
