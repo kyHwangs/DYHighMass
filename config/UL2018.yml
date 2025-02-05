@@ -47,11 +47,11 @@ Efficiency:
   JetPU:
     Path: ../../EfficiencyTable/JetPUID/2018_L.csv
   BTag:
-    Path: ../../EfficiencyTable/BTag/wp_deepCSV_2018.csv
+    Path: ../../EfficiencyTable/BTag/wp_deepJet_2018.csv
   BTagEff:
-    bQuark: ../../EfficiencyTable/BTagEff/btag-medium-b_2018.txt
-    cQuark: ../../EfficiencyTable/BTagEff/btag-medium-c_2018.txt
-    lQuark: ../../EfficiencyTable/BTagEff/btag-medium-udsg_2018.txt
+    bQuark: ../../EfficiencyTable/BTagEff/TT_2018_h_BTagEff_B.txt
+    cQuark: ../../EfficiencyTable/BTagEff/TT_2018_h_BTagEff_C.txt
+    lQuark: ../../EfficiencyTable/BTagEff/TT_2018_h_BTagEff_L.txt
 
 Pileup:
   Data: PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root
