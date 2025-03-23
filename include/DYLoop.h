@@ -394,6 +394,18 @@ private:
   TH1D* h_dimuonPt_bVeto_mt1J;
   TH1D* h_dimuonRap_bVeto_mt1J;
 
+  TH1D* h_dimuonMass_wide_High;
+  TH1D* h_dimuonMass_wide_High_0J;
+  TH1D* h_dimuonMass_wide_High_1J;
+  TH1D* h_dimuonMass_wide_High_mt1J;
+  TH1D* h_dimuonMass_wide_High_0BJ;
+  TH1D* h_dimuonMass_wide_High_1BJ;
+  TH1D* h_dimuonMass_wide_High_mt1BJ;
+  TH1D* h_dimuonMass_wide_High_bVeto_0J;
+  TH1D* h_dimuonMass_wide_High_bVeto_1J;
+  TH1D* h_dimuonMass_wide_High_bVeto_mt1J;
+
+
   TH1D* h_jetID;
 
 };

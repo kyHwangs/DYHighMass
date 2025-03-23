@@ -233,6 +233,18 @@ void DYLoop::Loop() {
     h_nJet->Fill(nJets, tEventGenWeight);
     h_nBJet->Fill(nBJets, tEventGenWeight);
 
+    for (int i = 0; i < nJets; i++) {
+      FillHisto(h_JetPt, vJets.at(i).fVec.Pt(), tEventGenWeight);
+      FillHisto(h_JetEta, vJets.at(i).fVec.Eta(), tEventGenWeight);
+      FillHisto(h_JetPhi, vJets.at(i).fVec.Phi(), tEventGenWeight);
+    }
+
+    for (int i = 0; i < nBJets; i++) {
+      FillHisto(h_BJetPt, vBJets.at(i).fVec.Pt(), tEventGenWeight);
+      FillHisto(h_BJetEta, vBJets.at(i).fVec.Eta(), tEventGenWeight);
+      FillHisto(h_BJetPhi, vBJets.at(i).fVec.Phi(), tEventGenWeight);
+    }
+
     FillHisto(h_LeadingMuonPt, tFVecLedingMuon.Pt(), tEventGenWeight);
     FillHisto(h_LeadingMuonEta, tFVecLedingMuon.Eta(), tEventGenWeight);
     FillHisto(h_LeadingMuonPhi, tFVecLedingMuon.Phi(), tEventGenWeight);
@@ -253,6 +265,7 @@ void DYLoop::Loop() {
     FillHisto(h_dimuonMass_wide, tDiMuon.M(), tEventGenWeight);
     FillHisto(h_dimuonPt, tDiMuon.Pt(), tEventGenWeight);
     FillHisto(h_dimuonRap, tDiMuon.Rapidity(), tEventGenWeight);
+    FillHisto(h_dimuonMass_wide_High, tDiMuon.M(), tEventGenWeight);
 
     if (nJets == 0) {
 
@@ -288,6 +301,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_0J, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_0J, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_0J, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_0J, tDiMuon.M(), tEventGenWeight);
     }
 
     if (nJets == 1) {
@@ -324,6 +338,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_1J, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_1J, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_1J, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_1J, tDiMuon.M(), tEventGenWeight);
     }
 
     if (nJets > 1) {
@@ -360,6 +375,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_mt1J, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_mt1J, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_mt1J, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_mt1J, tDiMuon.M(), tEventGenWeight);
     }
 
     if (nBJets == 0) {
@@ -396,6 +412,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_0BJ, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_0BJ, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_0BJ, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_0BJ, tDiMuon.M(), tEventGenWeight);
     }
 
     if (nBJets == 1) {
@@ -432,6 +449,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_1BJ, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_1BJ, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_1BJ, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_1BJ, tDiMuon.M(), tEventGenWeight);
     }
 
     if (nBJets > 1) {
@@ -468,6 +486,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_mt1BJ, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_mt1BJ, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_mt1BJ, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_mt1BJ, tDiMuon.M(), tEventGenWeight);
     }
 
     if (nBJets == 0 && nJets == 0) {
@@ -504,6 +523,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_bVeto_0J, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_bVeto_0J, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_bVeto_0J, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_bVeto_0J, tDiMuon.M(), tEventGenWeight);
     }
 
     if (nBJets == 0 && nJets == 1) {
@@ -540,6 +560,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_bVeto_1J, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_bVeto_1J, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_bVeto_1J, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_bVeto_1J, tDiMuon.M(), tEventGenWeight);
     }
 
     if (nBJets == 0 && nJets > 1) {
@@ -576,6 +597,7 @@ void DYLoop::Loop() {
       FillHisto(h_dimuonMass_wide_bVeto_mt1J, tDiMuon.M(), tEventGenWeight);
       FillHisto(h_dimuonPt_bVeto_mt1J, tDiMuon.Pt(), tEventGenWeight);
       FillHisto(h_dimuonRap_bVeto_mt1J, tDiMuon.Rapidity(), tEventGenWeight);
+      FillHisto(h_dimuonMass_wide_High_bVeto_mt1J, tDiMuon.M(), tEventGenWeight);
     }
   } // End of event loop
 
@@ -609,7 +631,23 @@ void DYLoop::PrepareHist() {
       0,   10,  15,  20,  25,  30,  35,  40,   45,   50,   55,  60,
       64,  68,  72,  76,  81,  86,  91,  96,   101,  106,  110, 115,
       120, 126, 133, 141, 150, 160, 171, 185,  200,  220,  243, 273,
-      320, 380, 440, 510, 600, 700, 830, 1000, 1500, 3000, 4000, 4010};
+      320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4010};
+
+  std::vector<float> xbins_highMass = {
+    190, 200,  220,  243, 273,
+    320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4010
+  };
+
+  h_dimuonMass_wide_High = new TH1D(Form("h_dimuonMass_wide_High"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_0J = new TH1D(Form("h_dimuonMass_wide_High_0J"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_1J = new TH1D(Form("h_dimuonMass_wide_High_1J"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_mt1J = new TH1D(Form("h_dimuonMass_wide_High_mt1J"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_0BJ = new TH1D(Form("h_dimuonMass_wide_High_0BJ"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_1BJ = new TH1D(Form("h_dimuonMass_wide_High_1BJ"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_mt1BJ = new TH1D(Form("h_dimuonMass_wide_High_mt1BJ"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_bVeto_0J = new TH1D(Form("h_dimuonMass_wide_High_bVeto_0J"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_bVeto_1J = new TH1D(Form("h_dimuonMass_wide_High_bVeto_1J"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
+  h_dimuonMass_wide_High_bVeto_mt1J = new TH1D(Form("h_dimuonMass_wide_High_bVeto_mt1J"), Form("inv_Mass"), xbins_highMass.size() - 1, &(xbins_highMass[0]));
 
   h_EventInfo = new TH1D("h_EventInfo", "h_EventInfo", 5, 0.5, 5.5);
 
@@ -941,6 +979,7 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide->Write();
   h_dimuonPt->Write();
   h_dimuonRap->Write();
+  h_dimuonMass_wide_High->Write();
 
   h_JetPt_0J->Write();
   h_JetEta_0J->Write();
@@ -961,6 +1000,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_0J->Write();
   h_dimuonPt_0J->Write();
   h_dimuonRap_0J->Write();
+  h_dimuonMass_wide_High_0J->Write();
+
   h_JetPt_1J->Write();
   h_JetEta_1J->Write();
   h_JetPhi_1J->Write();
@@ -980,6 +1021,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_1J->Write();
   h_dimuonPt_1J->Write();
   h_dimuonRap_1J->Write();
+  h_dimuonMass_wide_High_1J->Write();
+
   h_JetPt_mt1J->Write();
   h_JetEta_mt1J->Write();
   h_JetPhi_mt1J->Write();
@@ -999,6 +1042,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_mt1J->Write();
   h_dimuonPt_mt1J->Write();
   h_dimuonRap_mt1J->Write();
+  h_dimuonMass_wide_High_mt1J->Write();
+
   h_JetPt_0BJ->Write();
   h_JetEta_0BJ->Write();
   h_JetPhi_0BJ->Write();
@@ -1018,6 +1063,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_0BJ->Write();
   h_dimuonPt_0BJ->Write();
   h_dimuonRap_0BJ->Write();
+  h_dimuonMass_wide_High_0BJ->Write();
+
   h_JetPt_1BJ->Write();
   h_JetEta_1BJ->Write();
   h_JetPhi_1BJ->Write();
@@ -1037,6 +1084,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_1BJ->Write();
   h_dimuonPt_1BJ->Write();
   h_dimuonRap_1BJ->Write();
+  h_dimuonMass_wide_High_1BJ->Write();
+
   h_JetPt_mt1BJ->Write();
   h_JetEta_mt1BJ->Write();
   h_JetPhi_mt1BJ->Write();
@@ -1056,6 +1105,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_mt1BJ->Write();
   h_dimuonPt_mt1BJ->Write();
   h_dimuonRap_mt1BJ->Write();
+  h_dimuonMass_wide_High_mt1BJ->Write();
+
   h_JetPt_bVeto_0J->Write();
   h_JetEta_bVeto_0J->Write();
   h_JetPhi_bVeto_0J->Write();
@@ -1075,6 +1126,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_bVeto_0J->Write();
   h_dimuonPt_bVeto_0J->Write();
   h_dimuonRap_bVeto_0J->Write();
+  h_dimuonMass_wide_High_bVeto_0J->Write();
+
   h_JetPt_bVeto_1J->Write();
   h_JetEta_bVeto_1J->Write();
   h_JetPhi_bVeto_1J->Write();
@@ -1094,6 +1147,8 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_bVeto_1J->Write();
   h_dimuonPt_bVeto_1J->Write();
   h_dimuonRap_bVeto_1J->Write();
+  h_dimuonMass_wide_High_bVeto_1J->Write();
+
   h_JetPt_bVeto_mt1J->Write();
   h_JetEta_bVeto_mt1J->Write();
   h_JetPhi_bVeto_mt1J->Write();
@@ -1113,6 +1168,7 @@ void DYLoop::EndOfJob() {
   h_dimuonMass_wide_bVeto_mt1J->Write();
   h_dimuonPt_bVeto_mt1J->Write();
   h_dimuonRap_bVeto_mt1J->Write();
+  h_dimuonMass_wide_High_bVeto_mt1J->Write();
 
   h_jetID->Write();
 

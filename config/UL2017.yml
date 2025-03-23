@@ -49,9 +49,9 @@ Efficiency:
   BTag:
     Path: ../../EfficiencyTable/BTag/wp_deepJet_2017.csv
   BTagEff:
-    bQuark: ../../EfficiencyTable/BTagEff/TT_2017_h_BTagEff_B.txt
-    cQuark: ../../EfficiencyTable/BTagEff/TT_2017_h_BTagEff_C.txt
-    lQuark: ../../EfficiencyTable/BTagEff/TT_2017_h_BTagEff_L.txt
+    bQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_B.txt
+    cQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_C.txt
+    lQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_L.txt
 
 Pileup:
   Data: PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root
