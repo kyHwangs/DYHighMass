@@ -15,7 +15,65 @@
 #include "TTreeReaderArray.h"
 #include "TTreeReaderValue.h"
 #include "TLorentzVector.h"
+#include "TF1.h"
 
+class SmearingEngine {
+public:
+  SmearingEngine(YAML::Node fConfig) {
+    // MCSmaering:
+    //   barrel:
+    //     smearing: -1
+    //     sigma: -1
+    //   endcap:
+    //     smearing: 0.46
+    //     sigma: 0.0136 + 5.47e-05 * x - 2.3e-08 * x^2 + 4.66e-12 * x^3
+
+    YAML::Node fMCSmearingConf = fConfig["MCSmearing"];
+    std::cout << "SmearingEngine initialized" << std::endl;
+    std::cout << fMCSmearingConf << std::endl;
+
+    fBarrelSmearingFactor = fConfig["barrel"]["smearing"].as<double>();
+    fEndcapSmearingFactor = fConfig["endcap"]["smearing"].as<double>();
+
+    if (fBarrelSmearingFactor == -1)
+      fDoBarrel = false;
+
+    std::string tBarrelSigma = fConfig["barrel"]["sigma"].as<std::string>();
+    fBarrelSmearing = new TF1("fBarrelSmearing", (TString)tBarrelSigma, 0, 5000);
+
+    std::string tEndcapSigma = fConfig["endcap"]["sigma"].as<std::string>();
+    fEndcapSmearing = new TF1("fEndcapSmearing", (TString)tEndcapSigma, 0, 5000);
+
+    std::cout << "######################################################################" << std::endl;
+    std::cout << "                         Muon smearing setting                        " << std::endl;
+    std::cout << "----------------------------------------------------------------------" << std::endl;
+    std::cout << " fBarrelSmearingFactor: " << fBarrelSmearingFactor << std::endl;
+    std::cout << " tBarrelSigma: " << fDoBarrel << std::endl;
+    std::cout << " fDoBarrel: " << fDoBarrel << std::endl;
+    std::cout << " fEndcapSmearingFactor: " << fEndcapSmearingFactor << std::endl;
+    std::cout << " tEndcapSigma: " << tEndcapSigma << std::endl;
+    std::cout << "######################################################################" << std::endl;
+    std::cout << " " << std::endl;
+  }
+  ~SmearingEngine() {}
+
+  bool DoBarrel() { return fDoBarrel; }
+  double GetBarrelSigma(double fP) { return fBarrelSmearing->Eval(fP); }
+  double GetEndcapSigma(double fP) { return fEndcapSmearing->Eval(fP); }
+  double GetBarrelSmearingFactor() { return fBarrelSmearingFactor; }
+  double GetEndcapSmearingFactor() { return fEndcapSmearingFactor; }
+
+  private:
+
+    TF1* fBarrelSmearing;
+    TF1* fEndcapSmearing;
+
+    bool fDoBarrel;
+
+    double fBarrelSmearingFactor;
+    double fEndcapSmearingFactor;
+
+};
 
 class MUON
 {
@@ -45,6 +103,14 @@ public:
     if (!fMuonConf["doRoccoR"].as<bool>())
       fDoRoccoR = false;
 
+    fDoMCSmearing = true;
+    if (!fMuonConf["doMCSmearing"].as<bool>())
+      fDoMCSmearing = false;
+
+    fDoRoccoRandSmearing = false;
+    if (fMuonConf["doRoccoRandSmearing"].as<bool>())
+      fDoRoccoRandSmearing = true;
+
     fRoccoR = new RoccoR(fMuonConf["RoccoR"].as<std::string>());
 
     std::cout << "######################################################################" << std::endl;
@@ -58,8 +124,12 @@ public:
     std::cout << " MassCut: " << fZMassCut << std::endl;
     std::cout << " OppositeCharge: " << fOppositeCharge << std::endl;
     std::cout << " doRoccoR: " << fDoRoccoR << std::endl;
+    std::cout << " doMCSmearing: " << fDoMCSmearing << std::endl;
+    std::cout << " doRoccoRandSmearing: " << fDoRoccoRandSmearing << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
+
+    fSmearingEngine = new SmearingEngine(fMuonConf["MCSmearing"]);
   }
   ~MUON() {}
 
@@ -81,6 +151,9 @@ public:
 
   bool PrepareMuon();
   void PrepareGenMuon();
+
+  TLorentzVector GetRochesterCorrectedMuon(TLorentzVector fMu, int fMuCharge, int nTkLayers);
+  TLorentzVector GetMCSmearing(TLorentzVector fMu);
 
   std::vector<StdMuon> GetMuons() { return fFVecMuons; }
   std::vector<StdMuon> GetGenMuons() { return fFVecGenMuons; }
@@ -119,7 +192,10 @@ private:
   float fISO;
 
   RoccoR* fRoccoR;
+  SmearingEngine* fSmearingEngine;
   bool fDoRoccoR;
+  bool fDoMCSmearing;
+  bool fDoRoccoRandSmearing;
 
   int fLeadingIdx;
   int fSubLeadingIdx;

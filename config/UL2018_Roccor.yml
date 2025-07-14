@@ -8,10 +8,10 @@ Muon:
   ID: global
   ISO: 0.1
   Charge: opposite
-  doRoccoRandSmearing: true
+  doRoccoRandSmearing: false
   doRoccoR: true
   RoccoR: ../../RoccoR/RoccoR2018UL.txt
-  doMCSmearing: true
+  doMCSmearing: false
   MCSmearing:
     barrel:
       smearing: -1

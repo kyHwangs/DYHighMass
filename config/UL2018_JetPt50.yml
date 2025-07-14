@@ -8,10 +8,10 @@ Muon:
   ID: global
   ISO: 0.1
   Charge: opposite
-  doRoccoRandSmearing: true
+  doRoccoRandSmearing: false
   doRoccoR: true
   RoccoR: ../../RoccoR/RoccoR2018UL.txt
-  doMCSmearing: true
+  doMCSmearing: false
   MCSmearing:
     barrel:
       smearing: -1
@@ -27,7 +27,7 @@ Electron:
   ID: TightID
 
 Jet:
-  Pt: 30
+  Pt: 50
   Eta: 2.4
   ID: 6
   PUID: 4
@@ -35,9 +35,9 @@ Jet:
   Cleaning: false
 
 Correction:
-  ID: false
-  ISO: false
-  Trigger: false
+  ID: true
+  ISO: true
+  Trigger: true
   PileUp: true
   L1PreFiring: true
   JetPU: false

@@ -53,9 +53,94 @@ void MUON::PrepareGenMuon() {
   });
 }
 
-//     std::string highPtID_test = "null";
-//     // if (tNtuples->Muon_highPtId->At(i) == (UChar_t)(1)) highPtID_test = "tracker high pT";
-//     // if (tNtuples->Muon_highPtId->At(i) == (UChar_t)(2)) highPtID_test = "global high pT";
+TLorentzVector MUON::GetRochesterCorrectedMuon (TLorentzVector fMu, int fMuCharge, int nTkLayers) {
+
+  double tCorrectionFactor = 1.;
+  if (!fIsMC) {
+    tCorrectionFactor = fRoccoR->kScaleDT(
+      fMuCharge,
+      fMu.Pt(),
+      fMu.Eta(),
+      fMu.Phi(),
+      5,
+      0
+    );
+  } else {
+
+    double drmin = 999.;
+    bool match = false;
+    int genMuonIdx = 0;
+
+    for (int j = 0; j < fFVecGenMuons.size(); j++) {
+      if (fMu.DeltaR(fFVecGenMuons.at(j).fVec) < 0.1 &&
+          fMu.DeltaR(fFVecGenMuons.at(j).fVec) < drmin) {
+        match = true;
+        genMuonIdx = j;
+        drmin = fMu.DeltaR(fFVecGenMuons.at(j).fVec);
+      }
+    }
+
+    if (match) {
+      tCorrectionFactor = fRoccoR->kSpreadMC(
+        fMuCharge,
+        fMu.Pt(),
+        fMu.Eta(),
+        fMu.Phi(),
+        fFVecGenMuons.at(genMuonIdx).fVec.Pt(),
+        5,
+        0
+      );
+    } else {
+      double rndm = gRandom->Rndm();
+      tCorrectionFactor = fRoccoR->kSmearMC(
+        fMuCharge,
+        fMu.Pt(),
+        fMu.Eta(),
+        fMu.Phi(),
+        nTkLayers,
+        rndm,
+        5,
+        0
+      );
+    }
+  }
+  
+  if (tCorrectionFactor != 1.) {
+
+    TLorentzVector fMuReturn;
+    fMuReturn.SetPtEtaPhiM(tCorrectionFactor * fMu.Pt(), fMu.Eta(), fMu.Phi(), fMu.M());
+    return fMuReturn;
+  } else {
+  
+    return fMu;
+  }
+}
+
+TLorentzVector MUON::GetMCSmearing (TLorentzVector fMu) {
+
+  if (std::abs(fMu.Eta()) < 1.2 && fSmearingEngine->DoBarrel()) { // barrel
+
+    double fMomentum = fMu.P();
+    double tSmearingFactor = 1 + gRandom->Gaus(0, fSmearingEngine->GetBarrelSmearingFactor() * fSmearingEngine->GetBarrelSigma(fMomentum));
+
+    TLorentzVector fMuReturn;
+    fMuReturn.SetPtEtaPhiM(tSmearingFactor * fMu.Pt(), fMu.Eta(), fMu.Phi(), fMu.M());
+    return fMuReturn;
+
+  } else if (std::abs(fMu.Eta()) > 1.2 && std::abs(fMu.Eta()) < 2.4) { // endcap
+    
+    double fMomentum = fMu.P();
+    double tSmearingFactor = 1 + gRandom->Gaus(0, fSmearingEngine->GetEndcapSmearingFactor() * fSmearingEngine->GetEndcapSigma(fMomentum));
+
+    TLorentzVector fMuReturn;
+    fMuReturn.SetPtEtaPhiM(tSmearingFactor * fMu.Pt(), fMu.Eta(), fMu.Phi(), fMu.M());
+    return fMuReturn;
+    
+  } else {
+
+    return fMu;
+  }
+}
 
 bool MUON::PrepareMuon() {
 
@@ -65,63 +150,33 @@ bool MUON::PrepareMuon() {
     if ( !(Muon_highPtId->At(i) == fID && Muon_tkRelIso->At(i) < 0.10) )
       continue;
 
+    if (std::abs(Muon_eta->At(i)) > 2.4)
+      continue;
+
     TLorentzVector mu;
     mu.SetPtEtaPhiM(Muon_pt->At(i) * Muon_tunepRelPt->At(i), Muon_eta->At(i), Muon_phi->At(i), Muon_mass->At(i));
 
-    TLorentzVector mu_corr = mu;
+    TLorentzVector mu_corr;
 
-    if (fDoRoccoR) {
-      if (!fIsMC) {
-        mu_corr *= fRoccoR->kScaleDT(
-          Muon_charge->At(i),
-          mu_corr.Pt(),
-          mu_corr.Eta(),
-          mu_corr.Phi(),
-          5,
-          0
-        );
-      } else {
 
-        double drmin = 999.;
-        bool match = false;
-        int genMuonIdx = 0;
+    if (fDoRoccoR)
+      mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
 
-        for (int j = 0; j < fFVecGenMuons.size(); j++) {
-          if (mu_corr.DeltaR(fFVecGenMuons.at(j).fVec) < 0.1 &&
-              mu_corr.DeltaR(fFVecGenMuons.at(j).fVec) < drmin) {
-            match = true;
-            genMuonIdx = j;
-            drmin = mu_corr.DeltaR(fFVecGenMuons.at(j).fVec);
-          }
-        }
+    // if (!fDoRoccoRandSmearing && fDoRoccoR) {
+    //   if (Muon_pt->At(i) < 200.) mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
+    //   else                       mu_corr = mu;
+    // }
 
-        if (match) {
-          mu_corr *= fRoccoR->kSpreadMC(
-            Muon_charge->At(i),
-            mu_corr.Pt(),
-            mu_corr.Eta(),
-            mu_corr.Phi(),
-            fFVecGenMuons.at(genMuonIdx).fVec.Pt(),
-            5,
-            0
-          );
-        } else {
-          double rndm = gRandom->Rndm();
-          mu_corr *= fRoccoR->kSmearMC(
-            Muon_charge->At(i),
-            mu_corr.Pt(),
-            mu_corr.Eta(),
-            mu_corr.Phi(),
-            Muon_nTrackerLayers->At(i),
-            rndm,
-            5,
-            0
-          );
-        }
-      }
-    }
+    // if (!fDoRoccoRandSmearing && fDoMCSmearing) {
+    //   mu_corr = GetMCSmearing(mu);
+    // }
 
-    if ( !(mu_corr.Pt() > fSubLeadingMuonPt) || !(std::abs(mu_corr.Eta()) < 2.4) )
+    // if (fDoRoccoRandSmearing) {
+    //   if (Muon_pt->At(i) < 200.) mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
+    //   else                       mu_corr = GetMCSmearing(mu);
+    // }
+
+    if ( !(mu_corr.Pt() > fSubLeadingMuonPt) )
       continue;
 
     StdMuon mu_std = StdMuon(mu_corr, mu, Muon_charge->At(i));
