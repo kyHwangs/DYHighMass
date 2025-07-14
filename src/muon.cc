@@ -159,22 +159,11 @@ bool MUON::PrepareMuon() {
     TLorentzVector mu_corr;
 
 
-    if (fDoRoccoR)
+    if (fDoRoccoR && !fDoMCSmearing)
       mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
 
-    // if (!fDoRoccoRandSmearing && fDoRoccoR) {
-    //   if (Muon_pt->At(i) < 200.) mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
-    //   else                       mu_corr = mu;
-    // }
-
-    // if (!fDoRoccoRandSmearing && fDoMCSmearing) {
-    //   mu_corr = GetMCSmearing(mu);
-    // }
-
-    // if (fDoRoccoRandSmearing) {
-    //   if (Muon_pt->At(i) < 200.) mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
-    //   else                       mu_corr = GetMCSmearing(mu);
-    // }
+    if (!fDoRoccoR && fDoMCSmearing)
+      mu_corr = GetMCSmearing(mu);
 
     if ( !(mu_corr.Pt() > fSubLeadingMuonPt) )
       continue;

@@ -20,17 +20,8 @@
 class SmearingEngine {
 public:
   SmearingEngine(YAML::Node fConfig) {
-    // MCSmaering:
-    //   barrel:
-    //     smearing: -1
-    //     sigma: -1
-    //   endcap:
-    //     smearing: 0.46
-    //     sigma: 0.0136 + 5.47e-05 * x - 2.3e-08 * x^2 + 4.66e-12 * x^3
 
     YAML::Node fMCSmearingConf = fConfig["MCSmearing"];
-    std::cout << "SmearingEngine initialized" << std::endl;
-    std::cout << fMCSmearingConf << std::endl;
 
     fBarrelSmearingFactor = fConfig["barrel"]["smearing"].as<double>();
     fEndcapSmearingFactor = fConfig["endcap"]["smearing"].as<double>();
@@ -107,10 +98,6 @@ public:
     if (!fMuonConf["doMCSmearing"].as<bool>())
       fDoMCSmearing = false;
 
-    fDoRoccoRandSmearing = false;
-    if (fMuonConf["doRoccoRandSmearing"].as<bool>())
-      fDoRoccoRandSmearing = true;
-
     fRoccoR = new RoccoR(fMuonConf["RoccoR"].as<std::string>());
 
     std::cout << "######################################################################" << std::endl;
@@ -125,9 +112,13 @@ public:
     std::cout << " OppositeCharge: " << fOppositeCharge << std::endl;
     std::cout << " doRoccoR: " << fDoRoccoR << std::endl;
     std::cout << " doMCSmearing: " << fDoMCSmearing << std::endl;
-    std::cout << " doRoccoRandSmearing: " << fDoRoccoRandSmearing << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
+
+    if (fDoRoccoR && fDoMCSmearing) {
+      std::cout << "Error: doRoccoR and doMCSmearing cannot be true at the same time" << std::endl;
+      exit(1);
+    }
 
     fSmearingEngine = new SmearingEngine(fMuonConf["MCSmearing"]);
   }
@@ -195,7 +186,6 @@ private:
   SmearingEngine* fSmearingEngine;
   bool fDoRoccoR;
   bool fDoMCSmearing;
-  bool fDoRoccoRandSmearing;
 
   int fLeadingIdx;
   int fSubLeadingIdx;
