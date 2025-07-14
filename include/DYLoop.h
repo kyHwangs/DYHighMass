@@ -144,6 +144,9 @@ public:
     else hist->Fill(value, weight);
   }
 
+  std::string getCurrentTimeString();
+  std::string formatDuration(const std::chrono::high_resolution_clock::duration& duration); 
+
   void SetEra(TString fEra_) { fEra = fEra_; }
   void SetSample(TString fSampleName_) { fSampleName = fSampleName_; }
   void SetJobID(int fJobID_) { fJobID = fJobID_; }

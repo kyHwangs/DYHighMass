@@ -14,10 +14,10 @@ Muon:
   MCSmearing:
     barrel:
       smearing: -1
-      sigma: -1
+      sigma: 0.0108 + 5.93e-5 * x -3.08e-8 * x^2 + 6.04e-12 * x^3
     endcap:
       smearing: 0.46
-      sigma: 0.0136 + 5.47e-05 * x - 2.3e-08 * x^2 + 4.66e-12 * x^3
+      sigma: 0.0136 + 5.47e-5 * x -2.3e-8 * x^2 + 4.66e-12 * x^3
 
 Electron:
   Pt: 10

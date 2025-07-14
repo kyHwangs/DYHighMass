@@ -11,6 +11,32 @@
 
 #include "TH1.h"
 
+std::string DYLoop::getCurrentTimeString() {
+  auto now = std::chrono::system_clock::now();
+  auto time_t = std::chrono::system_clock::to_time_t(now);
+  auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()) % 1000;
+  
+  std::stringstream ss;
+  ss << std::put_time(std::localtime(&time_t), "%H:%M:%S");
+  ss << "." << std::setfill('0') << std::setw(3) << ms.count();
+  return ss.str();
+}
+
+std::string DYLoop::formatDuration(const std::chrono::high_resolution_clock::duration& duration) {
+  auto total_ms = std::chrono::duration_cast<std::chrono::milliseconds>(duration).count();
+  auto minutes = total_ms / 60000;
+  auto seconds = (total_ms % 60000) / 1000;
+  auto milliseconds = total_ms % 1000;
+  
+  std::stringstream ss;
+  if (minutes > 0)
+    ss << minutes << ":" << std::setfill('0') << std::setw(2) << seconds;
+  else
+    ss << "0:" << std::setfill('0') << std::setw(2) << seconds;
+
+  return ss.str();
+}
+
 void DYLoop::SetNT() {
 
 }
@@ -23,11 +49,26 @@ void DYLoop::Loop() {
   double tTotalGenWeight = 0;
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
+    
 
-    if (tMaxLoop == 10001) break;
-
-    if ( static_cast<int>(tMaxLoop) % 10000 == 0 )
-      std::cout << "Loop: " << tMaxLoop << " / " << fMaxEntries << " | " << (100. * tMaxLoop / fMaxEntries) << " %" << std::endl;
+    if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
+      auto tCurrentTime = std::chrono::system_clock::now();
+      auto tElapsed = tCurrentTime - tTimeBegin;
+      double tProgressPercent = 100. * tMaxLoop / fMaxEntries;
+      
+      // 총 예상 시간 계산: 현재 걸린 시간 * 100 / 진행률
+      auto tEstimatedTotal = std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(
+          tElapsed * (100.0 / tProgressPercent)
+      );
+      
+      std::string tElapsedStr = formatDuration(std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(tElapsed));
+      std::string tEstimatedStr = formatDuration(tEstimatedTotal);
+      
+      std::string tProgress = Form("Loop: %.0f / %.0f | %.2f %% | %s / %s", 
+                                   tMaxLoop, fMaxEntries, tProgressPercent,
+                                   tElapsedStr.c_str(), tEstimatedStr.c_str());
+      std::cout << tProgress << std::endl;
+    }
 
     if (fIsMC) {
       fHistoSet->FillHisto((std::string)"h_PileUp_Count_Interaction_before", **(fNtuples->Pileup_nTrueInt), 1.);
@@ -64,7 +105,7 @@ void DYLoop::Loop() {
 
       fHistoSet->FillHisto((std::string)"h_LHEDimuonMass", tDiMuonMassLHE, tEventGenWeight);
     }
-
+    
     float tPUReweightingFactor = 1;
     if (fIsMC && fDoPU) {
 
@@ -87,7 +128,7 @@ void DYLoop::Loop() {
 
     if ( !(fMuons->PrepareMuon()) )
       continue;
-
+    
     // if ( !(fElecs->PrepareElec()) )
     //   continue;
 
@@ -220,25 +261,6 @@ void DYLoop::Loop() {
     tTotalGenWeight += tEventGenWeight;
 
     fHistoSet->FillHisto((std::string)"h_nPVGood_Count", **(fNtuples->PV_npvsGood), tEventGenWeight);
-
-
-    // auto vJets = fJets->GetJets();
-    // auto vBJets = fJets->GetBJets();
-
-    // int nJets = vJets.size();
-    // int nBJets = vBJets.size();
-
-    // auto tLeadingMuon = fMuons->GetLeadingMuon();
-    // auto tFVecLeadingMuon = tLeadingMuon.fVec;
-    // auto tFVecRawLeadingMuon = tLeadingMuon.fVecRaw;
-
-    // auto tSubLeadingMuon = fMuons->GetSubLeadingMuon();
-    // auto tFVecSubLeadingMuon = tSubLeadingMuon.fVec;
-    // auto tFVecRawSubLeadingMuon = tSubLeadingMuon.fVecRaw;
-
-    // auto tDiMuon = tFVecLeadingMuon + tFVecSubLeadingMuon;
-
-
     fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, nJets, nBJets, tEventGenWeight);
     fHistoSet->FillJet(&vJets, &vBJets, tDiMuon.M(), tEventGenWeight);
 

@@ -1,15 +1,15 @@
 Z:
-  MassCut: 10
+  MassCut: 200
 
 Muon:
-  LeadingMuonPt: 26
-  SubLeadingMuonPt: 10
+  LeadingMuonPt: 52
+  SubLeadingMuonPt: 15
   Eta: 2.4
-  ID: TightID
-  ISO: TightPFRelIso
+  ID: global
+  ISO: 0.1
   Charge: opposite
   doRoccoR: true
-  RoccoR: ../../RoccoR/RoccoR2018UL.txt
+  RoccoR: ../../RoccoR/RoccoR2017UL.txt
 
 Electron:
   Pt: 10
@@ -21,11 +21,9 @@ Jet:
   Pt: 30
   Eta: 2.4
   ID: 6
-  BTag: 0.4168
+  PUID: 4
+  BTag: 0.3040
   Cleaning: false
-
-Trigger:
-  IsoMu24
 
 Correction:
   ID: true
@@ -33,20 +31,34 @@ Correction:
   Trigger: true
   PileUp: true
   L1PreFiring: true
+  JetPU: false
+  BTag: false
 
 Efficiency:
-  ID: Run2018_UL_ID.txt
-  ISO: Run2018_UL_ISO.txt
-  Trigger_data: Run2018_UL_TRIG_DATAeff.txt
-  Trigger_MC: Run2018_UL_TRIG_MCeff.txt
+  ID:
+    Path: ../../correctionlib/2017_muon_Z.json
+    Name: NUM_HighPtID_DEN_genTracks
+  ISO:
+    Path: ../../correctionlib/2017_muon_Z.json
+    Name: NUM_LooseRelTkIso_DEN_HighPtIDandIPCut
+  Trigger:
+    Path: ../../correctionlib/medium/2017.json
+    Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+  JetPU:
+    Path: ../../EfficiencyTable/JetPUID/2017_L.csv
+  BTag:
+    Path: ../../EfficiencyTable/BTag/wp_deepJet_2017.csv
+  BTagEff:
+    bQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_B.txt
+    cQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_C.txt
+    lQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_L.txt
 
 Pileup:
-  doPileUp: false
-  Data: PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root
-  MC: MC_2018.root
+  Data: PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root
+  MC: MC_2017.root
 
 Info:
-  Era: 2018
+  Era: 2017
 
 Sample:
   NNLO_inc:
@@ -164,22 +176,27 @@ Sample:
     IsMC: true
     UnitPerJob: 1
 
-  Run2018A:
-    Name: SingleMuon_Run2018A
+  Run2017B:
+    Name: SingleMuon_Run2017B
     IsMC: false
     UnitPerJob: 1
 
-  Run2018B:
-    Name: SingleMuon_Run2018B
+  Run2017C:
+    Name: SingleMuon_Run2017C
     IsMC: false
     UnitPerJob: 1
 
-  Run2018C:
-    Name: SingleMuon_Run2018C
+  Run2017D:
+    Name: SingleMuon_Run2017D
     IsMC: false
     UnitPerJob: 1
 
-  Run2018D:
-    Name: SingleMuon_Run2018D
+  Run2017E:
+    Name: SingleMuon_Run2017E
+    IsMC: false
+    UnitPerJob: 1
+
+  Run2017F:
+    Name: SingleMuon_Run2017F
     IsMC: false
     UnitPerJob: 1

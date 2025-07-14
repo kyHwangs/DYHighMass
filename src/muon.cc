@@ -118,7 +118,7 @@ TLorentzVector MUON::GetRochesterCorrectedMuon (TLorentzVector fMu, int fMuCharg
 
 TLorentzVector MUON::GetMCSmearing (TLorentzVector fMu) {
 
-  if (std::abs(fMu.Eta()) < 1.2 && fSmearingEngine->DoBarrel()) { // barrel
+  if (std::abs(fMu.Eta()) <= 1.2 && fSmearingEngine->DoBarrel()) { // barrel
 
     double fMomentum = fMu.P();
     double tSmearingFactor = 1 + gRandom->Gaus(0, fSmearingEngine->GetBarrelSmearingFactor() * fSmearingEngine->GetBarrelSigma(fMomentum));
@@ -158,13 +158,15 @@ bool MUON::PrepareMuon() {
 
     TLorentzVector mu_corr;
 
-
     if (fDoRoccoR && !fDoMCSmearing)
       mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
 
     if (!fDoRoccoR && fDoMCSmearing)
       mu_corr = GetMCSmearing(mu);
 
+    if (!fDoRoccoR && !fDoMCSmearing)
+      mu_corr = mu;
+    
     if ( !(mu_corr.Pt() > fSubLeadingMuonPt) )
       continue;
 
