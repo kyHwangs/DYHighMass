@@ -127,7 +127,7 @@ TLorentzVector MUON::GetMCSmearing (TLorentzVector fMu) {
     fMuReturn.SetPtEtaPhiM(tSmearingFactor * fMu.Pt(), fMu.Eta(), fMu.Phi(), fMu.M());
     return fMuReturn;
 
-  } else if (std::abs(fMu.Eta()) > 1.2 && std::abs(fMu.Eta()) < 2.4) { // endcap
+  } else if (std::abs(fMu.Eta()) > 1.2 && std::abs(fMu.Eta()) < 2.4 && fSmearingEngine->DoEndcap()) { // endcap
     
     double fMomentum = fMu.P();
     double tSmearingFactor = 1 + gRandom->Gaus(0, fSmearingEngine->GetEndcapSmearingFactor() * fSmearingEngine->GetEndcapSigma(fMomentum));

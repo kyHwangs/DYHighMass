@@ -29,6 +29,9 @@ public:
     if (fBarrelSmearingFactor == -1)
       fDoBarrel = false;
 
+    if (fEndcapSmearingFactor == -1)
+      fDoEndcap = false;
+
     std::string tBarrelSigma = fConfig["barrel"]["sigma"].as<std::string>();
     fBarrelSmearing = new TF1("fBarrelSmearing", (TString)tBarrelSigma, 0, 5000);
 
@@ -39,16 +42,18 @@ public:
     std::cout << "                         Muon smearing setting                        " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << " fBarrelSmearingFactor: " << fBarrelSmearingFactor << std::endl;
-    std::cout << " tBarrelSigma: " << fDoBarrel << std::endl;
+    std::cout << " tBarrelSigma: " << tBarrelSigma << std::endl;
     std::cout << " fDoBarrel: " << fDoBarrel << std::endl;
     std::cout << " fEndcapSmearingFactor: " << fEndcapSmearingFactor << std::endl;
     std::cout << " tEndcapSigma: " << tEndcapSigma << std::endl;
+    std::cout << " fDoEndcap: " << fDoEndcap << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
   }
   ~SmearingEngine() {}
 
   bool DoBarrel() { return fDoBarrel; }
+  bool DoEndcap() { return fDoEndcap; }
   double GetBarrelSigma(double fP) { return fBarrelSmearing->Eval(fP); }
   double GetEndcapSigma(double fP) { return fEndcapSmearing->Eval(fP); }
   double GetBarrelSmearingFactor() { return fBarrelSmearingFactor; }
@@ -60,6 +65,7 @@ public:
     TF1* fEndcapSmearing;
 
     bool fDoBarrel;
+    bool fDoEndcap;
 
     double fBarrelSmearingFactor;
     double fEndcapSmearingFactor;
