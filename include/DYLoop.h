@@ -45,6 +45,9 @@ public:
     fDoL1Pre = false;
     fDoL1Pre = fConfig["Correction"]["L1PreFiring"].as<bool>();
 
+    fDoReco = false;
+    fDoReco = fConfig["Correction"]["Reco"].as<bool>(); 
+    fReco_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Reco"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Reco"]["Name"].as<std::string>());
 
     fDoID = false;
     fDoID = fConfig["Correction"]["ID"].as<bool>();
@@ -109,6 +112,8 @@ public:
     std::cout << "######################################################################" << std::endl;
     std::cout << "                             Loop setting                             " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
+    std::cout << " fDoReco: " << fDoReco << " " << fConfig["Efficiency"]["Reco"]["Path"].as<std::string>() << std::endl;
+    std::cout << "          " << fDoReco << " " << fConfig["Efficiency"]["Reco"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoID: " << fDoID << " " << fConfig["Efficiency"]["ID"]["Path"].as<std::string>() << std::endl;
     std::cout << "        " << fDoID << " " << fConfig["Efficiency"]["ID"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoISO: " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Path"].as<std::string>() << std::endl;
@@ -171,10 +176,12 @@ private:
   bool fIsMC;
 
   LumiReWeighting* fPuReweighting;
+  std::shared_ptr<const correction::Correction> fReco_SF;
   std::shared_ptr<const correction::Correction> fID_SF;
   std::shared_ptr<const correction::Correction> fISO_SF;
   std::shared_ptr<const correction::Correction> fTRIG_SF;
 
+  bool fDoReco;
   bool fDoID;
   bool fDoISO;
   bool fDoTRIGG;

@@ -26,9 +26,11 @@ public:
     fBarrelSmearingFactor = fConfig["barrel"]["smearing"].as<double>();
     fEndcapSmearingFactor = fConfig["endcap"]["smearing"].as<double>();
 
+    fDoBarrel = true;
     if (fBarrelSmearingFactor == -1)
       fDoBarrel = false;
 
+    fDoEndcap = true;
     if (fEndcapSmearingFactor == -1)
       fDoEndcap = false;
 

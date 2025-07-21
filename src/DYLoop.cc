@@ -151,6 +151,33 @@ void DYLoop::Loop() {
 
     auto tDiMuon = tFVecLeadingMuon + tFVecSubLeadingMuon;
 
+    if (fIsMC && fDoReco) {
+
+      double tRecoEffSFLeading = 0;
+
+      if (tFVecRawLeadingMuon.P() < 15.) tRecoEffSFLeading = 0;
+      else                                tRecoEffSFLeading = fID_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.P(), "nominal"});
+
+      tEventGenWeight *= tRecoEffSFLeading;
+
+
+      double tRecoEffSFSubleading = 0;
+
+      if (tFVecRawSubLeadingMuon.P() < 15.) tRecoEffSFSubleading = 0;
+      else                                   tRecoEffSFSubleading = fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.P(), "nominal"});
+
+      tEventGenWeight *= tRecoEffSFSubleading;
+
+      // std::cout << "######################################################################" << std::endl;
+      // std::cout << "                       Reco efficiency debugging                      " << std::endl;
+      // std::cout << "----------------------------------------------------------------------" << std::endl;
+      // std::cout << " LEADING: " << tFVecRawLeadingMuon.P() << " " << tFVecRawLeadingMuon.Eta() << " " << tRecoEffSFLeading << std::endl;
+      // std::cout << " SUB-LLEADING: " << tFVecRawSubLeadingMuon.P() << " " << tFVecRawSubLeadingMuon.Eta() << " " << tRecoEffSFSubleading << std::endl;
+      // std::cout << "######################################################################" << std::endl;
+      // std::cout << " " << std::endl;
+
+    }
+
     if (fIsMC && fDoID) {
 
       double tIDEffSFLeading = 0;
