@@ -30,6 +30,7 @@ void MUON::init(TTreeReader* fTreeReader) {
   Muon_highPtId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_highPtId");
   Muon_tkRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_tkRelIso");
   Muon_nTrackerLayers = new TTreeReaderArray<int>(*fTreeReader, "Muon_nTrackerLayers");
+  Muon_highPurity = new TTreeReaderArray<bool>(*fTreeReader, "Muon_highPurity");
 }
 
 void MUON::PrepareGenMuon() {
@@ -152,6 +153,9 @@ bool MUON::PrepareMuon() {
 
     if (std::abs(Muon_eta->At(i)) > 2.4)
       continue;
+
+    // if (!Muon_highPurity->At(i))
+    //   continue;
 
     TLorentzVector mu;
     mu.SetPtEtaPhiM(Muon_pt->At(i) * Muon_tunepRelPt->At(i), Muon_eta->At(i), Muon_phi->At(i), Muon_mass->At(i));
