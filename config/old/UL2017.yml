@@ -8,8 +8,16 @@ Muon:
   ID: global
   ISO: 0.1
   Charge: opposite
-  doRoccoR: true
-  RoccoR: ../../RoccoR/RoccoR2017UL.txt
+  doRoccoR: false
+  RoccoR: ../../RoccoR/RoccoR2018UL.txt
+  doMCSmearing: false
+  MCSmearing:
+    barrel:
+      smearing: -1
+      sigma: 0.0104 +6.11e-5 * x -3.31e-8 * x^2 + 6.73e-12 * x^3
+    endcap:
+      smearing: 0.3202
+      sigma: 0.0121 + 5.92e-5 * x -2.61e-8 * x^2 + 5.11e-12 * x^3
 
 Electron:
   Pt: 10

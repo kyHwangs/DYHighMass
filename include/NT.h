@@ -61,12 +61,15 @@ public:
 
     while (fscanf(fList, "%s", fFile) != EOF)
     {
-        std::string fFileUpdated = (std::string)"\t" + fFile;
-        std::cout << " " << fFileUpdated << std::endl;
-        fChain->Add((TString)fFileUpdated);
-        double tMaxEvent = fChain->GetEntries();
-        fMaxEvent = tMaxEvent;
-        fMaxEventVec.push_back(tMaxEvent);
+      std::string fFileUpdated = (std::string)fFile;
+
+      fFileUpdated.erase(fFileUpdated.begin(), fFileUpdated.begin() + 28);
+      std::cout << " " << fFileUpdated << std::endl;
+      
+      fChain->Add((TString)fFileUpdated);
+      double tMaxEvent = fChain->GetEntries();
+      fMaxEvent = tMaxEvent;
+      fMaxEventVec.push_back(tMaxEvent);
     }
 
     std::cout << "######################################################################" << std::endl;

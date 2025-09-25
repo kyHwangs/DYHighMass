@@ -59,8 +59,19 @@ target_link_libraries(
   ${CMAKE_DL_LIBS}
 )
 
+add_executable(analysis_EMU main/analysis_EMU.cc ${sources} ${headers})
+
+target_link_libraries(
+  analysis_EMU
+  ${ROOT_LIBRARIES}
+  ${YAML_CPP_LIBRARIES}
+  correctionlib
+  ${CMAKE_DL_LIBS}
+)
+
+
 install(FILES
   DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
 
-install(TARGETS analysis DESTINATION bin)
+install(TARGETS analysis analysis_EMU DESTINATION bin)

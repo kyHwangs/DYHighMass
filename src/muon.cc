@@ -154,8 +154,8 @@ bool MUON::PrepareMuon() {
     if (std::abs(Muon_eta->At(i)) > 2.4)
       continue;
 
-    // if (!Muon_highPurity->At(i))
-    //   continue;
+    if (!Muon_highPurity->At(i))
+      continue;
 
     TLorentzVector mu;
     mu.SetPtEtaPhiM(Muon_pt->At(i) * Muon_tunepRelPt->At(i), Muon_eta->At(i), Muon_phi->At(i), Muon_mass->At(i));

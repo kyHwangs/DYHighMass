@@ -10,7 +10,7 @@ Muon:
   Charge: opposite
   doRoccoR: false
   RoccoR: ../../RoccoR/RoccoR2018UL.txt
-  doMCSmearing: false
+  doMCSmearing: true
   MCSmearing:
     barrel:
       smearing: -1
@@ -34,21 +34,25 @@ Jet:
   Cleaning: false
 
 Correction:
+  Reco: true
   ID: true
   ISO: true
   Trigger: true
   PileUp: true
   L1PreFiring: true
-  JetPU: false
-  BTag: false
+  JetPU: true
+  BTag: true
 
 Efficiency:
+  Reco:
+    Path: ../../EfficiencyTable/HighPt/ScaleFactors_Muon_highPt_RECO_2016_preVFP_schemaV2.json
+    Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
   ID:
-    Path: ../../correctionlib/2016_preVFP_muon_Z.json
-    Name: NUM_HighPtID_DEN_genTracks
+    Path: ../../EfficiencyTable/HighPt/ScaleFactors_Muon_highPt_IDISO_2016_preVFP_schemaV2.json
+    Name: NUM_HighPtID_DEN_GlobalMuonProbes
   ISO:
-    Path: ../../correctionlib/2016_preVFP_muon_Z.json
-    Name: NUM_LooseRelTkIso_DEN_HighPtIDandIPCut
+    Path: ../../EfficiencyTable/HighPt/ScaleFactors_Muon_highPt_IDISO_2016_preVFP_schemaV2.json
+    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
   Trigger:
     Path: ../../correctionlib/medium/2016_preVFP.json
     Name: NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose

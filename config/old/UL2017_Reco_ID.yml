@@ -36,12 +36,12 @@ Jet:
 Correction:
   Reco: true
   ID: true
-  ISO: true
+  ISO: false
   Trigger: false
   PileUp: true
   L1PreFiring: true
-  JetPU: true
-  BTag: true
+  JetPU: false
+  BTag: false
 
 Efficiency:
   Reco:

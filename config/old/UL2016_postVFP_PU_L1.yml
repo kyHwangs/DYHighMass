@@ -10,14 +10,14 @@ Muon:
   Charge: opposite
   doRoccoR: false
   RoccoR: ../../RoccoR/RoccoR2018UL.txt
-  doMCSmearing: true
+  doMCSmearing: false
   MCSmearing:
     barrel:
       smearing: -1
-      sigma: 0.0104 +6.11e-5 * x -3.31e-8 * x^2 + 6.73e-12 * x^3
+      sigma: 0.0102 + 6.77e-5 * x -3.72e-8 * x^2 + 8.53e-12 * x^3
     endcap:
-      smearing: 0.3202
-      sigma: 0.0121 + 5.92e-5 * x -2.61e-8 * x^2 + 5.11e-12 * x^3
+      smearing: -1
+      sigma: 0.0129 + 6.48e-5 * x -3.04e-8 * x^2 + 6.63e-12 * x^3
 
 Electron:
   Pt: 10
@@ -30,47 +30,43 @@ Jet:
   Eta: 2.4
   ID: 6
   PUID: 4
-  BTag: 0.3040
+  BTag: 0.2489
   Cleaning: false
 
 Correction:
-  Reco: true
-  ID: true
-  ISO: true
+  ID: false
+  ISO: false
   Trigger: false
   PileUp: true
   L1PreFiring: true
-  JetPU: true
-  BTag: true
+  JetPU: false
+  BTag: false
 
 Efficiency:
-  Reco:
-    Path: ../../EfficiencyTable/HighPt/ScaleFactors_Muon_highPt_RECO_2017_schemaV2.json
-    Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
   ID:
-    Path: ../../EfficiencyTable/HighPt/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
-    Name: NUM_HighPtID_DEN_GlobalMuonProbes
+    Path: ../../correctionlib/2016_postVFP_muon_Z.json
+    Name: NUM_HighPtID_DEN_genTracks
   ISO:
-    Path: ../../EfficiencyTable/HighPt/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
-    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
+    Path: ../../correctionlib/2016_postVFP_muon_Z.json
+    Name: NUM_LooseRelTkIso_DEN_HighPtIDandIPCut
   Trigger:
-    Path: ../../correctionlib/medium/2017.json
-    Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+    Path: ../../correctionlib/medium/2016_postVFP.json
+    Name: NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
   JetPU:
-    Path: ../../EfficiencyTable/JetPUID/2017_L.csv
+    Path: ../../EfficiencyTable/JetPUID/2016_L.csv
   BTag:
-    Path: ../../EfficiencyTable/BTag/wp_deepJet_2017.csv
+    Path: ../../EfficiencyTable/BTag/wp_deepJet_2016postVFP.csv
   BTagEff:
-    bQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_B.txt
-    cQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_C.txt
-    lQuark: ../../EfficiencyTable/BTagEff/DY_2017_h_BTagEff_L.txt
+    bQuark: ../../EfficiencyTable/BTagEff/DY_2016_postVFP_h_BTagEff_B.txt
+    cQuark: ../../EfficiencyTable/BTagEff/DY_2016_postVFP_h_BTagEff_C.txt
+    lQuark: ../../EfficiencyTable/BTagEff/DY_2016_postVFP_h_BTagEff_L.txt
 
 Pileup:
-  Data: PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root
-  MC: MC_2017.root
+  Data: PileupHistogram-goldenJSON-13tev-2016-postVFP-69200ub-99bins.root
+  MC: MC_2016.root
 
 Info:
-  Era: 2017
+  Era: 2016_postVFP
 
 Sample:
   NNLO_inc:
@@ -188,27 +184,17 @@ Sample:
     IsMC: true
     UnitPerJob: 1
 
-  Run2017B:
-    Name: SingleMuon_Run2017B
+  Run2016F:
+    Name: SingleMuon_Run2016F
     IsMC: false
     UnitPerJob: 1
 
-  Run2017C:
-    Name: SingleMuon_Run2017C
+  Run2016G:
+    Name: SingleMuon_Run2016G
     IsMC: false
     UnitPerJob: 1
 
-  Run2017D:
-    Name: SingleMuon_Run2017D
-    IsMC: false
-    UnitPerJob: 1
-
-  Run2017E:
-    Name: SingleMuon_Run2017E
-    IsMC: false
-    UnitPerJob: 1
-
-  Run2017F:
-    Name: SingleMuon_Run2017F
+  Run2016H:
+    Name: SingleMuon_Run2016H
     IsMC: false
     UnitPerJob: 1
