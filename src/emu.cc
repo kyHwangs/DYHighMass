@@ -149,24 +149,9 @@ bool EMU::PrepareEMUPair() {
     return lhs.fVec.Pt() > rhs.fVec.Pt();
   });
 
-  // for (int i = 0; i < fFVecMuons.size(); i++) {
-  //   for (int j = 0; j < fFVecElecs.size(); j++) {
-  //     if (fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge > 0)
-  //       continue;
-
-  //     fSelectedMuonIdx = i;
-  //     fSelectedElecIdx = j;
-  //     break;
-  //   }
-  // }
-
   for (int i = 0; i < fFVecMuons.size(); i++) {
-    for (int j = 0; j < fFVecMuons.size(); j++) {
-
-      if (i == j)
-        continue;
-
-      if (fFVecMuons.at(i).fCharge * fFVecMuons.at(j).fCharge > 0)
+    for (int j = 0; j < fFVecElecs.size(); j++) {
+      if (fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge > 0)
         continue;
 
       fSelectedMuonIdx = i;

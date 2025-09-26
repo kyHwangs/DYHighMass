@@ -1,6 +1,8 @@
 #ifndef options_h
 #define options_h 1
 
+#include "TString.h"
+
 #include <map>
 #include <iostream>
 #include <vector>

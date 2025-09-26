@@ -164,8 +164,7 @@ public:
   std::vector<EMU_ELEC> GetElecs() { return fFVecElecs; }
 
   EMU_MUON GetMuon() { return fFVecMuons.at(fSelectedMuonIdx); }
-  EMU_MUON GetElec() { return fFVecMuons.at(fSelectedElecIdx); }
-  // EMU_ELEC GetElec() { return fFVecElecs.at(fSelectedElecIdx); }
+  EMU_ELEC GetElec() { return fFVecElecs.at(fSelectedElecIdx); }
 
   TTreeReaderValue<unsigned int>* nMuon;
   TTreeReaderArray<float>* Muon_pt;

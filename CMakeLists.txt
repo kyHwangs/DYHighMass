@@ -49,10 +49,20 @@ install(TARGETS DYHighMassLIB EXPORT DYHighMassTarget
   PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" COMPONENT dev
 )
 
-add_executable(analysis main/analysis.cc ${sources} ${headers})
+# add_executable(analysis main/analysis.cc ${sources} ${headers})
+
+# target_link_libraries(
+#   analysis
+#   ${ROOT_LIBRARIES}
+#   ${YAML_CPP_LIBRARIES}
+#   correctionlib
+#   ${CMAKE_DL_LIBS}
+# )
+
+add_executable(analysis_MUMU main/analysis_MUMU.cc ${sources} ${headers})
 
 target_link_libraries(
-  analysis
+  analysis_MUMU
   ${ROOT_LIBRARIES}
   ${YAML_CPP_LIBRARIES}
   correctionlib
@@ -69,9 +79,39 @@ target_link_libraries(
   ${CMAKE_DL_LIBS}
 )
 
+add_executable(analysis_EE main/analysis_EE.cc ${sources} ${headers})
+
+target_link_libraries(
+  analysis_EE
+  ${ROOT_LIBRARIES}
+  ${YAML_CPP_LIBRARIES}
+  correctionlib
+  ${CMAKE_DL_LIBS}
+)
+
+add_executable(generate_script main/generate_script.cc ${sources} ${headers})
+
+target_link_libraries(
+  generate_script
+  ${ROOT_LIBRARIES}
+  ${YAML_CPP_LIBRARIES}
+  correctionlib
+  ${CMAKE_DL_LIBS}
+)
+
+add_executable(job_summary main/job_summary.cc ${sources} ${headers})
+
+target_link_libraries(
+  job_summary
+  ${ROOT_LIBRARIES}
+  ${YAML_CPP_LIBRARIES}
+  correctionlib
+  ${CMAKE_DL_LIBS}
+)
+
 
 install(FILES
   DESTINATION "${CMAKE_INSTALL_LIBDIR}"
 )
 
-install(TARGETS analysis analysis_EMU DESTINATION bin)
+install(TARGETS analysis_MUMU analysis_EMU analysis_EE generate_script job_summary DESTINATION bin)
