@@ -20,9 +20,9 @@
 
 int main(int argc, char* argv[]) {
 
-  options* opt = new options(argc, argv);
+  options* fOpt = new options(argc, argv);
 
-  DYLoopEE* fLoops = new DYLoopEE(opt);
+  DYLoopEE* fLoops = new DYLoopEE(fOpt);
   fLoops->Loop();
   
   return 1;

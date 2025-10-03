@@ -3,7 +3,7 @@
 
 #include <exception>
 
-bool NT::PassingTrigger() {
+bool NT::PassingTriggerMUMU() {
 
   if (fEra == "2016_preVFP" && !(fSampleName == "Run2016B_APV_ver2" && fID == 8))  return (**HLT_Mu50 || **HLT_TkMu50);
   if (fEra == "2016_preVFP" && (fSampleName == "Run2016B_APV_ver2" && fID == 8))  return **HLT_Mu50;
@@ -18,21 +18,51 @@ bool NT::PassingTrigger() {
   return false;
 }
 
+bool NT::PassingTriggerEE() {
+
+  // if (fEra == "2016_preVFP" && !(fSampleName == "Run2016B_APV_ver2" && fID == 8))  return (**HLT_Mu50 || **HLT_TkMu50);
+  // if (fEra == "2016_preVFP" && (fSampleName == "Run2016B_APV_ver2" && fID == 8))  return **HLT_Mu50;
+
+  // if (fEra == "2016_postVFP")  return (**HLT_Mu50 || **HLT_TkMu50);
+
+  // if (fEra == "2017" && fSampleName != "Run2017B")  return (**HLT_Mu50 || **HLT_TkMu100 || **HLT_OldMu100);
+  // if (fEra == "2017" && fSampleName == "Run2017B")  return **HLT_Mu50;
+
+  // if (fEra == "2018")  return (**HLT_Mu50 || **HLT_TkMu100 || **HLT_OldMu100);
+
+  return true;
+}
+
 bool NT::PassinNoiseFilter() {
 
-  bool fNoiseFilter =
+  // check https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#UL_data
+
+  if (fEra == "2016_preVFP" || fEra == "2016_postVFP") {
+    
+    return **Flag_goodVertices &&
+    **Flag_globalSuperTightHalo2016Filter &&
     **Flag_HBHENoiseFilter &&
     **Flag_HBHENoiseIsoFilter &&
-    **Flag_CSCTightHaloFilter &&
     **Flag_EcalDeadCellTriggerPrimitiveFilter &&
-    **Flag_goodVertices &&
-    **Flag_chargedHadronTrackResolutionFilter &&
-    **Flag_muonBadTrackFilter;
+    **Flag_BadPFMuonFilter &&
+    **Flag_BadPFMuonDzFilter &&
+    **Flag_hfNoisyHitsFilter &&
+    **Flag_eeBadScFilter &&
+    **Flag_ecalBadCalibFilter;
+  } else if (fEra == "2017" || fEra == "2018") {
 
-  if (!fIsMC)
-    fNoiseFilter = fNoiseFilter && **Flag_eeBadScFilter;
+    return **Flag_goodVertices &&
+    **Flag_globalSuperTightHalo2016Filter &&
+    **Flag_HBHENoiseFilter &&
+    **Flag_HBHENoiseIsoFilter &&  
+    **Flag_EcalDeadCellTriggerPrimitiveFilter &&
+    **Flag_BadPFMuonFilter &&
+    **Flag_BadPFMuonDzFilter &&
+    **Flag_eeBadScFilter &&
+    **Flag_hfNoisyHitsFilter;
+  }
 
-  return fNoiseFilter;
+  return false;
 }
 
 std::vector<TLorentzVector> NT::GetLHE(int fPID) {

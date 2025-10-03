@@ -37,7 +37,7 @@ public:
 
       if (fArgv[i] == "--base") {
         i++;
-        AddVariable("base", (TString)(fArgv[i]));
+        AddVariable("base", (std::string)(fArgv[i]));
       }
 
       if (fArgv[i] == "--era") {
@@ -58,6 +58,11 @@ public:
       if (fArgv[i] == "--output") {
         i++;
         AddVariable("output", (TString)(fArgv[i]));
+      }
+
+      if (fArgv[i] == "--channel") {
+        i++;
+        AddVariable("channel", (std::string)(fArgv[i]));
       }
     }
   }

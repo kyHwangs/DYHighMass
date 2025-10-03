@@ -21,17 +21,27 @@ public:
   ELEC(YAML::Node fConfig) {
 
     YAML::Node fElecConf = fConfig["Electron"];
+    YAML::Node fZConf = fConfig["Z"];
 
-    fPt = fElecConf["Pt"].as<float>();
+    fZMassCut = fZConf["MassCut"].as<float>();
+
+    fLeadingPt = fElecConf["LeadingPt"].as<float>();
+    fSubLeadingPt = fElecConf["SubLeadingPt"].as<float>();
     fEta = fElecConf["Eta"].as<float>();
-    fSCEtaVeto = fElecConf["SCEtaVeto"].as<bool>();
+    fID = fElecConf["ID"].as<int>();
+    fOppositeCharge = true;
+    if (fElecConf["Charge"].as<std::string>() == "same")
+      fOppositeCharge == false;
+
 
     std::cout << "######################################################################" << std::endl;
     std::cout << "                          Electron selection                          " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
-    std::cout << " Electron pT: " << fPt << std::endl;
+    std::cout << " Electron LeadingPt: " << fLeadingPt << std::endl;
+    std::cout << " Electron SubLeadingPt: " << fSubLeadingPt << std::endl;
     std::cout << " Electron eta: " << fEta << std::endl;
-    std::cout << " Electron SC eta veto: " << fSCEtaVeto << std::endl;
+    std::cout << " Electron ID: " << fID << std::endl;
+    std::cout << " OppositeCharge: " << fOppositeCharge << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
   }
@@ -39,9 +49,10 @@ public:
 
   struct StdElec {
     TLorentzVector fVec;
+    int fCharge;
 
-    StdElec(TLorentzVector fVec_)
-    : fVec(fVec_)
+    StdElec(TLorentzVector fVec_, int fCharge_)
+    : fVec(fVec_), fCharge(fCharge_)
     { };
   };
 
@@ -52,6 +63,8 @@ public:
   bool PrepareElec();
 
   std::vector<StdElec> GetElecs() { return fFVecElecs; }
+  StdElec GetLeadingElec() { return fFVecElecs.at(0); }
+  StdElec GetSubLeadingElec() { return fFVecElecs.at(fSubLeadingIdx); }
 
   TTreeReaderValue<unsigned int>* nElectron;
   TTreeReaderArray<float>* Electron_pt;
@@ -60,14 +73,22 @@ public:
   TTreeReaderArray<float>* Electron_phi;
   TTreeReaderArray<float>* Electron_mass;
   TTreeReaderArray<int>* Electron_cutBased;
+  TTreeReaderArray<int>* Electron_charge;
 
 private:
 
   std::vector<StdElec> fFVecElecs;
 
-  float fPt;
+  float fZMassCut;
+  
+  float fLeadingPt;
+  float fSubLeadingPt;
   float fEta;
-  bool fSCEtaVeto;
+  int fID;
+  bool fOppositeCharge;
+
+  int fSubLeadingIdx;
+  int fLeadingIdx;
 
   bool fIsMC;
 

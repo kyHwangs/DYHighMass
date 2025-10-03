@@ -37,7 +37,7 @@ void HistoSetEMU::Init() {
   fNJetBins = {-9999, 20, 0, 20};
 
   std::vector<std::string> fAddonMass = {""};
-  std::vector<std::string> fAddonJet = {"", "_0J", "_1J", "_mtJ", "_0BJ", "_1BJ", "_mt1BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"};
+  std::vector<std::string> fAddonJet = {"", "_0J", "_1J", "_mt1J", "_0BJ", "_1BJ", "_mt1BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"};
   
   for (int i = 0; i < fMassBins.size() -1; i++) {
     fAddonMass.push_back("_m" + std::to_string((int)fMassBins[i]) + "_" + std::to_string((int)fMassBins[i+1]));
@@ -46,6 +46,7 @@ void HistoSetEMU::Init() {
   for (int i = 0; i < fAddonMass.size(); i++) {
     for (int j = 0; j < fAddonJet.size(); j++) {
       std::string tHistSuffix = fAddonJet[j] + fAddonMass[i];
+      fSuffix.push_back(tHistSuffix);
 
       SetHisto("h_nJet" + tHistSuffix);    
       SetHisto("h_JetPt" + tHistSuffix);
@@ -256,7 +257,7 @@ std::string HistoSetEMU::GetJetBin(double fNJet) {
   
   if (fNJet == 0) return "_0J";
   else if (fNJet == 1) return "_1J";
-  else if (fNJet >= 2) return "_mtJ";
+  else if (fNJet >= 2) return "_mt1J";
   else return "";
 }
 
@@ -346,18 +347,61 @@ void HistoSetEMU::FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJe
   }
 }
 
-void HistoSetEMU::WriteHisto(TString fOutputDir) {
+void HistoSetEMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir) {
 
   TFile* fOutputFile = new TFile(fOutputDir, "RECREATE");
   
-  fOutputFile->cd();
-  for (auto [name, hist] : fHistSet) {
-    hist->SetDirectory(fOutputFile);
-    hist->Write();
+  fOutputFile->mkdir(fEra + '/' + fSampleName);
+
+  for (auto tSuffix : fSuffix)
+    if (tSuffix != "")
+      fOutputFile->mkdir(fEra + '/' + fSampleName + '/' + tSuffix);
+
+  fOutputFile->cd(fEra + '/' + fSampleName);
+  fHistSet["h_EventInfo"]->Write();
+  fHistSet["h_GenWeight"]->Write();
+  fHistSet["h_LHEDimuonMass"]->Write();
+  fHistSet["h_LHEnMuon"]->Write();
+  fHistSet["h_nPVGood_Count"]->Write();
+  fHistSet["h_PileUp_Count_Interaction_before"]->Write();
+  fHistSet["h_PileUp_Count_Interaction_after"]->Write();
+    
+  for (auto tSuffix : fSuffix) {
+    if (tSuffix != "")
+      fOutputFile->cd(fEra + '/' + fSampleName + '/' + tSuffix);
+
+    fHistSet["h_ElecPt" + tSuffix]->Write();
+    fHistSet["h_ElecEta" + tSuffix]->Write();
+    fHistSet["h_ElecPhi" + tSuffix]->Write();
+
+    fHistSet["h_MuonPt" + tSuffix]->Write();
+    fHistSet["h_MuonEta" + tSuffix]->Write();
+    fHistSet["h_MuonPhi" + tSuffix]->Write();
+
+    fHistSet["h_PairDeltaR" + tSuffix]->Write();
+    fHistSet["h_PairMass" + tSuffix]->Write();
+    fHistSet["h_PairPt" + tSuffix]->Write();
+    fHistSet["h_PairRap" + tSuffix]->Write();
+
+    fHistSet["h_nJet" + tSuffix]->Write();
+    fHistSet["h_JetPt" + tSuffix]->Write();
+    fHistSet["h_JetEta" + tSuffix]->Write();
+    fHistSet["h_JetPhi" + tSuffix]->Write();
+    
+    fHistSet["h_nBJet" + tSuffix]->Write();
+    fHistSet["h_BJetPt" + tSuffix]->Write();
+    fHistSet["h_BJetEta" + tSuffix]->Write();
+    fHistSet["h_BJetPhi" + tSuffix]->Write();
   }
-  for (auto [name, hist] : fHistSet2D) {
-    hist->SetDirectory(fOutputFile);
-    hist->Write();
+
+  if (fHistSet2D.size() > 0) {
+    fOutputFile->mkdir("Hist2D");
+
+    for (auto [name, hist] : fHistSet2D) {
+      hist->SetDirectory(fOutputFile);
+      fOutputFile->cd("Hist2D");
+      hist->Write();
+    }
   }
 
   fOutputFile->Close();

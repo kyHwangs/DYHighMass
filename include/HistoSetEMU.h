@@ -52,11 +52,13 @@ public:
   double SetPtOverflow(double fPt);
   double SetMassOverflow(double fMass);
 
-  void WriteHisto(TString fOutputDir);
+  void WriteHisto(TString fEra, TString fSampleName, TString fOutputDir);
 
 private:
   std::map<std::string, TH1D*> fHistSet;
   std::map<std::string, TH2D*> fHistSet2D;
+
+  std::vector<std::string> fSuffix;
 
   std::vector<double> fPtBins;
   std::vector<double> fEtaBins;

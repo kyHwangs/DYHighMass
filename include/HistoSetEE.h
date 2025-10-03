@@ -26,8 +26,8 @@ public:
 
   void Init();
 
-  void FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSubleadingMuon, int nJet, int nBJet, double weight = 1.);
-  void FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJet>* fBJet, double fDimuonMass, double weight = 1.);
+  void FillElec(TLorentzVector& fLeadingElec, TLorentzVector& fSubleadingElec, int nJet, int nBJet, double weight = 1.);
+  void FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJet>* fBJet, double fDielecMass, double weight = 1.);
 
   void FillHisto(std::string name, double value, double weight = 1.);
   void FillHisto(std::string name, float value, double weight = 1.);
@@ -50,11 +50,13 @@ public:
   double SetPtOverflow(double fPt);
   double SetMassOverflow(double fMass);
 
-  void WriteHisto(TString fOutputDir);
+  void WriteHisto(TString fEra, TString fSampleName, TString fOutputDir);
 
 private:
   std::map<std::string, TH1D*> fHistSet;
   std::map<std::string, TH2D*> fHistSet2D;
+
+  std::vector<std::string> fSuffix;
 
   std::vector<double> fPtBins;
   std::vector<double> fEtaBins;

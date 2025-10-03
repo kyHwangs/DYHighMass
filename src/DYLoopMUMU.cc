@@ -106,6 +106,9 @@ void DYLoopMUMU::Loop() {
       fHistoSet->FillHisto((std::string)"h_LHEDimuonMass", tDiMuonMassLHE, tEventGenWeight);
     }
     
+    fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
+    fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
+
     float tPUReweightingFactor = 1;
     if (fIsMC && fDoPU) {
 
@@ -117,20 +120,14 @@ void DYLoopMUMU::Loop() {
       tEventGenWeight *= **(fNtuples->L1PreFiringWeight_Nom);
     }
 
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
-
     if ( !(fNtuples->PassinNoiseFilter()) )
       continue;
 
-    if ( !(fNtuples->PassingTrigger()) )
+    if ( !(fNtuples->PassingTriggerMUMU()) )
       continue;
 
     if ( !(fMuons->PrepareMuon()) )
       continue;
-    
-    // if ( !(fElecs->PrepareElec()) )
-    //   continue;
 
     if ( !(fJets->PrepareJet()) )
       continue;
@@ -156,7 +153,7 @@ void DYLoopMUMU::Loop() {
       double tRecoEffSFLeading = 0;
 
       if (tFVecRawLeadingMuon.P() < 15.) tRecoEffSFLeading = 0;
-      else                                tRecoEffSFLeading = fID_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.P(), "nominal"});
+      else                               tRecoEffSFLeading = fID_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.P(), "nominal"});
 
       tEventGenWeight *= tRecoEffSFLeading;
 
@@ -164,7 +161,7 @@ void DYLoopMUMU::Loop() {
       double tRecoEffSFSubleading = 0;
 
       if (tFVecRawSubLeadingMuon.P() < 15.) tRecoEffSFSubleading = 0;
-      else                                   tRecoEffSFSubleading = fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.P(), "nominal"});
+      else                                  tRecoEffSFSubleading = fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.P(), "nominal"});
 
       tEventGenWeight *= tRecoEffSFSubleading;
 
@@ -317,5 +314,5 @@ void DYLoopMUMU::Loop() {
 
 void DYLoopMUMU::EndOfJob() {
 
-  fHistoSet->WriteHisto(fOutputDir + fEra + "/" + fSampleName + "/output_" + std::to_string(fJobID) + ".root");
+  fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root");
 }

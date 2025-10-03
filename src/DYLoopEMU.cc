@@ -104,6 +104,9 @@ void DYLoopEMU::Loop() {
       fHistoSet->FillHisto((std::string)"h_LHEDimuonMass", tDiMuonMassLHE, tEventGenWeight);
     }
     
+    fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
+    fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
+
     float tPUReweightingFactor = 1;
     if (fIsMC && fDoPU) {
 
@@ -115,13 +118,10 @@ void DYLoopEMU::Loop() {
       tEventGenWeight *= **(fNtuples->L1PreFiringWeight_Nom);
     }
 
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
-
     if ( !(fNtuples->PassinNoiseFilter()) )
       continue;
 
-    if ( !(fNtuples->PassingTrigger()) )
+    if ( !(fNtuples->PassingTriggerMUMU()) )
       continue;
 
     if ( !(fEMU->PrepareEMUPair()) )
@@ -264,5 +264,5 @@ void DYLoopEMU::Loop() {
 
 void DYLoopEMU::EndOfJob() {
 
-  fHistoSet->WriteHisto(fOutputDir + fEra + "/" + fSampleName + "/output_" + std::to_string(fJobID) + ".root");
+  fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root");
 }

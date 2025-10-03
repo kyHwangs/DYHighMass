@@ -31,6 +31,10 @@ public:
 
     fChain = new TChain("Events");
     fEra = fConfig["Info"]["Era"].as<std::string>();
+    fChannel = fConfig["Info"]["Channel"].as<std::string>();
+    if (fChannel == "MUMU") fChannel = "dimuon";
+    if (fChannel == "EMU") fChannel = "dimuon";
+    if (fChannel == "EE") fChannel = "dielectron";
   }
 
   ~NT() {
@@ -99,6 +103,8 @@ public:
   void init_trigger_2017B();
   void init_trigger_2018();
 
+  void init_trigger_EE();
+
   TTreeReader* GetTreeReader() { return fTreeReader; }
 
   bool GetNext() { return fTreeReader->Next(); }
@@ -115,7 +121,8 @@ public:
 
   void SetMC() { fIsMC = true; }
 
-  bool PassingTrigger();
+  bool PassingTriggerMUMU();
+  bool PassingTriggerEE();
   bool PassinNoiseFilter();
 
   std::vector<TLorentzVector> GetLHE(int fPID);
@@ -1261,6 +1268,7 @@ private:
 
   bool fIsMC;
   TString fEra;
+  TString fChannel;
   TString fSampleName;
   int fID;
 

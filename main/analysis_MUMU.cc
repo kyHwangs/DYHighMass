@@ -20,9 +20,9 @@
 
 int main(int argc, char* argv[]) {
 
-  options* opt = new options(argc, argv);
+  options* fOpt = new options(argc, argv);
 
-  DYLoopMUMU* fLoops = new DYLoopMUMU(opt);
+  DYLoopMUMU* fLoops = new DYLoopMUMU(fOpt);
   fLoops->Loop();
   
   return 1;

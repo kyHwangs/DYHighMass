@@ -148,10 +148,10 @@ bool MUON::PrepareMuon() {
   fFVecMuons.clear();
 
   for (int i = 0; i < **nMuon; i++) {
-    if ( !(Muon_highPtId->At(i) == fID && Muon_tkRelIso->At(i) < 0.10) )
+    if ( !(Muon_highPtId->At(i) == fID && Muon_tkRelIso->At(i) < fISO) )
       continue;
 
-    if (std::abs(Muon_eta->At(i)) > 2.4)
+    if (std::abs(Muon_eta->At(i)) > fEta)
       continue;
 
     if (!Muon_highPurity->At(i))
@@ -212,7 +212,7 @@ bool MUON::PrepareMuon() {
   auto tSubLeadingMuon = fFVecMuons.at(fSubLeadingIdx).fVec;
   double tDiMuonMass = (tLeadingMuon + tSubLeadingMuon).M();
 
-  if (tDiMuonMass < fZMassCut)
+  if (tDiMuonMass < fZMassCut - 10)
     return false;
 
   return true;

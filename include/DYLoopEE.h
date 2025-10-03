@@ -35,9 +35,7 @@ public:
 
     fOpt->GetVariable("id", &fJobID);
     fOpt->GetVariable("era", &fEra);
-    fOpt->GetVariable("output", &fOutputDir);
     fOpt->GetVariable("sample", &fSampleName);
-    fOpt->GetVariable("base", &fBaseDir);
 
     fIsMC = false;
     fIsMC = fConfig["Sample"][std::string(fSampleName)]["IsMC"].as<bool>();
@@ -92,17 +90,13 @@ public:
 
     std::cout << " " << std::endl;
 
-    fMuons = new MUON(fConfig);
-    fMuons->IsMC(fIsMC);
-    fMuons->init(fNtuples->GetTreeReader());
+    fElecs = new ELEC(fConfig);
+    fElecs->IsMC(fIsMC);
+    fElecs->init(fNtuples->GetTreeReader());
 
     fJets = new JET(fConfig);
     fJets->IsMC(fIsMC);
     fJets->init(fNtuples->GetTreeReader());
-
-    fElecs = new ELEC(fConfig);
-    fElecs->IsMC(fIsMC);
-    fElecs->init(fNtuples->GetTreeReader());
 
     std::cout << std::fixed;
   }
@@ -155,8 +149,6 @@ public:
   void SetEra(TString fEra_) { fEra = fEra_; }
   void SetSample(TString fSampleName_) { fSampleName = fSampleName_; }
   void SetJobID(int fJobID_) { fJobID = fJobID_; }
-  void SetBase(TString fBaseDir_) { fBaseDir = fBaseDir_; }
-  void SetOutputDir(TString fOutputDir_) { fOutputDir = fOutputDir_; }
   void SetMC(bool fIsMC_) { fIsMC = fIsMC_; }
   void SetNT();
 
@@ -171,8 +163,6 @@ private:
   TString fEra;
   TString fSampleName;
   int fJobID;
-  TString fBaseDir;
-  TString fOutputDir;
   bool fIsMC;
 
   LumiReWeighting* fPuReweighting;
@@ -192,10 +182,9 @@ private:
 
   NT* fNtuples;
   YAML::Node fConfig;
-
-  MUON* fMuons;
-  JET* fJets;
+  
   ELEC* fElecs;
+  JET* fJets;
 
   double fMaxEntries;
 

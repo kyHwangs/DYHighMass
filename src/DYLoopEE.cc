@@ -88,24 +88,27 @@ void DYLoopEE::Loop() {
     }
 
     if (fIsMC && fSampleName.Contains("NNLO")) {
-      auto tLHEMuons = fNtuples->GetLHE(13);
+      auto tLHEElecs = fNtuples->GetLHE(11);
 
-      fHistoSet->FillHisto((std::string)"h_LHEnMuon", static_cast<int>(tLHEMuons.size()));
+      fHistoSet->FillHisto((std::string)"h_LHEnElec", static_cast<int>(tLHEElecs.size()));
 
 
-      double tDiMuonMassLHE = 0;
+      double tDiElecMassLHE = 0;
 
-      if (tLHEMuons.size() == 2) {
-        auto tDiMuonLHE = tLHEMuons.at(0) + tLHEMuons.at(1);
-        tDiMuonMassLHE = tDiMuonLHE.M();
+      if (tLHEElecs.size() == 2) {
+        auto tDiElecLHE = tLHEElecs.at(0) + tLHEElecs.at(1);
+        tDiElecMassLHE = tDiElecLHE.M();
       }
 
-      if (fSampleName == "NNLO_inc" && tDiMuonMassLHE > 100 )
+      if (fSampleName == "NNLO_inc" && tDiElecMassLHE > 100 )
         continue;
 
-      fHistoSet->FillHisto((std::string)"h_LHEDimuonMass", tDiMuonMassLHE, tEventGenWeight);
+      fHistoSet->FillHisto((std::string)"h_LHEDielecMass", tDiElecMassLHE, tEventGenWeight);
     }
     
+    fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
+    fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
+
     float tPUReweightingFactor = 1;
     if (fIsMC && fDoPU) {
 
@@ -117,20 +120,14 @@ void DYLoopEE::Loop() {
       tEventGenWeight *= **(fNtuples->L1PreFiringWeight_Nom);
     }
 
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
-
     if ( !(fNtuples->PassinNoiseFilter()) )
       continue;
 
-    if ( !(fNtuples->PassingTrigger()) )
-      continue;
-
-    if ( !(fMuons->PrepareMuon()) )
+    if ( !(fNtuples->PassingTriggerEE()) )
       continue;
     
-    // if ( !(fElecs->PrepareElec()) )
-    //   continue;
+    if ( !(fElecs->PrepareElec()) )
+      continue;
 
     if ( !(fJets->PrepareJet()) )
       continue;
@@ -141,38 +138,38 @@ void DYLoopEE::Loop() {
     int nJets = vJets.size();
     int nBJets = vBJets.size();
 
-    auto tLeadingMuon = fMuons->GetLeadingMuon();
-    auto tFVecLeadingMuon = tLeadingMuon.fVec;
-    auto tFVecRawLeadingMuon = tLeadingMuon.fVecRaw;
+    auto tLeadingElec = fElecs->GetLeadingElec();
+    auto tFVecLeadingElec = tLeadingElec.fVec;
+    // auto tFVecRawLeadingElec = tLeadingElec.fVecRaw;
 
-    auto tSubLeadingMuon = fMuons->GetSubLeadingMuon();
-    auto tFVecSubLeadingMuon = tSubLeadingMuon.fVec;
-    auto tFVecRawSubLeadingMuon = tSubLeadingMuon.fVecRaw;
+    auto tSubLeadingElec = fElecs->GetSubLeadingElec();
+    auto tFVecSubLeadingElec = tSubLeadingElec.fVec;
+    // auto tFVecRawSubLeadingElec = tSubLeadingElec.fVecRaw;
 
-    auto tDiMuon = tFVecLeadingMuon + tFVecSubLeadingMuon;
+    auto tDiElec = tFVecLeadingElec + tFVecSubLeadingElec;
 
     if (fIsMC && fDoReco) {
 
       double tRecoEffSFLeading = 0;
 
-      if (tFVecRawLeadingMuon.P() < 15.) tRecoEffSFLeading = 0;
-      else                                tRecoEffSFLeading = fID_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.P(), "nominal"});
+      if (tFVecLeadingElec.P() < 15.) tRecoEffSFLeading = 0;
+      else                                tRecoEffSFLeading = fID_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.P(), "nominal"});
 
       tEventGenWeight *= tRecoEffSFLeading;
 
 
       double tRecoEffSFSubleading = 0;
 
-      if (tFVecRawSubLeadingMuon.P() < 15.) tRecoEffSFSubleading = 0;
-      else                                   tRecoEffSFSubleading = fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.P(), "nominal"});
+      if (tFVecSubLeadingElec.P() < 15.) tRecoEffSFSubleading = 0;
+      else                                   tRecoEffSFSubleading = fID_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.P(), "nominal"});
 
       tEventGenWeight *= tRecoEffSFSubleading;
 
       // std::cout << "######################################################################" << std::endl;
       // std::cout << "                       Reco efficiency debugging                      " << std::endl;
       // std::cout << "----------------------------------------------------------------------" << std::endl;
-      // std::cout << " LEADING: " << tFVecRawLeadingMuon.P() << " " << tFVecRawLeadingMuon.Eta() << " " << tRecoEffSFLeading << std::endl;
-      // std::cout << " SUB-LLEADING: " << tFVecRawSubLeadingMuon.P() << " " << tFVecRawSubLeadingMuon.Eta() << " " << tRecoEffSFSubleading << std::endl;
+      // std::cout << " LEADING: " << tFVecLeadingElec.P() << " " << tFVecLeadingElec.Eta() << " " << tRecoEffSFLeading << std::endl;
+      // std::cout << " SUB-LLEADING: " << tFVecSubLeadingElec.P() << " " << tFVecSubLeadingElec.Eta() << " " << tRecoEffSFSubleading << std::endl;
       // std::cout << "######################################################################" << std::endl;
       // std::cout << " " << std::endl;
 
@@ -182,24 +179,24 @@ void DYLoopEE::Loop() {
 
       double tIDEffSFLeading = 0;
 
-      if (tFVecRawLeadingMuon.Pt() < 15.) tIDEffSFLeading = 0;
-      else                                tIDEffSFLeading = fID_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "nominal"});
+      if (tFVecLeadingElec.Pt() < 15.) tIDEffSFLeading = 0;
+      else                                tIDEffSFLeading = fID_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.Pt(), "nominal"});
 
       tEventGenWeight *= tIDEffSFLeading;
 
 
       double tIDEffSFSubleading = 0;
 
-      if (tFVecRawSubLeadingMuon.Pt() < 15.) tIDEffSFSubleading = 0;
-      else                                   tIDEffSFSubleading = fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "nominal"});
+      if (tFVecSubLeadingElec.Pt() < 15.) tIDEffSFSubleading = 0;
+      else                                   tIDEffSFSubleading = fID_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.Pt(), "nominal"});
 
       tEventGenWeight *= tIDEffSFSubleading;
 
       // std::cout << "######################################################################" << std::endl;
       // std::cout << "                        ID efficiency debugging                       " << std::endl;
       // std::cout << "----------------------------------------------------------------------" << std::endl;
-      // std::cout << " LEADING: " << tFVecRawLeadingMuon.Pt() << " " << tFVecRawLeadingMuon.Eta() << " " << tIDEffSFLeading << std::endl;
-      // std::cout << " SUB-LLEADING: " << tFVecRawSubLeadingMuon.Pt() << " " << tFVecRawSubLeadingMuon.Eta() << " " << tIDEffSFSubleading << std::endl;
+      // std::cout << " LEADING: " << tFVecLeadingElec.Pt() << " " << tFVecLeadingElec.Eta() << " " << tIDEffSFLeading << std::endl;
+      // std::cout << " SUB-LLEADING: " << tFVecSubLeadingElec.Pt() << " " << tFVecSubLeadingElec.Eta() << " " << tIDEffSFSubleading << std::endl;
       // std::cout << "######################################################################" << std::endl;
       // std::cout << " " << std::endl;
 
@@ -209,24 +206,24 @@ void DYLoopEE::Loop() {
 
       double tISOEffSFLeading = 0;
 
-      if (tFVecRawLeadingMuon.Pt() < 15.) tISOEffSFLeading = 0;
-      else                                tISOEffSFLeading = fISO_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "nominal"});
+      if (tFVecLeadingElec.Pt() < 15.) tISOEffSFLeading = 0;
+      else                                tISOEffSFLeading = fISO_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.Pt(), "nominal"});
 
       tEventGenWeight *= tISOEffSFLeading;
 
 
       double tISOEffSFSubleading = 0;
 
-      if (tFVecRawSubLeadingMuon.Pt() < 15.) tISOEffSFSubleading = 0;
-      else                                   tISOEffSFSubleading = fISO_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "nominal"});
+      if (tFVecSubLeadingElec.Pt() < 15.) tISOEffSFSubleading = 0;
+      else                                   tISOEffSFSubleading = fISO_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.Pt(), "nominal"});
 
       tEventGenWeight *= tISOEffSFSubleading;
 
       // std::cout << "######################################################################" << std::endl;
       // std::cout << "                        ISO efficiency debugging                      " << std::endl;
       // std::cout << "----------------------------------------------------------------------" << std::endl;
-      // std::cout << " LEADING: " << tFVecRawLeadingMuon.Pt() << " " << tFVecRawLeadingMuon.Eta() << " " << tISOEffSFLeading << std::endl;
-      // std::cout << " SUB-LEADING: " << tFVecRawSubLeadingMuon.Pt() << " " << tFVecRawSubLeadingMuon.Eta() << " " << tISOEffSFSubleading << std::endl;
+      // std::cout << " LEADING: " << tFVecLeadingElec.Pt() << " " << tFVecRawLeadingElec.Eta() << " " << tISOEffSFLeading << std::endl;
+      // std::cout << " SUB-LEADING: " << tFVecSubLeadingElec.Pt() << " " << tFVecSubLeadingElec.Eta() << " " << tISOEffSFSubleading << std::endl;
       // std::cout << "######################################################################" << std::endl;
       // std::cout << " " << std::endl;
 
@@ -235,30 +232,30 @@ void DYLoopEE::Loop() {
 
     if (fIsMC && fDoTRIGG) {
 
-      double mu_1_data = 0;
-      double mu_2_data = 0;
+      double elec_1_data = 0;
+      double elec_2_data = 0;
 
-      double mu_1_mc = 0;
-      double mu_2_mc = 0;
+      double elec_1_mc = 0;
+      double elec_2_mc = 0;
 
-      if (tFVecRawLeadingMuon.Pt() < 52.) {
-        mu_1_data = 0.;
-        mu_1_mc = 0.;
+      if (tFVecLeadingElec.Pt() < 52.) {
+        elec_1_data = 0.;
+        elec_1_mc = 0.;
       } else {
-        mu_1_data = fTRIG_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "dataEff"});
-        mu_1_mc = fTRIG_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "mcEff"});
+        elec_1_data = fTRIG_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.Pt(), "dataEff"});
+        elec_1_mc = fTRIG_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.Pt(), "mcEff"});
       }
 
-      if (tFVecRawSubLeadingMuon.Pt() < 52.) {
-        mu_2_data = 0.;
-        mu_2_mc = 0.;
+      if (tFVecSubLeadingElec.Pt() < 52.) {
+        elec_2_data = 0.;
+        elec_2_mc = 0.;
       } else {
-        mu_2_data = fTRIG_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "dataEff"});
-        mu_2_mc = fTRIG_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "mcEff"});
+        elec_2_data = fTRIG_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.Pt(), "dataEff"});
+        elec_2_mc = fTRIG_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.Pt(), "mcEff"});
       }
 
-      double data_tot = 1. - (1. - mu_1_data) * (1. - mu_2_data);
-      double mc_tot = 1. - (1. - mu_1_mc) * (1. - mu_2_mc);
+      double data_tot = 1. - (1. - elec_1_data) * (1. - elec_2_data);
+      double mc_tot = 1. - (1. - elec_1_mc) * (1. - elec_2_mc);
 
       double eventTriggerEffSF = 0.;
       if ( mc_tot != 0 )
@@ -269,8 +266,8 @@ void DYLoopEE::Loop() {
       // std::cout << "######################################################################" << std::endl;
       // std::cout << "                       TRIGG efficiency debugging                     " << std::endl;
       // std::cout << "----------------------------------------------------------------------" << std::endl;
-      // std::cout << " LEADING: " << tFVecRawLeadingMuon.Pt() << " " << tFVecRawLeadingMuon.Eta() << " " << mu_1_data << " " << mu_1_mc << std::endl;
-      // std::cout << " SUB-LEADING: " << tFVecRawSubLeadingMuon.Pt() << " " << tFVecRawSubLeadingMuon.Eta() << " " << mu_2_data << " " << mu_2_mc << std::endl;
+      // std::cout << " LEADING: " << tFVecLeadingElec.Pt() << " " << tFVecLeadingElec.Eta() << " " << elec_1_data << " " << elec_1_mc << std::endl;
+      // std::cout << " SUB-LEADING: " << tFVecSubLeadingElec.Pt() << " " << tFVecSubLeadingElec.Eta() << " " << elec_2_data << " " << elec_2_mc << std::endl;
       // std::cout << eventTriggerEffSF << std::endl;
       // std::cout << "######################################################################" << std::endl;
       // std::cout << " " << std::endl;
@@ -288,8 +285,8 @@ void DYLoopEE::Loop() {
     tTotalGenWeight += tEventGenWeight;
 
     fHistoSet->FillHisto((std::string)"h_nPVGood_Count", **(fNtuples->PV_npvsGood), tEventGenWeight);
-    fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, nJets, nBJets, tEventGenWeight);
-    fHistoSet->FillJet(&vJets, &vBJets, tDiMuon.M(), tEventGenWeight);
+    fHistoSet->FillElec(tFVecLeadingElec, tFVecSubLeadingElec, nJets, nBJets, tEventGenWeight);
+    fHistoSet->FillJet(&vJets, &vBJets, tDiElec.M(), tEventGenWeight);
 
   } // End of event loop
 
@@ -317,5 +314,5 @@ void DYLoopEE::Loop() {
 
 void DYLoopEE::EndOfJob() {
 
-  fHistoSet->WriteHisto(fOutputDir + fEra + "/" + fSampleName + "/output_" + std::to_string(fJobID) + ".root");
+  fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root");
 }
