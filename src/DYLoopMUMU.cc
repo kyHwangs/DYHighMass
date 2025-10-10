@@ -49,6 +49,8 @@ void DYLoopMUMU::Loop() {
   double tTotalGenWeight = 0;
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
+
+    // if (tMaxLoop == 100) break;
     
 
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
@@ -123,7 +125,7 @@ void DYLoopMUMU::Loop() {
     if ( !(fNtuples->PassinNoiseFilter()) )
       continue;
 
-    if ( !(fNtuples->PassingTriggerMUMU()) )
+    if ( !(fNtuples->PassingTrigger()) )
       continue;
 
     if ( !(fMuons->PrepareMuon()) )

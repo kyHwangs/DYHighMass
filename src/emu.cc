@@ -193,7 +193,7 @@ bool EMU::PrepareEMUPair() {
   auto tElec = fFVecElecs.at(fSelectedElecIdx).fVec;
   double tEMUMass = (tMuon + tElec).M();
 
-  if (tEMUMass < fMassCut - 10)
+  if (tEMUMass < fMassCut)
     return false;
 
   return true;

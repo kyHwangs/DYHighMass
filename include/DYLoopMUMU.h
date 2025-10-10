@@ -37,8 +37,10 @@ public:
     fOpt->GetVariable("era", &fEra);
     fOpt->GetVariable("sample", &fSampleName);
 
+
+    YAML::Node fConfigSample = YAML::LoadFile(std::string("../../input/dataset.yml"));
     fIsMC = false;
-    fIsMC = fConfig["Sample"][std::string(fSampleName)]["IsMC"].as<bool>();
+    fIsMC = fConfigSample[std::string(fEra)][std::string(fSampleName)]["IsMC"].as<bool>();
 
     fDoL1Pre = false;
     fDoL1Pre = fConfig["Correction"]["L1PreFiring"].as<bool>();
@@ -106,22 +108,22 @@ public:
     std::cout << "######################################################################" << std::endl;
     std::cout << "                             Loop setting                             " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
-    std::cout << " fDoReco: " << fDoReco << " " << fConfig["Efficiency"]["Reco"]["Path"].as<std::string>() << std::endl;
-    std::cout << "          " << fDoReco << " " << fConfig["Efficiency"]["Reco"]["Name"].as<std::string>() << std::endl;
-    std::cout << " fDoID: " << fDoID << " " << fConfig["Efficiency"]["ID"]["Path"].as<std::string>() << std::endl;
-    std::cout << "        " << fDoID << " " << fConfig["Efficiency"]["ID"]["Name"].as<std::string>() << std::endl;
-    std::cout << " fDoISO: " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Path"].as<std::string>() << std::endl;
-    std::cout << "         " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Name"].as<std::string>() << std::endl;
-    std::cout << " fDoTRIGG: " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>() << std::endl;
-    std::cout << "           " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>() << std::endl;
-    std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
-    std::cout << "          " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
-    std::cout << " fDoL1Pre: " << fDoL1Pre << " " << std::endl;
-    std::cout << " fDoJetPUID: " << fDoJetPUID << " " << fConfig["Efficiency"]["JetPU"]["Path"].as<std::string>() << std::endl;
-    std::cout << " fDoBTag: " << fDoBTag << " " << fConfig["Efficiency"]["BTag"]["Path"].as<std::string>() << std::endl;
-    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["bQuark"].as<std::string>() << std::endl;
-    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["cQuark"].as<std::string>() << std::endl;
-    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["lQuark"].as<std::string>() << std::endl;
+    std::cout << " fDoReco    : " << fDoReco << " " << fConfig["Efficiency"]["Reco"]["Path"].as<std::string>() << std::endl;
+    std::cout << "              " << fDoReco << " " << fConfig["Efficiency"]["Reco"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoID      : " << fDoID << " " << fConfig["Efficiency"]["ID"]["Path"].as<std::string>() << std::endl;
+    std::cout << "              " << fDoID << " " << fConfig["Efficiency"]["ID"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoISO     : " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Path"].as<std::string>() << std::endl;
+    std::cout << "              " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoTRIGG   : " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>() << std::endl;
+    std::cout << "              " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoPU      : " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
+    std::cout << "              " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
+    std::cout << " fDoL1Pre   : " << fDoL1Pre << " " << std::endl;
+    std::cout << " fDoJetPUID : " << fDoJetPUID << " " << fConfig["Efficiency"]["JetPU"]["Path"].as<std::string>() << std::endl;
+    std::cout << " fDoBTag    : " << fDoBTag << " " << fConfig["Efficiency"]["BTag"]["Path"].as<std::string>() << std::endl;
+    std::cout << "              " << fConfig["Efficiency"]["BTagEff"]["bQuark"].as<std::string>() << std::endl;
+    std::cout << "              " << fConfig["Efficiency"]["BTagEff"]["cQuark"].as<std::string>() << std::endl;
+    std::cout << "              " << fConfig["Efficiency"]["BTagEff"]["lQuark"].as<std::string>() << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
   }

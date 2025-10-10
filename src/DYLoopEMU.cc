@@ -48,6 +48,7 @@ void DYLoopEMU::Loop() {
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
     
+    if (tMaxLoop == 100) break;
 
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
       auto tCurrentTime = std::chrono::system_clock::now();
@@ -121,7 +122,7 @@ void DYLoopEMU::Loop() {
     if ( !(fNtuples->PassinNoiseFilter()) )
       continue;
 
-    if ( !(fNtuples->PassingTriggerMUMU()) )
+    if ( !(fNtuples->PassingTrigger()) )
       continue;
 
     if ( !(fEMU->PrepareEMUPair()) )

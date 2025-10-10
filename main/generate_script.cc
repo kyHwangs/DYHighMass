@@ -10,65 +10,425 @@
 #include <array>
 #include <fstream>
 
+#include "yaml-cpp/yaml.h"
+
 namespace fs = std::filesystem;
-static std::map<std::string, std::map<std::string, std::map<std::string, int>>> InputMap = {
+static std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> InputMap = {
   {
     {
       "MUMU", {
-      {
-        "2016_preVFP", 
         {
-          {"Data", 1},
-          {"MC", 1}
-        }
-      },
-      {
-        "2016_postVFP",
+          "2016_preVFP", 
+          {
+            {"Data", {
+              "Run2016B_SingleMuon_v2",
+              "Run2016C_SingleMuon",
+              "Run2016D_SingleMuon",
+              "Run2016E_SingleMuon",
+              "Run2016F_SingleMuon"
+            }},
+            {"MC", {
+              "NNLO_MUMU_10to50",
+              "NNLO_MUMU_10to50_v2",
+              "NNLO_MUMU_inc",
+              "NNLO_MUMU_100to200",
+              "NNLO_MUMU_200to400",
+              "NNLO_MUMU_400to500",
+              "NNLO_MUMU_500to700",
+              "NNLO_MUMU_700to800",
+              "NNLO_MUMU_800to1000",
+              "NNLO_MUMU_1000to1500",
+              "NNLO_MUMU_1500to2000",
+              "NNLO_MUMU_2000toInf",
+              "NNLO_tautau",
+              "ST_s",
+              "ST_t_AntiTop",
+              "ST_t_Top",
+              "ST_tW_AntiTop",
+              "ST_tW_Top",
+              "TTTo2L2Nu",
+              "WJetsToLNu",
+              "WW",
+              "WZ",
+              "ZZ",
+              "GGToMuMu_10to30_ElEl",
+              "GGToMuMu_10to30_InelElElInel",
+              "GGToMuMu_10to30_InelInel",
+              "GGToMuMu_30to50_ElEl",
+              "GGToMuMu_30to50_InelElElInel",
+              "GGToMuMu_30to50_InelInel",
+              "GGToMuMu_1500toInf_ElEl",
+              "GGToMuMu_1500toInf_InelElElInel",
+              "GGToMuMu_1500toInf_InelInel",
+              "GGToMuMu_200to1500_ElEl",
+              "GGToMuMu_200to1500_InelElElInel",
+              "GGToMuMu_200to1500_InelInel",
+              "GGToMuMu_50to200_ElEl",
+              "GGToMuMu_50to200_InelElElInel",
+              "GGToMuMu_50to200_InelInel",
+            }}
+          }
+        },
         {
-          {"Data", 1},
-          {"MC", 1}
-        }
-      },
-      {
-        "2017",
+          "2016_postVFP",
+          {
+            {"Data", {
+              "Run2016F_SingleMuon",
+              "Run2016G_SingleMuon",
+              "Run2016H_SingleMuon"
+            }},
+            {"MC", {
+              "NNLO_MUMU_10to50",
+              "NNLO_MUMU_10to50_v2",
+              "NNLO_MUMU_inc",
+              "NNLO_MUMU_100to200",
+              "NNLO_MUMU_200to400",
+              "NNLO_MUMU_400to500",
+              "NNLO_MUMU_500to700",
+              "NNLO_MUMU_700to800",
+              "NNLO_MUMU_800to1000",
+              "NNLO_MUMU_1000to1500",
+              "NNLO_MUMU_1500to2000",
+              "NNLO_MUMU_2000toInf",
+              "NNLO_tautau",
+              "ST_s",
+              "ST_t_AntiTop",
+              "ST_t_Top",
+              "ST_tW_AntiTop",
+              "ST_tW_Top",
+              "TTTo2L2Nu",
+              "WJetsToLNu",
+              "WW",
+              "WZ",
+              "ZZ",
+              "GGToMuMu_10to30_ElEl",
+              "GGToMuMu_10to30_InelElElInel",
+              "GGToMuMu_10to30_InelInel",
+              "GGToMuMu_30to50_ElEl",
+              "GGToMuMu_30to50_InelElElInel",
+              "GGToMuMu_30to50_InelInel",
+              "GGToMuMu_1500toInf_ElEl",
+              "GGToMuMu_1500toInf_InelElElInel",
+              "GGToMuMu_1500toInf_InelInel",
+              "GGToMuMu_200to1500_ElEl",
+              "GGToMuMu_200to1500_InelElElInel",
+              "GGToMuMu_200to1500_InelInel",
+              "GGToMuMu_50to200_ElEl",
+              "GGToMuMu_50to200_InelElElInel",
+              "GGToMuMu_50to200_InelInel",
+            }}
+          }
+        },
         {
-          {"Data", 1},
-          {"MC", 1}
-        }
-      },
-      {
-        "2018",
+          "2017",
+          {
+            {"Data", {
+              "Run2017B_SingleMuon",
+              "Run2017C_SingleMuon",
+              "Run2017D_SingleMuon",
+              "Run2017E_SingleMuon",
+              "Run2017F_SingleMuon"
+            }},
+            {"MC", {
+              "NNLO_MUMU_10to50",
+              "NNLO_MUMU_10to50_v2",
+              "NNLO_MUMU_inc",
+              "NNLO_MUMU_100to200",
+              "NNLO_MUMU_200to400",
+              "NNLO_MUMU_400to500",
+              "NNLO_MUMU_500to700",
+              "NNLO_MUMU_700to800",
+              "NNLO_MUMU_800to1000",
+              "NNLO_MUMU_1000to1500",
+              "NNLO_MUMU_1500to2000",
+              "NNLO_MUMU_2000toInf",
+              "NNLO_tautau",
+              "ST_s",
+              "ST_t_AntiTop",
+              "ST_t_Top",
+              "ST_tW_AntiTop",
+              "ST_tW_Top",
+              "TTTo2L2Nu",
+              "WJetsToLNu",
+              "WW",
+              "WZ",
+              "ZZ",
+              "GGToMuMu_10to30_ElEl",
+              "GGToMuMu_10to30_InelElElInel",
+              "GGToMuMu_10to30_InelInel",
+              "GGToMuMu_30to50_ElEl",
+              "GGToMuMu_30to50_InelElElInel",
+              "GGToMuMu_30to50_InelInel",
+              "GGToMuMu_1500toInf_ElEl",
+              "GGToMuMu_1500toInf_InelElElInel",
+              "GGToMuMu_1500toInf_InelInel",
+              "GGToMuMu_200to1500_ElEl",
+              "GGToMuMu_200to1500_InelElElInel",
+              "GGToMuMu_200to1500_InelInel",
+              "GGToMuMu_50to200_ElEl",
+              "GGToMuMu_50to200_InelElElInel",
+              "GGToMuMu_50to200_InelInel",
+            }}
+          }
+        },
         {
-          {"Data", 1},
-          {"MC", 1}
+          "2018",
+          {
+            {"Data", {
+              "Run2018A_SingleMuon",
+              "Run2018B_SingleMuon",
+              "Run2018C_SingleMuon",
+              "Run2018D_SingleMuon"
+            }},
+            {"MC", {
+              "NNLO_MUMU_10to50",
+              "NNLO_MUMU_10to50_v2",
+              "NNLO_MUMU_inc",
+              "NNLO_MUMU_100to200",
+              "NNLO_MUMU_200to400",
+              "NNLO_MUMU_400to500",
+              "NNLO_MUMU_500to700",
+              "NNLO_MUMU_700to800",
+              "NNLO_MUMU_800to1000",
+              "NNLO_MUMU_1000to1500",
+              "NNLO_MUMU_1500to2000",
+              "NNLO_MUMU_2000toInf",
+              "NNLO_tautau",
+              "ST_s",
+              "ST_t_AntiTop",
+              "ST_t_Top",
+              "ST_tW_AntiTop",
+              "ST_tW_Top",
+              "TTTo2L2Nu",
+              "WJetsToLNu",
+              "WW",
+              "WZ",
+              "ZZ",
+              "GGToMuMu_10to30_ElEl",
+              "GGToMuMu_10to30_InelElElInel",
+              "GGToMuMu_10to30_InelInel",
+              "GGToMuMu_30to50_ElEl",
+              "GGToMuMu_30to50_InelElElInel",
+              "GGToMuMu_30to50_InelInel",
+              "GGToMuMu_1500toInf_ElEl",
+              "GGToMuMu_1500toInf_InelElElInel",
+              "GGToMuMu_1500toInf_InelInel",
+              "GGToMuMu_200to1500_ElEl",
+              "GGToMuMu_200to1500_InelElElInel",
+              "GGToMuMu_200to1500_InelInel",
+              "GGToMuMu_50to200_ElEl",
+              "GGToMuMu_50to200_InelElElInel",
+              "GGToMuMu_50to200_InelInel",
+            }}
+          }
         }
       }
-    }
     },
     {
       "EE", {
         {
-          "2016_preVFP", {
-            {"Data", 1},
-            {"MC", 1}
+          "2016_preVFP", 
+          {
+            {"Data", {
+              "Run2016B_DoubleEG_v2",
+              "Run2016C_DoubleEG",
+              "Run2016D_DoubleEG",
+              "Run2016E_DoubleEG",
+              "Run2016F_DoubleEG",
+            }},
+            {"MC", {
+              "NNLO_EE_10to50",
+              "NNLO_EE_10to50_v2",
+              "NNLO_EE_inc",
+              "NNLO_EE_100to200",
+              "NNLO_EE_200to400",
+              "NNLO_EE_400to500",
+              "NNLO_EE_500to700",
+              "NNLO_EE_700to800",
+              "NNLO_EE_800to1000",
+              "NNLO_EE_1000to1500",
+              "NNLO_EE_1500to2000",
+              "NNLO_EE_2000toInf",
+              "NNLO_tautau",
+              "ST_s",
+              "ST_t_AntiTop",
+              "ST_t_Top",
+              "ST_tW_AntiTop",
+              "ST_tW_Top",
+              "TTTo2L2Nu",
+              "WJetsToLNu",
+              "WW",
+              "WZ",
+              "ZZ",
+              "GGToEE_10to30_ElEl",
+              "GGToEE_10to30_InelElElInel",
+              "GGToEE_10to30_InelInel",
+              "GGToEE_30to50_ElEl",
+              "GGToEE_30to50_InelElElInel",
+              "GGToEE_30to50_InelInel",
+              "GGToEE_1500toInf_ElEl",
+              "GGToEE_1500toInf_InelElElInel",
+              "GGToEE_1500toInf_InelInel",
+              "GGToEE_200to1500_ElEl",
+              "GGToEE_200to1500_InelElElInel",
+              "GGToEE_200to1500_InelInel",
+              "GGToEE_50to200_InelElElInel",
+              "GGToEE_50to200_InelInel",
+              "GGToEE_50to200_ElEl",
+            }}
           }
         },
         {
-          "2016_postVFP", {
-            {"Data", 1},
-            {"MC", 1}
+          "2016_postVFP", 
+          {
+            {"Data", {
+              "Run2016F_DoubleEG",
+              "Run2016G_DoubleEG",
+              "Run2016H_DoubleEG",
+            }},
+            {"MC", {
+              "NNLO_EE_10to50",
+              "NNLO_EE_10to50_v2",
+              "NNLO_EE_inc",
+              "NNLO_EE_100to200",
+              "NNLO_EE_200to400",
+              "NNLO_EE_400to500",
+              "NNLO_EE_500to700",
+              "NNLO_EE_700to800",
+              "NNLO_EE_800to1000",
+              "NNLO_EE_1000to1500",
+              "NNLO_EE_1500to2000",
+              "NNLO_EE_2000toInf",
+              "NNLO_tautau",
+              "ST_s",
+              "ST_t_AntiTop",
+              "ST_t_Top",
+              "ST_tW_AntiTop",
+              "ST_tW_Top",
+              "TTTo2L2Nu",
+              "WJetsToLNu",
+              "WW",
+              "WZ",
+              "ZZ",
+              "GGToEE_10to30_ElEl",
+              "GGToEE_10to30_InelElElInel",
+              "GGToEE_10to30_InelInel",
+              "GGToEE_30to50_ElEl",
+              "GGToEE_30to50_InelElElInel",
+              "GGToEE_30to50_InelInel",
+              "GGToEE_1500toInf_ElEl",
+              "GGToEE_1500toInf_InelElElInel",
+              "GGToEE_1500toInf_InelInel",
+              "GGToEE_200to1500_ElEl",
+              "GGToEE_200to1500_InelElElInel",
+              "GGToEE_200to1500_InelInel",
+              "GGToEE_50to200_InelElElInel",
+              "GGToEE_50to200_InelInel",
+              "GGToEE_50to200_ElEl",
+            }}
           }
         },
         {
-          "2017", {
-            {"Data", 1},
-            {"MC", 1}
+          "2017", 
+          {
+            {"Data", {
+              "Run2017B_DoubleEG",
+              "Run2017C_DoubleEG",
+              "Run2017D_DoubleEG",
+              "Run2017E_DoubleEG",
+              "Run2017F_DoubleEG",
+            }},
+            {"MC", {
+              "NNLO_EE_10to50",
+              "NNLO_EE_10to50_v2",
+              "NNLO_EE_inc",
+              "NNLO_EE_100to200",
+              "NNLO_EE_200to400",
+              "NNLO_EE_400to500",
+              "NNLO_EE_500to700",
+              "NNLO_EE_700to800",
+              "NNLO_EE_800to1000",
+              "NNLO_EE_1000to1500",
+              "NNLO_EE_1500to2000",
+              "NNLO_EE_2000toInf",
+              "NNLO_tautau",
+              "ST_s",
+              "ST_t_AntiTop",
+              "ST_t_Top",
+              "ST_tW_AntiTop",
+              "ST_tW_Top",
+              "TTTo2L2Nu",
+              "WJetsToLNu",
+              "WW",
+              "WZ",
+              "ZZ",
+              "GGToEE_10to30_ElEl",
+              "GGToEE_10to30_InelElElInel",
+              "GGToEE_10to30_InelInel",
+              "GGToEE_30to50_ElEl",
+              "GGToEE_30to50_InelElElInel",
+              "GGToEE_30to50_InelInel",
+              "GGToEE_1500toInf_ElEl",
+              "GGToEE_1500toInf_InelElElInel",
+              "GGToEE_1500toInf_InelInel",
+              "GGToEE_200to1500_ElEl",
+              "GGToEE_200to1500_InelElElInel",
+              "GGToEE_200to1500_InelInel",
+              "GGToEE_50to200_InelElElInel",
+              "GGToEE_50to200_InelInel",
+              "GGToEE_50to200_ElEl",
+            }}
           }
         },
         {
-          "2018", {
-            {"Data", 1},
-            {"MC", 1}
+          "2018", 
+          {
+            {"Data", {
+              "Run2018A_EGamma",
+              "Run2018B_EGamma",
+              "Run2018C_EGamma",
+              "Run2018D_EGamma"
+            }},
+            {"MC", {
+              "NNLO_EE_10to50",
+              "NNLO_EE_10to50_v2",
+              "NNLO_EE_inc",
+              "NNLO_EE_100to200",
+              "NNLO_EE_200to400",
+              "NNLO_EE_400to500",
+              "NNLO_EE_500to700",
+              "NNLO_EE_700to800",
+              "NNLO_EE_800to1000",
+              "NNLO_EE_1000to1500",
+              "NNLO_EE_1500to2000",
+              "NNLO_EE_2000toInf",
+              "NNLO_tautau",
+              "ST_s",
+              "ST_t_AntiTop",
+              "ST_t_Top",
+              "ST_tW_AntiTop",
+              "ST_tW_Top",
+              "TTTo2L2Nu",
+              "WJetsToLNu",
+              "WW",
+              "WZ",
+              "ZZ",
+              "GGToEE_10to30_ElEl",
+              "GGToEE_10to30_InelElElInel",
+              "GGToEE_10to30_InelInel",
+              "GGToEE_30to50_ElEl",
+              "GGToEE_30to50_InelElElInel",
+              "GGToEE_30to50_InelInel",
+              "GGToEE_1500toInf_ElEl",
+              "GGToEE_1500toInf_InelElElInel",
+              "GGToEE_1500toInf_InelInel",
+              "GGToEE_200to1500_ElEl",
+              "GGToEE_200to1500_InelElElInel",
+              "GGToEE_200to1500_InelInel",
+              "GGToEE_50to200_InelElElInel",
+              "GGToEE_50to200_InelInel",
+              "GGToEE_50to200_ElEl",
+            }}
           }
         }
       }
@@ -180,7 +540,7 @@ echo "$@"
 eval "$@"
 )";
 
-  std::string fConfigWrapperStr = fBaseDirStr + "/condor_wraper.sh";
+  std::string fConfigWrapperStr = fBaseDirStr + "/condor_wrapper.sh";
   std::ofstream fConfigWrapperStream(fConfigWrapperStr);
   if (fConfigWrapperStream.is_open()) {
     fConfigWrapperStream << fCondorWrapper;
@@ -192,10 +552,25 @@ eval "$@"
 
   std::string fJobList = "";
 
-  for (auto tEra : InputMap[fChannel]) {
-    for (auto tSample : tEra.second) {
-      for (int i = 0; i < tSample.second; i++)
-        fJobList += R"(../../config/)" + fChannelTemp + R"(/UL)" + tEra.first + R"(.yml )" + tEra.first + R"( )" + tSample.first + R"( )" + std::to_string(i) + "\n";
+  auto fChannelMap = InputMap[fChannelTemp];
+  std::vector<std::string> fEraVec = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
+  std::vector<std::string> fTierVec = {"Data", "MC"};
+  YAML::Node fConfig = YAML::LoadFile(std::string("../input/dataset.yml"));
+
+  for (int i = 0; i < fChannelMap.size(); i++) {
+
+    auto fEraMap = fChannelMap[fEraVec[i]];
+    for (int j = 0; j < fTierVec.size(); j++) {
+
+      auto fSampleMap = fEraMap[fTierVec[j]];
+      for (int k = 0; k < fSampleMap.size(); k++) {
+
+        int nList = fConfig[fEraVec[i]][fSampleMap[k]]["nList"].as<int>();
+        for (int l = 0; l < nList; l++) {
+          
+          fJobList += R"(../../config/)" + fChannel + R"(/UL)" + fEraVec[i] + R"(.yml )" + fEraVec[i] + R"( )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + "\n";
+        }
+      }
     }
   }
 

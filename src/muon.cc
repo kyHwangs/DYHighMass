@@ -212,7 +212,7 @@ bool MUON::PrepareMuon() {
   auto tSubLeadingMuon = fFVecMuons.at(fSubLeadingIdx).fVec;
   double tDiMuonMass = (tLeadingMuon + tSubLeadingMuon).M();
 
-  if (tDiMuonMass < fZMassCut - 10)
+  if (tDiMuonMass < fZMassCut)
     return false;
 
   return true;

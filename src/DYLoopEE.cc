@@ -50,6 +50,7 @@ void DYLoopEE::Loop() {
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
     
+    if (tMaxLoop == 100) break;
 
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
       auto tCurrentTime = std::chrono::system_clock::now();
@@ -123,7 +124,7 @@ void DYLoopEE::Loop() {
     if ( !(fNtuples->PassinNoiseFilter()) )
       continue;
 
-    if ( !(fNtuples->PassingTriggerEE()) )
+    if ( !(fNtuples->PassingTrigger()) )
       continue;
     
     if ( !(fElecs->PrepareElec()) )

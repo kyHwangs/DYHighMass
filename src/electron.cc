@@ -78,7 +78,7 @@ bool ELEC::PrepareElec() {
   auto tSubLeadingElec = fFVecElecs.at(fSubLeadingIdx).fVec;
   double tDiMuonMass = (tLeadingElec + tSubLeadingElec).M();
 
-  if (tDiMuonMass < fZMassCut - 10)
+  if (tDiMuonMass < fZMassCut)
     return false;
 
   return true;
