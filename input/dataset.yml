@@ -1,0 +1,1768 @@
+2016_preVFP:
+  Run2016B_SingleMuon_v2:
+    Name: SingleMuon_Run2016B_APV_ver2
+    nList: 7
+    nEvent: 154054252
+    IsMC: false
+    
+  Run2016C_SingleMuon:
+    Name: SingleMuon_Run2016C_APV
+    nList: 3
+    nEvent: 64804223
+    IsMC: false
+    
+  Run2016D_SingleMuon:
+    Name: SingleMuon_Run2016D_APV
+    nList: 4
+    nEvent: 96657799
+    IsMC: false
+    
+  Run2016E_SingleMuon:
+    Name: SingleMuon_Run2016E_APV
+    nList: 5
+    nEvent: 87378748
+    IsMC: false
+    
+  Run2016F_SingleMuon:
+    Name: SingleMuon_Run2016F_APV
+    nList: 5
+    nEvent: 57043706
+    IsMC: false
+    
+  Run2016B_DoubleEG_v2:
+    Name: DoubleEG_Run2016B-ver2
+    nList: 7
+    nEvent: 136667457
+    IsMC: false
+    
+  Run2016C_DoubleEG:
+    Name: DoubleEG_Run2016C
+    nList: 4
+    nEvent: 45599155
+    IsMC: false
+    
+  Run2016D_DoubleEG:
+    Name: DoubleEG_Run2016D
+    nList: 6
+    nEvent: 52423951
+    IsMC: false
+    
+  Run2016E_DoubleEG:
+    Name: DoubleEG_Run2016E
+    nList: 4
+    nEvent: 47328841
+    IsMC: false
+    
+  Run2016F_DoubleEG:
+    Name: DoubleEG_Run2016F
+    nList: 4
+    nEvent: 29650118
+    IsMC: false
+    
+  NNLO_MUMU_10to50:
+    Name: DYJetsToMuMu_M-10to50_v1
+    nList: 1
+    nEvent: 2849155
+    IsMC: true
+    
+  NNLO_MUMU_10to50_v2:
+    Name: DYJetsToMuMu_M-10to50_ext1-v1
+    nList: 1
+    nEvent: 17337557
+    IsMC: true
+    
+  NNLO_MUMU_inc:
+    Name: DYJetsToMuMu_M-50
+    nList: 6
+    nEvent: 110564995
+    IsMC: true
+    
+  NNLO_MUMU_100to200:
+    Name: DYJetsToMuMu_M-100to200
+    nList: 1
+    nEvent: 1434500
+    IsMC: true
+    
+  NNLO_MUMU_200to400:
+    Name: DYJetsToMuMu_M-200to400
+    nList: 1
+    nEvent: 959000
+    IsMC: true
+    
+  NNLO_MUMU_400to500:
+    Name: DYJetsToMuMu_M-400to500
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_500to700:
+    Name: DYJetsToMuMu_M-500to700
+    nList: 1
+    nEvent: 292068
+    IsMC: true
+    
+  NNLO_MUMU_700to800:
+    Name: DYJetsToMuMu_M-700to800
+    nList: 1
+    nEvent: 298710
+    IsMC: true
+    
+  NNLO_MUMU_800to1000:
+    Name: DYJetsToMuMu_M-800to1000
+    nList: 1
+    nEvent: 297408
+    IsMC: true
+    
+  NNLO_MUMU_1000to1500:
+    Name: DYJetsToMuMu_M-1000to1500
+    nList: 1
+    nEvent: 295785
+    IsMC: true
+    
+  NNLO_MUMU_1500to2000:
+    Name: DYJetsToMuMu_M-1500to2000
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_2000toInf:
+    Name: DYJetsToMuMu_M-2000toInf
+    nList: 1
+    nEvent: 298646
+    IsMC: true
+    
+  NNLO_EE_10to50:
+    Name: DYJetsToEE_M-10to50
+    nList: 1
+    nEvent: 2770051
+    IsMC: true
+    
+  NNLO_EE_10to50_v2:
+    Name: DYJetsToEE_M-10to50v2
+    nList: 1
+    nEvent: 17399989
+    IsMC: true
+    
+  NNLO_EE_inc:
+    Name: DYJetsToEE_M-50
+    nList: 10
+    nEvent: 118698016
+    IsMC: true
+    
+  NNLO_EE_100to200:
+    Name: DYJetsToEE_M-100to200
+    nList: 1
+    nEvent: 1444360
+    IsMC: true
+    
+  NNLO_EE_200to400:
+    Name: DYJetsToEE_M-200to400
+    nList: 1
+    nEvent: 1000000
+    IsMC: true
+    
+  NNLO_EE_400to500:
+    Name: DYJetsToEE_M-400to500
+    nList: 1
+    nEvent: 298131
+    IsMC: true
+    
+  NNLO_EE_500to700:
+    Name: DYJetsToEE_M-500to700
+    nList: 1
+    nEvent: 298674
+    IsMC: true
+    
+  NNLO_EE_700to800:
+    Name: DYJetsToEE_M-700to800
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_800to1000:
+    Name: DYJetsToEE_M-800to1000
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_1000to1500:
+    Name: DYJetsToEE_M-1000to1500
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_1500to2000:
+    Name: DYJetsToEE_M-1500to2000
+    nList: 1
+    nEvent: 295000
+    IsMC: true
+    
+  NNLO_EE_2000toInf:
+    Name: DYJetsToEE_M-2000toInf
+    nList: 1
+    nEvent: 297897
+    IsMC: true
+    
+  NNLO_tautau:
+    Name: DYJetsToTauTau_M-50_AtLeastOneEorMuDecay
+    nList: 4
+    nEvent: 56388001
+    IsMC: true
+    
+  ST_s:
+    Name: ST_s-channel_4f_leptonDecays
+    nList: 2
+    nEvent: 5518000
+    IsMC: true
+    
+  ST_t_AntiTop:
+    Name: ST_t-channel_anitop_4f_InclusiveDecays
+    nList: 5
+    nEvent: 31024000
+    IsMC: true
+    
+  ST_t_Top:
+    Name: ST_t-channel_top_4f_InclusiveDecays
+    nList: 5
+    nEvent: 55961000
+    IsMC: true
+    
+  ST_tW_AntiTop:
+    Name: ST_tW_antitop_5f_inclusiveDecays
+    nList: 1
+    nEvent: 2300000
+    IsMC: true
+    
+  ST_tW_Top:
+    Name: ST_tW_top_5f_inclusiveDecays
+    nList: 1
+    nEvent: 2300000
+    IsMC: true
+    
+  TTTo2L2Nu:
+    Name: TTTo2L2Nu
+    nList: 4
+    nEvent: 37505000
+    IsMC: true
+    
+  WJetsToLNu:
+    Name: WJetsToLNu
+    nList: 6
+    nEvent: 28949426
+    IsMC: true
+    
+  WW:
+    Name: WWTo2L2Nu
+    nList: 2
+    nEvent: 3018000
+    IsMC: true
+    
+  WZ:
+    Name: WZ
+    nList: 2
+    nEvent: 7934000
+    IsMC: true
+    
+  ZZ:
+    Name: ZZ
+    nList: 1
+    nEvent: 1282000
+    IsMC: true
+    
+  GGToEE_10to30_ElEl:
+    Name: GGToEE_Pt-2_Mll-10To30_El-El
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_10to30_InelElElInel:
+    Name: GGToEE_Pt-2_Mll-10To30_Inel-El_El-Inel
+    nList: 1
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_10to30_InelInel:
+    Name: GGToEE_Pt-2_Mll-10To30_Inel-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_30to50_ElEl:
+    Name: GGToEE_Pt-2_Mll-30To50_El-El
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_30to50_InelElElInel:
+    Name: GGToEE_Pt-2_Mll-30To50_Inel-El_El-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_30to50_InelInel:
+    Name: GGToEE_Pt-2_Mll-30To50_Inel-Inel
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_1500toInf_ElEl:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_El-El
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_1500toInf_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_Inel-El_El-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_1500toInf_InelInel:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_Inel-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_200to1500_ElEl:
+    Name: GGToEE_Pt-5_Mll-200To1500_El-El
+    nList: 3
+    nEvent: 249063
+    IsMC: true
+    
+  GGToEE_200to1500_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-200To1500_Inel-El_El-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_200to1500_InelInel:
+    Name: GGToEE_Pt-5_Mll-200To1500_Inel-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_50to200_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-50To200_Inel-El_El-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_50to200_InelInel:
+    Name: GGToEE_Pt-5_Mll-50To200_Inel-Inel
+    nList: 1
+    nEvent: 250000
+    IsMC: true
+    
+  GGToEE_50to200_ElEl:
+    Name: GGToEE_Pt-5_Mll-50To200_El-El
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_10to30_ElEl:
+    Name: GGToMuMu_Pt-2_Mll-10To30_El-El
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_10to30_InelElElInel:
+    Name: GGToMuMu_Pt-2_Mll-10To30_Inel-El_El-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_10to30_InelInel:
+    Name: GGToMuMu_Pt-2_Mll-10To30_Inel-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_30to50_ElEl:
+    Name: GGToMuMu_Pt-2_Mll-30To50_El-El
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_30to50_InelElElInel:
+    Name: GGToMuMu_Pt-2_Mll-30To50_Inel-El_El-Inel
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_30to50_InelInel:
+    Name: GGToMuMu_Pt-2_Mll-30To50_Inel-Inel
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_El-El
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_Inel-El_El-Inel
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_Inel-Inel
+    nList: 2
+    nEvent: 199100
+    IsMC: true
+    
+  GGToMuMu_200to1500_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_El-El
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_200to1500_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_Inel-El_El-Inel
+    nList: 1
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_200to1500_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_Inel-Inel
+    nList: 1
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_50to200_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-50To200_El-El
+    nList: 3
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_50to200_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-50To200_Inel-El_El-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+  GGToMuMu_50to200_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-50To200_Inel-Inel
+    nList: 2
+    nEvent: 250000
+    IsMC: true
+    
+2016_postVFP:
+  Run2016F_SingleMuon:
+    Name: SingleMuon_Run2016F
+    nList: 1
+    nEvent: 8003612
+    IsMC: false
+    
+  Run2016G_SingleMuon:
+    Name: SingleMuon_Run2016G
+    nList: 7
+    nEvent: 147945745
+    IsMC: false
+    
+  Run2016H_SingleMuon:
+    Name: SingleMuon_Run2016H
+    nList: 9
+    nEvent: 171137991
+    IsMC: false
+    
+  Run2016F_DoubleEG:
+    Name: DoubleEG_Run2016F
+    nList: 1
+    nEvent: 4321960
+    IsMC: false
+    
+  Run2016G_DoubleEG:
+    Name: DoubleEG_Run2016G
+    nList: 5
+    nEvent: 76538906
+    IsMC: false
+    
+  Run2016H_DoubleEG:
+    Name: DoubleEG_Run2016H
+    nList: 9
+    nEvent: 82569064
+    IsMC: false
+    
+  NNLO_MUMU_10to50:
+    Name: DYJetsToMuMu_M-10to50_v1
+    nList: 1
+    nEvent: 3260285
+    IsMC: true
+    
+  NNLO_MUMU_10to50_v2:
+    Name: DYJetsToMuMu_M-10to50_ext1-v1
+    nList: 2
+    nEvent: 19999995
+    IsMC: true
+    
+  NNLO_MUMU_inc:
+    Name: DYJetsToMuMu_H2ErratumFix_PDFExt
+    nList: 173
+    nEvent: 296807639
+    IsMC: true
+    
+  NNLO_MUMU_100to200:
+    Name: DYJetsToMuMu_M-100to200
+    nList: 1
+    nEvent: 1577548
+    IsMC: true
+    
+  NNLO_MUMU_200to400:
+    Name: DYJetsToMuMu_M-200to400
+    nList: 1
+    nEvent: 1000000
+    IsMC: true
+    
+  NNLO_MUMU_400to500:
+    Name: DYJetsToMuMu_M-400to500
+    nList: 1
+    nEvent: 284498
+    IsMC: true
+    
+  NNLO_MUMU_500to700:
+    Name: DYJetsToMuMu_M-500to700
+    nList: 1
+    nEvent: 288795
+    IsMC: true
+    
+  NNLO_MUMU_700to800:
+    Name: DYJetsToMuMu_M-700to800
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_800to1000:
+    Name: DYJetsToMuMu_M-800to1000
+    nList: 1
+    nEvent: 299390
+    IsMC: true
+    
+  NNLO_MUMU_1000to1500:
+    Name: DYJetsToMuMu_M-1000to1500
+    nList: 1
+    nEvent: 296388
+    IsMC: true
+    
+  NNLO_MUMU_1500to2000:
+    Name: DYJetsToMuMu_M-1500to2000
+    nList: 1
+    nEvent: 284688
+    IsMC: true
+    
+  NNLO_MUMU_2000toInf:
+    Name: DYJetsToMuMu_M-2000toInf
+    nList: 1
+    nEvent: 294546
+    IsMC: true
+    
+  NNLO_EE_10to50:
+    Name: DYJetsToEE_M-10to50
+    nList: 1
+    nEvent: 3216049
+    IsMC: true
+    
+  NNLO_EE_10to50_v2:
+    Name: DYJetsToEE_M-10to50v2
+    nList: 2
+    nEvent: 19459869
+    IsMC: true
+    
+  NNLO_EE_inc:
+    Name: DYJetsToEE_M-50
+    nList: 6
+    nEvent: 97663491
+    IsMC: true
+    
+  NNLO_EE_100to200:
+    Name: DYJetsToEE_M-100to200
+    nList: 1
+    nEvent: 1650000
+    IsMC: true
+    
+  NNLO_EE_200to400:
+    Name: DYJetsToEE_M-200to400
+    nList: 1
+    nEvent: 946180
+    IsMC: true
+    
+  NNLO_EE_400to500:
+    Name: DYJetsToEE_M-400to500
+    nList: 1
+    nEvent: 299380
+    IsMC: true
+    
+  NNLO_EE_500to700:
+    Name: DYJetsToEE_M-500to700
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_700to800:
+    Name: DYJetsToEE_M-700to800
+    nList: 1
+    nEvent: 283050
+    IsMC: true
+    
+  NNLO_EE_800to1000:
+    Name: DYJetsToEE_M-800to1000
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_1000to1500:
+    Name: DYJetsToEE_M-1000to1500
+    nList: 1
+    nEvent: 288858
+    IsMC: true
+    
+  NNLO_EE_1500to2000:
+    Name: DYJetsToEE_M-1500to2000
+    nList: 1
+    nEvent: 298546
+    IsMC: true
+    
+  NNLO_EE_2000toInf:
+    Name: DYJetsToEE_M-2000toInf
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_tautau:
+    Name: DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_H2ErratumFix
+    nList: 88
+    nEvent: 148918930
+    IsMC: true
+    
+  ST_s:
+    Name: ST_s-channel_4f_leptonDecays
+    nList: 2
+    nEvent: 5471000
+    IsMC: true
+    
+  ST_t_AntiTop:
+    Name: ST_t-channel_anitop_4f_InclusiveDecays
+    nList: 4
+    nEvent: 30609000
+    IsMC: true
+    
+  ST_t_Top:
+    Name: ST_t-channel_top_4f_InclusiveDecays
+    nList: 9
+    nEvent: 63073000
+    IsMC: true
+    
+  ST_tW_AntiTop:
+    Name: ST_tW_antitop_5f_inclusiveDecays
+    nList: 3
+    nEvent: 2554000
+    IsMC: true
+    
+  ST_tW_Top:
+    Name: ST_tW_top_5f_inclusiveDecays
+    nList: 3
+    nEvent: 2491000
+    IsMC: true
+    
+  TTTo2L2Nu:
+    Name: TTTo2L2Nu
+    nList: 5
+    nEvent: 43546000
+    IsMC: true
+    
+  WJetsToLNu:
+    Name: WJetsToLNu
+    nList: 3
+    nEvent: 28268221
+    IsMC: true
+    
+  WW:
+    Name: WWTo2L2Nu
+    nList: 1
+    nEvent: 2900000
+    IsMC: true
+    
+  WZ:
+    Name: WZ
+    nList: 2
+    nEvent: 7584000
+    IsMC: true
+    
+  ZZ:
+    Name: ZZ
+    nList: 2
+    nEvent: 1151000
+    IsMC: true
+    
+  GGToEE_10to30_ElEl:
+    Name: GGToEE_Pt-2_Mll-10To30_El-El
+    nList: 2
+    nEvent: 196400
+    IsMC: true
+    
+  GGToEE_10to30_InelElElInel:
+    Name: GGToEE_Pt-2_Mll-10To30_Inel-El_El-Inel
+    nList: 2
+    nEvent: 195275
+    IsMC: true
+    
+  GGToEE_10to30_InelInel:
+    Name: GGToEE_Pt-2_Mll-10To30_Inel-Inel
+    nList: 2
+    nEvent: 198200
+    IsMC: true
+    
+  GGToEE_30to50_ElEl:
+    Name: GGToEE_Pt-2_Mll-30To50_El-El
+    nList: 3
+    nEvent: 199055
+    IsMC: true
+    
+  GGToEE_30to50_InelElElInel:
+    Name: GGToEE_Pt-2_Mll-30To50_Inel-El_El-Inel
+    nList: 3
+    nEvent: 196220
+    IsMC: true
+    
+  GGToEE_30to50_InelInel:
+    Name: GGToEE_Pt-2_Mll-30To50_Inel-Inel
+    nList: 3
+    nEvent: 200000
+    IsMC: true
+    
+  GGToEE_1500toInf_ElEl:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_El-El
+    nList: 2
+    nEvent: 199100
+    IsMC: true
+    
+  GGToEE_1500toInf_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_Inel-El_El-Inel
+    nList: 2
+    nEvent: 199055
+    IsMC: true
+    
+  GGToEE_1500toInf_InelInel:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_Inel-Inel
+    nList: 3
+    nEvent: 199100
+    IsMC: true
+    
+  GGToEE_200to1500_ElEl:
+    Name: GGToEE_Pt-5_Mll-200To1500_El-El
+    nList: 3
+    nEvent: 184500
+    IsMC: true
+    
+  GGToEE_200to1500_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-200To1500_Inel-El_El-Inel
+    nList: 2
+    nEvent: 198200
+    IsMC: true
+    
+  GGToEE_200to1500_InelInel:
+    Name: GGToEE_Pt-5_Mll-200To1500_Inel-Inel
+    nList: 3
+    nEvent: 198110
+    IsMC: true
+    
+  GGToEE_50to200_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-50To200_Inel-El_El-Inel
+    nList: 2
+    nEvent: 199055
+    IsMC: true
+    
+  GGToEE_50to200_InelInel:
+    Name: GGToEE_Pt-5_Mll-50To200_Inel-Inel
+    nList: 1
+    nEvent: 200000
+    IsMC: true
+    
+  GGToEE_50to200_ElEl:
+    Name: GGToEE_Pt-5_Mll-50To200_El-El
+    nList: 3
+    nEvent: 196400
+    IsMC: true
+    
+  GGToMuMu_10to30_ElEl:
+    Name: GGToMuMu_Pt-2_Mll-10To30_El-El
+    nList: 2
+    nEvent: 200000
+    IsMC: true
+    
+  GGToMuMu_10to30_InelElElInel:
+    Name: GGToMuMu_Pt-2_Mll-10To30_Inel-El_El-Inel
+    nList: 2
+    nEvent: 200000
+    IsMC: true
+    
+  GGToMuMu_10to30_InelInel:
+    Name: GGToMuMu_Pt-2_Mll-10To30_Inel-Inel
+    nList: 1
+    nEvent: 200000
+    IsMC: true
+    
+  GGToMuMu_30to50_ElEl:
+    Name: GGToMuMu_Pt-2_Mll-30To50_El-El
+    nList: 1
+    nEvent: 200000
+    IsMC: true
+    
+  GGToMuMu_30to50_InelElElInel:
+    Name: GGToMuMu_Pt-2_Mll-30To50_Inel-El_El-Inel
+    nList: 3
+    nEvent: 200000
+    IsMC: true
+    
+  GGToMuMu_30to50_InelInel:
+    Name: GGToMuMu_Pt-2_Mll-30To50_Inel-Inel
+    nList: 3
+    nEvent: 198200
+    IsMC: true
+    
+  GGToMuMu_1500toInf_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_El-El
+    nList: 2
+    nEvent: 196220
+    IsMC: true
+    
+  GGToMuMu_1500toInf_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_Inel-El_El-Inel
+    nList: 3
+    nEvent: 199055
+    IsMC: true
+    
+  GGToMuMu_1500toInf_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_Inel-Inel
+    nList: 3
+    nEvent: 197165
+    IsMC: true
+    
+  GGToMuMu_200to1500_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_El-El
+    nList: 2
+    nEvent: 198108
+    IsMC: true
+    
+  GGToMuMu_200to1500_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_Inel-El_El-Inel
+    nList: 2
+    nEvent: 187715
+    IsMC: true
+    
+  GGToMuMu_200to1500_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_Inel-Inel
+    nList: 2
+    nEvent: 200000
+    IsMC: true
+    
+  GGToMuMu_50to200_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-50To200_El-El
+    nList: 2
+    nEvent: 199055
+    IsMC: true
+    
+  GGToMuMu_50to200_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-50To200_Inel-El_El-Inel
+    nList: 3
+    nEvent: 200000
+    IsMC: true
+    
+  GGToMuMu_50to200_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-50To200_Inel-Inel
+    nList: 2
+    nEvent: 200000
+    IsMC: true
+    
+2017:
+  Run2017B_SingleMuon:
+    Name: SingleMuon_Run2017B
+    nList: 6
+    nEvent: 95600537
+    IsMC: false
+    
+  Run2017C_SingleMuon:
+    Name: SingleMuon_Run2017C
+    nList: 10
+    nEvent: 153582409
+    IsMC: false
+    
+  Run2017D_SingleMuon:
+    Name: SingleMuon_Run2017D
+    nList: 4
+    nEvent: 68944361
+    IsMC: false
+    
+  Run2017E_SingleMuon:
+    Name: SingleMuon_Run2017E
+    nList: 9
+    nEvent: 151628786
+    IsMC: false
+    
+  Run2017F_SingleMuon:
+    Name: SingleMuon_Run2017F
+    nList: 14
+    nEvent: 235376772
+    IsMC: false
+    
+  Run2017B_DoubleEG:
+    Name: DoubleEG_Run2017B
+    nList: 3
+    nEvent: 54206718
+    IsMC: false
+    
+  Run2017C_DoubleEG:
+    Name: DoubleEG_Run2017C
+    nList: 5
+    nEvent: 59675381
+    IsMC: false
+    
+  Run2017D_DoubleEG:
+    Name: DoubleEG_Run2017D
+    nList: 2
+    nEvent: 25209987
+    IsMC: false
+    
+  Run2017E_DoubleEG:
+    Name: DoubleEG_Run2017E
+    nList: 4
+    nEvent: 54624312
+    IsMC: false
+    
+  Run2017F_DoubleEG:
+    Name: DoubleEG_Run2017F
+    nList: 6
+    nEvent: 72351214
+    IsMC: false
+    
+  NNLO_MUMU_10to50:
+    Name: DYJetsToMuMu_M-10to50_v1
+    nList: 1
+    nEvent: 6999997
+    IsMC: true
+    
+  NNLO_MUMU_10to50_v2:
+    Name: DYJetsToMuMu_M-10to50_ext1-v1
+    nList: 3
+    nEvent: 40033935
+    IsMC: true
+    
+  NNLO_MUMU_inc:
+    Name: DYJetsToMuMu_H2ErratumFix_PDFExt
+    nList: 137
+    nEvent: 187009020
+    IsMC: true
+    
+  NNLO_MUMU_100to200:
+    Name: DYJetsToMuMu_M-100to200
+    nList: 1
+    nEvent: 3469298
+    IsMC: true
+    
+  NNLO_MUMU_200to400:
+    Name: DYJetsToMuMu_M-200to400
+    nList: 1
+    nEvent: 1000000
+    IsMC: true
+    
+  NNLO_MUMU_400to500:
+    Name: DYJetsToMuMu_M-400to500
+    nList: 1
+    nEvent: 298834
+    IsMC: true
+    
+  NNLO_MUMU_500to700:
+    Name: DYJetsToMuMu_M-500to700
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_700to800:
+    Name: DYJetsToMuMu_M-700to800
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_800to1000:
+    Name: DYJetsToMuMu_M-800to1000
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_1000to1500:
+    Name: DYJetsToMuMu_M-1000to1500
+    nList: 1
+    nEvent: 299323
+    IsMC: true
+    
+  NNLO_MUMU_1500to2000:
+    Name: DYJetsToMuMu_M-1500to2000
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_2000toInf:
+    Name: DYJetsToMuMu_M-2000toInf
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_10to50:
+    Name: DYJetsToEE_M-10to50
+    nList: 1
+    nEvent: 6826496
+    IsMC: true
+    
+  NNLO_EE_10to50_v2:
+    Name: DYJetsToEE_M-10to50v2
+    nList: 3
+    nEvent: 41335114
+    IsMC: true
+    
+  NNLO_EE_inc:
+    Name: DYJetsToEE_M-50
+    nList: 27
+    nEvent: 259254869
+    IsMC: true
+    
+  NNLO_EE_100to200:
+    Name: DYJetsToEE_M-100to200
+    nList: 1
+    nEvent: 3464944
+    IsMC: true
+    
+  NNLO_EE_200to400:
+    Name: DYJetsToEE_M-200to400
+    nList: 1
+    nEvent: 999377
+    IsMC: true
+    
+  NNLO_EE_400to500:
+    Name: DYJetsToEE_M-400to500
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_500to700:
+    Name: DYJetsToEE_M-500to700
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_700to800:
+    Name: DYJetsToEE_M-700to800
+    nList: 1
+    nEvent: 295296
+    IsMC: true
+    
+  NNLO_EE_800to1000:
+    Name: DYJetsToEE_M-800to1000
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_EE_1000to1500:
+    Name: DYJetsToEE_M-1000to1500
+    nList: 1
+    nEvent: 298020
+    IsMC: true
+    
+  NNLO_EE_1500to2000:
+    Name: DYJetsToEE_M-1500to2000
+    nList: 1
+    nEvent: 298826
+    IsMC: true
+    
+  NNLO_EE_2000toInf:
+    Name: DYJetsToEE_M-2000toInf
+    nList: 1
+    nEvent: 299362
+    IsMC: true
+    
+  NNLO_tautau:
+    Name: DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_H2ErratumFix
+    nList: 251
+    nEvent: 357593543
+    IsMC: true
+    
+  ST_s:
+    Name: ST_s-channel_4f_leptonDecays
+    nList: 2
+    nEvent: 13620000
+    IsMC: true
+    
+  ST_t_AntiTop:
+    Name: ST_t-channel_anitop_4f_InclusiveDecays
+    nList: 6
+    nEvent: 69793000
+    IsMC: true
+    
+  ST_t_Top:
+    Name: ST_t-channel_top_4f_InclusiveDecays
+    nList: 20
+    nEvent: 129903000
+    IsMC: true
+    
+  ST_tW_AntiTop:
+    Name: ST_tW_antitop_5f_inclusiveDecays
+    nList: 5
+    nEvent: 5674000
+    IsMC: true
+    
+  ST_tW_Top:
+    Name: ST_tW_top_5f_inclusiveDecays
+    nList: 5
+    nEvent: 5649000
+    IsMC: true
+    
+  TTTo2L2Nu:
+    Name: TTTo2L2Nu
+    nList: 10
+    nEvent: 106724000
+    IsMC: true
+    
+  WJetsToLNu:
+    Name: WJetsToLNu
+    nList: 5
+    nEvent: 26454101
+    IsMC: true
+    
+  WW:
+    Name: WWTo2L2Nu
+    nList: 5
+    nEvent: 7098000
+    IsMC: true
+    
+  WZ:
+    Name: WZ
+    nList: 3
+    nEvent: 7889000
+    IsMC: true
+    
+  ZZ:
+    Name: ZZ
+    nList: 1
+    nEvent: 2706000
+    IsMC: true
+    
+  GGToEE_10to30_ElEl:
+    Name: GGToEE_Pt-2_Mll-10To30_El-El
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_10to30_InelElElInel:
+    Name: GGToEE_Pt-2_Mll-10To30_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_10to30_InelInel:
+    Name: GGToEE_Pt-2_Mll-10To30_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_30to50_ElEl:
+    Name: GGToEE_Pt-2_Mll-30To50_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_30to50_InelElElInel:
+    Name: GGToEE_Pt-2_Mll-30To50_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_30to50_InelInel:
+    Name: GGToEE_Pt-2_Mll-30To50_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_1500toInf_ElEl:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_1500toInf_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_Inel-El_El-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_1500toInf_InelInel:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_Inel-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_200to1500_ElEl:
+    Name: GGToEE_Pt-5_Mll-200To1500_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_200to1500_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-200To1500_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_200to1500_InelInel:
+    Name: GGToEE_Pt-5_Mll-200To1500_Inel-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_50to200_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-50To200_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_50to200_InelInel:
+    Name: GGToEE_Pt-5_Mll-50To200_Inel-Inel
+    nList: 2
+    nEvent: 498000
+    IsMC: true
+    
+  GGToEE_50to200_ElEl:
+    Name: GGToEE_Pt-5_Mll-50To200_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_10to30_ElEl:
+    Name: GGToMuMu_Pt-2_Mll-10To30_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_10to30_InelElElInel:
+    Name: GGToMuMu_Pt-2_Mll-10To30_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_10to30_InelInel:
+    Name: GGToMuMu_Pt-2_Mll-10To30_Inel-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_30to50_ElEl:
+    Name: GGToMuMu_Pt-2_Mll-30To50_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_30to50_InelElElInel:
+    Name: GGToMuMu_Pt-2_Mll-30To50_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_30to50_InelInel:
+    Name: GGToMuMu_Pt-2_Mll-30To50_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_200to1500_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_200to1500_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_200to1500_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_50to200_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-50To200_El-El
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_50to200_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-50To200_Inel-El_El-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_50to200_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-50To200_Inel-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+2018:
+  Run2018A_SingleMuon:
+    Name: SingleMuon_Run2018A
+    nList: 10
+    nEvent: 227344119
+    IsMC: false
+    
+  Run2018B_SingleMuon:
+    Name: SingleMuon_Run2018B
+    nList: 6
+    nEvent: 110446445
+    IsMC: false
+    
+  Run2018C_SingleMuon:
+    Name: SingleMuon_Run2018C
+    nList: 7
+    nEvent: 107972995
+    IsMC: false
+    
+  Run2018D_SingleMuon:
+    Name: SingleMuon_Run2018D
+    nList: 21
+    nEvent: 501051377
+    IsMC: false
+    
+  Run2018A_EGamma:
+    Name: EGamma_Run2018A
+    nList: 15
+    nEvent: 319240763
+    IsMC: false
+    
+  Run2018B_EGamma:
+    Name: EGamma_Run2018B
+    nList: 7
+    nEvent: 139144140
+    IsMC: false
+    
+  Run2018C_EGamma:
+    Name: EGamma_Run2018C
+    nList: 8
+    nEvent: 143781609
+    IsMC: false
+    
+  Run2018D_EGamma:
+    Name: EGamma_Run2018D
+    nList: 45
+    nEvent: 725867504
+    IsMC: false
+    
+  NNLO_MUMU_10to50:
+    Name: DYJetsToMuMu_M-10to50_v1
+    nList: 1
+    nEvent: 7552720
+    IsMC: true
+    
+  NNLO_MUMU_10to50_v2:
+    Name: DYJetsToMuMu_M-10to50_ext1-v1
+    nList: 4
+    nEvent: 57463716
+    IsMC: true
+    
+  NNLO_MUMU_inc:
+    Name: DYJetsToMuMu_H2ErratumFix_PDFExt
+    nList: 185
+    nEvent: 255738083
+    IsMC: true
+    
+  NNLO_MUMU_100to200:
+    Name: DYJetsToMuMu_M-100to200
+    nList: 1
+    nEvent: 4905208
+    IsMC: true
+    
+  NNLO_MUMU_200to400:
+    Name: DYJetsToMuMu_M-200to400
+    nList: 1
+    nEvent: 1000000
+    IsMC: true
+    
+  NNLO_MUMU_400to500:
+    Name: DYJetsToMuMu_M-400to500
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_500to700:
+    Name: DYJetsToMuMu_M-500to700
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_700to800:
+    Name: DYJetsToMuMu_M-700to800
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_800to1000:
+    Name: DYJetsToMuMu_M-800to1000
+    nList: 1
+    nEvent: 298420
+    IsMC: true
+    
+  NNLO_MUMU_1000to1500:
+    Name: DYJetsToMuMu_M-1000to1500
+    nList: 1
+    nEvent: 298594
+    IsMC: true
+    
+  NNLO_MUMU_1500to2000:
+    Name: DYJetsToMuMu_M-1500to2000
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_MUMU_2000toInf:
+    Name: DYJetsToMuMu_M-2000toInf
+    nList: 1
+    nEvent: 299999
+    IsMC: true
+    
+  NNLO_EE_10to50:
+    Name: DYJetsToEE_M-10to50
+    nList: 1
+    nEvent: 9606758
+    IsMC: true
+    
+  NNLO_EE_10to50_v2:
+    Name: DYJetsToEE_M-10to50v2
+    nList: 4
+    nEvent: 59996635
+    IsMC: true
+    
+  NNLO_EE_inc:
+    Name: DYJetsToEE_M-50
+    nList: 39
+    nEvent: 339288718
+    IsMC: true
+    
+  NNLO_EE_100to200:
+    Name: DYJetsToEE_M-100to200
+    nList: 1
+    nEvent: 4998842
+    IsMC: true
+    
+  NNLO_EE_200to400:
+    Name: DYJetsToEE_M-200to400
+    nList: 1
+    nEvent: 1000000
+    IsMC: true
+    
+  NNLO_EE_400to500:
+    Name: DYJetsToEE_M-400to500
+    nList: 1
+    nEvent: 296805
+    IsMC: true
+    
+  NNLO_EE_500to700:
+    Name: DYJetsToEE_M-500to700
+    nList: 1
+    nEvent: 297945
+    IsMC: true
+    
+  NNLO_EE_700to800:
+    Name: DYJetsToEE_M-700to800
+    nList: 1
+    nEvent: 297424
+    IsMC: true
+    
+  NNLO_EE_800to1000:
+    Name: DYJetsToEE_M-800to1000
+    nList: 1
+    nEvent: 292488
+    IsMC: true
+    
+  NNLO_EE_1000to1500:
+    Name: DYJetsToEE_M-1000to1500
+    nList: 1
+    nEvent: 299326
+    IsMC: true
+    
+  NNLO_EE_1500to2000:
+    Name: DYJetsToEE_M-1500to2000
+    nList: 1
+    nEvent: 298566
+    IsMC: true
+    
+  NNLO_EE_2000toInf:
+    Name: DYJetsToEE_M-2000toInf
+    nList: 1
+    nEvent: 300000
+    IsMC: true
+    
+  NNLO_tautau:
+    Name: DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_H2ErratumFix
+    nList: 322
+    nEvent: 495407528
+    IsMC: true
+    
+  ST_s:
+    Name: ST_s-channel_4f_leptonDecays
+    nList: 2
+    nEvent: 19365999
+    IsMC: true
+    
+  ST_t_AntiTop:
+    Name: ST_t-channel_anitop_4f_InclusiveDecays
+    nList: 13
+    nEvent: 95627000
+    IsMC: true
+    
+  ST_t_Top:
+    Name: ST_t-channel_top_4f_InclusiveDecays
+    nList: 15
+    nEvent: 178336000
+    IsMC: true
+    
+  ST_tW_AntiTop:
+    Name: ST_tW_antitop_5f_inclusiveDecays
+    nList: 3
+    nEvent: 7749000
+    IsMC: true
+    
+  ST_tW_Top:
+    Name: ST_tW_top_5f_inclusiveDecays
+    nList: 6
+    nEvent: 7956000
+    IsMC: true
+    
+  TTTo2L2Nu:
+    Name: TTTo2L2Nu
+    nList: 16
+    nEvent: 145020000
+    IsMC: true
+    
+  WJetsToLNu:
+    Name: WJetsToLNu
+    nList: 6
+    nEvent: 29117828
+    IsMC: true
+    
+  WW:
+    Name: WWTo2L2Nu
+    nList: 4
+    nEvent: 9994000
+    IsMC: true
+    
+  WZ:
+    Name: WZ
+    nList: 2
+    nEvent: 7940000
+    IsMC: true
+    
+  ZZ:
+    Name: ZZ
+    nList: 1
+    nEvent: 3526000
+    IsMC: true
+    
+  GGToEE_10to30_ElEl:
+    Name: GGToEE_Pt-2_Mll-10To30_El-El
+    nList: 3
+    nEvent: 499000
+    IsMC: true
+    
+  GGToEE_10to30_InelElElInel:
+    Name: GGToEE_Pt-2_Mll-10To30_Inel-El_El-Inel
+    nList: 3
+    nEvent: 499800
+    IsMC: true
+    
+  GGToEE_10to30_InelInel:
+    Name: GGToEE_Pt-2_Mll-10To30_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_30to50_ElEl:
+    Name: GGToEE_Pt-2_Mll-30To50_El-El
+    nList: 3
+    nEvent: 499000
+    IsMC: true
+    
+  GGToEE_30to50_InelElElInel:
+    Name: GGToEE_Pt-2_Mll-30To50_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_30to50_InelInel:
+    Name: GGToEE_Pt-2_Mll-30To50_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_1500toInf_ElEl:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_El-El
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_1500toInf_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_Inel-El_El-Inel
+    nList: 1
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_1500toInf_InelInel:
+    Name: GGToEE_Pt-5_Mll-1500ToInf_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_200to1500_ElEl:
+    Name: GGToEE_Pt-5_Mll-200To1500_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_200to1500_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-200To1500_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_200to1500_InelInel:
+    Name: GGToEE_Pt-5_Mll-200To1500_Inel-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_50to200_InelElElInel:
+    Name: GGToEE_Pt-5_Mll-50To200_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_50to200_InelInel:
+    Name: GGToEE_Pt-5_Mll-50To200_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToEE_50to200_ElEl:
+    Name: GGToEE_Pt-5_Mll-50To200_El-El
+    nList: 1
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_10to30_ElEl:
+    Name: GGToMuMu_Pt-2_Mll-10To30_El-El
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_10to30_InelElElInel:
+    Name: GGToMuMu_Pt-2_Mll-10To30_Inel-El_El-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_10to30_InelInel:
+    Name: GGToMuMu_Pt-2_Mll-10To30_Inel-Inel
+    nList: 1
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_30to50_ElEl:
+    Name: GGToMuMu_Pt-2_Mll-30To50_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_30to50_InelElElInel:
+    Name: GGToMuMu_Pt-2_Mll-30To50_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_30to50_InelInel:
+    Name: GGToMuMu_Pt-2_Mll-30To50_Inel-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_1500toInf_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-1500ToInf_Inel-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_200to1500_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_200to1500_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_200to1500_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-200To1500_Inel-Inel
+    nList: 2
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_50to200_ElEl:
+    Name: GGToMuMu_Pt-5_Mll-50To200_El-El
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_50to200_InelElElInel:
+    Name: GGToMuMu_Pt-5_Mll-50To200_Inel-El_El-Inel
+    nList: 3
+    nEvent: 500000
+    IsMC: true
+    
+  GGToMuMu_50to200_InelInel:
+    Name: GGToMuMu_Pt-5_Mll-50To200_Inel-Inel
+    nList: 4
+    nEvent: 500000
+    IsMC: true
+    
