@@ -1,3 +1,7 @@
+Info:
+  Era: 2018
+  Channel: EE
+
 Z:
   MassCut: 200
 
@@ -7,7 +11,6 @@ Electron:
   Eta: 2.4
   ID: 3
   Charge: opposite
-
 
 Jet:
   Pt: 30
@@ -29,25 +32,25 @@ Correction:
 
 Efficiency:
   Reco:
-    Path: ../../xxx.json
-    Name: XXX
+    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_RECO_2018_schemaV2.json
+    Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
   ID:
-    Path: ../../xxx.json
-    Name: XXX
+    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2018_schemaV2.json
+    Name: NUM_HighPtID_DEN_GlobalMuonProbes
   ISO:
-    Path: ../../xxx.json
-    Name: XXX
+    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2018_schemaV2.json
+    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
   Trigger:
-    Path: ../../xxx.json
-    Name: XXX
+    Path: ../../correctionlib/muon/medium/2018.json
+    Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
   JetPU:
-    Path: ../../xxx.csv
+    Path: ../../EfficiencyTable/JetPUID/2018_L.csv
   BTag:
-    Path: ../../xxx.csv
+    Path: ../../EfficiencyTable/BTag/wp_deepJet_2018.csv
   BTagEff:
-    bQuark: ../../xxx.txt
-    cQuark: ../../xxx.txt
-    lQuark: ../../xxx.txt
+    bQuark: ../../EfficiencyTable/BTagEff/DY_2018_h_BTagEff_B.txt
+    cQuark: ../../EfficiencyTable/BTagEff/DY_2018_h_BTagEff_C.txt
+    lQuark: ../../EfficiencyTable/BTagEff/DY_2018_h_BTagEff_L.txt
 
 Pileup:
   Data: PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root
