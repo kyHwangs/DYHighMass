@@ -359,7 +359,7 @@ void HistoSetEE::FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJet
   }
 }
 
-void HistoSetEE::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir) {
+void HistoSetEE::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData) {
   
   TFile* fOutputFile = new TFile(fOutputDir, "RECREATE");
   
@@ -413,6 +413,57 @@ void HistoSetEE::WriteHisto(TString fEra, TString fSampleName, TString fOutputDi
     fHistSet["h_BJetEta" + tSuffix]->Write();
     fHistSet["h_BJetPhi" + tSuffix]->Write();
   }
+
+  if (fIsData) {
+    
+    fOutputFile->mkdir(fEra + "/Data");
+    fOutputFile->cd(fEra + "/Data");
+
+    fHistSet["h_EventInfo"]->Write();
+    fHistSet["h_GenWeight"]->Write();
+    fHistSet["h_LHEDielecMass"]->Write();
+    fHistSet["h_LHEnElec"]->Write();
+    fHistSet["h_nPVGood_Count"]->Write();
+    fHistSet["h_PileUp_Count_Interaction_before"]->Write();
+    fHistSet["h_PileUp_Count_Interaction_after"]->Write();
+
+    for (auto tSuffix : fSuffix) 
+      if (tSuffix != "")
+        fOutputFile->mkdir(fEra + "/Data/" + tSuffix);
+
+    for (auto tSuffix : fSuffix) {
+      if (tSuffix != "") fOutputFile->cd(fEra + "/Data/" + tSuffix);
+      else               fOutputFile->cd(fEra + "/Data");
+
+      fHistSet["h_LeadingElecPt" + tSuffix]->Write();
+      fHistSet["h_LeadingElecEta" + tSuffix]->Write();
+      fHistSet["h_LeadingElecPhi" + tSuffix]->Write();
+
+      fHistSet["h_SubleadingElecPt" + tSuffix]->Write();
+      fHistSet["h_SubleadingElecEta" + tSuffix]->Write();
+      fHistSet["h_SubleadingElecPhi" + tSuffix]->Write();
+
+      fHistSet["h_ElecPt" + tSuffix]->Write();  
+      fHistSet["h_ElecEta" + tSuffix]->Write();
+      fHistSet["h_ElecPhi" + tSuffix]->Write();
+
+      fHistSet["h_ElecDeltaR" + tSuffix]->Write();
+      fHistSet["h_dielecMass" + tSuffix]->Write();
+      fHistSet["h_dielecPt" + tSuffix]->Write();
+      fHistSet["h_dielecRap" + tSuffix]->Write();
+      
+      fHistSet["h_nJet" + tSuffix]->Write();
+      fHistSet["h_JetPt" + tSuffix]->Write();
+      fHistSet["h_JetEta" + tSuffix]->Write();
+      fHistSet["h_JetPhi" + tSuffix]->Write();
+      
+      fHistSet["h_nBJet" + tSuffix]->Write();
+      fHistSet["h_BJetPt" + tSuffix]->Write();
+      fHistSet["h_BJetEta" + tSuffix]->Write();
+      fHistSet["h_BJetPhi" + tSuffix]->Write();
+    }
+  }
+
 
   if (fHistSet2D.size() > 0) {
     fOutputFile->mkdir("Hist2D");

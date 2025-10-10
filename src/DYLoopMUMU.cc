@@ -100,7 +100,7 @@ void DYLoopMUMU::Loop() {
         tDiMuonMassLHE = tDiMuonLHE.M();
       }
 
-      if (fSampleName == "NNLO_inc" && tDiMuonMassLHE > 100 )
+      if (fSampleName.Contains("NNLO") && fSampleName.Contains("inc") && tDiMuonMassLHE > 100 )
         continue;
 
       fHistoSet->FillHisto((std::string)"h_LHEDimuonMass", tDiMuonMassLHE, tEventGenWeight);
@@ -314,5 +314,5 @@ void DYLoopMUMU::Loop() {
 
 void DYLoopMUMU::EndOfJob() {
 
-  fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root");
+  fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root", !fIsMC);
 }

@@ -358,7 +358,7 @@ void HistoSetMUMU::FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJ
   }
 }
 
-void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir) {
+void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData) {
 
   TFile* fOutputFile = new TFile(fOutputDir, "RECREATE");
   
@@ -407,6 +407,56 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
     fHistSet["h_BJetPt" + tSuffix]->Write();
     fHistSet["h_BJetEta" + tSuffix]->Write();
     fHistSet["h_BJetPhi" + tSuffix]->Write();
+  }
+
+  if (fIsData) {
+    
+    fOutputFile->mkdir(fEra + "/Data");
+    fOutputFile->cd(fEra + "/Data");
+    
+    fHistSet["h_EventInfo"]->Write();
+    fHistSet["h_GenWeight"]->Write();
+    fHistSet["h_LHEDimuonMass"]->Write();
+    fHistSet["h_LHEnMuon"]->Write();
+    fHistSet["h_nPVGood_Count"]->Write();
+    fHistSet["h_PileUp_Count_Interaction_before"]->Write();
+    fHistSet["h_PileUp_Count_Interaction_after"]->Write();
+
+    for (auto tSuffix : fSuffix)
+      if (tSuffix != "")
+        fOutputFile->mkdir(fEra + "/Data/" + tSuffix);
+
+    for (auto tSuffix : fSuffix) {
+      if (tSuffix != "") fOutputFile->cd(fEra + "/Data/" + tSuffix);
+      else               fOutputFile->cd(fEra + "/Data");
+
+      fHistSet["h_LeadingMuonPt" + tSuffix]->Write();
+      fHistSet["h_LeadingMuonEta" + tSuffix]->Write();
+      fHistSet["h_LeadingMuonPhi" + tSuffix]->Write();
+
+      fHistSet["h_SubleadingMuonPt" + tSuffix]->Write();
+      fHistSet["h_SubleadingMuonEta" + tSuffix]->Write();
+      fHistSet["h_SubleadingMuonPhi" + tSuffix]->Write();
+
+      fHistSet["h_MuonPt" + tSuffix]->Write();  
+      fHistSet["h_MuonEta" + tSuffix]->Write();
+      fHistSet["h_MuonPhi" + tSuffix]->Write();
+
+      fHistSet["h_MuonDeltaR" + tSuffix]->Write();
+      fHistSet["h_dimuonMass" + tSuffix]->Write();
+      fHistSet["h_dimuonPt" + tSuffix]->Write();
+      fHistSet["h_dimuonRap" + tSuffix]->Write();
+
+      fHistSet["h_nJet" + tSuffix]->Write();
+      fHistSet["h_JetPt" + tSuffix]->Write();
+      fHistSet["h_JetEta" + tSuffix]->Write();
+      fHistSet["h_JetPhi" + tSuffix]->Write();
+      
+      fHistSet["h_nBJet" + tSuffix]->Write();
+      fHistSet["h_BJetPt" + tSuffix]->Write();
+      fHistSet["h_BJetEta" + tSuffix]->Write();
+      fHistSet["h_BJetPhi" + tSuffix]->Write();
+    }
   }
 
   if (fHistSet2D.size() > 0) {

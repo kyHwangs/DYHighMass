@@ -52,7 +52,7 @@ public:
   double SetPtOverflow(double fPt);
   double SetMassOverflow(double fMass);
 
-  void WriteHisto(TString fEra, TString fSampleName, TString fOutputDir);
+  void WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData);
 
 private:
   std::map<std::string, TH1D*> fHistSet;

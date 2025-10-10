@@ -264,5 +264,5 @@ void DYLoopEMU::Loop() {
 
 void DYLoopEMU::EndOfJob() {
 
-  fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root");
+  fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root", !fIsMC);
 }
