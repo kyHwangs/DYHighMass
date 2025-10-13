@@ -60,6 +60,11 @@ public:
         AddVariable("output", (TString)(fArgv[i]));
       }
 
+      if (fArgv[i] == "--input") {
+        i++;
+        AddVariable("input", (TString)(fArgv[i]));
+      }
+
       if (fArgv[i] == "--channel") {
         i++;
         AddVariable("channel", (std::string)(fArgv[i]));

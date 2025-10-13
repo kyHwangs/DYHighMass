@@ -349,6 +349,9 @@ void HistoSetEMU::FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJe
 
 void HistoSetEMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData) {
 
+  if (fSampleName.Contains("NNLO_MUMU_10to50"))
+    fSampleName = "NNLO_MUMU_10to50";
+
   TFile* fOutputFile = new TFile(fOutputDir, "RECREATE");
   
   fOutputFile->mkdir(fEra + '/' + fSampleName);

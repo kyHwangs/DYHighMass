@@ -515,6 +515,40 @@ queue config,era,sample,id from joblist.txt
     return -1;
   }
 
+  std::string fHaddSubmit = R"(universe              = vanilla
+executable            = condor_wrapper.sh
+getenv                = True
+arguments             = hadd -j15 output.root ./ROOT/*.root
+
+request_memory        = 4 GB
+request_disk          = 1 GB
+request_cpus          = 15
+should_transfer_files = YES
+transfer_input_files = )" + fWorkspaceStr + R"(/envset.sh, \
+                        )" + fWorkspaceStr + R"(/install/lib, \
+                        )" + fWorkspaceStr + R"(/install/bin
+
+JobBatchName          = )" + fBaseDir + R"(_hadd
++JobType = "long"
+
+output                = log/hadd.out
+error                 = log/hadd.err
+log                   = log/hadd.log
+
+queue 1
+)";
+  
+    std::string fHaddSubmitStr = fBaseDirStr + "/hadd_submit.sub";
+    std::ofstream fHaddSubmitStream(fHaddSubmitStr);
+    if (fHaddSubmitStream.is_open()) {
+      fHaddSubmitStream << fHaddSubmit;
+      fHaddSubmitStream.close();
+    } else {
+      std::cout << "Failed to create config file: " << fHaddSubmitStr << std::endl;
+      return -1;
+    }
+
+
   std::string fCondorWrapper = R"(#!/bin/sh
 
 echo "$@"
