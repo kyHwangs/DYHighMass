@@ -15,17 +15,17 @@ CMS.SetEnergy("13")
 ROOT.gROOT.SetBatch(ROOT.kTRUE)
 
 mcList = [
-    "NNLO_MUMU_10to50",
-    "NNLO_MUMU_inc",
-    "NNLO_MUMU_100to200",
-    "NNLO_MUMU_200to400",
-    "NNLO_MUMU_400to500",
-    "NNLO_MUMU_500to700",
-    "NNLO_MUMU_700to800",
-    "NNLO_MUMU_800to1000",
-    "NNLO_MUMU_1000to1500",
-    "NNLO_MUMU_1500to2000",
-    "NNLO_MUMU_2000toInf",
+    "NNLO_EE_10to50",
+    "NNLO_EE_inc",
+    "NNLO_EE_100to200",
+    "NNLO_EE_200to400",
+    "NNLO_EE_400to500",
+    "NNLO_EE_500to700",
+    "NNLO_EE_700to800",
+    "NNLO_EE_800to1000",
+    "NNLO_EE_1000to1500",
+    "NNLO_EE_1500to2000",
+    "NNLO_EE_2000toInf",
 
     "NNLO_tautau",
 
@@ -41,37 +41,37 @@ mcList = [
     "WZ",
     "ZZ",
 
-    "GGToMuMu_10to30_ElEl",
-    "GGToMuMu_30to50_ElEl",
-    "GGToMuMu_50to200_ElEl",
-    "GGToMuMu_200to1500_ElEl",
-    "GGToMuMu_1500toInf_ElEl",
+    "GGToEE_10to30_ElEl",
+    "GGToEE_30to50_ElEl",
+    "GGToEE_50to200_ElEl",
+    "GGToEE_200to1500_ElEl",
+    "GGToEE_1500toInf_ElEl",
 
-    "GGToMuMu_10to30_InelElElInel",
-    "GGToMuMu_30to50_InelElElInel",
-    "GGToMuMu_50to200_InelElElInel",
-    "GGToMuMu_200to1500_InelElElInel",
-    "GGToMuMu_1500toInf_InelElElInel",
+    "GGToEE_10to30_InelElElInel",
+    "GGToEE_30to50_InelElElInel",
+    "GGToEE_50to200_InelElElInel",
+    "GGToEE_200to1500_InelElElInel",
+    "GGToEE_1500toInf_InelElElInel",
 
-    "GGToMuMu_10to30_InelInel",
-    "GGToMuMu_30to50_InelInel",
-    "GGToMuMu_50to200_InelInel",
-    "GGToMuMu_200to1500_InelInel",
-    "GGToMuMu_1500toInf_InelInel",
+    "GGToEE_10to30_InelInel",
+    "GGToEE_30to50_InelInel",
+    "GGToEE_50to200_InelInel",
+    "GGToEE_200to1500_InelInel",
+    "GGToEE_1500toInf_InelInel",
 ]
 
 dylist = [
-    "NNLO_MUMU_10to50",
-    "NNLO_MUMU_inc",
-    "NNLO_MUMU_100to200",
-    "NNLO_MUMU_200to400",
-    "NNLO_MUMU_400to500",
-    "NNLO_MUMU_500to700",
-    "NNLO_MUMU_700to800",
-    "NNLO_MUMU_800to1000",
-    "NNLO_MUMU_1000to1500",
-    "NNLO_MUMU_1500to2000",
-    "NNLO_MUMU_2000toInf"
+    "NNLO_EE_10to50",
+    "NNLO_EE_inc",
+    "NNLO_EE_100to200",
+    "NNLO_EE_200to400",
+    "NNLO_EE_400to500",
+    "NNLO_EE_500to700",
+    "NNLO_EE_700to800",
+    "NNLO_EE_800to1000",
+    "NNLO_EE_1000to1500",
+    "NNLO_EE_1500to2000",
+    "NNLO_EE_2000toInf"
 ]
 
 stlist = [
@@ -85,27 +85,27 @@ stlist = [
 ewlist = ["WW", "WZ", "ZZ"]
 
 GG_ElEl_list = [
-    "GGToMuMu_10to30_ElEl",
-    "GGToMuMu_30to50_ElEl",
-    "GGToMuMu_50to200_ElEl",
-    "GGToMuMu_200to1500_ElEl",
-    "GGToMuMu_1500toInf_ElEl",
+    "GGToEE_10to30_ElEl",
+    "GGToEE_30to50_ElEl",
+    "GGToEE_50to200_ElEl",
+    "GGToEE_200to1500_ElEl",
+    "GGToEE_1500toInf_ElEl",
 ]
 
 GG_InelElElInel_list = [
-    "GGToMuMu_10to30_InelElElInel",
-    "GGToMuMu_30to50_InelElElInel",
-    "GGToMuMu_50to200_InelElElInel",
-    "GGToMuMu_200to1500_InelElElInel",
-    "GGToMuMu_1500toInf_InelElElInel",
+    "GGToEE_10to30_InelElElInel",
+    "GGToEE_30to50_InelElElInel",
+    "GGToEE_50to200_InelElElInel",
+    "GGToEE_200to1500_InelElElInel",
+    "GGToEE_1500toInf_InelElElInel",
 ]
 
 GG_InelInel_list = [
-    "GGToMuMu_10to30_InelInel",
-    "GGToMuMu_30to50_InelInel",
-    "GGToMuMu_50to200_InelInel",
-    "GGToMuMu_200to1500_InelInel",
-    "GGToMuMu_1500toInf_InelInel",
+    "GGToEE_10to30_InelInel",
+    "GGToEE_30to50_InelInel",
+    "GGToEE_50to200_InelInel",
+    "GGToEE_200to1500_InelInel",
+    "GGToEE_1500toInf_InelInel",
 ]
 
 refLumi = {
@@ -302,7 +302,7 @@ class Plotter:
             ymin = 2e-2
             ymax = data.GetBinContent(data.GetMaximumBin()) * 1e3
 
-        if "dimuonMass_wide" in histName: 
+        if "h_dielecMass" in histName: 
             ymin = 2e-2
 
         if doAutoYRatiorange:
@@ -430,9 +430,9 @@ class Plotter:
             histoSet[mc].SetStats(0);
             histoSet[mc].Scale(normFactor[mc]);
 
-        returnHist = histoSet["NNLO_MUMU_inc"].Clone(f"DY_{uuid.uuid4()}")
+        returnHist = histoSet["NNLO_EE_inc"].Clone(f"DY_{uuid.uuid4()}")
         for mc in dylist:
-            if (mc != "NNLO_MUMU_inc"):
+            if (mc != "NNLO_EE_inc"):
                 returnHist.Add(histoSet[mc])
 
         return returnHist
@@ -445,9 +445,9 @@ class Plotter:
             histoSet[mc].SetStats(0);
             histoSet[mc].Scale(normFactor[mc]);
 
-        returnHist = histoSet["GGToMuMu_10to30_ElEl"].Clone(f"GG_ElEl_{uuid.uuid4()}")
+        returnHist = histoSet["GGToEE_10to30_ElEl"].Clone(f"GG_ElEl_{uuid.uuid4()}")
         for mc in GG_ElEl_list:
-            if (mc != "GGToMuMu_10to30_ElEl"):
+            if (mc != "GGToEE_10to30_ElEl"):
                 returnHist.Add(histoSet[mc])
 
         return returnHist
@@ -460,9 +460,9 @@ class Plotter:
             histoSet[mc].SetStats(0);
             histoSet[mc].Scale(normFactor[mc]);
 
-        returnHist = histoSet["GGToMuMu_10to30_InelElElInel"].Clone(f"GG_InelElElInel_{uuid.uuid4()}")
+        returnHist = histoSet["GGToEE_10to30_InelElElInel"].Clone(f"GG_InelElElInel_{uuid.uuid4()}")
         for mc in GG_InelElElInel_list:
-            if (mc != "GGToMuMu_10to30_InelElElInel"):
+            if (mc != "GGToEE_10to30_InelElElInel"):
                 returnHist.Add(histoSet[mc])
 
         return returnHist
@@ -475,9 +475,9 @@ class Plotter:
             histoSet[mc].SetStats(0);
             histoSet[mc].Scale(normFactor[mc]);
 
-        returnHist = histoSet["GGToMuMu_10to30_InelInel"].Clone(f"GG_InelInel_{uuid.uuid4()}")
+        returnHist = histoSet["GGToEE_10to30_InelInel"].Clone(f"GG_InelInel_{uuid.uuid4()}")
         for mc in GG_InelInel_list:
-            if (mc != "GGToMuMu_10to30_InelInel"):
+            if (mc != "GGToEE_10to30_InelInel"):
                 returnHist.Add(histoSet[mc])
 
         return returnHist
@@ -565,25 +565,25 @@ def main(args):
     }
 
     addon_hook_mass = {
-        "": "M_{#mu#mu} > 200 GeV",
-        "_m200_220": "200 < M_{#mu#mu} < 220 GeV",
-        "_m220_243": "220 < M_{#mu#mu} < 243 GeV",
-        "_m243_273": "243 < M_{#mu#mu} < 273 GeV",
-        "_m273_320": "273 < M_{#mu#mu} < 320 GeV",
-        "_m320_380": "320 < M_{#mu#mu} < 380 GeV",
-        "_m380_440": "380 < M_{#mu#mu} < 440 GeV",
-        "_m440_510": "440 < M_{#mu#mu} < 510 GeV",
-        "_m510_600": "510 < M_{#mu#mu} < 600 GeV",
-        "_m600_700": "600 < M_{#mu#mu} < 700 GeV",
-        "_m700_830": "700 < M_{#mu#mu} < 830 GeV",
-        "_m830_1000": "830 < M_{#mu#mu} < 1000 GeV",
-        "_m1000_1500": "1000 < M_{#mu#mu} < 1500 GeV",
-        "_m1500_4000": "1500 < M_{#mu#mu} < 4000 GeV"
+        "": "M_{ee} > 200 GeV",
+        "_m200_220": "200 < M_{ee} < 220 GeV",
+        "_m220_243": "220 < M_{ee} < 243 GeV",
+        "_m243_273": "243 < M_{ee} < 273 GeV",
+        "_m273_320": "273 < M_{ee} < 320 GeV",
+        "_m320_380": "320 < M_{ee} < 380 GeV",
+        "_m380_440": "380 < M_{ee} < 440 GeV",
+        "_m440_510": "440 < M_{ee} < 510 GeV",
+        "_m510_600": "510 < M_{ee} < 600 GeV",
+        "_m600_700": "600 < M_{ee} < 700 GeV",
+        "_m700_830": "700 < M_{ee} < 830 GeV",
+        "_m830_1000": "830 < M_{ee} < 1000 GeV",
+        "_m1000_1500": "1000 < M_{ee} < 1500 GeV",
+        "_m1500_4000": "1500 < M_{ee} < 4000 GeV"
     }
 
     latex = [
-        args.era + ", dimuon channel",
-        "p_{T}(#mu) > 52 (15) GeV, |#eta(#mu)| < 2.4",
+        args.era + ", dielectron channel",
+        "p_{T}(e) > 50 (20) GeV, |#eta(e)| < 2.4",
         "",
         "",
     ]
@@ -596,7 +596,7 @@ def main(args):
         latex_temp = latex.copy()
         latex_temp[2] = addon_hook[case]
 
-        plotter.Plot("h_dimuonMass", case, ""                     , latex_temp, xTitle = "M(#mu#mu) [GeV]"  ,xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
+        plotter.Plot("h_dielecMass", case, ""                     , latex_temp, xTitle = "M(ee) [GeV]"  ,xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
 
         for massbin in massBins:
             latex_temp[3] = addon_hook_mass[massbin]
@@ -609,21 +609,21 @@ def main(args):
             plotter.Plot("h_BJetEta", case, massbin               , latex_temp, xTitle = "#eta(b-jet)"              ,xmin = -2.4, xmax = 2.4, logy = True)
             plotter.Plot("h_BJetPhi", case, massbin               , latex_temp, xTitle = "#phi(b-jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-            plotter.Plot("h_LeadingMuonPt", case, massbin         , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_LeadingMuonEta", case, massbin        , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.4, xmax = 2.4, logy = True)
-            plotter.Plot("h_LeadingMuonPhi", case, massbin        , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            plotter.Plot("h_LeadingElecPt", case, massbin         , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            plotter.Plot("h_LeadingElecEta", case, massbin        , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.4, xmax = 2.4, logy = True)
+            plotter.Plot("h_LeadingElecPhi", case, massbin        , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-            plotter.Plot("h_SubleadingMuonPt", case, massbin      , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_SubleadingMuonEta", case, massbin     , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.4, xmax = 2.4, logy = True)
-            plotter.Plot("h_SubleadingMuonPhi", case, massbin     , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            plotter.Plot("h_SubleadingElecPt", case, massbin      , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            plotter.Plot("h_SubleadingElecEta", case, massbin     , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.4, xmax = 2.4, logy = True)
+            plotter.Plot("h_SubleadingElecPhi", case, massbin     , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-            plotter.Plot("h_MuonPt", case, massbin                , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_MuonEta", case, massbin               , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.4, xmax = 2.4, logy = True)
-            plotter.Plot("h_MuonPhi", case, massbin               , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
-            plotter.Plot("h_MuonDeltaR", case, massbin            , latex_temp, xTitle = "#DeltaR(#mu_{1}, #mu_{2})" ,xmin = 0, xmax = 6.4, logy = True)
+            plotter.Plot("h_ElecPt", case, massbin                , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            plotter.Plot("h_ElecEta", case, massbin               , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.4, xmax = 2.4, logy = True)
+            plotter.Plot("h_ElecPhi", case, massbin               , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            plotter.Plot("h_ElecDeltaR", case, massbin            , latex_temp, xTitle = "#DeltaR(e_{1}, e_{2})" ,xmin = 0, xmax = 6.4, logy = True)
 
-            plotter.Plot("h_dimuonPt", case, massbin              , latex_temp, xTitle = "pT(#mu#mu) [GeV]" ,xmin = 0, xmax = 500, logy = True)
-            plotter.Plot("h_dimuonRap", case, massbin             , latex_temp, xTitle = "rapidity(#mu#mu)"      ,xmin = -2.4, xmax = 2.4, logy = True)
+            plotter.Plot("h_dielecPt", case, massbin              , latex_temp, xTitle = "pT(ee) [GeV]" ,xmin = 0, xmax = 500, logy = True)
+            plotter.Plot("h_dielecRap", case, massbin             , latex_temp, xTitle = "rapidity(ee)"      ,xmin = -2.4, xmax = 2.4, logy = True)
 
 
 if __name__ == "__main__" :
