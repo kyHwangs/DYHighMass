@@ -518,7 +518,7 @@ queue config,era,sample,id from joblist.txt
   std::string fHaddSubmit = R"(universe              = vanilla
 executable            = condor_wrapper.sh
 getenv                = True
-arguments             = hadd -j15 output.root ./ROOT/*.root
+arguments             = hadd -j 15 output.root ./ROOT/*.root
 
 request_memory        = 4 GB
 request_disk          = 1 GB
