@@ -37,6 +37,7 @@ condor_submit condor_submit.sub
 When the condor jobs are done, you should merge all of them and check the status of jobs.
 ```sh
 hadd output.root ./ROOT/*.root # taks ~ 10 min, it should be "output.root"!
+(or you can submit jobs with `condor_submit hadd_submit.sub`)
 job_summary --channel <channel>
 ```
 When the jobs are done without any problem, no warning sign appears.
