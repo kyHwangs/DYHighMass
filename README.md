@@ -36,7 +36,7 @@ condor_submit condor_submit.sub
 ## How to make plots
 When the condor jobs are done, you should merge all of them and check the status of jobs.
 ```sh
-hadd output.root ./ROOT/*.root # taks ~ 10 min, it should be "output.root"!
+hadd -j 15 output.root ./ROOT/*.root # taks ~ 10 min, it should be "output.root"!
 (or you can submit jobs with `condor_submit hadd_submit.sub`)
 job_summary --channel <channel>
 ```
