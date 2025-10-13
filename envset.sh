@@ -11,3 +11,5 @@ export CORRECTIONLIBPATH=/cvmfs/sft.cern.ch/lcg/releases/correctionlib/2.6.4-b85
 export DY_HIGHMASS_WORKSPACE=$PWD
 export DY_HIGHMASS_WORKSPACE_INSTALL=$PWD/install
 export DY_HIGHMASS_WORKSPACE_BATCH=$PWD/Batch
+
+export PATH=$PATH:$PWD/plotter

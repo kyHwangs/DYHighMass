@@ -15,7 +15,9 @@ make -j4 install
 # install plotter
 cd DYHighMass
 source envset.sh
-pip3 install --user 
+
+pip3 install --user uproot, pickle, uuid, cmsstyle, array # only need first time
+chmod +x ./plotter/* # only need first time
 ```
 
 ## How to submit jobs
@@ -34,16 +36,20 @@ condor_submit condor_submit.sub
 ## How to make plots
 When the condor jobs are done, you should merge all of them and check the status of jobs.
 ```sh
-hadd output.root ./ROOT/*.root # taks ~ 10 min
+hadd output.root ./ROOT/*.root # taks ~ 10 min, it should be "output.root"!
 job_summary --channel <channel>
-
-or 
-
-hadd <output>.root ./ROOT/*.root # taks ~ 10 min
-job_summary --channel <channel> --input <output>
 ```
 When the jobs are done without any problem, no warning sign appears.
-### **<UNDER CONSTRUCTION>**
+Then, excute below command,
+```sh
+plotter_MUMU.py --era <era> # allowed era: 2016_preVFP, 2016_postVFP, 2017 and 2018
+
+or
+
+plotter_EMU.py -- era <era>
+plotter_EE.py --era <era>
+```
+
 
 
 
