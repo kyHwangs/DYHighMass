@@ -49,8 +49,6 @@ void DYLoopEE::Loop() {
   double tTotalGenWeight = 0;
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
-    
-    if (tMaxLoop == 100) break;
 
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
       auto tCurrentTime = std::chrono::system_clock::now();
@@ -101,7 +99,7 @@ void DYLoopEE::Loop() {
         tDiElecMassLHE = tDiElecLHE.M();
       }
 
-      if (fSampleName == "NNLO_inc" && tDiElecMassLHE > 100 )
+      if (fSampleName.Contains("NNLO") && fSampleName.Contains("inc") && tDiElecMassLHE > 100 )
         continue;
 
       fHistoSet->FillHisto((std::string)"h_LHEDielecMass", tDiElecMassLHE, tEventGenWeight);

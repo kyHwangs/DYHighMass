@@ -37,8 +37,9 @@ public:
     fOpt->GetVariable("era", &fEra);
     fOpt->GetVariable("sample", &fSampleName);
 
+    YAML::Node fConfigSample = YAML::LoadFile(std::string("../../input/dataset.yml"));
     fIsMC = false;
-    fIsMC = fConfig["Sample"][std::string(fSampleName)]["IsMC"].as<bool>();
+    fIsMC = fConfigSample[std::string(fEra)][std::string(fSampleName)]["IsMC"].as<bool>();
 
     fDoL1Pre = false;
     fDoL1Pre = fConfig["Correction"]["L1PreFiring"].as<bool>();

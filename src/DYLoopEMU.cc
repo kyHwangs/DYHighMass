@@ -48,8 +48,6 @@ void DYLoopEMU::Loop() {
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
     
-    if (tMaxLoop == 100) break;
-
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
       auto tCurrentTime = std::chrono::system_clock::now();
       auto tElapsed = tCurrentTime - tTimeBegin;
@@ -99,7 +97,7 @@ void DYLoopEMU::Loop() {
         tDiMuonMassLHE = tDiMuonLHE.M();
       }
 
-      if (fSampleName == "NNLO_inc" && tDiMuonMassLHE > 100 )
+      if (fSampleName.Contains("NNLO") && fSampleName.Contains("inc") && tDiMuonMassLHE > 100 )
         continue;
 
       fHistoSet->FillHisto((std::string)"h_LHEDimuonMass", tDiMuonMassLHE, tEventGenWeight);
