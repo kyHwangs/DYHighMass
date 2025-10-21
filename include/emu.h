@@ -185,7 +185,7 @@ public:
   TTreeReaderArray<float>* Electron_phi;
   TTreeReaderArray<float>* Electron_mass;
   TTreeReaderArray<int>* Electron_charge;
-  TTreeReaderArray<int>* Electron_cutBased;
+  TTreeReaderArray<bool>* Electron_cutBased_HEEP;
 
   TTreeReaderValue<unsigned int>* nGenPart;
   TTreeReaderArray<float>* GenPart_pt;

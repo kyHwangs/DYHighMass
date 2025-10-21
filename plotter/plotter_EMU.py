@@ -280,10 +280,13 @@ class Plotter:
         GG_ElEl = self.GetMCHist("GG_ElEl")
         GG_InelElElInel = self.GetMCHist("GG_InelElElInel")
         GG_InelInel = self.GetMCHist("GG_InelInel")
+        GG = GG_ElEl.Clone(f"GG_{uuid.uuid4()}")
+        GG.Add(GG_InelElElInel)
+        GG.Add(GG_InelInel)
         # WJets = self.GetMCHist("WJetsToLNu")
         
-        MC = DY.Clone(f"MC_{uuid.uuid4()}")
-        MC.Add(TT)
+        MC = TT.Clone(f"MC_{uuid.uuid4()}")
+        # MC.Add(TT)
         MC.Add(ST)
         MC.Add(DY_tau)
         MC.Add(EW)
@@ -370,13 +373,14 @@ class Plotter:
         stackSeet = {
             # "WJets": WJets,
             "DY_tautau": DY_tau,
-            "#gamma#gamma_ElEl": GG_ElEl,
-            "#gamma#gamma_InelElElInel": GG_InelElElInel,
-            "#gamma#gamma_InelInel": GG_InelInel,
+            "GG": GG,
+            # "#gamma#gamma_ElEl": GG_ElEl,
+            # "#gamma#gamma_InelElElInel": GG_InelElElInel,
+            # "#gamma#gamma_InelInel": GG_InelInel,
             "Single Top": ST,
-            "WW + WZ + ZZ": EW,
+            "VV": EW,
             "TT": TT,
-            "DY": DY
+            # "DY": DY
         }
 
         CMS.cmsDrawStack(stack, leg, stackSeet)
@@ -596,7 +600,7 @@ def main(args):
         latex_temp = latex.copy()
         latex_temp[2] = addon_hook[case]
 
-        plotter.Plot("h_PairMass", case, ""                       , latex_temp, xTitle = "M(e#mu) [GeV]"  ,xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
+        plotter.Plot("h_PairMass", case, ""                       , latex_temp, xTitle = "M(e#mu) [GeV]"  ,xmin = 200, xmax = 4000, logy = True, logx = True)
 
         for massbin in massBins:
             latex_temp[3] = addon_hook_mass[massbin]
@@ -610,16 +614,16 @@ def main(args):
             plotter.Plot("h_BJetPhi", case, massbin               , latex_temp, xTitle = "#phi(b-jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
             plotter.Plot("h_ElecPt", case, massbin                , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_ElecEta", case, massbin               , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.4, xmax = 2.4, logy = True)
+            plotter.Plot("h_ElecEta", case, massbin               , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.5, xmax = 2.5, logy = True)
             plotter.Plot("h_ElecPhi", case, massbin               , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
             plotter.Plot("h_MuonPt", case, massbin                , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_MuonEta", case, massbin               , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.4, xmax = 2.4, logy = True)
+            plotter.Plot("h_MuonEta", case, massbin               , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
             plotter.Plot("h_MuonPhi", case, massbin               , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
             
             plotter.Plot("h_PairDeltaR", case, massbin            , latex_temp, xTitle = "#DeltaR(e, #mu)" ,xmin = 0, xmax = 6.4, logy = True)
             plotter.Plot("h_PairPt", case, massbin                , latex_temp, xTitle = "pT(e#mu) [GeV]" ,xmin = 0, xmax = 500, logy = True)
-            plotter.Plot("h_PairRap", case, massbin               , latex_temp, xTitle = "rapidity(e#mu)"      ,xmin = -2.4, xmax = 2.4, logy = True)
+            plotter.Plot("h_PairRap", case, massbin               , latex_temp, xTitle = "rapidity(e#mu)"      ,xmin = -2.5, xmax = 2.5, logy = True)
 
 
 if __name__ == "__main__" :
