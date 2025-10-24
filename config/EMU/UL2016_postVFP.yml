@@ -21,8 +21,7 @@ Muon:
 
 Electron:
   Pt: 20
-  Eta: 2.4
-  ID: 3
+  Eta: 2.5
 
 Jet:
   Pt: 30
@@ -37,6 +36,8 @@ Correction:
   ID: true
   ISO: true
   Trigger: true
+  ElecReco: true
+  ElecID: true
   PileUp: true
   L1PreFiring: true
   JetPU: true
@@ -55,6 +56,12 @@ Efficiency:
   Trigger:
     Path: ../../correctionlib/muon/medium/2016_postVFP.json
     Name: NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+  ElecReco:
+    Path: ../../correctionlib/electron/reco/EGM_2016postVFP.json
+    Name: UL-Electron-ID-SF
+  ElecID:
+    Path: ../../correctionlib/electron/Run2UL_ID.json
+    Name: UL-Electron-ID-SF
   JetPU:
     Path: ../../EfficiencyTable/JetPUID/2016_L.csv
   BTag:

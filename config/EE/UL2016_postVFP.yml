@@ -6,9 +6,9 @@ Z:
   MassCut: 40
 
 Electron:
-  LeadingPt: 28
-  SubLeadingPt: 17
-  Eta: 2.4
+  LeadingPt: 50
+  SubLeadingPt: 20
+  Eta: 2.5
   Charge: opposite
 
 Jet:
