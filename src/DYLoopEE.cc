@@ -151,82 +151,51 @@ void DYLoopEE::Loop() {
 
       double tRecoEffSFLeading = 0;
 
-      if (tFVecLeadingElec.P() < 15.) tRecoEffSFLeading = 0;
-      else                                tRecoEffSFLeading = fID_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.P(), "nominal"});
+      if (tFVecLeadingElec.Pt() < 20.) tRecoEffSFLeading = 0;
+      else                             tRecoEffSFLeading = fReco_SF->evaluate({(std::string)(fEra), "sf", "RecoAbove20", tFVecLeadingElec.Eta(), tFVecLeadingElec.Pt()});
 
       tEventGenWeight *= tRecoEffSFLeading;
 
 
       double tRecoEffSFSubleading = 0;
 
-      if (tFVecSubLeadingElec.P() < 15.) tRecoEffSFSubleading = 0;
-      else                                   tRecoEffSFSubleading = fID_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.P(), "nominal"});
+      if (tFVecSubLeadingElec.Pt() < 20.) tRecoEffSFSubleading = 0;
+      else                                tRecoEffSFSubleading = fReco_SF->evaluate({(std::string)(fEra), "sf", "RecoAbove20", tFVecSubLeadingElec.Eta(), tFVecSubLeadingElec.Pt()});
 
       tEventGenWeight *= tRecoEffSFSubleading;
 
       // std::cout << "######################################################################" << std::endl;
       // std::cout << "                       Reco efficiency debugging                      " << std::endl;
       // std::cout << "----------------------------------------------------------------------" << std::endl;
-      // std::cout << " LEADING: " << tFVecLeadingElec.P() << " " << tFVecLeadingElec.Eta() << " " << tRecoEffSFLeading << std::endl;
-      // std::cout << " SUB-LLEADING: " << tFVecSubLeadingElec.P() << " " << tFVecSubLeadingElec.Eta() << " " << tRecoEffSFSubleading << std::endl;
+      // std::cout << " LEADING: " << tFVecLeadingElec.Pt() << " " << tFVecLeadingElec.Eta() << " " << tRecoEffSFLeading << std::endl;
+      // std::cout << " SUB-LLEADING: " << tFVecSubLeadingElec.Pt() << " " << tFVecSubLeadingElec.Eta() << " " << tRecoEffSFSubleading << std::endl;
       // std::cout << "######################################################################" << std::endl;
       // std::cout << " " << std::endl;
-
     }
 
     if (fIsMC && fDoID) {
 
       double tIDEffSFLeading = 0;
 
-      if (tFVecLeadingElec.Pt() < 15.) tIDEffSFLeading = 0;
-      else                                tIDEffSFLeading = fID_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.Pt(), "nominal"});
+      if (tFVecLeadingElec.Pt() < 20.) tIDEffSFLeading = 0;
+      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tFVecLeadingElec.Eta())});
 
       tEventGenWeight *= tIDEffSFLeading;
 
-
       double tIDEffSFSubleading = 0;
 
-      if (tFVecSubLeadingElec.Pt() < 15.) tIDEffSFSubleading = 0;
-      else                                   tIDEffSFSubleading = fID_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.Pt(), "nominal"});
+      if (tFVecSubLeadingElec.Pt() < 20.) tIDEffSFSubleading = 0;
+      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tFVecSubLeadingElec.Eta())});
 
       tEventGenWeight *= tIDEffSFSubleading;
 
       // std::cout << "######################################################################" << std::endl;
       // std::cout << "                        ID efficiency debugging                       " << std::endl;
       // std::cout << "----------------------------------------------------------------------" << std::endl;
-      // std::cout << " LEADING: " << tFVecLeadingElec.Pt() << " " << tFVecLeadingElec.Eta() << " " << tIDEffSFLeading << std::endl;
-      // std::cout << " SUB-LLEADING: " << tFVecSubLeadingElec.Pt() << " " << tFVecSubLeadingElec.Eta() << " " << tIDEffSFSubleading << std::endl;
+      // std::cout << " LEADING: " << fEra << " " << tFVecLeadingElec.Eta() << " " << tIDEffSFLeading << std::endl;
+      // std::cout << " SUB-LLEADING: " << fEra << " " << tFVecSubLeadingElec.Eta() << " " << tIDEffSFSubleading << std::endl;
       // std::cout << "######################################################################" << std::endl;
       // std::cout << " " << std::endl;
-
-    }
-
-    if (fIsMC && fDoISO) {
-
-      double tISOEffSFLeading = 0;
-
-      if (tFVecLeadingElec.Pt() < 15.) tISOEffSFLeading = 0;
-      else                                tISOEffSFLeading = fISO_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.Pt(), "nominal"});
-
-      tEventGenWeight *= tISOEffSFLeading;
-
-
-      double tISOEffSFSubleading = 0;
-
-      if (tFVecSubLeadingElec.Pt() < 15.) tISOEffSFSubleading = 0;
-      else                                   tISOEffSFSubleading = fISO_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.Pt(), "nominal"});
-
-      tEventGenWeight *= tISOEffSFSubleading;
-
-      // std::cout << "######################################################################" << std::endl;
-      // std::cout << "                        ISO efficiency debugging                      " << std::endl;
-      // std::cout << "----------------------------------------------------------------------" << std::endl;
-      // std::cout << " LEADING: " << tFVecLeadingElec.Pt() << " " << tFVecRawLeadingElec.Eta() << " " << tISOEffSFLeading << std::endl;
-      // std::cout << " SUB-LEADING: " << tFVecSubLeadingElec.Pt() << " " << tFVecSubLeadingElec.Eta() << " " << tISOEffSFSubleading << std::endl;
-      // std::cout << "######################################################################" << std::endl;
-      // std::cout << " " << std::endl;
-
-
     }
 
     if (fIsMC && fDoTRIGG) {

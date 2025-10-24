@@ -52,10 +52,6 @@ public:
     fDoID = fConfig["Correction"]["ID"].as<bool>();
     fID_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["ID"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["ID"]["Name"].as<std::string>());
 
-    fDoISO = false;
-    fDoISO = fConfig["Correction"]["ISO"].as<bool>();
-    fISO_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["ISO"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["ISO"]["Name"].as<std::string>());
-
     fDoTRIGG = false;
     fDoTRIGG = fConfig["Correction"]["Trigger"].as<bool>();
     fTRIG_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>());
@@ -111,8 +107,6 @@ public:
     std::cout << "          " << fDoReco << " " << fConfig["Efficiency"]["Reco"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoID: " << fDoID << " " << fConfig["Efficiency"]["ID"]["Path"].as<std::string>() << std::endl;
     std::cout << "        " << fDoID << " " << fConfig["Efficiency"]["ID"]["Name"].as<std::string>() << std::endl;
-    std::cout << " fDoISO: " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Path"].as<std::string>() << std::endl;
-    std::cout << "         " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoTRIGG: " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>() << std::endl;
     std::cout << "           " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
@@ -169,12 +163,10 @@ private:
   LumiReWeighting* fPuReweighting;
   std::shared_ptr<const correction::Correction> fReco_SF;
   std::shared_ptr<const correction::Correction> fID_SF;
-  std::shared_ptr<const correction::Correction> fISO_SF;
   std::shared_ptr<const correction::Correction> fTRIG_SF;
 
   bool fDoReco;
   bool fDoID;
-  bool fDoISO;
   bool fDoTRIGG;
   bool fDoPU;
   bool fDoL1Pre;

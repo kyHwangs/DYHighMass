@@ -15,7 +15,7 @@ void ELEC::init(TTreeReader* fTreeReader) {
   Electron_deltaEtaSC = new TTreeReaderArray<float>(*fTreeReader, "Electron_deltaEtaSC");
   Electron_phi = new TTreeReaderArray<float>(*fTreeReader, "Electron_phi");
   Electron_mass = new TTreeReaderArray<float>(*fTreeReader, "Electron_mass");
-  Electron_cutBased = new TTreeReaderArray<int>(*fTreeReader, "Electron_cutBased");
+  Electron_cutBased_HEEP = new TTreeReaderArray<bool>(*fTreeReader, "Electron_cutBased_HEEP");
   Electron_charge = new TTreeReaderArray<int>(*fTreeReader, "Electron_charge");
 }
 
@@ -35,7 +35,7 @@ bool ELEC::PrepareElec() {
     if (std::abs(eSCEta) > 1.4442 && std::abs(eSCEta) < 1.5660)
       continue;
 
-    if (Electron_cutBased->At(i) < fID)
+    if (!Electron_cutBased_HEEP->At(i))
       continue;
 
     TLorentzVector elecs;

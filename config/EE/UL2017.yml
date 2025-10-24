@@ -3,13 +3,12 @@ Info:
   Channel: EE
 
 Z:
-  MassCut: 200
+  MassCut: 40
 
 Electron:
-  LeadingPt: 50
-  SubLeadingPt: 20
+  LeadingPt: 28
+  SubLeadingPt: 17
   Eta: 2.4
-  ID: 3
   Charge: opposite
 
 Jet:
@@ -21,25 +20,21 @@ Jet:
   Cleaning: false
 
 Correction:
-  Reco: false
-  ID: false
-  ISO: false
+  Reco: true
+  ID: true
   Trigger: false
-  PileUp: false
-  L1PreFiring: false
-  JetPU: false
-  BTag: false
+  PileUp: true
+  L1PreFiring: true
+  JetPU: true
+  BTag: true
 
 Efficiency:
   Reco:
-    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_RECO_2017_schemaV2.json
-    Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
+    Path: ../../correctionlib/electron/reco/EGM_2017.json
+    Name: UL-Electron-ID-SF
   ID:
-    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
-    Name: NUM_HighPtID_DEN_GlobalMuonProbes
-  ISO:
-    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
-    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
+    Path: ../../correctionlib/electron/Run2UL_ID.json
+    Name: UL-Electron-ID-SF
   Trigger:
     Path: ../../correctionlib/muon/medium/2017.json
     Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
