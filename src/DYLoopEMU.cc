@@ -149,7 +149,7 @@ void DYLoopEMU::Loop() {
       double tRecoEffSFMuon = 0;
 
       if (tFVecRawMuon.P() < 52.) tRecoEffSFMuon = 0;
-      else                        tRecoEffSFMuon = fID_SF->evaluate({std::abs(tFVecRawMuon.Eta()), tFVecRawMuon.P(), "nominal"});
+      else                        tRecoEffSFMuon = fReco_SF->evaluate({std::abs(tFVecRawMuon.Eta()), tFVecRawMuon.P(), "nominal"});
 
       tEventGenWeight *= tRecoEffSFMuon;
 

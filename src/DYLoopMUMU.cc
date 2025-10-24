@@ -155,7 +155,7 @@ void DYLoopMUMU::Loop() {
       double tRecoEffSFLeading = 0;
 
       if (tFVecRawLeadingMuon.P() < 15.) tRecoEffSFLeading = 0;
-      else                               tRecoEffSFLeading = fID_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.P(), "nominal"});
+      else                               tRecoEffSFLeading = fReco_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.P(), "nominal"});
 
       tEventGenWeight *= tRecoEffSFLeading;
 
@@ -163,7 +163,7 @@ void DYLoopMUMU::Loop() {
       double tRecoEffSFSubleading = 0;
 
       if (tFVecRawSubLeadingMuon.P() < 15.) tRecoEffSFSubleading = 0;
-      else                                  tRecoEffSFSubleading = fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.P(), "nominal"});
+      else                                  tRecoEffSFSubleading = fReco_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.P(), "nominal"});
 
       tEventGenWeight *= tRecoEffSFSubleading;
 
