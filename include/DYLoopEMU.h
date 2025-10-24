@@ -60,6 +60,14 @@ public:
     fDoTRIGG = fConfig["Correction"]["Trigger"].as<bool>();
     fTRIG_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>());
 
+    fDoElecReco = false;
+    fDoElecReco = fConfig["Correction"]["ElecReco"].as<bool>();
+    fElecReco_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["ElecReco"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["ElecReco"]["Name"].as<std::string>());
+
+    fDoElecID = false;
+    fDoElecID = fConfig["Correction"]["ElecID"].as<bool>();
+    fElecID_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["ElecID"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["ElecID"]["Name"].as<std::string>());
+
     fDoPU = false;
     fDoPU = fConfig["Correction"]["PileUp"].as<bool>();
     fPuReweighting = new LumiReWeighting(
@@ -115,6 +123,10 @@ public:
     std::cout << "         " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoTRIGG: " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>() << std::endl;
     std::cout << "           " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoElecReco: " << fDoElecReco << " " << fConfig["Efficiency"]["ElecReco"]["Path"].as<std::string>() << std::endl;
+    std::cout << "             " << fDoElecReco << " " << fConfig["Efficiency"]["ElecReco"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoElecID: " << fDoElecID << " " << fConfig["Efficiency"]["ElecID"]["Path"].as<std::string>() << std::endl;
+    std::cout << "            " << fDoElecID << " " << fConfig["Efficiency"]["ElecID"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
     std::cout << "          " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
     std::cout << " fDoL1Pre: " << fDoL1Pre << " " << std::endl;
@@ -171,11 +183,15 @@ private:
   std::shared_ptr<const correction::Correction> fID_SF;
   std::shared_ptr<const correction::Correction> fISO_SF;
   std::shared_ptr<const correction::Correction> fTRIG_SF;
+  std::shared_ptr<const correction::Correction> fElecReco_SF;
+  std::shared_ptr<const correction::Correction> fElecID_SF;
 
   bool fDoReco;
   bool fDoID;
   bool fDoISO;
   bool fDoTRIGG;
+  bool fDoElecReco;
+  bool fDoElecID;
   bool fDoPU;
   bool fDoL1Pre;
   bool fDoJetPUID;

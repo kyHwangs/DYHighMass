@@ -100,7 +100,6 @@ public:
 
     fElecPt = fElecConf["Pt"].as<float>();
     fElecEta = fElecConf["Eta"].as<float>();
-    fElecID = fElecConf["ID"].as<int>();
 
     YAML::Node fZConf = fConfig["Z"];
     fMassCut = fZConf["MassCut"].as<float>();
@@ -118,7 +117,7 @@ public:
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << " Pt: " << fElecPt << std::endl;
     std::cout << " Eta: " << fElecEta << std::endl;
-    std::cout << " ID: " << fElecID << std::endl;
+    std::cout << " ID: HEEP ID (not in config!)" << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << "                           EMU Pair selection                         " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
@@ -216,7 +215,6 @@ private:
 
   float fElecPt;
   float fElecEta;
-  int fElecID;
 
   float fMassCut;
 };
