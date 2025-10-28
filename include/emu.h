@@ -101,6 +101,10 @@ public:
     fElecPt = fElecConf["Pt"].as<float>();
     fElecEta = fElecConf["Eta"].as<float>();
 
+    fIsOppositeCharge = true;
+    if (fConfig["Pair"]["Charge"].as<std::string>() == "same")
+      fIsOppositeCharge = false;
+
     YAML::Node fZConf = fConfig["Z"];
     fMassCut = fZConf["MassCut"].as<float>();
 
@@ -122,6 +126,7 @@ public:
     std::cout << "                           EMU Pair selection                         " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << " MassCut: " << fMassCut << std::endl;
+    std::cout << " Charge: " << (fIsOppositeCharge ? "Opposite" : "Same") << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
 
@@ -216,6 +221,8 @@ private:
   float fElecPt;
   float fElecEta;
 
+  bool fIsOppositeCharge;
+  
   float fMassCut;
 };
 

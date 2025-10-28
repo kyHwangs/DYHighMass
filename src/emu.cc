@@ -149,9 +149,12 @@ bool EMU::PrepareEMUPair() {
     return lhs.fVec.Pt() > rhs.fVec.Pt();
   });
 
+  float tChargeSelection = 1;
+  if (!fIsOppositeCharge) tChargeSelection = -1;
+
   for (int i = 0; i < fFVecMuons.size(); i++) {
     for (int j = 0; j < fFVecElecs.size(); j++) {
-      if (fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge > 0)
+      if (tChargeSelection * (fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge) > 0)
         continue;
 
       fSelectedMuonIdx = i;

@@ -23,6 +23,9 @@ Electron:
   Pt: 20
   Eta: 2.5
 
+Pair:
+  Charge: opposite
+
 Jet:
   Pt: 30
   Eta: 2.4
