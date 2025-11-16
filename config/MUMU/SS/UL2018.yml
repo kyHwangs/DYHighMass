@@ -12,7 +12,7 @@ Muon:
   ID: global
   ISO: 0.1
   ISOinverted: false
-  Charge: opposite
+  Charge: same
   doRoccoR: false
   RoccoR: ../../RoccoR/RoccoR2018UL.txt
   doMCSmearing: true
