@@ -148,7 +148,13 @@ bool MUON::PrepareMuon() {
   fFVecMuons.clear();
 
   for (int i = 0; i < **nMuon; i++) {
-    if ( !(Muon_highPtId->At(i) == fID && Muon_tkRelIso->At(i) < fISO) )
+    if ( !(Muon_highPtId->At(i) == fID) )
+      continue;
+
+    if ( !fISOinverted && !(Muon_tkRelIso->At(i) < fISO) )
+      continue;
+
+    if ( fISOinverted && Muon_tkRelIso->At(i) < fISO )
       continue;
 
     if (std::abs(Muon_eta->At(i)) > fEta)

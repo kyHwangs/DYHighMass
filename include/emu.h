@@ -89,6 +89,8 @@ public:
     else if (tIDString == "tracker") fMuonID = (UChar_t)(1);
     else throw std::runtime_error("Wrong definitions for HighPtID, allowed optsions: global, tracker");
 
+    fMuonISOinverted = fMuonConf["ISOinverted"].as<bool>();
+
     fMuonISO = fMuonConf["ISO"].as<float>();
     
     fDoMuonMCSmearing = true;
@@ -100,6 +102,7 @@ public:
 
     fElecPt = fElecConf["Pt"].as<float>();
     fElecEta = fElecConf["Eta"].as<float>();
+    fElecIDinverted = fElecConf["IDinverted"].as<bool>();
 
     fIsOppositeCharge = true;
     if (fConfig["Pair"]["Charge"].as<std::string>() == "same")
@@ -114,6 +117,7 @@ public:
     std::cout << " Pt: " << fMuonPt << std::endl;
     std::cout << " Eta: " << fMuonEta << std::endl;
     std::cout << " ID: " << fMuonConf["ID"].as<std::string>() << " " << fMuonID << std::endl;
+    std::cout << " ISOinverted: " << fMuonISOinverted << std::endl;
     std::cout << " ISO: " << fMuonISO << std::endl;
     std::cout << " doMCSmearing: " << fDoMuonMCSmearing << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
@@ -121,6 +125,7 @@ public:
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << " Pt: " << fElecPt << std::endl;
     std::cout << " Eta: " << fElecEta << std::endl;
+    std::cout << " IDinverted: " << fElecIDinverted << std::endl;
     std::cout << " ID: HEEP ID (not in config!)" << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << "                           EMU Pair selection                         " << std::endl;
@@ -214,12 +219,14 @@ private:
   float fMuonPt;
   float fMuonEta;
   UChar_t fMuonID;
+  bool fMuonISOinverted;
   float fMuonISO;
   SmearingEngineEMU* fMuonSmearingEngine;
   bool fDoMuonMCSmearing;
 
   float fElecPt;
   float fElecEta;
+  bool fElecIDinverted;
 
   bool fIsOppositeCharge;
   

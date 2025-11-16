@@ -94,6 +94,10 @@ public:
 
     fISO = fMuonConf["ISO"].as<float>();
 
+    fISOinverted = false;
+    if (fMuonConf["ISOinverted"].as<bool>()) 
+      fISOinverted = true;
+
     fOppositeCharge = true;
     if (fMuonConf["Charge"].as<std::string>() == "same")
       fOppositeCharge == false;
@@ -116,6 +120,7 @@ public:
     std::cout << " Eta: " << fEta << std::endl;
     std::cout << " ID: " << fMuonConf["ID"].as<std::string>() << " " << fID << std::endl;
     std::cout << " ISO: " << fISO << std::endl;
+    std::cout << " ISOinverted: " << fISOinverted << std::endl;
     std::cout << " MassCut: " << fZMassCut << std::endl;
     std::cout << " OppositeCharge: " << fOppositeCharge << std::endl;
     std::cout << " doRoccoR: " << fDoRoccoR << std::endl;
@@ -190,6 +195,7 @@ private:
   float fZMassCut;
   UChar_t fID;
   float fISO;
+  bool fISOinverted;
 
   RoccoR* fRoccoR;
   SmearingEngine* fSmearingEngine;

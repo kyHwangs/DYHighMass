@@ -97,7 +97,13 @@ bool EMU::PrepareEMUPair() {
   fSelectedElecIdx = -1;
 
   for (int i = 0; i < **nMuon; i++) {
-    if ( !(Muon_highPtId->At(i) == fMuonID && Muon_tkRelIso->At(i) < fMuonISO) )
+    if ( !(Muon_highPtId->At(i) == fMuonID) )
+      continue;
+
+    if ( !fMuonISOinverted && !(Muon_tkRelIso->At(i) < fMuonISO) )
+      continue;
+
+    if ( fMuonISOinverted && Muon_tkRelIso->At(i) < fMuonISO )
       continue;
 
     if (std::abs(Muon_eta->At(i)) > fMuonEta)
@@ -136,8 +142,12 @@ bool EMU::PrepareEMUPair() {
     if (std::abs(eSCEta) > 1.4442 && std::abs(eSCEta) < 1.5660)
       continue;
 
-    if (!Electron_cutBased_HEEP->At(i))
+    if (!fElecIDinverted && !Electron_cutBased_HEEP->At(i))
       continue;
+
+    if (fElecIDinverted && Electron_cutBased_HEEP->At(i))
+      continue;
+
 
     TLorentzVector elecs;
     elecs.SetPtEtaPhiM(Electron_pt->At(i), eSCEta, Electron_phi->At(i), Electron_mass->At(i));
