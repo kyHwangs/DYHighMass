@@ -13,3 +13,5 @@ export DY_HIGHMASS_WORKSPACE_INSTALL=$PWD/install
 export DY_HIGHMASS_WORKSPACE_BATCH=$PWD/Batch
 
 export PATH=$PATH:$PWD/plotter
+
+alias build_DY='cd $DY_HIGHMASS_WORKSPACE/build; make -j4 install; cd -'
