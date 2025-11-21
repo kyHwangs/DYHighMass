@@ -47,7 +47,7 @@ void DYLoopEMU::Loop() {
   double tTotalGenWeight = 0;
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
-    
+
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
       auto tCurrentTime = std::chrono::system_clock::now();
       auto tElapsed = tCurrentTime - tTimeBegin;
@@ -141,6 +141,7 @@ void DYLoopEMU::Loop() {
 
     auto tElec = fEMU->GetElec();
     auto tFVecElec = tElec.fVec;
+    auto tSCEtaElec = tElec.SCEta();
 
     auto tEMuPair = tFVecMuon + tFVecElec;
 
@@ -226,7 +227,7 @@ void DYLoopEMU::Loop() {
       double tElecRecoEffSFElec = 0;
 
       if (tFVecElec.Pt() < 20.) tElecRecoEffSFElec = 0;
-      else                      tElecRecoEffSFElec = fElecReco_SF->evaluate({(std::string)(fEra), "sf", "RecoAbove20", tFVecElec.Eta(), tFVecElec.Pt()});
+      else                      tElecRecoEffSFElec = fElecReco_SF->evaluate({(std::string)(fEra), "sf", "RecoAbove20", tSCEtaElec, tFVecElec.Pt()});
 
       tEventGenWeight *= tElecRecoEffSFElec;
     }

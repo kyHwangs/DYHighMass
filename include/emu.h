@@ -152,11 +152,14 @@ public:
 
   struct EMU_ELEC {
     TLorentzVector fVec;
+    float fSCEta;
     int fCharge;
 
-    EMU_ELEC(TLorentzVector fVec_, int fCharge_)
-    : fVec(fVec_), fCharge(fCharge_)
+    EMU_ELEC(TLorentzVector fVec_, float fSCEta_,int fCharge_)
+    : fVec(fVec_), fSCEta(fSCEta_), fCharge(fCharge_)
     { };
+
+    float SCEta() { return fSCEta; }
   };
 
   void init(TTreeReader* fTreeReader);

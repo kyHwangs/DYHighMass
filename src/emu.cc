@@ -150,9 +150,9 @@ bool EMU::PrepareEMUPair() {
 
 
     TLorentzVector elecs;
-    elecs.SetPtEtaPhiM(Electron_pt->At(i), eSCEta, Electron_phi->At(i), Electron_mass->At(i));
+    elecs.SetPtEtaPhiM(Electron_pt->At(i), Electron_eta->At(i), Electron_phi->At(i), Electron_mass->At(i));
 
-    fFVecElecs.push_back(EMU_ELEC(elecs, Electron_charge->At(i)));
+    fFVecElecs.push_back(EMU_ELEC(elecs, eSCEta, Electron_charge->At(i)));
   }
 
   std::sort(fFVecElecs.begin(), fFVecElecs.end(), [](const EMU_ELEC &lhs, const EMU_ELEC &rhs) {
