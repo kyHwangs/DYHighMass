@@ -100,7 +100,7 @@ public:
 
     fOppositeCharge = true;
     if (fMuonConf["Charge"].as<std::string>() == "same")
-      fOppositeCharge == false;
+      fOppositeCharge = false;
 
     fDoRoccoR = true;
     if (!fMuonConf["doRoccoR"].as<bool>())
