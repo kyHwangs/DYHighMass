@@ -287,7 +287,8 @@ void DYLoopMUMU::Loop() {
     tTotalGenWeight += tEventGenWeight;
 
     fHistoSet->FillHisto((std::string)"h_nPVGood_Count", **(fNtuples->PV_npvsGood), tEventGenWeight);
-    fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, nJets, nBJets, tEventGenWeight);
+    if (nJets == 0) fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, nJets, nBJets, tDiMuon, tEventGenWeight);
+    else            fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, nJets, nBJets, vJets.at(0).fVec, tEventGenWeight);
     fHistoSet->FillJet(&vJets, &vBJets, tDiMuon.M(), tEventGenWeight);
 
   } // End of event loop

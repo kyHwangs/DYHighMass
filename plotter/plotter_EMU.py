@@ -372,8 +372,8 @@ class Plotter:
 
         stackSeet = {
             # "WJets": WJets,
-            "DY_tautau": DY_tau,
-            "GG": GG,
+            "DY#rightarrow#tau#tau": DY_tau,
+            "#gamma#gamma#rightarrow#mu#mu": GG,
             # "#gamma#gamma_ElEl": GG_ElEl,
             # "#gamma#gamma_InelElElInel": GG_InelElElInel,
             # "#gamma#gamma_InelInel": GG_InelInel,
@@ -405,6 +405,16 @@ class Plotter:
         CMS.SaveCanvas(dicanv, os.path.join(self.outputPath, self.era + "_" + self.histOutputName + ".pdf"))
         # CMS.SaveCanvas(dicanv, os.path.join(self.outputPath, self.era + "_" + histName + ".png"))
 
+    def CheckSanity(self, hist):
+
+        hist_clone = hist.Clone(f"{hist.GetName()}_{uuid.uuid4()}_cl")
+        for i in range(1, hist_clone.GetNbinsX() + 1):
+            if hist_clone.GetBinContent(i) <= 0:
+                hist_clone.SetBinContent(i, 0)
+                hist_clone.SetBinError(i, 0)
+
+        return hist_clone
+
     def GetMCHist(self, mcName):
         if mcName == "DY":
             return self.GetDYHist()
@@ -423,7 +433,8 @@ class Plotter:
             hist.SetDirectory(0)
             hist.SetStats(0);
             hist.Scale(normFactor[mcName]);
-
+            hist = self.CheckSanity(hist)
+            
             return hist
 
     def GetDYHist(self):
@@ -433,6 +444,7 @@ class Plotter:
             histoSet[mc].SetDirectory(0)
             histoSet[mc].SetStats(0);
             histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
 
         returnHist = histoSet["NNLO_MUMU_inc"].Clone(f"DY_{uuid.uuid4()}")
         for mc in dylist:
@@ -448,6 +460,7 @@ class Plotter:
             histoSet[mc].SetDirectory(0)
             histoSet[mc].SetStats(0);
             histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
 
         returnHist = histoSet["GGToMuMu_10to30_ElEl"].Clone(f"GG_ElEl_{uuid.uuid4()}")
         for mc in GG_ElEl_list:
@@ -461,8 +474,9 @@ class Plotter:
         for mc in GG_InelElElInel_list:
             histoSet[mc] = self.fileSet.Get(self.era + "/" + mc + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
             histoSet[mc].SetDirectory(0)
-            histoSet[mc].SetStats(0);
-            histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc].SetStats(0)
+            histoSet[mc].Scale(normFactor[mc])
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
 
         returnHist = histoSet["GGToMuMu_10to30_InelElElInel"].Clone(f"GG_InelElElInel_{uuid.uuid4()}")
         for mc in GG_InelElElInel_list:
@@ -476,8 +490,9 @@ class Plotter:
         for mc in GG_InelInel_list:
             histoSet[mc] = self.fileSet.Get(self.era + "/" + mc + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
             histoSet[mc].SetDirectory(0)
-            histoSet[mc].SetStats(0);
-            histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc].SetStats(0)
+            histoSet[mc].Scale(normFactor[mc])
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
 
         returnHist = histoSet["GGToMuMu_10to30_InelInel"].Clone(f"GG_InelInel_{uuid.uuid4()}")
         for mc in GG_InelInel_list:
@@ -491,8 +506,9 @@ class Plotter:
         for mc in stlist:
             histoSet[mc] = self.fileSet.Get(self.era + "/" + mc + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
             histoSet[mc].SetDirectory(0)
-            histoSet[mc].SetStats(0);
-            histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc].SetStats(0)
+            histoSet[mc].Scale(normFactor[mc])
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
 
         returnHist = histoSet["ST_s"].Clone(f"SingleTop_{uuid.uuid4()}")
         for mc in stlist:
@@ -506,8 +522,9 @@ class Plotter:
         for mc in ewlist:
             histoSet[mc] = self.fileSet.Get(self.era + "/" + mc + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
             histoSet[mc].SetDirectory(0)
-            histoSet[mc].SetStats(0);
-            histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc].SetStats(0)
+            histoSet[mc].Scale(normFactor[mc])
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
 
         returnHist = histoSet["WW"].Clone(f"EW_{uuid.uuid4()}")
         for mc in ewlist:
@@ -543,29 +560,29 @@ def main(args):
     }
 
     yrmax_vec = {
-        "": -1,
-        "_0J": -1,
-        "_1J": -1,
-        "_mtJ": -1,
-        "_0BJ": 1.15,
-        "_1BJ": -1,
-        "_mt1BJ": -1,
-        "_bVeto_0J": 1.3,
-        "_bVeto_1J": 1.5,
-        "_bVeto_mt1J": 1.5,    
+        "": 1 + 0.48,
+        "_0J": 1 + 0.48,
+        "_1J": 1 + 0.48,
+        "_mtJ": 1 + 0.48,
+        "_0BJ": 1 + 0.48,
+        "_1BJ": 1 + 0.48,
+        "_mt1BJ": 1 + 0.48,
+        "_bVeto_0J": 1 + 0.48,
+        "_bVeto_1J": 1 + 0.48,
+        "_bVeto_mt1J": 1 + 0.48 
     }
 
     yrmin_vec = {
-        "": -1,
-        "_0J": -1,
-        "_1J": -1,
-        "_mt1J": -1,
-        "_0BJ": 0.85,
-        "_1BJ": -1,
-        "_mt1BJ": -1,
-        "_bVeto_0J": 0.7,
-        "_bVeto_1J": 0.5,
-        "_bVeto_mt1J": 0.5,  
+        "": 1 - 0.48,
+        "_0J": 1 - 0.48,
+        "_1J": 1 - 0.48,
+        "_mt1J": 1 - 0.48,
+        "_0BJ": 1 - 0.48,
+        "_1BJ": 1 - 0.48,
+        "_mt1BJ": 1 - 0.48,
+        "_bVeto_0J": 1 - 0.48,
+        "_bVeto_1J": 1 - 0.48,
+        "_bVeto_mt1J": 1 - 0.48,
     }
 
     addon_hook_mass = {
@@ -586,44 +603,46 @@ def main(args):
     }
 
     latex = [
-        args.era + ", emu channel",
-        "p_{T}(#mu(e)) > 52 (20) GeV, |#eta(#mu(e))| < 2.4",
+        args.era + ", e#mu channel, SS, inverted ID & ISO",
+        "p_{T}(#mu) > 52 GeV, |#eta(#mu)| < 2.4",
+        "p_{T}(e) > 20 GeV, |#eta(e)| < 2.5",
         "",
         "",
     ]
 
-    plotter.Plot("h_nJet",  "", "", latex, xTitle = "N_{jet}", xmin = 0, xmax = 14)
-    plotter.Plot("h_nBJet", "", "", latex, xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
+    # plotter.Plot("h_nJet",  "", "", latex, xTitle = "N_{jet}", xmin = 0, xmax = 14)
+    # plotter.Plot("h_nBJet", "", "", latex, xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
  
     for case in cases:
 
         latex_temp = latex.copy()
-        latex_temp[2] = addon_hook[case]
+        latex_temp[3] = addon_hook[case]
 
         plotter.Plot("h_PairMass", case, ""                       , latex_temp, xTitle = "M(e#mu) [GeV]"  ,xmin = 200, xmax = 4000, logy = True, logx = True)
+        # plotter.Plot("h_PairMass", case, ""                       , latex_temp, xTitle = "M(e#mu) [GeV]"  ,xmin = 200, xmax = 4000, logy = True, logx = True, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case])
 
-        for massbin in massBins:
-            latex_temp[3] = addon_hook_mass[massbin]
+        # for massbin in massBins:
+        #     latex_temp[4] = addon_hook_mass[massbin]
 
-            plotter.Plot("h_JetPt", case, massbin                 , latex_temp, xTitle = "pT(jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
-            plotter.Plot("h_JetEta", case, massbin                , latex_temp, xTitle = "#eta(jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            plotter.Plot("h_JetPhi", case, massbin                , latex_temp, xTitle = "#phi(jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            # plotter.Plot("h_JetPt", case, massbin                 , latex_temp, xTitle = "pT(jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
+            # plotter.Plot("h_JetEta", case, massbin                , latex_temp, xTitle = "#eta(jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            # plotter.Plot("h_JetPhi", case, massbin                , latex_temp, xTitle = "#phi(jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-            plotter.Plot("h_BJetPt", case, massbin                , latex_temp, xTitle = "pT(b-jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
-            plotter.Plot("h_BJetEta", case, massbin               , latex_temp, xTitle = "#eta(b-jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            plotter.Plot("h_BJetPhi", case, massbin               , latex_temp, xTitle = "#phi(b-jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            # plotter.Plot("h_BJetPt", case, massbin                , latex_temp, xTitle = "pT(b-jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
+            # plotter.Plot("h_BJetEta", case, massbin               , latex_temp, xTitle = "#eta(b-jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            # plotter.Plot("h_BJetPhi", case, massbin               , latex_temp, xTitle = "#phi(b-jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-            plotter.Plot("h_ElecPt", case, massbin                , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_ElecEta", case, massbin               , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            plotter.Plot("h_ElecPhi", case, massbin               , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            # plotter.Plot("h_ElecPt", case, massbin                , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            # plotter.Plot("h_ElecEta", case, massbin               , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            # plotter.Plot("h_ElecPhi", case, massbin               , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-            plotter.Plot("h_MuonPt", case, massbin                , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_MuonEta", case, massbin               , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            plotter.Plot("h_MuonPhi", case, massbin               , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            # plotter.Plot("h_MuonPt", case, massbin                , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            # plotter.Plot("h_MuonEta", case, massbin               , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            # plotter.Plot("h_MuonPhi", case, massbin               , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
             
-            plotter.Plot("h_PairDeltaR", case, massbin            , latex_temp, xTitle = "#DeltaR(e, #mu)" ,xmin = 0, xmax = 6.4, logy = True)
-            plotter.Plot("h_PairPt", case, massbin                , latex_temp, xTitle = "pT(e#mu) [GeV]" ,xmin = 0, xmax = 500, logy = True)
-            plotter.Plot("h_PairRap", case, massbin               , latex_temp, xTitle = "rapidity(e#mu)"      ,xmin = -2.8, xmax = 2.8, logy = True)
+            # plotter.Plot("h_PairDeltaR", case, massbin            , latex_temp, xTitle = "#DeltaR(e, #mu)" ,xmin = 0, xmax = 6.4, logy = True)
+            # plotter.Plot("h_PairPt", case, massbin                , latex_temp, xTitle = "pT(e#mu) [GeV]" ,xmin = 0, xmax = 500, logy = True)
+            # plotter.Plot("h_PairRap", case, massbin               , latex_temp, xTitle = "rapidity(e#mu)"      ,xmin = -2.8, xmax = 2.8, logy = True)
 
 
 if __name__ == "__main__" :

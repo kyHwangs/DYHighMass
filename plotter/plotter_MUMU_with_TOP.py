@@ -225,6 +225,7 @@ class Plotter:
 
     def PrepareFiles(self):
         self.fileSet = ROOT.TFile(self.rootPath, "READ");
+        self.fileSet_BKG = ROOT.TFile("../../plotter/EMU_BKG_251201/EMU_bkg.root", "READ");
 
     def PrepareNorm(self):
         for mcSet in mcList:
@@ -256,8 +257,6 @@ class Plotter:
         if (ymin == -1 and ymax == -1): doAutoYrange = True
         if (yrmin == -1 and yrmax == -1): doAutoYRatiorange = True
 
-        print (doAutoYRatiorange, yrmin, yrmax)
-
         self.histName = ""
 
         if case != "" and massbin != "":
@@ -275,10 +274,11 @@ class Plotter:
 
         data = self.fileSet.Get(self.era + "/Data/" + self.histName)
         DY = self.GetMCHist("DY")
-        TT = self.GetMCHist("TTTo2L2Nu")
-        ST = self.GetMCHist("ST")
+        TT = self.fileSet_BKG.Get(self.era + "/TOP_MUMU/MUMU_OS_TOP_DataDriven" + case)
+        # ST = self.fileSet_BKG.Get(self.era + "/SingleTop_MUMU/MUMU_OS_ST_DataDriven" + case)
         DY_tau = self.GetMCHist("NNLO_tautau")
         EW = self.GetMCHist("EW")
+        # WW = self.fileSet_BKG.Get(self.era + "/WW_MUMU/MUMU_OS_WW_DataDriven" + case)
         GG_ElEl = self.GetMCHist("GG_ElEl")
         GG_InelElElInel = self.GetMCHist("GG_InelElElInel")
         GG_InelInel = self.GetMCHist("GG_InelInel")
@@ -289,9 +289,10 @@ class Plotter:
         
         MC = DY.Clone(f"MC_{uuid.uuid4()}")
         MC.Add(TT)
-        MC.Add(ST)
+        # MC.Add(ST)
         MC.Add(DY_tau)
         MC.Add(EW)
+        # MC.Add(WW)
         MC.Add(GG_ElEl)
         MC.Add(GG_InelElElInel)
         MC.Add(GG_InelInel)
@@ -374,9 +375,10 @@ class Plotter:
         stackSeet = {
             "DY#rightarrow#tau#tau": DY_tau,
             "#gamma#gamma#rightarrow#mu#mu": GG,
-            "Single Top": ST,
+            # "Single Top": ST,
             "VV": EW,
-            "TT": TT,
+            # "WW": WW,
+            "TTbar + Single Top": TT,
             "DY#rightarrow#mu#mu": DY
         }
 
@@ -401,6 +403,7 @@ class Plotter:
 
         CMS.SaveCanvas(dicanv, os.path.join(self.outputPath, self.era + "_" + self.histOutputName + ".pdf"))
         # CMS.SaveCanvas(dicanv, os.path.join(self.outputPath, self.era + "_" + histName + ".png"))
+
 
     def CheckSanity(self, hist):
 
@@ -532,7 +535,6 @@ class Plotter:
 
 
 
-
 def main(args):
     plotter = Plotter(args.era)
 
@@ -606,43 +608,12 @@ def main(args):
         "",
     ]
 
-    # plotter.Plot("h_nJet",  "", "", latex, xTitle = "N_{jet}", xmin = 0, xmax = 14)
-    # plotter.Plot("h_nBJet", "", "", latex, xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
- 
     for case in cases:
 
         latex_temp = latex.copy()
         latex_temp[2] = addon_hook[case]
 
         plotter.Plot("h_dimuonMass", case, ""                     , latex_temp, xTitle = "M(#mu#mu) [GeV]"  ,xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
-
-        for massbin in massBins:
-            latex_temp[3] = addon_hook_mass[massbin]
-
-            # plotter.Plot("h_JetPt", case, massbin                 , latex_temp, xTitle = "pT(jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
-            # plotter.Plot("h_JetEta", case, massbin                , latex_temp, xTitle = "#eta(jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            # plotter.Plot("h_JetPhi", case, massbin                , latex_temp, xTitle = "#phi(jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
-
-            # plotter.Plot("h_BJetPt", case, massbin                , latex_temp, xTitle = "pT(b-jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
-            # plotter.Plot("h_BJetEta", case, massbin               , latex_temp, xTitle = "#eta(b-jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            # plotter.Plot("h_BJetPhi", case, massbin               , latex_temp, xTitle = "#phi(b-jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
-
-            # plotter.Plot("h_LeadingMuonPt", case, massbin         , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            # plotter.Plot("h_LeadingMuonEta", case, massbin        , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            # plotter.Plot("h_LeadingMuonPhi", case, massbin        , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
-
-            # plotter.Plot("h_SubleadingMuonPt", case, massbin      , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            # plotter.Plot("h_SubleadingMuonEta", case, massbin     , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            # plotter.Plot("h_SubleadingMuonPhi", case, massbin     , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
-
-            # plotter.Plot("h_MuonPt", case, massbin                , latex_temp, xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            # plotter.Plot("h_MuonEta", case, massbin               , latex_temp, xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            # plotter.Plot("h_MuonPhi", case, massbin               , latex_temp, xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
-            # plotter.Plot("h_MuonDeltaR", case, massbin            , latex_temp, xTitle = "#DeltaR(#mu_{1}, #mu_{2})" ,xmin = 0, xmax = 6.4, logy = True)
-
-            # plotter.Plot("h_dimuonPt", case, massbin              , latex_temp, xTitle = "pT(#mu#mu) [GeV]" ,xmin = 0, xmax = 500, logy = True)
-            # plotter.Plot("h_dimuonRap", case, massbin             , latex_temp, xTitle = "rapidity(#mu#mu)"      ,xmin = -2.8, xmax = 2.8, logy = True)
-
 
 if __name__ == "__main__" :
     ROOT.TH1.AddDirectory(False)

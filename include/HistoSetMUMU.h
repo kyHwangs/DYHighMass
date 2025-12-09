@@ -26,7 +26,7 @@ public:
 
   void Init();
 
-  void FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSubleadingMuon, int nJet, int nBJet, double weight = 1.);
+  void FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSubleadingMuon, int nJet, int nBJet, TLorentzVector& fLeadingJet, double weight = 1.);
   void FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJet>* fBJet, double fDimuonMass, double weight = 1.);
 
   void FillHisto(std::string name, double value, double weight = 1.);
