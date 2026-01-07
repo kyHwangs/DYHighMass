@@ -161,7 +161,7 @@ public:
 
   std::vector<StdMuon> GetMuons() { return fFVecMuons; }
   std::vector<StdMuon> GetGenMuons() { return fFVecGenMuons; }
-  StdMuon GetLeadingMuon() { return fFVecMuons.at(0); }
+  StdMuon GetLeadingMuon() { return fFVecMuons.at(fLeadingIdx); }
   StdMuon GetSubLeadingMuon() { return fFVecMuons.at(fSubLeadingIdx); }
 
   TTreeReaderValue<unsigned int>* nMuon;
