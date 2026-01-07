@@ -146,15 +146,10 @@ TLorentzVector MUON::GetMCSmearing (TLorentzVector fMu) {
 bool MUON::PrepareMuon() {
 
   fFVecMuons.clear();
+  fFVecNonIsoMuons.clear();
 
   for (int i = 0; i < **nMuon; i++) {
     if ( !(Muon_highPtId->At(i) == fID) )
-      continue;
-
-    if ( !fISOinverted && !(Muon_tkRelIso->At(i) < fISO) )
-      continue;
-
-    if ( fISOinverted && Muon_tkRelIso->At(i) < fISO )
       continue;
 
     if (std::abs(Muon_eta->At(i)) > fEta)
@@ -180,45 +175,63 @@ bool MUON::PrepareMuon() {
     if ( !(mu_corr.Pt() > fSubLeadingMuonPt) )
       continue;
 
-    StdMuon mu_std = StdMuon(mu_corr, mu, Muon_charge->At(i));
-    fFVecMuons.push_back(mu_std);
+    if ( Muon_tkRelIso->At(i) < fISO ) { // isolated muon
+      StdMuon mu_std = StdMuon(mu_corr, mu, Muon_charge->At(i));
+      fFVecMuons.push_back(mu_std);
+
+    } else { // non-isolated muon
+      StdMuon mu_std = StdMuon(mu_corr, mu, Muon_charge->At(i));
+      fFVecNonIsoMuons.push_back(mu_std);
+
+    }
 
     std::sort(fFVecMuons.begin(), fFVecMuons.end(), [](const StdMuon &lhs, const StdMuon &rhs) {
       return lhs.fVec.Pt() > rhs.fVec.Pt();
     });
+
+    std::sort(fFVecNonIsoMuons.begin(), fFVecNonIsoMuons.end(), [](const StdMuon &lhs, const StdMuon &rhs) {
+      return lhs.fVec.Pt() > rhs.fVec.Pt();
+    });
   }
 
-  fLeadingIdx = 0;
-
-  if (fFVecMuons.size() < 2)
+  if (fFVecMuons.size() < 1)
     return false;
 
-  if (fFVecMuons.at(0).fVec.Pt() < fLeadingMuonPt)
+  if (fFVecNonIsoMuons.size() < 1)
     return false;
 
+
+  if (fFVecMuons.at(0).fVec.Pt() < fLeadingMuonPt && fFVecNonIsoMuons.at(0).fVec.Pt() < fLeadingMuonPt)
+    return false;
+
+  int tLeadingIdx = -1;
   int tSubLeadingIdx = -1;
   int tChargeSelection = 1;
   if (!fOppositeCharge) tChargeSelection = -1;
 
-  for (int i = 1; i < fFVecMuons.size(); i++) {
-    if (tChargeSelection * (fFVecMuons.at(0).fCharge * fFVecMuons.at(i).fCharge) > 0)
-      continue;
+  for (int i = 0; i < fFVecMuons.size(); i++) {
+    for (int j = 0; j < fFVecNonIsoMuons.size(); j++) {
 
-    tSubLeadingIdx = i;
-    if (tSubLeadingIdx != -1)
+      if (tChargeSelection * (fFVecMuons.at(i).fCharge * fFVecNonIsoMuons.at(j).fCharge) > 0)
+        continue;
+      
+      if (fFVecMuons.at(i).fVec.Pt() < 52 && fFVecNonIsoMuons.at(j).fVec.Pt() < 52)
+        continue;
+
+      auto tDimuonVec = fFVecMuons.at(i).fVec + fFVecNonIsoMuons.at(j).fVec;
+      if (tDimuonVec.M() < fZMassCut)
+        continue;
+
+      tLeadingIdx = i;
+      tSubLeadingIdx = j;
+      break;
+    }
+
+    if (tLeadingIdx != -1 && tSubLeadingIdx != -1)
       break;
   }
 
-  if (tSubLeadingIdx == -1)
-    return false;
-
-  fSubLeadingIdx = tSubLeadingIdx;
-
-  auto tLeadingMuon = fFVecMuons.at(0).fVec;
-  auto tSubLeadingMuon = fFVecMuons.at(fSubLeadingIdx).fVec;
-  double tDiMuonMass = (tLeadingMuon + tSubLeadingMuon).M();
-
-  if (tDiMuonMass < fZMassCut)
+  if (tSubLeadingIdx == -1 || tLeadingIdx == -1)
     return false;
 
   return true;

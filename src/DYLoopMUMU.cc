@@ -148,6 +148,13 @@ void DYLoopMUMU::Loop() {
     auto tFVecSubLeadingMuon = tSubLeadingMuon.fVec;
     auto tFVecRawSubLeadingMuon = tSubLeadingMuon.fVecRaw;
 
+    auto tLeadingMuonCharge = tLeadingMuon.fCharge;
+    auto tSubLeadingMuonCharge = tSubLeadingMuon.fCharge;
+
+    int tCharge = tLeadingMuonCharge * tSubLeadingMuonCharge;
+    if (tCharge > 0) tCharge = 0.5;
+    else tCharge = -0.5;
+
     auto tDiMuon = tFVecLeadingMuon + tFVecSubLeadingMuon;
 
     if (fIsMC && fDoReco) {
@@ -287,8 +294,8 @@ void DYLoopMUMU::Loop() {
     tTotalGenWeight += tEventGenWeight;
 
     fHistoSet->FillHisto((std::string)"h_nPVGood_Count", **(fNtuples->PV_npvsGood), tEventGenWeight);
-    if (nJets == 0) fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, nJets, nBJets, tDiMuon, tEventGenWeight);
-    else            fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, nJets, nBJets, vJets.at(0).fVec, tEventGenWeight);
+    if (nJets == 0) fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, tCharge, nJets, nBJets, tDiMuon, tEventGenWeight);
+    else            fHistoSet->FillMuon(tFVecLeadingMuon, tFVecSubLeadingMuon, tCharge, nJets, nBJets, vJets.at(0).fVec, tEventGenWeight);
     fHistoSet->FillJet(&vJets, &vBJets, tDiMuon.M(), tEventGenWeight);
 
   } // End of event loop
