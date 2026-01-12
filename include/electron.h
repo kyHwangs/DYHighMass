@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <limits>
 
 #include "RoccoR.h"
 
@@ -28,9 +29,12 @@ public:
     fLeadingPt = fElecConf["LeadingPt"].as<float>();
     fSubLeadingPt = fElecConf["SubLeadingPt"].as<float>();
     fEta = fElecConf["Eta"].as<float>();
+    // Cut-based ID (default to Medium=3)
+    fID = 3;
+    if (fElecConf["ID"]) fID = fElecConf["ID"].as<int>();
     fOppositeCharge = true;
     if (fElecConf["Charge"].as<std::string>() == "same")
-      fOppositeCharge == false;
+      fOppositeCharge = false;
 
 
     std::cout << "######################################################################" << std::endl;
@@ -40,6 +44,7 @@ public:
     std::cout << " Electron SubLeadingPt: " << fSubLeadingPt << std::endl;
     std::cout << " Electron eta: " << fEta << std::endl;
     std::cout << " Electron ID: HEEP ID (not in config!)" << std::endl;
+    // std::cout << " Electron ID: " << fID << std::endl;
     std::cout << " OppositeCharge: " << fOppositeCharge << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
@@ -48,11 +53,14 @@ public:
 
   struct StdElec {
     TLorentzVector fVec;
+    float fSCEta;
     int fCharge;
 
-    StdElec(TLorentzVector fVec_, int fCharge_)
-    : fVec(fVec_), fCharge(fCharge_)
+    StdElec(TLorentzVector fVec_, float fSCEta_, int fCharge_)
+    : fVec(fVec_), fSCEta(fSCEta_), fCharge(fCharge_)
     { };
+
+    float SCEta() const { return fSCEta; }
   };
 
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
@@ -62,7 +70,7 @@ public:
   bool PrepareElec();
 
   std::vector<StdElec> GetElecs() { return fFVecElecs; }
-  StdElec GetLeadingElec() { return fFVecElecs.at(0); }
+  StdElec GetLeadingElec() { return fFVecElecs.at(fLeadingIdx); }
   StdElec GetSubLeadingElec() { return fFVecElecs.at(fSubLeadingIdx); }
 
   TTreeReaderValue<unsigned int>* nElectron;
@@ -72,6 +80,7 @@ public:
   TTreeReaderArray<float>* Electron_phi;
   TTreeReaderArray<float>* Electron_mass;
   TTreeReaderArray<bool>* Electron_cutBased_HEEP;
+  TTreeReaderArray<int>* Electron_cutBased;
   TTreeReaderArray<int>* Electron_charge;
 
 private:
@@ -83,6 +92,7 @@ private:
   float fLeadingPt;
   float fSubLeadingPt;
   float fEta;
+  int fID;
   bool fOppositeCharge;
 
   int fSubLeadingIdx;
