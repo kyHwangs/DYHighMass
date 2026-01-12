@@ -188,38 +188,47 @@ bool MUON::PrepareMuon() {
     });
   }
 
-  fLeadingIdx = 0;
-
   if (fFVecMuons.size() < 2)
     return false;
 
   if (fFVecMuons.at(0).fVec.Pt() < fLeadingMuonPt)
     return false;
 
+  int tLeadingIdx = -1;
   int tSubLeadingIdx = -1;
+
   int tChargeSelection = 1;
   if (!fOppositeCharge) tChargeSelection = -1;
 
-  for (int i = 1; i < fFVecMuons.size(); i++) {
-    if (tChargeSelection * (fFVecMuons.at(0).fCharge * fFVecMuons.at(i).fCharge) > 0)
-      continue;
+  for (int i = 0; i < fFVecMuons.size(); i++) {
+    for (int j = i + 1; j < fFVecMuons.size(); j++) {
+      if (tChargeSelection * (fFVecMuons.at(i).fCharge * fFVecMuons.at(j).fCharge) > 0)
+        continue;
 
-    tSubLeadingIdx = i;
-    if (tSubLeadingIdx != -1)
+      if (fFVecMuons.at(i).fVec.Pt() < fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() < fLeadingMuonPt)
+        continue;
+
+      auto tDimuonVec = fFVecMuons.at(i).fVec + fFVecMuons.at(j).fVec;
+
+      if (tDimuonVec.M() < fZMassCut)
+        continue;
+
+      tLeadingIdx = i;
+      tSubLeadingIdx = j;
+
+      if (tSubLeadingIdx != -1 && tLeadingIdx != -1)
+        break;
+    }
+    
+    if (tSubLeadingIdx != -1 && tLeadingIdx != -1)
       break;
   }
 
-  if (tSubLeadingIdx == -1)
+  if (tSubLeadingIdx == -1 || tLeadingIdx == -1)
     return false;
 
+  fLeadingIdx = tLeadingIdx;
   fSubLeadingIdx = tSubLeadingIdx;
-
-  auto tLeadingMuon = fFVecMuons.at(0).fVec;
-  auto tSubLeadingMuon = fFVecMuons.at(fSubLeadingIdx).fVec;
-  double tDiMuonMass = (tLeadingMuon + tSubLeadingMuon).M();
-
-  if (tDiMuonMass < fZMassCut)
-    return false;
 
   return true;
 }

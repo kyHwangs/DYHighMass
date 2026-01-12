@@ -35,6 +35,7 @@ void HistoSetMUMU::Init() {
   fMassBins = {199, 200,  220,  243, 273, 320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4001};
   fDeltaRBins = {-9999, 100, 0.0, 6.0};
   fNJetBins = {-9999, 20, 0, 20};
+  fChargeBins = {-9999, 2, -1, 1};
 
   std::vector<std::string> fAddonMass = {""};
   std::vector<std::string> fAddonJet = {"", "_0J", "_1J", "_mt1J", "_0BJ", "_1BJ", "_mt1BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"};
@@ -71,6 +72,7 @@ void HistoSetMUMU::Init() {
       SetHisto("h_MuonPhi" + tHistSuffix);
       SetHisto("h_MuonDeltaR" + tHistSuffix, fDeltaRBins);
       SetHisto("h_MuonDeltaR_LeadingJet" + tHistSuffix, fDeltaRBins);
+      SetHisto("h_MuonCharge" + tHistSuffix, fChargeBins);
 
       SetHisto("h_dimuonMass" + tHistSuffix);
       SetHisto("h_dimuonPt" + tHistSuffix);
@@ -291,7 +293,7 @@ double HistoSetMUMU::SetMassOverflow(double fMass) {
   else return fMass;
 }
 
-void HistoSetMUMU::FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSubleadingMuon, int nJet, int nBJet, TLorentzVector& fLeadingJet, double weight) {
+void HistoSetMUMU::FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSubleadingMuon, float tCharge, int nJet, int nBJet, TLorentzVector& fLeadingJet, double weight) {
 
   TLorentzVector fDimuon = fLeadingMuon + fSubleadingMuon;
   float dR_diMu_LeadingJet = fDimuon.DeltaR(fLeadingJet);
@@ -322,6 +324,7 @@ void HistoSetMUMU::FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSuble
     fHistSet["h_MuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), weight);
     fHistSet["h_MuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), weight);
     fHistSet["h_MuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), weight);
+    fHistSet["h_MuonCharge" + suffix]->Fill(tCharge, weight);
 
     fHistSet["h_MuonDeltaR" + suffix]->Fill(fLeadingMuon.DeltaR(fSubleadingMuon), weight);
     fHistSet["h_MuonDeltaR_LeadingJet" + suffix]->Fill(dR_diMu_LeadingJet, weight);
@@ -398,6 +401,7 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
     fHistSet["h_MuonPt" + tSuffix]->Write();  
     fHistSet["h_MuonEta" + tSuffix]->Write();
     fHistSet["h_MuonPhi" + tSuffix]->Write();
+    fHistSet["h_MuonCharge" + tSuffix]->Write();
 
     fHistSet["h_MuonDeltaR_LeadingJet" + tSuffix]->Write();
     fHistSet["h_MuonDeltaR" + tSuffix]->Write();
@@ -448,6 +452,7 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
       fHistSet["h_MuonPt" + tSuffix]->Write();  
       fHistSet["h_MuonEta" + tSuffix]->Write();
       fHistSet["h_MuonPhi" + tSuffix]->Write();
+      fHistSet["h_MuonCharge" + tSuffix]->Write();
 
       fHistSet["h_MuonDeltaR" + tSuffix]->Write();
       fHistSet["h_dimuonMass" + tSuffix]->Write();
