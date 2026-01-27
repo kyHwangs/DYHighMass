@@ -47,6 +47,7 @@ Correction:
   L1PreFiring: true
   JetPU: true
   BTag: true
+  TopPtReweighing: true
 
 Efficiency:
   Reco:
@@ -59,8 +60,8 @@ Efficiency:
     Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2018_schemaV2.json
     Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
   Trigger:
-    Path: ../../correctionlib/muon/medium/2018.json
-    Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+    Path: ../../correctionlib/muon/high/2018/ScaleFactors_Muon_highPt_HLT_2018_schemaV2.json
+    Name: NUM_HLT_DEN_HighPtLooseRelIsoProbes
   ElecReco:
     Path: ../../correctionlib/electron/reco/EGM_2018.json
     Name: UL-Electron-ID-SF

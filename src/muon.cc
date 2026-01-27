@@ -10,15 +10,15 @@
 
 void MUON::init(TTreeReader* fTreeReader) {
 
-  if (fIsMC) {
+  // if (fIsMC) {
 
-    nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
-    GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
-    GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
-    GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
-    GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
-    GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
-  }
+  //   nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
+  //   GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
+  //   GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
+  //   GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
+  //   GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
+  //   GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
+  // }
 
   nMuon = new TTreeReaderValue<unsigned int>(*fTreeReader, "nMuon");
   Muon_pt = new TTreeReaderArray<float>(*fTreeReader, "Muon_pt");
@@ -33,89 +33,89 @@ void MUON::init(TTreeReader* fTreeReader) {
   Muon_highPurity = new TTreeReaderArray<bool>(*fTreeReader, "Muon_highPurity");
 }
 
-void MUON::PrepareGenMuon() {
+// void MUON::PrepareGenMuon() {
 
-  fFVecGenMuons.clear();
+//   fFVecGenMuons.clear();
 
-  for (int i  = 0; i < **nGenPart; i++) {
+//   for (int i  = 0; i < **nGenPart; i++) {
 
-    if ( !(std::abs(GenPart_pdgId->At(i)) == 13) )
-      continue;
+//     if ( !(std::abs(GenPart_pdgId->At(i)) == 13) )
+//       continue;
 
-    TLorentzVector mu;
-    mu.SetPtEtaPhiM(GenPart_pt->At(i), GenPart_eta->At(i), GenPart_phi->At(i), GenPart_mass->At(i));
+//     TLorentzVector mu;
+//     mu.SetPtEtaPhiM(GenPart_pt->At(i), GenPart_eta->At(i), GenPart_phi->At(i), GenPart_mass->At(i));
 
-    StdMuon mu_std = StdMuon(mu, mu, (-1) * (GenPart_pdgId->At(i) / std::abs(GenPart_pdgId->At(i))));
-    fFVecGenMuons.push_back(mu_std);
-  }
+//     StdMuon mu_std = StdMuon(mu, mu, (-1) * (GenPart_pdgId->At(i) / std::abs(GenPart_pdgId->At(i))));
+//     fFVecGenMuons.push_back(mu_std);
+//   }
 
-  std::sort(fFVecGenMuons.begin(), fFVecGenMuons.end(), [](const StdMuon &lhs, const StdMuon &rhs) {
-    return lhs.fVec.Pt() > rhs.fVec.Pt();
-  });
-}
+//   std::sort(fFVecGenMuons.begin(), fFVecGenMuons.end(), [](const StdMuon &lhs, const StdMuon &rhs) {
+//     return lhs.fVec.Pt() > rhs.fVec.Pt();
+//   });
+// }
 
-TLorentzVector MUON::GetRochesterCorrectedMuon (TLorentzVector fMu, int fMuCharge, int nTkLayers) {
+// TLorentzVector MUON::GetRochesterCorrectedMuon (TLorentzVector fMu, int fMuCharge, int nTkLayers) {
 
-  double tCorrectionFactor = 1.;
-  if (!fIsMC) {
-    tCorrectionFactor = fRoccoR->kScaleDT(
-      fMuCharge,
-      fMu.Pt(),
-      fMu.Eta(),
-      fMu.Phi(),
-      5,
-      0
-    );
-  } else {
+//   double tCorrectionFactor = 1.;
+//   if (!fIsMC) {
+//     tCorrectionFactor = fRoccoR->kScaleDT(
+//       fMuCharge,
+//       fMu.Pt(),
+//       fMu.Eta(),
+//       fMu.Phi(),
+//       5,
+//       0
+//     );
+//   } else {
 
-    double drmin = 999.;
-    bool match = false;
-    int genMuonIdx = 0;
+//     double drmin = 999.;
+//     bool match = false;
+//     int genMuonIdx = 0;
 
-    for (int j = 0; j < fFVecGenMuons.size(); j++) {
-      if (fMu.DeltaR(fFVecGenMuons.at(j).fVec) < 0.1 &&
-          fMu.DeltaR(fFVecGenMuons.at(j).fVec) < drmin) {
-        match = true;
-        genMuonIdx = j;
-        drmin = fMu.DeltaR(fFVecGenMuons.at(j).fVec);
-      }
-    }
+//     for (int j = 0; j < fFVecGenMuons.size(); j++) {
+//       if (fMu.DeltaR(fFVecGenMuons.at(j).fVec) < 0.1 &&
+//           fMu.DeltaR(fFVecGenMuons.at(j).fVec) < drmin) {
+//         match = true;
+//         genMuonIdx = j;
+//         drmin = fMu.DeltaR(fFVecGenMuons.at(j).fVec);
+//       }
+//     }
 
-    if (match) {
-      tCorrectionFactor = fRoccoR->kSpreadMC(
-        fMuCharge,
-        fMu.Pt(),
-        fMu.Eta(),
-        fMu.Phi(),
-        fFVecGenMuons.at(genMuonIdx).fVec.Pt(),
-        5,
-        0
-      );
-    } else {
-      double rndm = gRandom->Rndm();
-      tCorrectionFactor = fRoccoR->kSmearMC(
-        fMuCharge,
-        fMu.Pt(),
-        fMu.Eta(),
-        fMu.Phi(),
-        nTkLayers,
-        rndm,
-        5,
-        0
-      );
-    }
-  }
+//     if (match) {
+//       tCorrectionFactor = fRoccoR->kSpreadMC(
+//         fMuCharge,
+//         fMu.Pt(),
+//         fMu.Eta(),
+//         fMu.Phi(),
+//         fFVecGenMuons.at(genMuonIdx).fVec.Pt(),
+//         5,
+//         0
+//       );
+//     } else {
+//       double rndm = gRandom->Rndm();
+//       tCorrectionFactor = fRoccoR->kSmearMC(
+//         fMuCharge,
+//         fMu.Pt(),
+//         fMu.Eta(),
+//         fMu.Phi(),
+//         nTkLayers,
+//         rndm,
+//         5,
+//         0
+//       );
+//     }
+//   }
   
-  if (tCorrectionFactor != 1.) {
+//   if (tCorrectionFactor != 1.) {
 
-    TLorentzVector fMuReturn;
-    fMuReturn.SetPtEtaPhiM(tCorrectionFactor * fMu.Pt(), fMu.Eta(), fMu.Phi(), fMu.M());
-    return fMuReturn;
-  } else {
+//     TLorentzVector fMuReturn;
+//     fMuReturn.SetPtEtaPhiM(tCorrectionFactor * fMu.Pt(), fMu.Eta(), fMu.Phi(), fMu.M());
+//     return fMuReturn;
+//   } else {
   
-    return fMu;
-  }
-}
+//     return fMu;
+//   }
+// }
 
 TLorentzVector MUON::GetMCSmearing (TLorentzVector fMu) {
 
@@ -168,8 +168,8 @@ bool MUON::PrepareMuon() {
 
     TLorentzVector mu_corr;
 
-    if (fDoRoccoR && !fDoMCSmearing)
-      mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
+    // if (fDoRoccoR && !fDoMCSmearing)
+      // mu_corr = GetRochesterCorrectedMuon(mu, Muon_charge->At(i), Muon_nTrackerLayers->At(i));
 
     if (!fDoRoccoR && fDoMCSmearing)
       mu_corr = GetMCSmearing(mu);

@@ -154,9 +154,9 @@ public:
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
 
   bool PrepareMuon();
-  void PrepareGenMuon();
+  // void PrepareGenMuon();
 
-  TLorentzVector GetRochesterCorrectedMuon(TLorentzVector fMu, int fMuCharge, int nTkLayers);
+  // TLorentzVector GetRochesterCorrectedMuon(TLorentzVector fMu, int fMuCharge, int nTkLayers);
   TLorentzVector GetMCSmearing(TLorentzVector fMu);
 
   std::vector<StdMuon> GetMuons() { return fFVecMuons; }
@@ -176,12 +176,12 @@ public:
   TTreeReaderArray<int>* Muon_nTrackerLayers;
   TTreeReaderArray<bool>* Muon_highPurity;
 
-  TTreeReaderValue<unsigned int>* nGenPart;
-  TTreeReaderArray<float>* GenPart_pt;
-  TTreeReaderArray<float>* GenPart_eta;
-  TTreeReaderArray<float>* GenPart_phi;
-  TTreeReaderArray<float>* GenPart_mass;
-  TTreeReaderArray<int>* GenPart_pdgId;
+  // TTreeReaderValue<unsigned int>* nGenPart;
+  // TTreeReaderArray<float>* GenPart_pt;
+  // TTreeReaderArray<float>* GenPart_eta;
+  // TTreeReaderArray<float>* GenPart_phi;
+  // TTreeReaderArray<float>* GenPart_mass;
+  // TTreeReaderArray<int>* GenPart_pdgId;
 
 private:
 

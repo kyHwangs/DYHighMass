@@ -15,6 +15,7 @@
 #include "TStopwatch.h"
 #include "TChain.h"
 #include "TLorentzVector.h"
+#include "TF1.h"
 
 #include "yaml-cpp/yaml.h"
 
@@ -32,6 +33,8 @@ public:
     fEra = fConfig["Info"]["Era"].as<std::string>();
     fChannel = fConfig["Info"]["Channel"].as<std::string>();
     if (fChannel == "EMU") fChannel = "MUMU";
+
+    fTopPtReweighter = new TF1("fTopPtReweighter", "exp(0.0416 - 0.0003 * x)", 0, 600);
   }
 
   ~NT() {
@@ -107,6 +110,8 @@ public:
 
      return fMaxEventVec;
   }
+
+  double GetGenTopPtReweightFactor();
 
   void SetMC() { fIsMC = true; }
 
@@ -267,15 +272,15 @@ public:
   TTreeReaderArray<float>* GenJet_mass;
   TTreeReaderArray<float>* GenJet_phi;
   TTreeReaderArray<float>* GenJet_pt;
-  // TTreeReaderValue<unsigned int>* nGenPart;
-  // TTreeReaderArray<float>* GenPart_eta;
-  // TTreeReaderArray<float>* GenPart_mass;
-  // TTreeReaderArray<float>* GenPart_phi;
-  // TTreeReaderArray<float>* GenPart_pt;
-  // TTreeReaderArray<int>* GenPart_genPartIdxMother;
-  // TTreeReaderArray<int>* GenPart_pdgId;
-  // TTreeReaderArray<int>* GenPart_status;
-  // TTreeReaderArray<int>* GenPart_statusFlags;
+  TTreeReaderValue<unsigned int>* nGenPart;
+  TTreeReaderArray<float>* GenPart_eta;
+  TTreeReaderArray<float>* GenPart_mass;
+  TTreeReaderArray<float>* GenPart_phi;
+  TTreeReaderArray<float>* GenPart_pt;
+  TTreeReaderArray<int>* GenPart_genPartIdxMother;
+  TTreeReaderArray<int>* GenPart_pdgId;
+  TTreeReaderArray<int>* GenPart_status;
+  TTreeReaderArray<int>* GenPart_statusFlags;
   TTreeReaderValue<float>* Generator_binvar;
   TTreeReaderValue<float>* Generator_scalePDF;
   TTreeReaderValue<float>* Generator_weight;
@@ -539,6 +544,7 @@ private:
   TString fChannel;
   TString fSampleName;
   int fID;
+  TF1* fTopPtReweighter;
 
   std::unique_ptr<TriggerBase> fTrigger;
 

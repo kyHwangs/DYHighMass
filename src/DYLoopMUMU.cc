@@ -78,6 +78,10 @@ void DYLoopMUMU::Loop() {
     }
 
     double tEventGenWeight = 1.;
+
+    if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
+      tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
+
     if (fIsMC) {
       tEventGenWeight = **(fNtuples->genWeight);
 
@@ -250,16 +254,16 @@ void DYLoopMUMU::Loop() {
         mu_1_data = 0.;
         mu_1_mc = 0.;
       } else {
-        mu_1_data = fTRIG_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "dataEff"});
-        mu_1_mc = fTRIG_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "mcEff"});
+        mu_1_data = fTRIG_Eff_Data->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "nominal"});
+        mu_1_mc = fTRIG_Eff_MC->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "nominal"});
       }
 
       if (tFVecRawSubLeadingMuon.Pt() < 52.) {
         mu_2_data = 0.;
         mu_2_mc = 0.;
       } else {
-        mu_2_data = fTRIG_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "dataEff"});
-        mu_2_mc = fTRIG_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "mcEff"});
+        mu_2_data = fTRIG_Eff_Data->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "nominal"});
+        mu_2_mc = fTRIG_Eff_MC->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "nominal"});
       }
 
       double data_tot = 1. - (1. - mu_1_data) * (1. - mu_2_data);
@@ -276,7 +280,7 @@ void DYLoopMUMU::Loop() {
       // std::cout << "----------------------------------------------------------------------" << std::endl;
       // std::cout << " LEADING: " << tFVecRawLeadingMuon.Pt() << " " << tFVecRawLeadingMuon.Eta() << " " << mu_1_data << " " << mu_1_mc << std::endl;
       // std::cout << " SUB-LEADING: " << tFVecRawSubLeadingMuon.Pt() << " " << tFVecRawSubLeadingMuon.Eta() << " " << mu_2_data << " " << mu_2_mc << std::endl;
-      // std::cout << eventTriggerEffSF << std::endl;
+      // std::cout << "(1 - (1 - " <<  mu_1_data << ") * (1 - " << mu_2_data << ")) / (1 - (1 - " << mu_1_mc << ") * (1 - " << mu_2_mc << ")) = " << eventTriggerEffSF << std::endl;
       // std::cout << "######################################################################" << std::endl;
       // std::cout << " " << std::endl;
     }

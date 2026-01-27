@@ -59,8 +59,9 @@ public:
 
     fDoTRIGG = false;
     fDoTRIGG = fConfig["Correction"]["Trigger"].as<bool>();
-    fTRIG_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>());
-
+    fTRIG_Eff_MC = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Trigger"]["MC"].as<std::string>());
+    fTRIG_Eff_Data = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Trigger"]["Data"].as<std::string>());
+    
     fDoPU = false;
     fDoPU = fConfig["Correction"]["PileUp"].as<bool>();
     fPuReweighting = new LumiReWeighting(
@@ -69,6 +70,9 @@ public:
       "pileup",
       "pileup"
     );
+
+    fDoTopPtReweighing = false;
+    fDoTopPtReweighing = fConfig["Correction"]["TopPtReweighing"].as<bool>();
 
     fDoJetPUID = false;
     fDoJetPUID = fConfig["Correction"]["JetPU"].as<bool>();
@@ -115,7 +119,8 @@ public:
     std::cout << " fDoISO     : " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Path"].as<std::string>() << std::endl;
     std::cout << "              " << fDoISO << " " << fConfig["Efficiency"]["ISO"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoTRIGG   : " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>() << std::endl;
-    std::cout << "              " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>() << std::endl;
+    std::cout << "              " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Data"].as<std::string>() << std::endl;
+    std::cout << "              " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["MC"].as<std::string>() << std::endl;
     std::cout << " fDoPU      : " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
     std::cout << "              " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
     std::cout << " fDoL1Pre   : " << fDoL1Pre << " " << std::endl;
@@ -124,6 +129,7 @@ public:
     std::cout << "              " << fConfig["Efficiency"]["BTagEff"]["bQuark"].as<std::string>() << std::endl;
     std::cout << "              " << fConfig["Efficiency"]["BTagEff"]["cQuark"].as<std::string>() << std::endl;
     std::cout << "              " << fConfig["Efficiency"]["BTagEff"]["lQuark"].as<std::string>() << std::endl;
+    std::cout << " fDoTopPtReweighing : " << fDoTopPtReweighing << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
   }
@@ -171,7 +177,8 @@ private:
   std::shared_ptr<const correction::Correction> fReco_SF;
   std::shared_ptr<const correction::Correction> fID_SF;
   std::shared_ptr<const correction::Correction> fISO_SF;
-  std::shared_ptr<const correction::Correction> fTRIG_SF;
+  std::shared_ptr<const correction::Correction> fTRIG_Eff_Data;
+  std::shared_ptr<const correction::Correction> fTRIG_Eff_MC;
 
   bool fDoReco;
   bool fDoID;
@@ -181,6 +188,7 @@ private:
   bool fDoL1Pre;
   bool fDoJetPUID;
   bool fDoBTag;
+  bool fDoTopPtReweighing;
 
   NT* fNtuples;
   YAML::Node fConfig;

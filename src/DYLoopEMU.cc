@@ -73,6 +73,10 @@ void DYLoopEMU::Loop() {
     }
 
     double tEventGenWeight = 1.;
+    
+    if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
+      tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
+
     if (fIsMC) {
       tEventGenWeight = **(fNtuples->genWeight);
 

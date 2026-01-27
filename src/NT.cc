@@ -35,6 +35,45 @@ bool NT::PassinNoiseFilter() {
   return false;
 }
 
+double NT::GetGenTopPtReweightFactor() {
+
+  std::vector<TLorentzVector> tGenTopVec = {};
+  double tGenTopPtReweightFactor = 1.;
+
+  for (int i = 0; i < **nGenPart; i++) {
+    if (std::abs(GenPart_pdgId->At(i)) == 6 && GenPart_status->At(i) == 22 && GenPart_genPartIdxMother->At(i) == 0) {
+      TLorentzVector tTmpVec;
+      tTmpVec.SetPtEtaPhiM(GenPart_pt->At(i), GenPart_eta->At(i), GenPart_phi->At(i), GenPart_mass->At(i));
+      tGenTopVec.push_back(tTmpVec);
+    }
+  }
+
+  if (tGenTopVec.size() != 2) {
+    
+    std::cout << "########################################################" << std::endl;
+    std::cout << "  ERROR! Number of gen tops is not 2!" << std::endl;
+    std::cout << "########################################################" << std::endl;
+
+    for (int i = 0; i < **nGenPart; i++) {
+    
+    std::cout << "GetPart " << i << "/" << **nGenPart 
+              << " pdgId: " << GenPart_pdgId->At(i)
+              << " status: " << GenPart_status->At(i)
+              << " statusFlags: " << GenPart_statusFlags->At(i)
+              << " mother: " << GenPart_genPartIdxMother->At(i)
+              << " pt: " << GenPart_pt->At(i)
+              << " eta: " << GenPart_eta->At(i)
+              << " phi: " << GenPart_phi->At(i)
+              << " mass: " << GenPart_mass->At(i)
+              << std::endl;
+    
+    }
+    return 1.;
+  }
+
+  return std::sqrt(tGenTopPtReweightFactor);
+}
+
 std::vector<TLorentzVector> NT::GetLHE(int fPID) {
 
   std::vector<TLorentzVector> returnVec = {};
@@ -95,15 +134,15 @@ void NT::init_MC() {
   GenJet_mass = new TTreeReaderArray<float>(*fTreeReader, "GenJet_mass");
   GenJet_phi = new TTreeReaderArray<float>(*fTreeReader, "GenJet_phi");
   GenJet_pt = new TTreeReaderArray<float>(*fTreeReader, "GenJet_pt");
-  // nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
-  // GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
-  // GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
-  // GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
-  // GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
-  // GenPart_genPartIdxMother = new TTreeReaderArray<int>(*fTreeReader, "GenPart_genPartIdxMother");
-  // GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
-  // GenPart_status = new TTreeReaderArray<int>(*fTreeReader, "GenPart_status");
-  // GenPart_statusFlags = new TTreeReaderArray<int>(*fTreeReader, "GenPart_statusFlags");
+  nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
+  GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
+  GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
+  GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
+  GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
+  GenPart_genPartIdxMother = new TTreeReaderArray<int>(*fTreeReader, "GenPart_genPartIdxMother");
+  GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
+  GenPart_status = new TTreeReaderArray<int>(*fTreeReader, "GenPart_status");
+  GenPart_statusFlags = new TTreeReaderArray<int>(*fTreeReader, "GenPart_statusFlags");
   Generator_binvar = new TTreeReaderValue<float>(*fTreeReader, "Generator_binvar");
   Generator_scalePDF = new TTreeReaderValue<float>(*fTreeReader, "Generator_scalePDF");
   Generator_weight = new TTreeReaderValue<float>(*fTreeReader, "Generator_weight");

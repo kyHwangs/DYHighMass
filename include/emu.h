@@ -167,7 +167,7 @@ public:
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
 
   bool PrepareEMUPair();
-  void PrepareGenMuon();
+  // void PrepareGenMuon();
 
   TLorentzVector GetMuonMCSmearing(TLorentzVector fMu);
 
@@ -199,12 +199,12 @@ public:
   TTreeReaderArray<int>* Electron_charge;
   TTreeReaderArray<bool>* Electron_cutBased_HEEP;
 
-  TTreeReaderValue<unsigned int>* nGenPart;
-  TTreeReaderArray<float>* GenPart_pt;
-  TTreeReaderArray<float>* GenPart_eta;
-  TTreeReaderArray<float>* GenPart_phi;
-  TTreeReaderArray<float>* GenPart_mass;
-  TTreeReaderArray<int>* GenPart_pdgId;
+  // TTreeReaderValue<unsigned int>* nGenPart;
+  // TTreeReaderArray<float>* GenPart_pt;
+  // TTreeReaderArray<float>* GenPart_eta;
+  // TTreeReaderArray<float>* GenPart_phi;
+  // TTreeReaderArray<float>* GenPart_mass;
+  // TTreeReaderArray<int>* GenPart_pdgId;
 
 private:
 

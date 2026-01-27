@@ -10,14 +10,14 @@
 
 void EMU::init(TTreeReader* fTreeReader) {
 
-  if (fIsMC) {
-    nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
-    GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
-    GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
-    GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
-    GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
-    GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
-  }
+  // if (fIsMC) {
+  //   nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
+  //   GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
+  //   GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
+  //   GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
+  //   GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
+  //   GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
+  // }
 
   nMuon = new TTreeReaderValue<unsigned int>(*fTreeReader, "nMuon");
   Muon_pt = new TTreeReaderArray<float>(*fTreeReader, "Muon_pt");
@@ -41,26 +41,26 @@ void EMU::init(TTreeReader* fTreeReader) {
   Electron_cutBased_HEEP = new TTreeReaderArray<bool>(*fTreeReader, "Electron_cutBased_HEEP");
 }
 
-void EMU::PrepareGenMuon() {
+// void EMU::PrepareGenMuon() {
 
-  fFVecGenMuons.clear();
+//   fFVecGenMuons.clear();
 
-  for (int i  = 0; i < **nGenPart; i++) {
+//   for (int i  = 0; i < **nGenPart; i++) {
 
-    if ( !(std::abs(GenPart_pdgId->At(i)) == 13) )
-      continue;
+//     if ( !(std::abs(GenPart_pdgId->At(i)) == 13) )
+//       continue;
 
-    TLorentzVector mu;
-    mu.SetPtEtaPhiM(GenPart_pt->At(i), GenPart_eta->At(i), GenPart_phi->At(i), GenPart_mass->At(i));
+//     TLorentzVector mu;
+//     mu.SetPtEtaPhiM(GenPart_pt->At(i), GenPart_eta->At(i), GenPart_phi->At(i), GenPart_mass->At(i));
 
-    EMU_MUON mu_std = EMU_MUON(mu, mu, (-1) * (GenPart_pdgId->At(i) / std::abs(GenPart_pdgId->At(i))));
-    fFVecGenMuons.push_back(mu_std);
-  }
+//     EMU_MUON mu_std = EMU_MUON(mu, mu, (-1) * (GenPart_pdgId->At(i) / std::abs(GenPart_pdgId->At(i))));
+//     fFVecGenMuons.push_back(mu_std);
+//   }
 
-  std::sort(fFVecGenMuons.begin(), fFVecGenMuons.end(), [](const EMU_MUON &lhs, const EMU_MUON &rhs) {
-    return lhs.fVec.Pt() > rhs.fVec.Pt();
-  });
-}
+//   std::sort(fFVecGenMuons.begin(), fFVecGenMuons.end(), [](const EMU_MUON &lhs, const EMU_MUON &rhs) {
+//     return lhs.fVec.Pt() > rhs.fVec.Pt();
+//   });
+// }
 
 TLorentzVector EMU::GetMuonMCSmearing (TLorentzVector fMu) {
 
