@@ -43,12 +43,12 @@ Correction:
   Trigger: true
   ElecReco: true
   ElecID: true
-  ElecMisCharge: true
+  ElecMisCharge: false
   PileUp: true
   L1PreFiring: true
   JetPU: true
   BTag: true
-  TopPtReweighing: true
+  TopPtReweighing: false
 
 Efficiency:
   Reco:

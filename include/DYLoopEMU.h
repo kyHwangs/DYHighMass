@@ -20,6 +20,7 @@
 #include "TChain.h"
 #include "TLorentzVector.h"
 #include "TH1.h"
+#include "TH2.h"
 
 #include "correction.h"
 
@@ -67,6 +68,14 @@ public:
     fDoElecID = false;
     fDoElecID = fConfig["Correction"]["ElecID"].as<bool>();
     fElecID_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["ElecID"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["ElecID"]["Name"].as<std::string>());
+
+    fDoElecMisCharge = false;
+    fDoElecMisCharge = fConfig["Correction"]["ElecMisCharge"].as<bool>();
+    fElecMisCharge_SF = (TH2D*)TFile::Open((TString)(fConfig["Efficiency"]["ElecMisCharge"]["Path"].as<std::string>()))->Get("cfsf");
+    if (!fElecMisCharge_SF)
+      throw std::runtime_error("Histogram 'cfsf' not found!");
+
+    fElecMisCharge_SF->SetDirectory(0);
 
     fDoPU = false;
     fDoPU = fConfig["Correction"]["PileUp"].as<bool>();
@@ -130,6 +139,8 @@ public:
     std::cout << "             " << fDoElecReco << " " << fConfig["Efficiency"]["ElecReco"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoElecID: " << fDoElecID << " " << fConfig["Efficiency"]["ElecID"]["Path"].as<std::string>() << std::endl;
     std::cout << "            " << fDoElecID << " " << fConfig["Efficiency"]["ElecID"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoElecMisCharge: " << fDoElecMisCharge << std::endl;
+    std::cout << "                   " << fConfig["Efficiency"]["ElecMisCharge"]["Path"].as<std::string>() << std::endl;
     std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
     std::cout << "          " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
     std::cout << " fDoL1Pre: " << fDoL1Pre << " " << std::endl;
@@ -189,6 +200,7 @@ private:
   std::shared_ptr<const correction::Correction> fTRIG_SF;
   std::shared_ptr<const correction::Correction> fElecReco_SF;
   std::shared_ptr<const correction::Correction> fElecID_SF;
+  TH2D* fElecMisCharge_SF;
 
   bool fDoReco;
   bool fDoID;
@@ -196,6 +208,7 @@ private:
   bool fDoTRIGG;
   bool fDoElecReco;
   bool fDoElecID;
+  bool fDoElecMisCharge;
   bool fDoPU;
   bool fDoL1Pre;
   bool fDoJetPUID;

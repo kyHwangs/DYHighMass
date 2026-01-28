@@ -62,6 +62,11 @@ void HistoSetEMU::Init() {
       SetHisto("h_ElecEta" + tHistSuffix);
       SetHisto("h_ElecPhi" + tHistSuffix);
 
+      SetHisto("h_ElecRecoGen_SameSign_DeltaR" + tHistSuffix, std::vector<double>{-9999, 100, 0, 4});
+      SetHisto("h_ElecRecoGen_OppositeSign_DeltaR" + tHistSuffix, std::vector<double>{-9999, 100, 0, 4});
+      SetHisto("h_ElecRecoGen_SameSign_RelPt" + tHistSuffix, std::vector<double>{-9999, 100, 0, 2});
+      SetHisto("h_ElecRecoGen_OppositeSign_RelPt" + tHistSuffix, std::vector<double>{-9999, 100, 0, 2});
+
       SetHisto("h_MuonPt" + tHistSuffix);
       SetHisto("h_MuonEta" + tHistSuffix);
       SetHisto("h_MuonPhi" + tHistSuffix);
@@ -85,6 +90,60 @@ void HistoSetEMU::Init() {
 
   std::cout << "######################################################################" << std::endl;
   std::cout << " " << std::endl;
+}
+
+void HistoSetEMU::FillHistoSet(std::string name, double mass, int nJet, int nBJet, double value, double weight) {
+
+  std::string tMassSuffix = GetMassBin(SetMassOverflow(mass));
+  std::string tJetSuffix = GetJetBin(nJet);
+  std::string tBJetSuffix = GetBJetBin(nBJet);
+  std::string tbVetoJetSuffix = GetbVetoJetBin(nJet);
+
+  std::vector<std::string> tHistSuffix;
+  if (nBJet == 0) tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix, tbVetoJetSuffix, tbVetoJetSuffix + tMassSuffix};
+  else tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix};
+  
+  for (auto suffix : tHistSuffix) {
+    if (!(fHistSet.find(name + suffix) == fHistSet.end())) {
+      fHistSet[name + suffix]->Fill(value, weight);
+    }
+  }
+}
+
+void HistoSetEMU::FillHistoSet(std::string name, double mass, int nJet, int nBJet, float value, double weight) {
+
+  std::string tMassSuffix = GetMassBin(SetMassOverflow(mass));
+  std::string tJetSuffix = GetJetBin(nJet);
+  std::string tBJetSuffix = GetBJetBin(nBJet);
+  std::string tbVetoJetSuffix = GetbVetoJetBin(nJet);
+
+  std::vector<std::string> tHistSuffix;
+  if (nBJet == 0) tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix, tbVetoJetSuffix, tbVetoJetSuffix + tMassSuffix};
+  else tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix};
+  
+  for (auto suffix : tHistSuffix) {
+    if (!(fHistSet.find(name + suffix) == fHistSet.end())) {
+      fHistSet[name + suffix]->Fill(value, weight);
+    }
+  }
+}
+
+void HistoSetEMU::FillHistoSet(std::string name, double mass, int nJet, int nBJet, int value, double weight) {
+
+  std::string tMassSuffix = GetMassBin(SetMassOverflow(mass));
+  std::string tJetSuffix = GetJetBin(nJet);
+  std::string tBJetSuffix = GetBJetBin(nBJet);
+  std::string tbVetoJetSuffix = GetbVetoJetBin(nJet);
+
+  std::vector<std::string> tHistSuffix;
+  if (nBJet == 0) tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix, tbVetoJetSuffix, tbVetoJetSuffix + tMassSuffix};
+  else tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix};
+  
+  for (auto suffix : tHistSuffix) {
+    if (!(fHistSet.find(name + suffix) == fHistSet.end())) {
+      fHistSet[name + suffix]->Fill(value, weight);
+    }
+  }
 }
 
 void HistoSetEMU::FillHisto(std::string name, double value, double weight) {
@@ -395,6 +454,11 @@ void HistoSetEMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputD
     fHistSet["h_BJetPt" + tSuffix]->Write();
     fHistSet["h_BJetEta" + tSuffix]->Write();
     fHistSet["h_BJetPhi" + tSuffix]->Write();
+
+    fHistSet["h_ElecRecoGen_SameSign_DeltaR" + tSuffix]->Write();
+    fHistSet["h_ElecRecoGen_OppositeSign_DeltaR" + tSuffix]->Write();
+    fHistSet["h_ElecRecoGen_SameSign_RelPt" + tSuffix]->Write();
+    fHistSet["h_ElecRecoGen_OppositeSign_RelPt" + tSuffix]->Write();
   }
 
   if (fIsData) {
@@ -440,6 +504,11 @@ void HistoSetEMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputD
       fHistSet["h_BJetPt" + tSuffix]->Write();
       fHistSet["h_BJetEta" + tSuffix]->Write();
       fHistSet["h_BJetPhi" + tSuffix]->Write();
+      
+      fHistSet["h_ElecRecoGen_SameSign_DeltaR" + tSuffix]->Write();
+      fHistSet["h_ElecRecoGen_OppositeSign_DeltaR" + tSuffix]->Write();
+      fHistSet["h_ElecRecoGen_SameSign_RelPt" + tSuffix]->Write();
+      fHistSet["h_ElecRecoGen_OppositeSign_RelPt" + tSuffix]->Write();
     }
   }
 

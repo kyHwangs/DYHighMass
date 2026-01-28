@@ -1,16 +1,20 @@
 Info:
   Era: 2018
-  Channel: EMU
+  Channel: MUMU
 
 Z:
   MassCut: 200
 
 Muon:
-  Pt: 52
+  LeadingMuonPt: 52
+  SubLeadingMuonPt: 15
   Eta: 2.4
   ID: global
-  ISOinverted: false
   ISO: 0.1
+  ISOinverted: false
+  Charge: opposite
+  doRoccoR: false
+  RoccoR: ../../RoccoR/RoccoR2018UL.txt
   doMCSmearing: true
   MCSmearing:
     barrel:
@@ -19,14 +23,6 @@ Muon:
     endcap:
       smearing: 0.46
       sigma: 0.0136 + 5.47e-5 * x -2.3e-8 * x^2 + 4.66e-12 * x^3
-
-Electron:
-  Pt: 20
-  Eta: 2.5
-  IDinverted: false
-
-Pair:
-  Charge: same
 
 Jet:
   Pt: 30
@@ -41,14 +37,11 @@ Correction:
   ID: true
   ISO: true
   Trigger: true
-  ElecReco: true
-  ElecID: true
-  ElecMisCharge: true
   PileUp: true
   L1PreFiring: true
   JetPU: true
   BTag: true
-  TopPtReweighing: true
+  TopPtReweighing: false
 
 Efficiency:
   Reco:
@@ -62,15 +55,8 @@ Efficiency:
     Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
   Trigger:
     Path: ../../correctionlib/muon/high/2018/ScaleFactors_Muon_highPt_HLT_2018_schemaV2.json
-    Name: NUM_HLT_DEN_HighPtLooseRelIsoProbes
-  ElecReco:
-    Path: ../../correctionlib/electron/reco/EGM_2018.json
-    Name: UL-Electron-ID-SF
-  ElecID:
-    Path: ../../correctionlib/electron/Run2UL_ID.json
-    Name: UL-Electron-ID-SF
-  ElecMisCharge:
-    Path: ../../EfficiencyTable/elec/ChargeMisId/CFRate2018.root
+    Data: NUM_HLT_DEN_HighPtLooseRelIsoProbes_DATAeff
+    MC: NUM_HLT_DEN_HighPtLooseRelIsoProbes_MCeff
   JetPU:
     Path: ../../EfficiencyTable/JetPUID/2018_L.csv
   BTag:

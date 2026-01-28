@@ -34,6 +34,11 @@ public:
   void FillHisto(std::string name, double value, double weight = 1.);
   void FillHisto(std::string name, float value, double weight = 1.);
   void FillHisto(std::string name, int value, double weight = 1.);
+
+  void FillHistoSet(std::string name, double mass, int nJet, int nBJet, double value, double weight = 1.);
+  void FillHistoSet(std::string name, double mass, int nJet, int nBJet, float value, double weight = 1.);
+  void FillHistoSet(std::string name, double mass, int nJet, int nBJet, int value, double weight = 1.);
+
   void Fill2DHisto(std::string name, double value1, double value2, double weight = 1.) {}
 
   void SetHisto(std::string name, std::vector<double> bins);

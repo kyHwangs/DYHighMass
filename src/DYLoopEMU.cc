@@ -241,6 +241,70 @@ void DYLoopEMU::Loop() {
 
       if (tFVecElec.Pt() < 20.) tElecIDEffSFElec = 0;
       else                      tElecIDEffSFElec = fElecID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSCEtaElec)});
+
+      tEventGenWeight *= tElecIDEffSFElec;
+    }
+
+
+    // Get gen-lv electrons (status == 1, abs(pdgId) == 11)
+    bool tRecoGenMatched = false;
+    bool tMisIdAssigned = false;
+    double tMatchedDeltaR = 9999;
+    double tMatchedRelPt = 9999;
+
+    auto tGenElecs = fNtuples->GetGenPart(11, 1);
+    if (fIsMC && fDoElecMisCharge && tGenElecs.size() > 0) {
+      tRecoGenMatched = true;
+      int tRecoCharge = tElec.fCharge;
+
+      // Find the closest gen-lv electron
+      int tMacthedIndex = -1;
+      float tDeltaRmin = 9999;
+      for (int i = 0; i < tGenElecs.size(); i++) {
+        auto tGenElecVec = tGenElecs.at(i).second;
+        float tDeltaR = tFVecElec.DeltaR(tGenElecVec);
+
+        if (tDeltaR < tDeltaRmin) {
+          tDeltaRmin = tDeltaR;
+          tMacthedIndex = i;
+        }
+      }
+
+      tMatchedDeltaR = tDeltaRmin;
+      tMatchedRelPt = tGenElecs.at(tMacthedIndex).second.Pt() / tFVecElec.Pt();
+
+      // If the reco and gen charges are opposite, apply mischarge correction
+      if (tRecoCharge * tGenElecs.at(tMacthedIndex).first < 0) {
+        tMisIdAssigned = true;
+        int tBinIndexX = fElecMisCharge_SF->GetXaxis()->FindBin(std::abs(tFVecElec.Eta()));
+        if (tBinIndexX == 0) tBinIndexX = 1;
+        else if (tBinIndexX > fElecMisCharge_SF->GetNbinsX()) tBinIndexX = fElecMisCharge_SF->GetNbinsX();
+    
+        int tBinIndexY = fElecMisCharge_SF->GetYaxis()->FindBin(tFVecElec.Pt());
+        if (tBinIndexY == 0) tBinIndexY = 1;
+        else if (tBinIndexY > fElecMisCharge_SF->GetNbinsY()) tBinIndexY = fElecMisCharge_SF->GetNbinsY();
+    
+        double tElecMisChargeSFWeight = fElecMisCharge_SF->GetBinContent(tBinIndexX, tBinIndexY);
+        tEventGenWeight *= tElecMisChargeSFWeight;
+
+        // std::cout << "######################################################################" << std::endl;
+        // std::cout << "                      Elec Charge Mis-Id debugging                    " << std::endl;
+        // std::cout << "----------------------------------------------------------------------" << std::endl;
+        // std::cout << " Reco elec: " << tFVecElec.Pt() << " " << tFVecElec.Eta() << " " << tRecoCharge << std::endl;
+        // std::cout << " Selected gen elec: " << tGenElecs.at(tMacthedIndex).second.Pt() << " " << tGenElecs.at(tMacthedIndex).second.Eta() << " " << tGenElecs.at(tMacthedIndex).first << std::endl;
+
+        // std::cout << "tEventGenWeight before: " << tEventGenWeight / tElecMisChargeSFWeight << std::endl;
+        // std::cout << "tElecMisChargeSFWeight: " << tElecMisChargeSFWeight << std::endl;
+        // std::cout << "tEventGenWeight after: " << tEventGenWeight << std::endl;
+
+        // std::cout << " Gen elec: " << std::endl;
+        // for (int i = 0; i < tGenElecs.size(); i++) {
+        //   auto tGenElecVec = tGenElecs.at(i).second;
+        //   std::cout << tGenElecVec.Pt() << " " << tGenElecVec.Eta() << " " << tFVecElec.DeltaR(tGenElecVec) << " " << tGenElecs.at(i).first << std::endl;
+        // }
+        // std::cout << "######################################################################" << std::endl;
+        // std::cout << " " << std::endl;
+      }
     }
 
     if (fIsMC && fDoJetPUID) {
@@ -253,6 +317,16 @@ void DYLoopEMU::Loop() {
     }
 
     tTotalGenWeight += tEventGenWeight;
+
+    if (tRecoGenMatched) {
+      if (!tMisIdAssigned) {
+        fHistoSet->FillHistoSet("h_ElecRecoGen_SameSign_DeltaR", tEMuPair.M(), nJets, nBJets, tMatchedDeltaR, tEventGenWeight);
+        fHistoSet->FillHistoSet("h_ElecRecoGen_SameSign_RelPt", tEMuPair.M(), nJets, nBJets, tMatchedRelPt, tEventGenWeight);
+      } else {
+        fHistoSet->FillHistoSet("h_ElecRecoGen_OppositeSign_DeltaR", tEMuPair.M(), nJets, nBJets, tMatchedDeltaR, tEventGenWeight);
+        fHistoSet->FillHistoSet("h_ElecRecoGen_OppositeSign_RelPt", tEMuPair.M(), nJets, nBJets, tMatchedRelPt, tEventGenWeight);
+      }
+    }
 
     fHistoSet->FillHisto((std::string)"h_nPVGood_Count", **(fNtuples->PV_npvsGood), tEventGenWeight);
     fHistoSet->FillEMUPair(tFVecMuon, tFVecElec, nJets, nBJets, tEventGenWeight);

@@ -212,7 +212,7 @@ private:
   std::vector<EMU_MUON> fFVecGenMuons;
   
   std::vector<EMU_ELEC> fFVecElecs;
-  std::vector<EMU_ELEC> fFecGenElecs;
+  std::vector<EMU_ELEC> fFvecGenElecs;
   
   int fSelectedMuonIdx;
   int fSelectedElecIdx;

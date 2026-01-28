@@ -9,7 +9,7 @@ Muon:
   Pt: 52
   Eta: 2.4
   ID: global
-  ISOinverted: true
+  ISOinverted: false
   ISO: 0.1
   doMCSmearing: true
   MCSmearing:
@@ -23,10 +23,10 @@ Muon:
 Electron:
   Pt: 20
   Eta: 2.5
-  IDinverted: true
+  IDinverted: false
 
 Pair:
-  Charge: same
+  Charge: opposite
 
 Jet:
   Pt: 30
@@ -43,12 +43,12 @@ Correction:
   Trigger: true
   ElecReco: true
   ElecID: true
-  ElecMisCharge: true
+  ElecMisCharge: false
   PileUp: true
   L1PreFiring: true
   JetPU: true
   BTag: true
-  TopPtReweighing: true
+  TopPtReweighing: false
 
 Efficiency:
   Reco:
