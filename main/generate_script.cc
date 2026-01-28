@@ -457,6 +457,10 @@ int main(int argc, char* argv[]) {
   std::string fChannelTemp = fChannel;
   if (fChannelTemp == "EMU") fChannelTemp = "MUMU";
 
+  std::string fSuffix = "";
+  fOpt->GetVariable("suffix", &fSuffix);
+  if (fSuffix == "null") fSuffix = "";
+  else fSuffix = "/" + fSuffix;
 
   const char* fWorkspaceBatch = getenv("DY_HIGHMASS_WORKSPACE_BATCH");
   if (fWorkspaceBatch == nullptr) {
@@ -602,7 +606,7 @@ eval "$@"
         int nList = fConfig[fEraVec[i]][fSampleMap[k]]["nList"].as<int>();
         for (int l = 0; l < nList; l++) {
           
-          fJobList += R"(../../config/)" + fChannel + R"(/UL)" + fEraVec[i] + R"(.yml )" + fEraVec[i] + R"( )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + "\n";
+          fJobList += R"(../../config/)" + fChannel + fSuffix + R"(/UL)" + fEraVec[i] + R"(.yml )" + fEraVec[i] + R"( )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + "\n";
         }
       }
     }

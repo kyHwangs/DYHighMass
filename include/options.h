@@ -65,6 +65,11 @@ public:
         AddVariable("input", (TString)(fArgv[i]));
       }
 
+      if (fArgv[i] == "--suffix") {
+        i++;
+        AddVariable("suffix", (std::string)(fArgv[i]));
+      }
+
       if (fArgv[i] == "--channel") {
         i++;
         AddVariable("channel", (std::string)(fArgv[i]));
