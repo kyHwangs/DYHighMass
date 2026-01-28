@@ -111,7 +111,33 @@ public:
      return fMaxEventVec;
   }
 
+  /**
+    * \brief Reweighing the event weight regarding gen-lv top pT
+    *
+    * Gen-lv top has status == 22 and abs(pdgId) == 6. And there mother index should be 0.
+    * 
+    * If enabled in the configuratio file, the reweighing factor is calculated
+    * as sqrt(SF(pT_1) * SF(pT_2)), where SF(pT) is exp(0.0416 - 0.0003 * pT).
+    *
+    * It is the user responsibility to load them. 
+    *
+    * \param none no parameters reqruies for this function
+    *
+    * \throws No exception is thrown for this function
+    */
   double GetGenTopPtReweightFactor();
+
+  /**
+    * \brief Gethering gen-lv particles with given pdgId and status
+    * 
+    * Mostly, this function is used for electron charge mis-id correction.
+    *
+    * \param tID pdg id in absolute value (e.g. 11 for electron and positron)
+    * \param tStatus status of the particle (e.g. 1 for stable final state particle)
+    *
+    * \throws TTbar should have 2 gen tops, if not, throw an exception
+    */
+  std::vector<std::pair<int, TLorentzVector>> GetGenPart(int tID, int tStatus);
 
   void SetMC() { fIsMC = true; }
 

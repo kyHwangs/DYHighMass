@@ -35,6 +35,21 @@ bool NT::PassinNoiseFilter() {
   return false;
 }
 
+std::vector<std::pair<int, TLorentzVector>> NT::GetGenPart(int tID, int tStatus) {
+  std::vector<std::pair<int, TLorentzVector>> returnVec = {};
+
+  for (int i = 0; i < **nGenPart; i++) {
+    if (std::abs(std::abs(GenPart_pdgId->At(i))) == tID && GenPart_status->At(i) == tStatus) {
+      TLorentzVector tTmpVec;
+      tTmpVec.SetPtEtaPhiM(GenPart_pt->At(i), GenPart_eta->At(i), GenPart_phi->At(i), GenPart_mass->At(i));
+      int tCharge = GenPart_pdgId->At(i) > 0 ? -1 : 1;
+      returnVec.push_back(std::make_pair(tCharge, tTmpVec));
+    }
+  }
+
+  return returnVec;
+}
+
 double NT::GetGenTopPtReweightFactor() {
 
   std::vector<TLorentzVector> tGenTopVec = {};
@@ -68,7 +83,13 @@ double NT::GetGenTopPtReweightFactor() {
               << std::endl;
     
     }
-    return 1.;
+
+    throw std::runtime_error("NT::GetGenTopPtReweightFactor: Number of gen tops is not 2!");
+  }
+
+  for (int i = 0; i < tGenTopVec.size(); i++) {
+    if (tGenTopVec.at(i).Pt() >500) tGenTopPtReweightFactor *= fTopPtReweighter->Eval(500);
+    else tGenTopPtReweightFactor *= fTopPtReweighter->Eval(tGenTopVec.at(i).Pt());
   }
 
   return std::sqrt(tGenTopPtReweightFactor);
