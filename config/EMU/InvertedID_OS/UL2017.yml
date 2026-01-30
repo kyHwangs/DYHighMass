@@ -9,7 +9,7 @@ Muon:
   Pt: 52
   Eta: 2.4
   ID: global
-  ISOinverted: false
+  ISOinverted: true
   ISO: 0.1
   doMCSmearing: true
   MCSmearing:
@@ -23,7 +23,7 @@ Muon:
 Electron:
   Pt: 20
   Eta: 2.5
-  IDinverted: false
+  IDinverted: true
 
 Pair:
   Charge: opposite

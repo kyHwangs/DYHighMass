@@ -79,9 +79,6 @@ void DYLoopMUMU::Loop() {
 
     double tEventGenWeight = 1.;
 
-    if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
-      tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
-
     if (fIsMC) {
       tEventGenWeight = **(fNtuples->genWeight);
 
@@ -92,6 +89,9 @@ void DYLoopMUMU::Loop() {
 
       fHistoSet->FillHisto((std::string)"h_GenWeight", tEventGenWeight, 1.);
     }
+
+    if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
+      tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
 
     if (fIsMC && fSampleName.Contains("NNLO")) {
       auto tLHEMuons = fNtuples->GetLHE(13);

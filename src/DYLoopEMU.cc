@@ -73,9 +73,6 @@ void DYLoopEMU::Loop() {
     }
 
     double tEventGenWeight = 1.;
-    
-    if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
-      tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
 
     if (fIsMC) {
       tEventGenWeight = **(fNtuples->genWeight);
@@ -87,6 +84,9 @@ void DYLoopEMU::Loop() {
 
       fHistoSet->FillHisto((std::string)"h_GenWeight", tEventGenWeight, 1.);
     }
+
+    if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
+      tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
 
     if (fIsMC && fSampleName.Contains("NNLO")) {
       auto tLHEMuons = fNtuples->GetLHE(13);
@@ -252,7 +252,8 @@ void DYLoopEMU::Loop() {
     double tMatchedDeltaR = 9999;
     double tMatchedRelPt = 9999;
 
-    auto tGenElecs = fNtuples->GetGenPart(11, 1);
+    std::vector<std::pair<int, TLorentzVector>> tGenElecs = {};
+    if (fIsMC) tGenElecs = fNtuples->GetGenPart(11, 1);
     if (fIsMC && fDoElecMisCharge && tGenElecs.size() > 0) {
       tRecoGenMatched = true;
       int tRecoCharge = tElec.fCharge;
