@@ -178,14 +178,16 @@ void DYLoopEE::Loop() {
       double tIDEffSFLeading = 0;
 
       if (tFVecLeadingElec.Pt() < 20.) tIDEffSFLeading = 0;
-      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tFVecLeadingElec.Eta())});
+      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tLeadingElec.SCEta())}); // HEEP ID
+      // else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", "Medium", tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // MediumID
 
       tEventGenWeight *= tIDEffSFLeading;
 
       double tIDEffSFSubleading = 0;
 
       if (tFVecSubLeadingElec.Pt() < 20.) tIDEffSFSubleading = 0;
-      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tFVecSubLeadingElec.Eta())});
+      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSubLeadingElec.SCEta())}); // HEEP ID
+      // else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", "Medium", tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // MediumID
 
       tEventGenWeight *= tIDEffSFSubleading;
 
