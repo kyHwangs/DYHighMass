@@ -119,8 +119,8 @@ void DYLoopEE::Loop() {
       tEventGenWeight *= **(fNtuples->L1PreFiringWeight_Nom);
     }
 
-    if ( !(fNtuples->PassinNoiseFilter()) )
-      continue;
+    // if ( !(fNtuples->PassinNoiseFilter()) )
+    //   continue;
 
     if ( !(fNtuples->PassingTrigger()) )
       continue;
@@ -152,7 +152,7 @@ void DYLoopEE::Loop() {
       double tRecoEffSFLeading = 0;
 
       if (tFVecLeadingElec.Pt() < 20.) tRecoEffSFLeading = 0;
-      else                             tRecoEffSFLeading = fReco_SF->evaluate({(std::string)(fEra), "sf", "RecoAbove20", tFVecLeadingElec.Eta(), tFVecLeadingElec.Pt()});
+      else                             tRecoEffSFLeading = fReco_SF->evaluate({(std::string)(fEra), "sf", "RecoAbove20", tLeadingElec.SCEta(), tFVecLeadingElec.Pt()});
 
       tEventGenWeight *= tRecoEffSFLeading;
 
@@ -160,7 +160,7 @@ void DYLoopEE::Loop() {
       double tRecoEffSFSubleading = 0;
 
       if (tFVecSubLeadingElec.Pt() < 20.) tRecoEffSFSubleading = 0;
-      else                                tRecoEffSFSubleading = fReco_SF->evaluate({(std::string)(fEra), "sf", "RecoAbove20", tFVecSubLeadingElec.Eta(), tFVecSubLeadingElec.Pt()});
+      else                                tRecoEffSFSubleading = fReco_SF->evaluate({(std::string)(fEra), "sf", "RecoAbove20", tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()});
 
       tEventGenWeight *= tRecoEffSFSubleading;
 

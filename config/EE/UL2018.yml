@@ -3,14 +3,14 @@ Info:
   Channel: EE
 
 Z:
-  MassCut: 40
+  MassCut: 200
 
 Electron:
   LeadingPt: 50
-  SubLeadingPt: 20
+  SubLeadingPt: 38
   Eta: 2.5
   Charge: opposite
-
+  
 Jet:
   Pt: 30
   Eta: 2.4
