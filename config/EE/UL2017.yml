@@ -28,6 +28,7 @@ Correction:
   L1PreFiring: true
   JetPU: true
   BTag: true
+  TopPtReweighing: true
 
 Efficiency:
   Reco:

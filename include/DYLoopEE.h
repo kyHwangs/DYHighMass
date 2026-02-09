@@ -79,6 +79,9 @@ public:
     fDoBTag = false;
     fDoBTag = fConfig["Correction"]["BTag"].as<bool>();
 
+    fDoTopPtReweighing = false;
+    fDoTopPtReweighing = fConfig["Correction"]["TopPtReweighing"].as<bool>();
+
     Print();
 
     fHistoSet = new HistoSetEE(); 
@@ -127,6 +130,7 @@ public:
     std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["bQuark"].as<std::string>() << std::endl;
     std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["cQuark"].as<std::string>() << std::endl;
     std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["lQuark"].as<std::string>() << std::endl;
+    std::cout << " fDoTopPtReweighing: " << fDoTopPtReweighing << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
   }
@@ -184,6 +188,7 @@ private:
   bool fDoL1Pre;
   bool fDoJetPUID;
   bool fDoBTag;
+  bool fDoTopPtReweighing;
 
   NT* fNtuples;
   YAML::Node fConfig;

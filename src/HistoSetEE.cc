@@ -12,10 +12,6 @@ void HistoSetEE::Init() {
   fSuffix.clear();
 
   SetHisto("h_EventInfo", std::vector<double>{-9999, 5, 0.5, 5.5});
-  // Gen-level acceptance counters (dielectron, OS, pT/eta cuts)
-  // bin1: denom (raw count), bin2: numer (raw count)
-  // bin3: denom (sum genWeight), bin4: numer (sum genWeight)
-  SetHisto("h_GenAcc", std::vector<double>{-9999, 4, 0.5, 4.5});
   SetHisto("h_GenWeight", std::vector<double>{-9999, 20000, -10000., 10000.});
   SetHisto("h_LHEDielecMass", std::vector<double>{-9999, 6000, 0., 6000.});
   SetHisto("h_LHEnElec", std::vector<double>{-9999, 10, 0., 10.});
