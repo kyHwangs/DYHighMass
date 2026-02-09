@@ -56,6 +56,14 @@ public:
     fDoTRIGG = fConfig["Correction"]["Trigger"].as<bool>();
     fTRIG_SF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>())->at(fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>());
 
+    fDoElecMisCharge = false;
+    fDoElecMisCharge = fConfig["Correction"]["ElecMisCharge"].as<bool>();
+    fElecMisCharge_SF = (TH2D*)TFile::Open((TString)(fConfig["Efficiency"]["ElecMisCharge"]["Path"].as<std::string>()))->Get("cfsf");
+    if (!fElecMisCharge_SF)
+      throw std::runtime_error("Histogram 'cfsf' not found!");
+
+    fElecMisCharge_SF->SetDirectory(0);
+
     fDoPU = false;
     fDoPU = fConfig["Correction"]["PileUp"].as<bool>();
     fPuReweighting = new LumiReWeighting(
@@ -109,6 +117,8 @@ public:
     std::cout << "        " << fDoID << " " << fConfig["Efficiency"]["ID"]["Name"].as<std::string>() << std::endl;
     std::cout << " fDoTRIGG: " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Path"].as<std::string>() << std::endl;
     std::cout << "           " << fDoTRIGG << " " << fConfig["Efficiency"]["Trigger"]["Name"].as<std::string>() << std::endl;
+    std::cout << " fDoElecMisCharge: " << fDoElecMisCharge << std::endl;
+    std::cout << "                   " << fConfig["Efficiency"]["ElecMisCharge"]["Path"].as<std::string>() << std::endl;
     std::cout << " fDoPU: " << fDoPU << " " << fConfig["Pileup"]["Data"].as<std::string>() << std::endl;
     std::cout << "          " << fConfig["Pileup"]["MC"].as<std::string>() << std::endl;
     std::cout << " fDoL1Pre: " << fDoL1Pre << " " << std::endl;
@@ -164,10 +174,12 @@ private:
   std::shared_ptr<const correction::Correction> fReco_SF;
   std::shared_ptr<const correction::Correction> fID_SF;
   std::shared_ptr<const correction::Correction> fTRIG_SF;
+  TH2D* fElecMisCharge_SF;
 
   bool fDoReco;
   bool fDoID;
   bool fDoTRIGG;
+  bool fDoElecMisCharge;
   bool fDoPU;
   bool fDoL1Pre;
   bool fDoJetPUID;

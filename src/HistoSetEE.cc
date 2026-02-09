@@ -12,6 +12,10 @@ void HistoSetEE::Init() {
   fSuffix.clear();
 
   SetHisto("h_EventInfo", std::vector<double>{-9999, 5, 0.5, 5.5});
+  // Gen-level acceptance counters (dielectron, OS, pT/eta cuts)
+  // bin1: denom (raw count), bin2: numer (raw count)
+  // bin3: denom (sum genWeight), bin4: numer (sum genWeight)
+  SetHisto("h_GenAcc", std::vector<double>{-9999, 4, 0.5, 4.5});
   SetHisto("h_GenWeight", std::vector<double>{-9999, 20000, -10000., 10000.});
   SetHisto("h_LHEDielecMass", std::vector<double>{-9999, 6000, 0., 6000.});
   SetHisto("h_LHEnElec", std::vector<double>{-9999, 10, 0., 10.});
@@ -33,9 +37,19 @@ void HistoSetEE::Init() {
 
   fEtaBins = {-9999, 60, -3., 3.};
   fPhiBins = {-9999, 60, -3.141593, 3.141593};
-  fMassBins = {199, 200,  220,  243, 273, 320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4001};
+  // fMassBins = {199, 200,  220,  243, 273, 320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4001};
+  fMassBins = {39, 40, 45, 50, 55, 60, 64, 68, 72, 76, 81, 86, 91, 96, 101, 106, 110, 115, 120, 126, 133, 141, 150, 160, 171, 185, 200, 220, 243, 273, 320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4001};
   fDeltaRBins = {-9999, 100, 0.0, 6.0};
   fNJetBins = {-9999, 20, 0, 20};
+
+  // Global histograms for reco–gen matching / mis-id studies (lepton-based, vs dielectron mass)
+  SetHisto("h_RecoGenDeltaR"); // uses fDeltaRBins
+  SetHisto("h_ElecMatchedMass_ep");
+  SetHisto("h_ElecMatchedMass_em");
+  SetHisto("h_ElecFailedMatchMass_ep");
+  SetHisto("h_ElecFailedMatchMass_em");
+  SetHisto("h_ElecMisIdMass_ep");
+  SetHisto("h_ElecMisIdMass_em");
 
   std::vector<std::string> fAddonMass = {""};
   std::vector<std::string> fAddonJet = {"", "_0J", "_1J", "_mt1J", "_0BJ", "_1BJ", "_mt1BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"};
@@ -286,7 +300,8 @@ double HistoSetEE::SetPtOverflow(double fPt) {
   else return fPt;
 }
 double HistoSetEE::SetMassOverflow(double fMass) {
-  if (fMass < 200) return 199.5;
+  // if (fMass < 200) return 199.5;
+  if (fMass < 40) return 39.5;
   if (fMass >= 4000) return 4000.5;
   else return fMass;
 }
@@ -380,6 +395,13 @@ void HistoSetEE::WriteHisto(TString fEra, TString fSampleName, TString fOutputDi
   fHistSet["h_nPVGood_Count"]->Write();
   fHistSet["h_PileUp_Count_Interaction_before"]->Write();
   fHistSet["h_PileUp_Count_Interaction_after"]->Write();
+  fHistSet["h_RecoGenDeltaR"]->Write();
+  fHistSet["h_ElecMatchedMass_ep"]->Write();
+  fHistSet["h_ElecMatchedMass_em"]->Write();
+  fHistSet["h_ElecFailedMatchMass_ep"]->Write();
+  fHistSet["h_ElecFailedMatchMass_em"]->Write();
+  fHistSet["h_ElecMisIdMass_ep"]->Write();
+  fHistSet["h_ElecMisIdMass_em"]->Write();
 
   for (auto tSuffix : fSuffix) {
     if (tSuffix != "")
@@ -425,6 +447,13 @@ void HistoSetEE::WriteHisto(TString fEra, TString fSampleName, TString fOutputDi
     fHistSet["h_nPVGood_Count"]->Write();
     fHistSet["h_PileUp_Count_Interaction_before"]->Write();
     fHistSet["h_PileUp_Count_Interaction_after"]->Write();
+    fHistSet["h_RecoGenDeltaR"]->Write();
+    fHistSet["h_ElecMatchedMass_ep"]->Write();
+    fHistSet["h_ElecMatchedMass_em"]->Write();
+    fHistSet["h_ElecFailedMatchMass_ep"]->Write();
+    fHistSet["h_ElecFailedMatchMass_em"]->Write();
+    fHistSet["h_ElecMisIdMass_ep"]->Write();
+    fHistSet["h_ElecMisIdMass_em"]->Write();
 
     for (auto tSuffix : fSuffix) 
       if (tSuffix != "")

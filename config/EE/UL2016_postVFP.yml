@@ -3,11 +3,11 @@ Info:
   Channel: EE
 
 Z:
-  MassCut: 200
+  MassCut: 40
 
 Electron:
-  LeadingPt: 50
-  SubLeadingPt: 38
+  LeadingPt: 28
+  SubLeadingPt: 20
   Eta: 2.5
   Charge: opposite
 
@@ -23,6 +23,7 @@ Correction:
   Reco: true
   ID: true
   Trigger: false
+  ElecMisCharge: true
   PileUp: true
   L1PreFiring: true
   JetPU: true
@@ -38,6 +39,8 @@ Efficiency:
   Trigger:
     Path: ../../correctionlib/muon/medium/2016_postVFP.json
     Name: NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+  ElecMisCharge:
+    Path: ../../EfficiencyTable/elec/ChargeMisId/CFRate2016b.root
   JetPU:
     Path: ../../EfficiencyTable/JetPUID/2016_L.csv
   BTag:
