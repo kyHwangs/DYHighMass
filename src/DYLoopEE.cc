@@ -91,63 +91,10 @@ void DYLoopEE::Loop() {
     if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
       tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
 
-    // Gen-level acceptance
-    if (fIsMC) {
-      const double leadPtCut = fConfig["Electron"]["LeadingPt"].as<float>();
-      const double subPtCut  = fConfig["Electron"]["SubLeadingPt"].as<float>();
-      const double etaMax    = fConfig["Electron"]["Eta"].as<float>();
-
-      auto tGenElecs = fNtuples->GetGenPart(11, 1); // (charge, p4)
-      if (tGenElecs.size() >= 2) {
-        std::sort(tGenElecs.begin(), tGenElecs.end(),
-                  [](const auto& a, const auto& b) { return a.second.Pt() > b.second.Pt(); });
-
-        const int leadCharge = tGenElecs[0].first;
-        const auto& leadVec  = tGenElecs[0].second;
-
-        // Find highest-pT OS partner to define the gen dielectron pair/mass
-        int subIdx = -1;
-        for (size_t i = 1; i < tGenElecs.size(); ++i) {
-          if (tGenElecs[i].first * leadCharge < 0) { // opposite-sign
-            subIdx = static_cast<int>(i);
-            break; // already pT-sorted, so first OS is the highest-pT OS candidate
-          }
-        }
-
-        if (subIdx >= 0) {
-          const auto& subVec = tGenElecs[subIdx].second;
-
-          // Gen dielectron mass
-          double tGenDielecMass = (leadVec + subVec).M();
-          tGenDielecMass = fHistoSet->SetMassOverflow(tGenDielecMass);
-
-          // Denominator: weighted only
-          fHistoSet->FillHisto((std::string)"h_GenAcc_Denom", tGenDielecMass, tEventGenWeight);
-
-          // Numerator: apply pT/eta cuts on the same OS pair
-          const double leadAbsEta = std::abs(leadVec.Eta());
-          const double subAbsEta  = std::abs(subVec.Eta());
-          const bool passLead =
-            (leadVec.Pt() >= leadPtCut) &&
-            (leadAbsEta < etaMax) &&
-            !(leadAbsEta > 1.4442 && leadAbsEta < 1.566);
-          const bool passSub =
-            (subVec.Pt() >= subPtCut) &&
-            (subAbsEta < etaMax) &&
-            !(subAbsEta > 1.4442 && subAbsEta < 1.566);
-
-          if (passLead && passSub) {
-            fHistoSet->FillHisto((std::string)"h_GenAcc_Numer", tGenDielecMass, tEventGenWeight);
-          }
-        }
-      }
-    }
-
     if (fIsMC && fSampleName.Contains("NNLO")) {
       auto tLHEElecs = fNtuples->GetLHE(11);
 
       fHistoSet->FillHisto((std::string)"h_LHEnElec", static_cast<int>(tLHEElecs.size()));
-
 
       double tDiElecMassLHE = 0;
 
