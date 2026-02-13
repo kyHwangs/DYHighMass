@@ -57,7 +57,6 @@ void DYLoopEE::Loop() {
       auto tElapsed = tCurrentTime - tTimeBegin;
       double tProgressPercent = 100. * tMaxLoop / fMaxEntries;
       
-      // 총 예상 시간 계산: 현재 걸린 시간 * 100 / 진행률
       auto tEstimatedTotal = std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(
           tElapsed * (100.0 / tProgressPercent)
       );
@@ -266,6 +265,7 @@ void DYLoopEE::Loop() {
         if (dRlead < tBestDeltaR) { tBestDeltaR = dRlead; tBestIsLead = true;  tBestGenIndex = i; }
         if (dRsub  < tBestDeltaR) { tBestDeltaR = dRsub;  tBestIsLead = false; tBestGenIndex = i; }
       }
+
       if (tBestGenIndex != -1) {
         if (tBestIsLead) {
           tLeadMatchedIndex = tBestGenIndex;
@@ -286,6 +286,7 @@ void DYLoopEE::Loop() {
             double dR = tFVecSubLeadingElec.DeltaR(tGenElecs.at(i).second);
             if (dR < tBestSubDeltaR) { tBestSubDeltaR = dR; tBestSubIndex = i; }
           }
+
           tSubMatchedIndex = tBestSubIndex;
           tSubMatchedDeltaR = tBestSubDeltaR;
         } else if (tSubMatchedIndex != -1) {
@@ -311,21 +312,26 @@ void DYLoopEE::Loop() {
         int tBinIndexX = fElecMisCharge_SF->GetXaxis()->FindBin(std::abs(tLeadingElec.SCEta()));
         if (tBinIndexX == 0) tBinIndexX = 1;
         else if (tBinIndexX > fElecMisCharge_SF->GetNbinsX()) tBinIndexX = fElecMisCharge_SF->GetNbinsX();
+        
         int tBinIndexY = fElecMisCharge_SF->GetYaxis()->FindBin(tFVecLeadingElec.Pt());
         if (tBinIndexY == 0) tBinIndexY = 1;
         else if (tBinIndexY > fElecMisCharge_SF->GetNbinsY()) tBinIndexY = fElecMisCharge_SF->GetNbinsY();
+        
         if (tLeadingElec.fCharge * tGenElecs.at(tLeadMatchedIndex).first < 0) {
           double tElecMisChargeSFWeight = fElecMisCharge_SF->GetBinContent(tBinIndexX, tBinIndexY);
           tEventGenWeight *= tElecMisChargeSFWeight;
         }
       }
+
       if (tSubMatchedIndex != -1) {
         int tBinIndexX = fElecMisCharge_SF->GetXaxis()->FindBin(std::abs(tSubLeadingElec.SCEta()));
         if (tBinIndexX == 0) tBinIndexX = 1;
         else if (tBinIndexX > fElecMisCharge_SF->GetNbinsX()) tBinIndexX = fElecMisCharge_SF->GetNbinsX();
+        
         int tBinIndexY = fElecMisCharge_SF->GetYaxis()->FindBin(tFVecSubLeadingElec.Pt());
         if (tBinIndexY == 0) tBinIndexY = 1;
         else if (tBinIndexY > fElecMisCharge_SF->GetNbinsY()) tBinIndexY = fElecMisCharge_SF->GetNbinsY();
+        
         if (tSubLeadingElec.fCharge * tGenElecs.at(tSubMatchedIndex).first < 0) {
           double tElecMisChargeSFWeight = fElecMisCharge_SF->GetBinContent(tBinIndexX, tBinIndexY);
           tEventGenWeight *= tElecMisChargeSFWeight;

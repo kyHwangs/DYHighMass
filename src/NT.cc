@@ -50,6 +50,25 @@ std::vector<std::pair<int, TLorentzVector>> NT::GetGenPart(int tID, int tStatus)
   return returnVec;
 }
 
+std::vector<std::pair<int, TLorentzVector>> NT::GetGenDressedLepton(int tID) {
+  std::vector<std::pair<int, TLorentzVector>> returnVec = {};
+
+  for (int i = 0; i < **nGenDressedLepton; i++) {
+    if (std::abs(std::abs(GenDressedLepton_pdgId->At(i))) != tID)
+      continue;
+
+    // if (GenDressedLepton_hasTauAnc->At(i))
+    //   continue;
+
+    TLorentzVector tTmpVec;
+    tTmpVec.SetPtEtaPhiM(GenDressedLepton_pt->At(i), GenDressedLepton_eta->At(i), GenDressedLepton_phi->At(i), GenDressedLepton_mass->At(i));
+    int tCharge = GenDressedLepton_pdgId->At(i) > 0 ? -1 : 1;
+    returnVec.push_back(std::make_pair(tCharge, tTmpVec));
+  }
+
+  return returnVec;
+}
+
 double NT::GetGenTopPtReweightFactor() {
 
   std::vector<TLorentzVector> tGenTopVec = {};
