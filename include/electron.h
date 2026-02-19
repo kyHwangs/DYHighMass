@@ -72,6 +72,17 @@ public:
   std::vector<StdElec> GetElecs() { return fFVecElecs; }
   StdElec GetLeadingElec() { return fFVecElecs.at(fLeadingIdx); }
   StdElec GetSubLeadingElec() { return fFVecElecs.at(fSubLeadingIdx); }
+  int GetID() const { return fID; }
+  std::string GetIDWP() const {
+    // NanoAOD Electron_cutBased: 1(Veto), 2(Loose), 3(Medium), 4(Tight)
+    switch (fID) {
+      case 1: return "Veto";
+      case 2: return "Loose";
+      case 3: return "Medium";
+      case 4: return "Tight";
+      default: return "Medium";
+    }
+  }
 
   TTreeReaderValue<unsigned int>* nElectron;
   TTreeReaderArray<float>* Electron_pt;

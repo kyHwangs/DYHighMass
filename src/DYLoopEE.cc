@@ -178,11 +178,13 @@ void DYLoopEE::Loop() {
 
     if (fIsMC && fDoID) {
 
+      const std::string tElecIDWP = fElecs->GetIDWP();
+
       double tIDEffSFLeading = 0;
 
       if (tFVecLeadingElec.Pt() < 20.) tIDEffSFLeading = 0;
       // else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tLeadingElec.SCEta())}); // HEEP ID
-      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", "Medium", tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // MediumID
+      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // cutBased ID WP
 
       tEventGenWeight *= tIDEffSFLeading;
 
@@ -190,7 +192,7 @@ void DYLoopEE::Loop() {
 
       if (tFVecSubLeadingElec.Pt() < 20.) tIDEffSFSubleading = 0;
       // else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSubLeadingElec.SCEta())}); // HEEP ID
-      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", "Medium", tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // MediumID
+      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // cutBased ID WP
 
       tEventGenWeight *= tIDEffSFSubleading;
 
