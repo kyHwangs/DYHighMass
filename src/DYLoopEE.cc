@@ -181,16 +181,16 @@ void DYLoopEE::Loop() {
       double tIDEffSFLeading = 0;
 
       if (tFVecLeadingElec.Pt() < 20.) tIDEffSFLeading = 0;
-      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tLeadingElec.SCEta())}); // HEEP ID
-      // else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", "Medium", tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // MediumID
+      // else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tLeadingElec.SCEta())}); // HEEP ID
+      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", "Medium", tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // MediumID
 
       tEventGenWeight *= tIDEffSFLeading;
 
       double tIDEffSFSubleading = 0;
 
       if (tFVecSubLeadingElec.Pt() < 20.) tIDEffSFSubleading = 0;
-      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSubLeadingElec.SCEta())}); // HEEP ID
-      // else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", "Medium", tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // MediumID
+      // else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSubLeadingElec.SCEta())}); // HEEP ID
+      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", "Medium", tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // MediumID
 
       tEventGenWeight *= tIDEffSFSubleading;
 
@@ -303,9 +303,6 @@ void DYLoopEE::Loop() {
       } else {
         // Only one gen: whichever reco had the global best gets matched; the other stays unmatched
       }
-
-      if (tLeadMatchedIndex != -1) fHistoSet->FillHisto((std::string)"h_RecoGenDeltaR", tLeadMatchedDeltaR, tEventGenWeight);
-      if (tSubMatchedIndex  != -1) fHistoSet->FillHisto((std::string)"h_RecoGenDeltaR", tSubMatchedDeltaR,  tEventGenWeight);
 
       // Apply mis-charge SF to the matched reco electrons.
       if (tLeadMatchedIndex != -1) {

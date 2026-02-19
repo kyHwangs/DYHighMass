@@ -35,7 +35,9 @@ Efficiency:
     Path: ../../correctionlib/electron/reco/EGM_2017.json
     Name: UL-Electron-ID-SF
   ID:
-    Path: ../../correctionlib/electron/Run2UL_ID.json
+    # Path: ../../correctionlib/electron/Run2UL_ID.json
+    # Name: UL-Electron-ID-SF
+    Path: ../../correctionlib/electron/reco/EGM_2017.json
     Name: UL-Electron-ID-SF
   Trigger:
     Path: ../../correctionlib/muon/medium/2017.json
