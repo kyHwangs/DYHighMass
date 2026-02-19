@@ -210,9 +210,9 @@ normFactor = {}
 
 class Plotter:
     def __init__(self, era):
-        self.rootPath = "output.root"
+        self.rootPath = "./ROOT/260218/output.root"
         self.era = era
-        self.outputPath = "./plots/plot_" + era + "/"
+        self.outputPath = "./plots/260218/plot_" + era + "/"
 
         os.makedirs(self.outputPath, exist_ok=True)
 
@@ -300,10 +300,11 @@ class Plotter:
 
         if doAutoYrange:
             ymin = 2e-2
-            ymax = data.GetBinContent(data.GetMaximumBin()) * 1e3
+            ymax = data.GetBinContent(data.GetMaximumBin()) * 1e4
 
-        if "h_dielecMass" in histName: 
+        if "h_dielecMass" or "h_dielecPt" or "h_leadingElecPt" or "h_subleadingElecPt" in histName: 
             ymin = 2e-2
+            ymax = data.GetBinContent(data.GetMaximumBin()) * 1e3
 
         if doAutoYRatiorange:
             nBinsX = dataOmc.GetNbinsX()
@@ -543,7 +544,7 @@ def main(args):
         "_0J": -1,
         "_1J": -1,
         "_mtJ": -1,
-        "_0BJ": 1.15,
+        "_0BJ": 1.2,
         "_1BJ": -1,
         "_mt1BJ": -1,
         "_bVeto_0J": 1.3,
@@ -556,7 +557,7 @@ def main(args):
         "_0J": -1,
         "_1J": -1,
         "_mt1J": -1,
-        "_0BJ": 0.85,
+        "_0BJ": 0.8,
         "_1BJ": -1,
         "_mt1BJ": -1,
         "_bVeto_0J": 0.7,
@@ -583,7 +584,7 @@ def main(args):
 
     latex = [
         args.era + ", dielectron channel",
-        "p_{T}(e) > 50 (20) GeV, |#eta(e)| < 2.4",
+        "p_{T}(e) > 28 (20) GeV, |#eta^{SC}(e)| < 2.5",
         "",
         "",
     ]
@@ -609,21 +610,21 @@ def main(args):
             plotter.Plot("h_BJetEta", case, massbin               , latex_temp, xTitle = "#eta(b-jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
             plotter.Plot("h_BJetPhi", case, massbin               , latex_temp, xTitle = "#phi(b-jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-            plotter.Plot("h_LeadingElecPt", case, massbin         , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_LeadingElecEta", case, massbin        , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            plotter.Plot("h_LeadingElecPhi", case, massbin        , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            plotter.Plot("h_LeadingElecPt", case, massbin         , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 0, xmax = 500, yrmin = 0.5, yrmax = 1.5, logy = True)
+            plotter.Plot("h_LeadingElecEta", case, massbin        , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.5, xmax = 2.5, yrmin = 0.8, yrmax = 1.2, logy = True)
+            plotter.Plot("h_LeadingElecPhi", case, massbin        , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, yrmin = 0.8, yrmax = 1.2, logy = True)
 
-            plotter.Plot("h_SubleadingElecPt", case, massbin      , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-            plotter.Plot("h_SubleadingElecEta", case, massbin     , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-            plotter.Plot("h_SubleadingElecPhi", case, massbin     , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            plotter.Plot("h_SubleadingElecPt", case, massbin      , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 0, xmax = 500, yrmin = 0.5, yrmax = 1.5, logy = True)
+            plotter.Plot("h_SubleadingElecEta", case, massbin     , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.5, xmax = 2.5, yrmin = 0.8, yrmax = 1.2, logy = True)
+            plotter.Plot("h_SubleadingElecPhi", case, massbin     , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, yrmin = 0.8, yrmax = 1.2, logy = True)
 
-            plotter.Plot("h_ElecPt", case, massbin                , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            plotter.Plot("h_ElecPt", case, massbin                , latex_temp, xTitle = "pT(e) [GeV]"          ,xmin = 15, xmax = 500, logy = True, logx = True)
             plotter.Plot("h_ElecEta", case, massbin               , latex_temp, xTitle = "#eta(e)"              ,xmin = -2.5, xmax = 2.5, logy = True)
             plotter.Plot("h_ElecPhi", case, massbin               , latex_temp, xTitle = "#phi(e)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
             plotter.Plot("h_ElecDeltaR", case, massbin            , latex_temp, xTitle = "#DeltaR(e_{1}, e_{2})" ,xmin = 0, xmax = 6.4, logy = True)
 
-            plotter.Plot("h_dielecPt", case, massbin              , latex_temp, xTitle = "pT(ee) [GeV]" ,xmin = 0, xmax = 500, logy = True)
-            plotter.Plot("h_dielecRap", case, massbin             , latex_temp, xTitle = "rapidity(ee)"      ,xmin = -2.8, xmax = 2.8, logy = True)
+            plotter.Plot("h_dielecPt", case, massbin              , latex_temp, xTitle = "pT(ee) [GeV]" ,xmin = 0, xmax = 500, yrmin = 0.8, yrmax = 1.2, logy = True)
+            plotter.Plot("h_dielecRap", case, massbin             , latex_temp, xTitle = "rapidity(ee)"      ,xmin = -2.8, xmax = 2.8, yrmin = 0.8, yrmax = 1.2, logy = True)
 
 
 if __name__ == "__main__" :

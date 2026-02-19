@@ -3,10 +3,10 @@ Info:
   Channel: EE
 
 Z:
-  MassCut: 40
+  MassCut: 200
 
 Electron:
-  LeadingPt: 50
+  LeadingPt: 28
   SubLeadingPt: 20
   Eta: 2.5
   Charge: opposite
@@ -15,7 +15,7 @@ Jet:
   Pt: 30
   Eta: 2.4
   ID: 6
-  PUID: 4
+  PUID: 1
   BTag: 0.2489
   Cleaning: false
 
@@ -23,21 +23,27 @@ Correction:
   Reco: true
   ID: true
   Trigger: false
+  ElecMisCharge: true
   PileUp: true
   L1PreFiring: true
   JetPU: true
   BTag: true
+  TopPtReweighing: true
 
 Efficiency:
   Reco:
     Path: ../../correctionlib/electron/reco/EGM_2016postVFP.json
     Name: UL-Electron-ID-SF
   ID:
-    Path: ../../correctionlib/electron/Run2UL_ID.json
+    # Path: ../../correctionlib/electron/Run2UL_ID.json
+    # Name: UL-Electron-ID-SF
+    Path: ../../correctionlib/electron/reco/EGM_2016postVFP.json
     Name: UL-Electron-ID-SF
   Trigger:
     Path: ../../correctionlib/muon/medium/2016_postVFP.json
     Name: NUM_Mu50_or_TkMu50_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+  ElecMisCharge:
+    Path: ../../EfficiencyTable/elec/ChargeMisId/CFRate2016b.root
   JetPU:
     Path: ../../EfficiencyTable/JetPUID/2016_L.csv
   BTag:
