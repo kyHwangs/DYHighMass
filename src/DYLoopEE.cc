@@ -87,9 +87,6 @@ void DYLoopEE::Loop() {
       fHistoSet->FillHisto((std::string)"h_GenWeight", tEventGenWeight, 1.);
     }
 
-    if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
-      tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
-
     if (fIsMC && fSampleName.Contains("NNLO")) {
       auto tLHEElecs = fNtuples->GetLHE(11);
 
@@ -107,6 +104,9 @@ void DYLoopEE::Loop() {
 
       fHistoSet->FillHisto((std::string)"h_LHEDielecMass", tDiElecMassLHE, tEventGenWeight);
     }
+
+    if (fIsMC && fSampleName.Contains("TTTo2L2Nu") && fDoTopPtReweighing)
+      tEventGenWeight *= fNtuples->GetGenTopPtReweightFactor();
     
     fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
     fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
@@ -183,16 +183,16 @@ void DYLoopEE::Loop() {
       double tIDEffSFLeading = 0;
 
       if (tFVecLeadingElec.Pt() < 20.) tIDEffSFLeading = 0;
-      // else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tLeadingElec.SCEta())}); // HEEP ID
-      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // cutBased ID WP
+      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tLeadingElec.SCEta())}); // HEEP ID
+      // else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // cutBased ID WP
 
       tEventGenWeight *= tIDEffSFLeading;
 
       double tIDEffSFSubleading = 0;
 
       if (tFVecSubLeadingElec.Pt() < 20.) tIDEffSFSubleading = 0;
-      // else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSubLeadingElec.SCEta())}); // HEEP ID
-      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // cutBased ID WP
+      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSubLeadingElec.SCEta())}); // HEEP ID
+      // else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // cutBased ID WP
 
       tEventGenWeight *= tIDEffSFSubleading;
 
