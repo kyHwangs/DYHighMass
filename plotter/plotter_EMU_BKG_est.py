@@ -14,6 +14,12 @@ CMS.SetExtraText("Preliminary")
 CMS.SetEnergy("13")
 ROOT.gROOT.SetBatch(ROOT.kTRUE)
 
+def SanityCheck(hist):
+    for i in range(1, hist.GetNbinsX() + 1):
+        if hist.GetBinContent(i) <= 0:
+            hist.SetBinContent(i, 0)
+    return hist
+
 mcList = [
     "NNLO_MUMU_10to50",
     "NNLO_MUMU_inc",
@@ -78,6 +84,11 @@ stlist = [
     "ST_s",
     "ST_t_AntiTop",
     "ST_t_Top",
+    "ST_tW_AntiTop",
+    "ST_tW_Top"
+]
+
+twlist = [
     "ST_tW_AntiTop",
     "ST_tW_Top"
 ]
@@ -406,11 +417,11 @@ class Plotter:
         # CMS.SaveCanvas(dicanv, os.path.join(self.outputPath, self.era + "_" + histName + ".png"))
 
     def GetDataHist(self):
-        hist = self.fileSet.Get(self.era + "/" + "Data" + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
+        hist = self.fileSet.Get(self.era + "/" + "Data" + "/" + self.histName).Clone(f"{self.histName}_data_{uuid.uuid4()}")
         hist.SetDirectory(0)
         hist.SetStats(0);
 
-        hist = self.CheckSanity(hist)
+        # hist = self.CheckSanity(hist)
 
         return hist
 
@@ -420,7 +431,7 @@ class Plotter:
         for i in range(1, hist_clone.GetNbinsX() + 1):
             if hist_clone.GetBinContent(i) <= 0:
                 hist_clone.SetBinContent(i, 0)
-                hist_clone.SetBinError(i, 1e-10)
+                hist_clone.SetBinError(i, 0)
 
         return hist_clone
 
@@ -429,6 +440,8 @@ class Plotter:
             return self.GetDYHist()
         elif mcName == "ST":
             return self.GetSingleTopHist()
+        elif mcName == "tW":
+            return self.GettWHist()
         elif mcName == "EW":
             return self.GetEWHist()
         elif mcName == "GG":
@@ -541,6 +554,22 @@ class Plotter:
 
         return returnHist
 
+    def GettWHist(self):
+        histoSet = {}
+        for mc in twlist:
+            histoSet[mc] = self.fileSet.Get(self.era + "/" + mc + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
+            histoSet[mc].SetDirectory(0)
+            histoSet[mc].SetStats(0);
+            histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
+
+        returnHist = histoSet["ST_tW_Top"].Clone(f"tW_{uuid.uuid4()}")
+        for mc in twlist:
+            if (mc != "ST_tW_Top"):
+                returnHist.Add(histoSet[mc])
+
+        return returnHist
+
     def GetEWHist(self):
         histoSet = {}
         for mc in ewlist:
@@ -646,32 +675,37 @@ def main(args):
 
     histoName = "h_PairMass"
     histoName_MUMU = "h_dimuonMass"
-    outputPath = "./EMU_BKG_251201/plot/"
-    outputRoot = "./EMU_BKG_251201/EMU_bkg.root"
+    outputPath = "./EMU_BKG_260209/plot/"
+    outputRoot = "./EMU_BKG_260209/EMU_bkg.root"
 
     outputFile = ROOT.TFile(outputRoot, "Update")
     outputFile.cd()
     outputFile.mkdir(f"{args.era}/FAKE_EMU_OS")
     outputFile.mkdir(f"{args.era}/FAKE_EMU_SS")
     outputFile.mkdir(f"{args.era}/FAKE_EMU_SStoOS")
-    outputFile.mkdir(f"{args.era}/EMU_OS_SingleTop")
-    outputFile.mkdir(f"{args.era}/EMU_OS_TT")
-    outputFile.mkdir(f"{args.era}/EMU_OS_WW")
+    # outputFile.mkdir(f"{args.era}/EMU_OS_SingleTop")
+    # outputFile.mkdir(f"{args.era}/EMU_OS_TT")
+    # outputFile.mkdir(f"{args.era}/EMU_OS_WW")
     outputFile.mkdir(f"{args.era}/EMU_OS_TOP")
-    outputFile.mkdir(f"{args.era}/SingleTop_EMUtoMUMU")
-    outputFile.mkdir(f"{args.era}/TT_EMUtoMUMU")
-    outputFile.mkdir(f"{args.era}/WW_EMUtoMUMU")
-    outputFile.mkdir(f"{args.era}/TOP_EMUtoMUMU")
-    outputFile.mkdir(f"{args.era}/SingleTop_MUMU")
-    outputFile.mkdir(f"{args.era}/TT_MUMU")
-    outputFile.mkdir(f"{args.era}/WW_MUMU")
-    outputFile.mkdir(f"{args.era}/TOP_MUMU")
+    # outputFile.mkdir(f"{args.era}/EMU_OS_TOPpWW")
+    # outputFile.mkdir(f"{args.era}/EMU_OS_TOPpWW")
 
-    EMU_OS = Plotter(args.era, "./EMU_BKG_251201/root/EMU_OS.root")
-    EMU_SS = Plotter(args.era, "./EMU_BKG_251201/root/EMU_SS.root")
-    EMU_OS_inverted = Plotter(args.era, "./EMU_BKG_251201/root/EMU_OS_inverted.root")
-    EMU_SS_inverted = Plotter(args.era, "./EMU_BKG_251201/root/EMU_SS_inverted.root")
-    MUMU = Plotter(args.era, "./EMU_BKG_251201/root/MUMU_OS.root")
+    # outputFile.mkdir(f"{args.era}/SingleTop_EMUtoMUMU")
+    # outputFile.mkdir(f"{args.era}/TT_EMUtoMUMU")
+    # outputFile.mkdir(f"{args.era}/WW_EMUtoMUMU")
+    outputFile.mkdir(f"{args.era}/TOP_EMUtoMUMU")
+    # outputFile.mkdir(f"{args.era}/TOPpWW_EMUtoMUMU")
+    # outputFile.mkdir(f"{args.era}/SingleTop_MUMU")
+    # outputFile.mkdir(f"{args.era}/TT_MUMU")
+    # outputFile.mkdir(f"{args.era}/WW_MUMU")
+    outputFile.mkdir(f"{args.era}/TOP_MUMU")
+    # outputFile.mkdir(f"{args.era}/TOPpWW_MUMU")
+
+    EMU_OS = Plotter(args.era, "./EMU_BKG_260209/root/EMU_OS.root")
+    EMU_SS = Plotter(args.era, "./EMU_BKG_260209/root/EMU_SS.root")
+    EMU_OS_inverted = Plotter(args.era, "./EMU_BKG_260209/root/EMU_OS_inverted.root")
+    EMU_SS_inverted = Plotter(args.era, "./EMU_BKG_260209/root/EMU_SS_inverted.root")
+    MUMU = Plotter(args.era, "./EMU_BKG_260209/root/MUMU_OS.root")
 
     for case in cases:
 
@@ -693,11 +727,8 @@ def main(args):
         EMU_SS_inverted.histName = tmp_histName
         MUMU.histName = tmp_histName_MUMU
 
-        emu_mc_list = ["TTTo2L2Nu", "ST", "NNLO_tautau", "EW", "GG_ElEl", "GG_InelElElInel", "GG_InelInel"]
-        emu_mc_list_ex_TT = ["ST", "NNLO_tautau", "EW", "GG_ElEl", "GG_InelElElInel", "GG_InelInel"]
-        emu_mc_list_ex_ST = ["TTTo2L2Nu", "NNLO_tautau", "EW", "GG_ElEl", "GG_InelElElInel", "GG_InelInel"]
-        emu_mc_list_ex_WW = ["TTTo2L2Nu", "ST", "NNLO_tautau", "WZ", "ZZ", "GG_ElEl", "GG_InelElElInel", "GG_InelInel"]
-        emu_mc_list_ex_TOP = ["NNLO_tautau", "EW", "GG_ElEl", "GG_InelElElInel", "GG_InelInel"]
+        emu_mc_list = ["TTTo2L2Nu", "tW", "NNLO_tautau", "EW", "GG_ElEl", "GG_InelElElInel", "GG_InelInel"]
+        emu_mc_list_ex_TOP = ["NNLO_tautau", "ZZ", "WZ", "GG_ElEl", "GG_InelElElInel", "GG_InelInel"]
 
 
         EMU_OS_TotalMC = EMU_OS.GetTotalMC(emu_mc_list)
@@ -705,43 +736,29 @@ def main(args):
 
         EMU_OS_TT = EMU_OS.GetMCHist("TTTo2L2Nu")
         EMU_OS_TT.SetName("EMU_OS_TT" + case)
-        EMU_OS_ST = EMU_OS.GetMCHist("ST")
-        EMU_OS_ST.SetName("EMU_OS_ST" + case)
+        EMU_OS_TW = EMU_OS.GetMCHist("tW")
+        EMU_OS_TW.SetName("EMU_OS_TW" + case)
         EMU_OS_WW = EMU_OS.GetMCHist("WW")
         EMU_OS_WW.SetName("EMU_OS_WW" + case)
 
         EMU_OS_TOP = EMU_OS_TT.Clone("EMU_OS_TOP" + case)
-        EMU_OS_TOP.Add(EMU_OS_ST)
+        EMU_OS_TOP.Add(EMU_OS_TW)
+        EMU_OS_TOP.Add(EMU_OS_WW)
 
         MUMU_OS_TT = MUMU.GetMCHist("TTTo2L2Nu")
         MUMU_OS_TT.SetName("MUMU_OS_TT" + case)
-        MUMU_OS_ST = MUMU.GetMCHist("ST")
-        MUMU_OS_ST.SetName("MUMU_OS_ST" + case)
+        MUMU_OS_TW = MUMU.GetMCHist("tW")
+        MUMU_OS_TW.SetName("MUMU_OS_TW" + case)
         MUMU_OS_WW = MUMU.GetMCHist("WW")
         MUMU_OS_WW.SetName("MUMU_OS_WW" + case)
 
         MUMU_OS_TOP = MUMU_OS_TT.Clone("MUMU_OS_TOP" + case)
-        MUMU_OS_TOP.Add(MUMU_OS_ST)
-
-        TT_EMUtoMUMU = MUMU_OS_TT.Clone(f"TT_EMUtoMUMU_{uuid.uuid4()}")
-        TT_EMUtoMUMU.Divide(EMU_OS_TT)
-        TT_EMUtoMUMU.SetName("TT_EMUtoMUMU" + case)
-
-        ST_EMUtoMUMU = MUMU_OS_ST.Clone(f"ST_EMUtoMUMU_{uuid.uuid4()}")
-        ST_EMUtoMUMU.Divide(EMU_OS_ST)
-        ST_EMUtoMUMU.SetName("ST_EMUtoMUMU" + case)
-
-        WW_EMUtoMUMU = MUMU_OS_WW.Clone(f"WW_EMUtoMUMU_{uuid.uuid4()}")
-        WW_EMUtoMUMU.Divide(EMU_OS_WW)
-        WW_EMUtoMUMU.SetName("WW_EMUtoMUMU" + case)
+        MUMU_OS_TOP.Add(MUMU_OS_TW)
+        MUMU_OS_TOP.Add(MUMU_OS_WW)
 
         TOP_EMUtoMUMU = MUMU_OS_TOP.Clone(f"TOP_EMUtoMUMU_{uuid.uuid4()}")
         TOP_EMUtoMUMU.Divide(EMU_OS_TOP)
         TOP_EMUtoMUMU.SetName("TOP_EMUtoMUMU" + case)
-
-        EMU_OS_FAKE = EMU_OS_data.Clone(f"EMU_OS_FAKE_{uuid.uuid4()}")
-        EMU_OS_FAKE.Add(EMU_OS_TotalMC, -1)
-        EMU_OS_FAKE.SetName("EMU_OS_FAKE" + case)
 
         EMU_SS_TotalMC = EMU_SS.GetTotalMC(emu_mc_list)
         EMU_SS_data = EMU_SS.GetDataHist()
@@ -749,18 +766,21 @@ def main(args):
         EMU_SS_FAKE = EMU_SS_data.Clone(f"EMU_SS_FAKE_{uuid.uuid4()}")
         EMU_SS_FAKE.Add(EMU_SS_TotalMC, -1)
         EMU_SS_FAKE.SetName("EMU_SS_FAKE" + case)
+        EMU_SS_FAKE = SanityCheck(EMU_SS_FAKE)
 
         EMU_OS_inverted_TotalMC = EMU_OS_inverted.GetTotalMC(emu_mc_list)
         EMU_OS_inverted_data = EMU_OS_inverted.GetDataHist()
         
         EMU_OS_inverted_FAKE = EMU_OS_inverted_data.Clone(f"EMU_OS_inverted_FAKE_{uuid.uuid4()}")
         EMU_OS_inverted_FAKE.Add(EMU_OS_inverted_TotalMC, -1)
+        EMU_OS_inverted_FAKE = SanityCheck(EMU_OS_inverted_FAKE)
 
         EMU_SS_inverted_TotalMC = EMU_SS_inverted.GetTotalMC(emu_mc_list)
         EMU_SS_inverted_data = EMU_SS_inverted.GetDataHist()
 
         EMU_SS_inverted_FAKE = EMU_SS_inverted_data.Clone(f"EMU_SS_inverted_FAKE_{uuid.uuid4()}")
         EMU_SS_inverted_FAKE.Add(EMU_SS_inverted_TotalMC, -1)
+        EMU_SS_inverted_FAKE = SanityCheck(EMU_SS_inverted_FAKE)
 
         EMU_inverted_SStoOS = EMU_OS_inverted_FAKE.Clone(f"EMU_inverted_SStoOS_{uuid.uuid4()}")
         EMU_inverted_SStoOS.Divide(EMU_SS_inverted_FAKE)
@@ -768,43 +788,6 @@ def main(args):
 
         EMU_OS_FAKE_DataDriven = GetOSFromSS(EMU_SS_FAKE, EMU_inverted_SStoOS)
         EMU_OS_FAKE_DataDriven.SetName("EMU_OS_FAKE_DataDriven" + case)
-
-        EMU_OS_TotalMC_ex_TT = EMU_OS.GetTotalMC(emu_mc_list_ex_TT)
-        EMU_OS_TotalMC_ex_TT.Add(EMU_OS_FAKE_DataDriven)
-
-        EMU_OS_TT_DataDriven = EMU_OS_data.Clone(f"EMU_OS_TT_DataDriven_{uuid.uuid4()}")
-        EMU_OS_TT_DataDriven.Add(EMU_OS_TotalMC_ex_TT, -1)
-        EMU_OS_TT_DataDriven.SetName("EMU_OS_TT_DataDriven" + case)
-
-        MUMU_OS_TT_DataDriven = GetOSFromSS(EMU_OS_TT_DataDriven, TT_EMUtoMUMU)
-        MUMU_OS_TT_DataDriven.SetName("MUMU_OS_TT_DataDriven" + case)
-        MUMU_OS_TT_DataDriven_Ratio = MUMU_OS_TT_DataDriven.Clone(f"MUMU_OS_TT_DataDriven_Ratio_{uuid.uuid4()}")
-        MUMU_OS_TT_DataDriven_Ratio.Divide(MUMU_OS_TT)
-
-        EMU_OS_TotalMC_ex_ST = EMU_OS.GetTotalMC(emu_mc_list_ex_ST)
-        EMU_OS_TotalMC_ex_ST.Add(EMU_OS_FAKE_DataDriven)
-
-        EMU_OS_ST_DataDriven = EMU_OS_data.Clone(f"EMU_OS_ST_DataDriven_{uuid.uuid4()}")
-        EMU_OS_ST_DataDriven.Add(EMU_OS_TotalMC_ex_ST, -1)
-        EMU_OS_ST_DataDriven.SetName("EMU_OS_ST_DataDriven" + case)
-
-        MUMU_OS_ST_DataDriven = GetOSFromSS(EMU_OS_ST_DataDriven, ST_EMUtoMUMU)
-        MUMU_OS_ST_DataDriven.SetName("MUMU_OS_ST_DataDriven" + case)
-        MUMU_OS_ST_DataDriven_Ratio = MUMU_OS_ST_DataDriven.Clone(f"MUMU_OS_ST_DataDriven_Ratio_{uuid.uuid4()}")
-        MUMU_OS_ST_DataDriven_Ratio.Divide(MUMU_OS_ST)
-
-        EMU_OS_TotalMC_ex_WW = EMU_OS.GetTotalMC(emu_mc_list_ex_WW)
-        EMU_OS_TotalMC_ex_WW.Add(EMU_OS_FAKE_DataDriven)
-
-        EMU_OS_WW_DataDriven = EMU_OS_data.Clone(f"EMU_OS_WW_DataDriven_{uuid.uuid4()}")
-        EMU_OS_WW_DataDriven.Add(EMU_OS_TotalMC_ex_WW, -1)
-        EMU_OS_WW_DataDriven.SetName("EMU_OS_WW_DataDriven" + case)
-
-        MUMU_OS_WW_DataDriven = GetOSFromSS(EMU_OS_WW_DataDriven, WW_EMUtoMUMU)
-        MUMU_OS_WW_DataDriven.SetName("MUMU_OS_WW_DataDriven" + case)
-        MUMU_OS_WW_DataDriven_Ratio = MUMU_OS_WW_DataDriven.Clone(f"MUMU_OS_WW_DataDriven_Ratio_{uuid.uuid4()}")
-        MUMU_OS_WW_DataDriven_Ratio.Divide(MUMU_OS_WW)
-
 
         EMU_OS_TotalMC_ex_TOP = EMU_OS.GetTotalMC(emu_mc_list_ex_TOP)
         EMU_OS_TotalMC_ex_TOP.Add(EMU_OS_FAKE_DataDriven)
@@ -824,20 +807,8 @@ def main(args):
         EMU_SS_FAKE.Write()
         outputFile.cd(f"{args.era}/FAKE_EMU_OS")
         EMU_OS_FAKE_DataDriven.Write()
-        outputFile.cd(f"{args.era}/TT_MUMU")
-        MUMU_OS_TT_DataDriven.Write()
-        outputFile.cd(f"{args.era}/SingleTop_MUMU")
-        MUMU_OS_ST_DataDriven.Write()
-        outputFile.cd(f"{args.era}/WW_MUMU")
-        MUMU_OS_WW_DataDriven.Write()
         outputFile.cd(f"{args.era}/TOP_MUMU")
         MUMU_OS_TOP_DataDriven.Write()
-        outputFile.cd(f"{args.era}/TT_EMUtoMUMU")
-        TT_EMUtoMUMU.Write()
-        outputFile.cd(f"{args.era}/SingleTop_EMUtoMUMU")
-        ST_EMUtoMUMU.Write()
-        outputFile.cd(f"{args.era}/WW_EMUtoMUMU")
-        WW_EMUtoMUMU.Write()
         outputFile.cd(f"{args.era}/TOP_EMUtoMUMU")
         TOP_EMUtoMUMU.Write()
 
@@ -881,7 +852,7 @@ def main(args):
         for idx, addon in enumerate(latex_EMU_SS_FAKE_item):
             Latex_EMU_SS_FAKE.DrawLatexNDC(0.25, 0.86 - idx * 0.065, addon.encode('utf-8'))
 
-        CMS.SaveCanvas(Canv_EMU_SS_FAKE, os.path.join(outputPath, args.era + "_FakeSS" + case + ".pdf"))
+        CMS.SaveCanvas(Canv_EMU_SS_FAKE, os.path.join(outputPath, "era_" + args.era + "/plot_" + args.era + "_FakeSS" + case + ".pdf"))
 
 
         #################################################################
@@ -923,7 +894,7 @@ def main(args):
         for idx, addon in enumerate(latex_EMU_OS_FAKE_item):
             Latex_EMU_OS_FAKE.DrawLatexNDC(0.25, 0.86 - idx * 0.065, addon.encode('utf-8'))
 
-        CMS.SaveCanvas(Canv_EMU_OS_FAKE, os.path.join(outputPath, args.era + "_FakeOSDataDriven" + case + ".pdf"))
+        CMS.SaveCanvas(Canv_EMU_OS_FAKE, os.path.join(outputPath, "era_" + args.era + "/plot_" + args.era + "_FakeOSDataDriven" + case + ".pdf"))
 
         #################################################################
         # Fake SStoOS
@@ -972,165 +943,7 @@ def main(args):
         Canv_SStoOS.cd(2)
         CMS.cmsDraw(EMU_inverted_SStoOS, "P", mcolor=ROOT.kBlack)
 
-        CMS.SaveCanvas(Canv_SStoOS, os.path.join(outputPath, args.era + "_SStoOS" + case + ".pdf"))
-
-
-        #################################################################
-        # TT EMUtoMUMU
-        #################################################################
-        Canv_TT_EMUtoMUMU = CMS.cmsDiCanvas(
-            "Canv_TT_EMUtoMUMU",
-            200,
-            4000,
-            2e-2,
-            MUMU_OS_TT.GetMaximum() * 1e3,
-            1 - 0.55,
-            1 + 0.55,
-            "Mass [GeV]",
-            "Events",
-            "#mu#mu/e#mu",
-            square = CMS.kSquare,
-            extraSpace = 0.1,
-            iPos = 0,
-        )
-
-        Canv_TT_EMUtoMUMU.cd(1).SetLogy(True)
-        Canv_TT_EMUtoMUMU.cd(1).SetLogx(True)
-        Canv_TT_EMUtoMUMU.cd(2).SetLogx(True)
-
-        Canv_TT_EMUtoMUMU.cd(1)
-
-        Leg_TT_EMUtoMUMU = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        Leg_TT_EMUtoMUMU.AddEntry(MUMU_OS_TT, "#mu#mu, TT MC", "lp")
-        Leg_TT_EMUtoMUMU.AddEntry(EMU_OS_TT, "e#mu, TT MC", "lp")
-
-        Canv_TT_EMUtoMUMU.cd(1)
-        CMS.cmsDraw(MUMU_OS_TT, "P", mcolor=ROOT.kBlack)
-        CMS.cmsDraw(EMU_OS_TT, "P", mcolor=ROOT.kRed)
-
-
-        latex_TT_EMUtoMUMU_item = latex_temp.copy()
-        latex_TT_EMUtoMUMU_item[0] = f"{args.era}, #mu#mu/e#mu"
-        latex_TT_EMUtoMUMU_item[1] = latex_TT_EMUtoMUMU_item[3]
-        latex_TT_EMUtoMUMU_item[2] = ""
-        latex_TT_EMUtoMUMU_item[3] = ""
-
-        Latex_TT_EMUtoMUMU = ROOT.TLatex()
-        Latex_TT_EMUtoMUMU.SetTextAlign(14);
-        Latex_TT_EMUtoMUMU.SetTextSize(0.04);
-        Latex_TT_EMUtoMUMU.SetTextFont(42);
-        for idx, addon in enumerate(latex_TT_EMUtoMUMU_item):
-            Latex_TT_EMUtoMUMU.DrawLatexNDC(0.18, 0.86 - idx * 0.065, addon.encode('utf-8'))
-
-        Canv_TT_EMUtoMUMU.cd(2)
-        CMS.cmsDraw(TT_EMUtoMUMU, "P", mcolor=ROOT.kBlack)
-
-        CMS.SaveCanvas(Canv_TT_EMUtoMUMU, os.path.join(outputPath, args.era + "_TT_EMUtoMUMU" + case + ".pdf"))
-
-
-        #################################################################
-        # ST EMUtoMUMU
-        #################################################################
-        Canv_ST_EMUtoMUMU = CMS.cmsDiCanvas(
-            "Canv_ST_EMUtoMUMU",
-            200,
-            4000,
-            2e-2,
-            MUMU_OS_ST.GetMaximum() * 1e3,
-            1 - 0.55,
-            1 + 0.55,
-            "Mass [GeV]",
-            "Events",
-            "#mu#mu/e#mu",
-            square = CMS.kSquare,
-            extraSpace = 0.1,
-            iPos = 0,
-        )
-
-        Canv_ST_EMUtoMUMU.cd(1).SetLogy(True)
-        Canv_ST_EMUtoMUMU.cd(1).SetLogx(True)
-        Canv_ST_EMUtoMUMU.cd(2).SetLogx(True)
-
-        Canv_ST_EMUtoMUMU.cd(1)
-
-        Leg_ST_EMUtoMUMU = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        Leg_ST_EMUtoMUMU.AddEntry(MUMU_OS_ST, "#mu#mu, Single Top MC", "lp")
-        Leg_ST_EMUtoMUMU.AddEntry(EMU_OS_ST, "e#mu, Single Top MC", "lp")
-
-        Canv_ST_EMUtoMUMU.cd(1)
-        CMS.cmsDraw(MUMU_OS_ST, "P", mcolor=ROOT.kBlack)
-        CMS.cmsDraw(EMU_OS_ST, "P", mcolor=ROOT.kRed)
-
-
-        latex_ST_EMUtoMUMU_item = latex_temp.copy()
-        latex_ST_EMUtoMUMU_item[0] = f"{args.era}, #mu#mu/e#mu"
-        latex_ST_EMUtoMUMU_item[1] = latex_ST_EMUtoMUMU_item[3]
-        latex_ST_EMUtoMUMU_item[2] = ""
-        latex_ST_EMUtoMUMU_item[3] = ""
-
-        Latex_ST_EMUtoMUMU = ROOT.TLatex()
-        Latex_ST_EMUtoMUMU.SetTextAlign(14);
-        Latex_ST_EMUtoMUMU.SetTextSize(0.04);
-        Latex_ST_EMUtoMUMU.SetTextFont(42);
-        for idx, addon in enumerate(latex_ST_EMUtoMUMU_item):
-            Latex_ST_EMUtoMUMU.DrawLatexNDC(0.18, 0.86 - idx * 0.065, addon.encode('utf-8'))
-
-        Canv_ST_EMUtoMUMU.cd(2)
-        CMS.cmsDraw(ST_EMUtoMUMU, "P", mcolor=ROOT.kBlack)
-
-        CMS.SaveCanvas(Canv_ST_EMUtoMUMU, os.path.join(outputPath, args.era + "_ST_EMUtoMUMU" + case + ".pdf"))
-
-        #################################################################
-        # WW EMUtoMUMU
-        #################################################################
-        Canv_WW_EMUtoMUMU = CMS.cmsDiCanvas(
-            "Canv_WW_EMUtoMUMU",
-            200,
-            4000,
-            2e-2,
-            MUMU_OS_WW.GetMaximum() * 1e3,
-            1 - 0.55,
-            1 + 0.55,
-            "Mass [GeV]",
-            "Events",
-            "#mu#mu/e#mu",
-            square = CMS.kSquare,
-            extraSpace = 0.1,
-            iPos = 0,
-        )
-
-        Canv_WW_EMUtoMUMU.cd(1).SetLogy(True)
-        Canv_WW_EMUtoMUMU.cd(1).SetLogx(True)
-        Canv_WW_EMUtoMUMU.cd(2).SetLogx(True)
-
-        Canv_WW_EMUtoMUMU.cd(1)
-
-        Leg_WW_EMUtoMUMU = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        Leg_WW_EMUtoMUMU.AddEntry(MUMU_OS_WW, "#mu#mu, WW MC", "lp")
-        Leg_WW_EMUtoMUMU.AddEntry(EMU_OS_WW, "e#mu, WW MC", "lp")
-
-        Canv_WW_EMUtoMUMU.cd(1)
-        CMS.cmsDraw(MUMU_OS_WW, "P", mcolor=ROOT.kBlack)
-        CMS.cmsDraw(EMU_OS_WW, "P", mcolor=ROOT.kRed)
-
-
-        latex_WW_EMUtoMUMU_item = latex_temp.copy()
-        latex_WW_EMUtoMUMU_item[0] = f"{args.era}, #mu#mu/e#mu"
-        latex_WW_EMUtoMUMU_item[1] = latex_WW_EMUtoMUMU_item[3]
-        latex_WW_EMUtoMUMU_item[2] = ""
-        latex_WW_EMUtoMUMU_item[3] = ""
-
-        Latex_WW_EMUtoMUMU = ROOT.TLatex()
-        Latex_WW_EMUtoMUMU.SetTextAlign(14);
-        Latex_WW_EMUtoMUMU.SetTextSize(0.04);
-        Latex_WW_EMUtoMUMU.SetTextFont(42);
-        for idx, addon in enumerate(latex_WW_EMUtoMUMU_item):
-            Latex_WW_EMUtoMUMU.DrawLatexNDC(0.18, 0.86 - idx * 0.065, addon.encode('utf-8'))
-
-        Canv_WW_EMUtoMUMU.cd(2)
-        CMS.cmsDraw(WW_EMUtoMUMU, "P", mcolor=ROOT.kBlack)
-
-        CMS.SaveCanvas(Canv_WW_EMUtoMUMU, os.path.join(outputPath, args.era + "_WW_EMUtoMUMU" + case + ".pdf"))
+        CMS.SaveCanvas(Canv_SStoOS, os.path.join(outputPath, "era_" + args.era + "/plot_" + args.era + "_SStoOS" + case + ".pdf"))
 
 
         #################################################################
@@ -1159,8 +972,8 @@ def main(args):
         Canv_TOP_EMUtoMUMU.cd(1)
 
         Leg_TOP_EMUtoMUMU = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        Leg_TOP_EMUtoMUMU.AddEntry(MUMU_OS_TOP, "#mu#mu, TTbar + Single Top MC", "lp")
-        Leg_TOP_EMUtoMUMU.AddEntry(EMU_OS_TOP, "e#mu, TTbar + Single Top MC", "lp")
+        Leg_TOP_EMUtoMUMU.AddEntry(MUMU_OS_TOP, "#mu#mu, tt + tW + WW, MC", "lp")
+        Leg_TOP_EMUtoMUMU.AddEntry(EMU_OS_TOP, "e#mu, tt + tW + WW, MC", "lp")
 
         Canv_TOP_EMUtoMUMU.cd(1)
         CMS.cmsDraw(MUMU_OS_TOP, "P", mcolor=ROOT.kBlack)
@@ -1183,179 +996,7 @@ def main(args):
         Canv_TOP_EMUtoMUMU.cd(2)
         CMS.cmsDraw(TOP_EMUtoMUMU, "P", mcolor=ROOT.kBlack)
 
-        CMS.SaveCanvas(Canv_TOP_EMUtoMUMU, os.path.join(outputPath, args.era + "_TOP_EMUtoMUMU" + case + ".pdf"))
-
-        #################################################################
-        # TT Comparison
-        #################################################################
-        Canv_TT_Comparision = CMS.cmsDiCanvas(
-            "Canv_TT_Comparision",
-            200,
-            4000,
-            2e-2,
-            MUMU_OS_TT_DataDriven.GetMaximum() * 1e3,
-            1 - 0.55,
-            1 + 0.55,
-            "M(#mu#mu) [GeV]",
-            "Events",
-            "Data/Pred.",
-            square = CMS.kSquare,
-            extraSpace = 0.1,
-            iPos = 0,
-        )
-
-        Canv_TT_Comparision.cd(1).SetLogy(True)
-        Canv_TT_Comparision.cd(1).SetLogx(True)
-        Canv_TT_Comparision.cd(2).SetLogx(True)
-
-        Canv_TT_Comparision.cd(1)
-
-        Leg_TT_Comparision = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        Leg_TT_Comparision.AddEntry(MUMU_OS_TT_DataDriven, "TT, data-diven", "lp")
-
-        TT_Comparision_Stack = ROOT.THStack("TT_Comparision_Stack", "Stacked")
-        TT_Comparision_StackSheet = {
-            "TT, MC": MUMU_OS_TT,
-        }
-
-        CMS.cmsDrawStack(TT_Comparision_Stack, Leg_TT_Comparision, TT_Comparision_StackSheet)
-        
-        Canv_TT_Comparision.cd(1)
-        CMS.cmsDraw(MUMU_OS_TT_DataDriven, "P", mcolor=ROOT.kBlack)
-        Canv_TT_Comparision.cd(1).RedrawAxis()
-
-        latex_TT_Comparision_item = latex_temp.copy()
-        latex_TT_Comparision_item[0] = f"{args.era}, TTbar"
-        latex_TT_Comparision_item[1] = "p_{T}(#mu) > 52 (15) GeV, |#eta(#mu)| < 2.4"
-        latex_TT_Comparision_item[2] = latex_TT_Comparision_item[3]
-        latex_TT_Comparision_item[3] = ""
-    
-        Latex_TT_Comparision = ROOT.TLatex()
-        Latex_TT_Comparision.SetTextAlign(14);
-        Latex_TT_Comparision.SetTextSize(0.04);
-        Latex_TT_Comparision.SetTextFont(42);
-        for idx, addon in enumerate(latex_TT_Comparision_item):
-            Latex_TT_Comparision.DrawLatexNDC(0.18, 0.86 - idx * 0.065, addon.encode('utf-8'))
-
-        Canv_TT_Comparision.cd(2)
-        CMS.cmsDraw(MUMU_OS_TT_DataDriven_Ratio, "P", mcolor=ROOT.kBlack)
-
-        CMS.SaveCanvas(Canv_TT_Comparision, os.path.join(outputPath, args.era + "_TT_DataDriven" + case + ".pdf"))
-
-
-        #################################################################
-        # ST Comparison
-        #################################################################
-        Canv_ST_Comparision = CMS.cmsDiCanvas(
-            "Canv_ST_Comparision",
-            200,
-            4000,
-            2e-2,
-            MUMU_OS_ST_DataDriven.GetMaximum() * 1e3,
-            1 - 0.55,
-            1 + 0.55,
-            "M(#mu#mu) [GeV]",
-            "Events",
-            "Data/Pred.",
-            square = CMS.kSquare,
-            extraSpace = 0.1,
-            iPos = 0,
-        )
-
-        Canv_ST_Comparision.cd(1).SetLogy(True)
-        Canv_ST_Comparision.cd(1).SetLogx(True)
-        Canv_ST_Comparision.cd(2).SetLogx(True)
-
-        Canv_ST_Comparision.cd(1)
-
-        Leg_ST_Comparision = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        Leg_ST_Comparision.AddEntry(MUMU_OS_ST_DataDriven, "Single Top, data-diven", "lp")
-
-        ST_Comparision_Stack = ROOT.THStack("ST_Comparision_Stack", "Stacked")
-        ST_Comparision_StackSheet = {
-            "Single Top, MC": MUMU_OS_ST,
-        }
-
-        CMS.cmsDrawStack(ST_Comparision_Stack, Leg_ST_Comparision, ST_Comparision_StackSheet)
-        
-        Canv_ST_Comparision.cd(1)
-        CMS.cmsDraw(MUMU_OS_ST_DataDriven, "P", mcolor=ROOT.kBlack)
-        Canv_ST_Comparision.cd(1).RedrawAxis()
-
-        latex_ST_Comparision_item = latex_temp.copy()
-        latex_ST_Comparision_item[0] = f"{args.era}, Single Top"
-        latex_ST_Comparision_item[1] = "p_{T}(#mu) > 52 (15) GeV, |#eta(#mu)| < 2.4"
-        latex_ST_Comparision_item[2] = latex_ST_Comparision_item[3]
-        latex_ST_Comparision_item[3] = ""
-    
-        Latex_ST_Comparision = ROOT.TLatex()
-        Latex_ST_Comparision.SetTextAlign(14);
-        Latex_ST_Comparision.SetTextSize(0.04);
-        Latex_ST_Comparision.SetTextFont(42);
-        for idx, addon in enumerate(latex_ST_Comparision_item):
-            Latex_ST_Comparision.DrawLatexNDC(0.18, 0.86 - idx * 0.065, addon.encode('utf-8'))
-
-        Canv_ST_Comparision.cd(2)
-        CMS.cmsDraw(MUMU_OS_ST_DataDriven_Ratio, "P", mcolor=ROOT.kBlack)
-
-        CMS.SaveCanvas(Canv_ST_Comparision, os.path.join(outputPath, args.era + "_ST_DataDriven" + case + ".pdf"))
-
-        #################################################################
-        # WW Comparison
-        #################################################################
-        Canv_WW_Comparision = CMS.cmsDiCanvas(
-            "Canv_WW_Comparision",
-            200,
-            4000,
-            2e-2,
-            MUMU_OS_WW_DataDriven.GetMaximum() * 1e3,
-            1 - 0.55,
-            1 + 0.55,
-            "M(#mu#mu) [GeV]",
-            "Events",
-            "Data/Pred.",
-            square = CMS.kSquare,
-            extraSpace = 0.1,
-            iPos = 0,
-        )
-
-        Canv_WW_Comparision.cd(1).SetLogy(True)
-        Canv_WW_Comparision.cd(1).SetLogx(True)
-        Canv_WW_Comparision.cd(2).SetLogx(True)
-
-        Canv_WW_Comparision.cd(1)
-
-        Leg_WW_Comparision = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        Leg_WW_Comparision.AddEntry(MUMU_OS_WW_DataDriven, "WW, data-diven", "lp")
-
-        WW_Comparision_Stack = ROOT.THStack("WW_Comparision_Stack", "Stacked")
-        WW_Comparision_StackSheet = {
-            "WW, MC": MUMU_OS_WW,
-        }
-
-        CMS.cmsDrawStack(WW_Comparision_Stack, Leg_WW_Comparision, WW_Comparision_StackSheet)
-        
-        Canv_WW_Comparision.cd(1)
-        CMS.cmsDraw(MUMU_OS_WW_DataDriven, "P", mcolor=ROOT.kBlack)
-        Canv_WW_Comparision.cd(1).RedrawAxis()
-
-        latex_WW_Comparision_item = latex_temp.copy()
-        latex_WW_Comparision_item[0] = f"{args.era}, Single Top"
-        latex_WW_Comparision_item[1] = "p_{T}(#mu) > 52 (15) GeV, |#eta(#mu)| < 2.4"
-        latex_WW_Comparision_item[2] = latex_WW_Comparision_item[3]
-        latex_WW_Comparision_item[3] = ""
-    
-        Latex_WW_Comparision = ROOT.TLatex()
-        Latex_WW_Comparision.SetTextAlign(14);
-        Latex_WW_Comparision.SetTextSize(0.04);
-        Latex_WW_Comparision.SetTextFont(42);
-        for idx, addon in enumerate(latex_WW_Comparision_item):
-            Latex_WW_Comparision.DrawLatexNDC(0.18, 0.86 - idx * 0.065, addon.encode('utf-8'))
-
-        Canv_WW_Comparision.cd(2)
-        CMS.cmsDraw(MUMU_OS_WW_DataDriven_Ratio, "P", mcolor=ROOT.kBlack)
-
-        CMS.SaveCanvas(Canv_WW_Comparision, os.path.join(outputPath, args.era + "_WW_DataDriven" + case + ".pdf"))
+        CMS.SaveCanvas(Canv_TOP_EMUtoMUMU, os.path.join(outputPath, "era_" + args.era + "/plot_" + args.era + "_TOP_EMUtoMUMU" + case + ".pdf"))
 
         #################################################################
         # TOP Comparison
@@ -1387,8 +1028,9 @@ def main(args):
 
         TOP_Comparision_Stack = ROOT.THStack("TOP_Comparision_Stack", "Stacked")
         TOP_Comparision_StackSheet = {
-            "TT, MC": MUMU_OS_TT,
-            "Single Top, MC": MUMU_OS_ST,
+            "tW, MC": MUMU_OS_TW,
+            "WW, MC": MUMU_OS_WW,
+            "tt, MC": MUMU_OS_TT,
         }
 
         CMS.cmsDrawStack(TOP_Comparision_Stack, Leg_TOP_Comparision, TOP_Comparision_StackSheet)
@@ -1398,7 +1040,7 @@ def main(args):
         Canv_TOP_Comparision.cd(1).RedrawAxis()
 
         latex_TOP_Comparision_item = latex_temp.copy()
-        latex_TOP_Comparision_item[0] = f"{args.era}, TTbar + Single Top"
+        latex_TOP_Comparision_item[0] = f"{args.era}, tt + tW + WW"
         latex_TOP_Comparision_item[1] = "p_{T}(#mu) > 52 (15) GeV, |#eta(#mu)| < 2.4"
         latex_TOP_Comparision_item[2] = latex_TOP_Comparision_item[3]
         latex_TOP_Comparision_item[3] = ""
@@ -1413,7 +1055,7 @@ def main(args):
         Canv_TOP_Comparision.cd(2)
         CMS.cmsDraw(MUMU_OS_TOP_DataDriven_Ratio, "P", mcolor=ROOT.kBlack)
 
-        CMS.SaveCanvas(Canv_TOP_Comparision, os.path.join(outputPath, args.era + "_TOP_DataDriven" + case + ".pdf"))
+        CMS.SaveCanvas(Canv_TOP_Comparision, os.path.join(outputPath, "era_" + args.era + "/plot_" + args.era + "_TOP_DataDriven" + case + ".pdf"))
 
 
 

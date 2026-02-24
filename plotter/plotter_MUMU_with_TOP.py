@@ -78,11 +78,11 @@ stlist = [
     "ST_s",
     "ST_t_AntiTop",
     "ST_t_Top",
-    "ST_tW_AntiTop",
-    "ST_tW_Top"
+    # "ST_tW_AntiTop",
+    # "ST_tW_Top"
 ]
 
-ewlist = ["WW", "WZ", "ZZ"]
+ewlist = ["WZ", "ZZ"]
 
 GG_ElEl_list = [
     "GGToMuMu_10to30_ElEl",
@@ -225,7 +225,7 @@ class Plotter:
 
     def PrepareFiles(self):
         self.fileSet = ROOT.TFile(self.rootPath, "READ");
-        self.fileSet_BKG = ROOT.TFile("../../plotter/EMU_BKG_251201/EMU_bkg.root", "READ");
+        self.fileSet_BKG = ROOT.TFile("../../plotter/EMU_BKG_260209/EMU_bkg.root", "READ");
 
     def PrepareNorm(self):
         for mcSet in mcList:
@@ -276,6 +276,7 @@ class Plotter:
         DY = self.GetMCHist("DY")
         TT = self.fileSet_BKG.Get(self.era + "/TOP_MUMU/MUMU_OS_TOP_DataDriven" + case)
         # ST = self.fileSet_BKG.Get(self.era + "/SingleTop_MUMU/MUMU_OS_ST_DataDriven" + case)
+        # ST = self.GetMCHist("ST")
         DY_tau = self.GetMCHist("NNLO_tautau")
         EW = self.GetMCHist("EW")
         # WW = self.fileSet_BKG.Get(self.era + "/WW_MUMU/MUMU_OS_WW_DataDriven" + case)
@@ -376,9 +377,9 @@ class Plotter:
             "DY#rightarrow#tau#tau": DY_tau,
             "#gamma#gamma#rightarrow#mu#mu": GG,
             # "Single Top": ST,
-            "VV": EW,
+            "ZZ + ZW": EW,
             # "WW": WW,
-            "TTbar + Single Top": TT,
+            "tt + tW + WW": TT,
             "DY#rightarrow#mu#mu": DY
         }
 
@@ -526,9 +527,9 @@ class Plotter:
             histoSet[mc].Scale(normFactor[mc]);
             histoSet[mc] = self.CheckSanity(histoSet[mc])
 
-        returnHist = histoSet["WW"].Clone(f"EW_{uuid.uuid4()}")
+        returnHist = histoSet["ZZ"].Clone(f"EW_{uuid.uuid4()}")
         for mc in ewlist:
-            if (mc != "WW"):
+            if (mc != "ZZ"):
                 returnHist.Add(histoSet[mc])
 
         return returnHist

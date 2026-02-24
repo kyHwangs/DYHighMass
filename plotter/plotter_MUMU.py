@@ -78,11 +78,16 @@ stlist = [
     "ST_s",
     "ST_t_AntiTop",
     "ST_t_Top",
-    "ST_tW_AntiTop",
-    "ST_tW_Top"
 ]
 
-ewlist = ["WW", "WZ", "ZZ"]
+twlist = [
+    "TTTo2L2Nu",
+    "ST_tW_AntiTop",
+    "ST_tW_Top",
+    "WW"
+]
+
+ewlist = ["WZ", "ZZ"]
 
 GG_ElEl_list = [
     "GGToMuMu_10to30_ElEl",
@@ -275,8 +280,8 @@ class Plotter:
 
         data = self.fileSet.Get(self.era + "/Data/" + self.histName)
         DY = self.GetMCHist("DY")
-        TT = self.GetMCHist("TTTo2L2Nu")
-        ST = self.GetMCHist("ST")
+        TT = self.GetMCHist("TW")
+        # ST = self.GetMCHist("ST")
         DY_tau = self.GetMCHist("NNLO_tautau")
         EW = self.GetMCHist("EW")
         GG_ElEl = self.GetMCHist("GG_ElEl")
@@ -287,9 +292,9 @@ class Plotter:
         GG.Add(GG_InelInel)
         # WJets = self.GetMCHist("WJetsToLNu")
         
-        MC = DY.Clone(f"MC_{uuid.uuid4()}")
-        MC.Add(TT)
-        MC.Add(ST)
+        MC = TT.Clone(f"MC_{uuid.uuid4()}")
+        # MC.Add(TT)
+        # MC.Add(ST)
         MC.Add(DY_tau)
         MC.Add(EW)
         MC.Add(GG_ElEl)
@@ -374,10 +379,10 @@ class Plotter:
         stackSeet = {
             "DY#rightarrow#tau#tau": DY_tau,
             "#gamma#gamma#rightarrow#mu#mu": GG,
-            "Single Top": ST,
-            "VV": EW,
-            "TT": TT,
-            "DY#rightarrow#mu#mu": DY
+            # "Single Top": ST,
+            "ZZ + ZW": EW,
+            "tt + tW + WW": TT,
+            # "DY#rightarrow#mu#mu": DY
         }
 
         CMS.cmsDrawStack(stack, leg, stackSeet, data = data)
@@ -387,6 +392,9 @@ class Plotter:
         latex.SetTextAlign(14);
         latex.SetTextSize(0.04);
         latex.SetTextFont(42);
+
+        hook[0] = hook[0] + ", OS, inverted ISO"
+
         for idx, addon in enumerate(hook):
             latex.DrawLatexNDC(0.18, 0.86 - idx * 0.065, addon.encode('utf-8'))
 
@@ -419,6 +427,8 @@ class Plotter:
             return self.GetSingleTopHist()
         elif mcName == "EW":
             return self.GetEWHist()
+        elif mcName == "TW":
+            return self.GetTWHist()
         elif mcName == "GG_ElEl":
             return self.GetGG_ElEl()
         elif mcName == "GG_InelElElInel":
@@ -523,14 +533,28 @@ class Plotter:
             histoSet[mc].Scale(normFactor[mc]);
             histoSet[mc] = self.CheckSanity(histoSet[mc])
 
-        returnHist = histoSet["WW"].Clone(f"EW_{uuid.uuid4()}")
+        returnHist = histoSet["WZ"].Clone(f"EW_{uuid.uuid4()}")
         for mc in ewlist:
-            if (mc != "WW"):
+            if (mc != "WZ"):
                 returnHist.Add(histoSet[mc])
 
         return returnHist
 
+    def GetTWHist(self):
+        histoSet = {}
+        for mc in twlist:
+            histoSet[mc] = self.fileSet.Get(self.era + "/" + mc + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
+            histoSet[mc].SetDirectory(0)
+            histoSet[mc].SetStats(0);
+            histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
 
+        returnHist = histoSet["TTTo2L2Nu"].Clone(f"TW_{uuid.uuid4()}")
+        for mc in twlist:
+            if (mc != "TTTo2L2Nu"):
+                returnHist.Add(histoSet[mc])
+
+        return returnHist
 
 
 def main(args):

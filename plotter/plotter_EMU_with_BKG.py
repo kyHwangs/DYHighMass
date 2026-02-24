@@ -82,7 +82,14 @@ stlist = [
     "ST_tW_Top"
 ]
 
-ewlist = ["WW", "WZ", "ZZ"]
+twlist = [
+    "TTTo2L2Nu",
+    "ST_tW_AntiTop",
+    "ST_tW_Top",
+    "WW",
+]
+
+ewlist = ["WZ", "ZZ"]
 
 GG_ElEl_list = [
     "GGToMuMu_10to30_ElEl",
@@ -225,7 +232,7 @@ class Plotter:
 
     def PrepareFiles(self):
         self.fileSet = ROOT.TFile(self.rootPath, "READ");
-        self.fileSet_BKG = ROOT.TFile("../../plotter/EMU_BKG_251201/EMU_bkg.root", "READ");
+        self.fileSet_BKG = ROOT.TFile("../../plotter/EMU_BKG_260209/EMU_bkg.root", "READ");
 
     def PrepareNorm(self):
         for mcSet in mcList:
@@ -273,9 +280,8 @@ class Plotter:
 
 
         data = self.fileSet.Get(self.era + "/Data/" + self.histName)
-        DY = self.GetMCHist("DY")
-        TT = self.GetMCHist("TTTo2L2Nu")
-        ST = self.GetMCHist("ST")
+        # DY = self.GetMCHist("DY")
+        TT = self.GetMCHist("tW")
         DY_tau = self.GetMCHist("NNLO_tautau")
         EW = self.GetMCHist("EW")
         GG_ElEl = self.GetMCHist("GG_ElEl")
@@ -289,7 +295,7 @@ class Plotter:
         
         MC = TT.Clone(f"MC_{uuid.uuid4()}")
         # MC.Add(TT)
-        MC.Add(ST)
+        # MC.Add(tW)
         MC.Add(DY_tau)
         MC.Add(EW)
         MC.Add(GG_ElEl)
@@ -371,7 +377,6 @@ class Plotter:
         stack = ROOT.THStack("stack", "Stacked")
 
         leg = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        leg.AddEntry(data, "Data", "lp")
 
         stackSeet = {
             # "WJets": WJets,
@@ -381,15 +386,14 @@ class Plotter:
             # "#gamma#gamma_ElEl": GG_ElEl,
             # "#gamma#gamma_InelElElInel": GG_InelElElInel,
             # "#gamma#gamma_InelInel": GG_InelInel,
-            "Single Top": ST,
-            "VV": EW,
-            "TT": TT,
+            "ZZ + ZW": EW,
+            "tt + tW + WW": TT,
+            # "TT": TT,
             # "DY": DY
         }
 
 
-        CMS.cmsDrawStack(stack, leg, stackSeet)
-        CMS.cmsDraw(data, "P", mcolor=ROOT.kBlack)
+        CMS.cmsDrawStack(stack, leg, stackSeet, data = data)
         dicanv.cd(1).RedrawAxis()
 
         latex = ROOT.TLatex()
@@ -426,6 +430,8 @@ class Plotter:
             return self.GetDYHist()
         elif mcName == "ST":
             return self.GetSingleTopHist()
+        elif mcName == "tW":
+            return self.GettWHist()
         elif mcName == "EW":
             return self.GetEWHist()
         elif mcName == "GG_ElEl":
@@ -532,13 +538,28 @@ class Plotter:
             histoSet[mc].Scale(normFactor[mc]);
             histoSet[mc] = self.CheckSanity(histoSet[mc])
 
-        returnHist = histoSet["WW"].Clone(f"EW_{uuid.uuid4()}")
+        returnHist = histoSet["WZ"].Clone(f"EW_{uuid.uuid4()}")
         for mc in ewlist:
-            if (mc != "WW"):
+            if (mc != "WZ"):
                 returnHist.Add(histoSet[mc])
 
         return returnHist
 
+    def GettWHist(self):
+        histoSet = {}
+        for mc in twlist:
+            histoSet[mc] = self.fileSet.Get(self.era + "/" + mc + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
+            histoSet[mc].SetDirectory(0)
+            histoSet[mc].SetStats(0);
+            histoSet[mc].Scale(normFactor[mc]);
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
+
+        returnHist = histoSet["TTTo2L2Nu"].Clone(f"tW_{uuid.uuid4()}")
+        for mc in twlist:
+            if (mc != "TTTo2L2Nu"):
+                returnHist.Add(histoSet[mc])
+
+        return returnHist
 
 
 

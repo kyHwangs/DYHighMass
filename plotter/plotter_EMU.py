@@ -82,7 +82,14 @@ stlist = [
     "ST_tW_Top"
 ]
 
-ewlist = ["WW", "WZ", "ZZ"]
+twlist = [
+    "ST_tW_AntiTop",
+    "ST_tW_Top",
+    "TTTo2L2Nu",
+    "WW"
+]
+
+ewlist = ["WZ", "ZZ"]
 
 GG_ElEl_list = [
     "GGToMuMu_10to30_ElEl",
@@ -272,8 +279,8 @@ class Plotter:
 
 
         data = self.fileSet.Get(self.era + "/Data/" + self.histName)
-        DY = self.GetMCHist("DY")
-        TT = self.GetMCHist("TTTo2L2Nu")
+        # DY = self.GetMCHist("DY")
+        TT = self.GetMCHist("TW")
         ST = self.GetMCHist("ST")
         DY_tau = self.GetMCHist("NNLO_tautau")
         EW = self.GetMCHist("EW")
@@ -287,7 +294,7 @@ class Plotter:
         
         MC = TT.Clone(f"MC_{uuid.uuid4()}")
         # MC.Add(TT)
-        MC.Add(ST)
+        # MC.Add(ST)
         MC.Add(DY_tau)
         MC.Add(EW)
         MC.Add(GG_ElEl)
@@ -368,7 +375,6 @@ class Plotter:
         stack = ROOT.THStack("stack", "Stacked")
 
         leg = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
-        leg.AddEntry(data, "Data", "lp")
 
         stackSeet = {
             # "WJets": WJets,
@@ -377,14 +383,16 @@ class Plotter:
             # "#gamma#gamma_ElEl": GG_ElEl,
             # "#gamma#gamma_InelElElInel": GG_InelElElInel,
             # "#gamma#gamma_InelInel": GG_InelInel,
-            "Single Top": ST,
-            "VV": EW,
-            "TT": TT,
+            # "Single Top": ST,
+            "ZZ + ZW": EW,
+            "tt + tW + WW": TT,
             # "DY": DY
         }
 
-        CMS.cmsDrawStack(stack, leg, stackSeet)
-        CMS.cmsDraw(data, "P", mcolor=ROOT.kBlack)
+        CMS.cmsDrawStack(stack, leg, stackSeet, data = data)
+        dicanv.cd(1).RedrawAxis();
+
+        hook[0] = hook[0] + ", OS, inverted ISO and ID"
 
         latex = ROOT.TLatex()
         latex.SetTextAlign(14);
@@ -418,6 +426,8 @@ class Plotter:
     def GetMCHist(self, mcName):
         if mcName == "DY":
             return self.GetDYHist()
+        elif mcName == "TW":
+            return self.GetTWHist()
         elif mcName == "ST":
             return self.GetSingleTopHist()
         elif mcName == "EW":
@@ -526,14 +536,28 @@ class Plotter:
             histoSet[mc].Scale(normFactor[mc])
             histoSet[mc] = self.CheckSanity(histoSet[mc])
 
-        returnHist = histoSet["WW"].Clone(f"EW_{uuid.uuid4()}")
+        returnHist = histoSet["WZ"].Clone(f"EW_{uuid.uuid4()}")
         for mc in ewlist:
-            if (mc != "WW"):
+            if (mc != "WZ"):
                 returnHist.Add(histoSet[mc])
 
         return returnHist
 
+    def GetTWHist(self):
+        histoSet = {}
+        for mc in twlist:
+            histoSet[mc] = self.fileSet.Get(self.era + "/" + mc + "/" + self.histName).Clone(f"{self.histName}_{uuid.uuid4()}")
+            histoSet[mc].SetDirectory(0)
+            histoSet[mc].SetStats(0)
+            histoSet[mc].Scale(normFactor[mc])
+            histoSet[mc] = self.CheckSanity(histoSet[mc])
 
+        returnHist = histoSet["TTTo2L2Nu"].Clone(f"TW_{uuid.uuid4()}")
+        for mc in twlist:
+            if (mc != "TTTo2L2Nu"):
+                returnHist.Add(histoSet[mc])
+
+        return returnHist
 
 
 def main(args):
@@ -603,7 +627,7 @@ def main(args):
     }
 
     latex = [
-        args.era + ", e#mu channel, SS, inverted ID & ISO",
+        args.era + ", e#mu channel",
         "p_{T}(#mu) > 52 GeV, |#eta(#mu)| < 2.4",
         "p_{T}(e) > 20 GeV, |#eta(e)| < 2.5",
         "",
@@ -618,8 +642,8 @@ def main(args):
         latex_temp = latex.copy()
         latex_temp[3] = addon_hook[case]
 
-        plotter.Plot("h_PairMass", case, ""                       , latex_temp, xTitle = "M(e#mu) [GeV]"  ,xmin = 200, xmax = 4000, logy = True, logx = True)
-        # plotter.Plot("h_PairMass", case, ""                       , latex_temp, xTitle = "M(e#mu) [GeV]"  ,xmin = 200, xmax = 4000, logy = True, logx = True, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case])
+        # plotter.Plot("h_PairMass", case, ""                       , latex_temp, xTitle = "M(e#mu) [GeV]"  ,xmin = 200, xmax = 4000, logy = True, logx = True)
+        plotter.Plot("h_PairMass", case, ""                       , latex_temp, xTitle = "M(e#mu) [GeV]"  ,xmin = 200, xmax = 4000, logy = True, logx = True, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case])
 
         # for massbin in massBins:
         #     latex_temp[4] = addon_hook_mass[massbin]
