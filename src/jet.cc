@@ -23,6 +23,7 @@ void JET::init(TTreeReader* fTreeReader) {
 
   if (fIsMC) {
 
+    Jet_genJetIdx = new TTreeReaderArray<int>(*fTreeReader, "Jet_genJetIdx");
     Jet_hadronFlavour = new TTreeReaderArray<int>(*fTreeReader, "Jet_hadronFlavour");
   }
 }
@@ -53,13 +54,17 @@ bool JET::PrepareJet() {
     if (fIsMC)
       hadFlav = Jet_hadronFlavour->At(i);
 
+    int genJetIdx = -1;
+    if (fIsMC)
+      genJetIdx = Jet_genJetIdx->At(i);
+
     bool isBJet = false;
     if (Jet_btagDeepFlavB->At(i) > fBJetTaggerCut)
       isBJet = true;
 
-    fFVecJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav));
+    fFVecJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav, genJetIdx));
     if (isBJet)
-      fFVecBJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav));
+      fFVecBJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav, genJetIdx));
 
   }
 
@@ -73,6 +78,9 @@ double JET::GetPUIDSF() {
   for (int i = 0; i < fFVecJets.size(); i++) {
 
     if (!(fFVecJets.at(i).fVec.Pt() < 50. && fFVecJets.at(i).fVec.Pt() >= 30.))
+      continue;
+
+    if (fFVecJets.at(i).fGenJetIdx == -1)
       continue;
 
     weight *= fJetPUIDTable.getEfficiency(fFVecJets.at(i).fVec.Pt(), fFVecJets.at(i).fVec.Eta());

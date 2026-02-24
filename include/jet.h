@@ -66,9 +66,10 @@ public:
     bool fPassingBJetTagger;
     int fID;
     int fHadFlav;
+    int fGenJetIdx;
 
-    StdJet(TLorentzVector fVec_, TLorentzVector fVecRaw_, bool fPassingBJetTagger_, int fID_, int fHadFlav_)
-    : fVec(fVec_), fVecRaw(fVecRaw_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_), fHadFlav(fHadFlav_)
+    StdJet(TLorentzVector fVec_, TLorentzVector fVecRaw_, bool fPassingBJetTagger_, int fID_, int fHadFlav_, int fGenJetIdx_)
+    : fVec(fVec_), fVecRaw(fVecRaw_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_), fHadFlav(fHadFlav_), fGenJetIdx(fGenJetIdx_)
     { };
   };
 
@@ -93,6 +94,7 @@ public:
   TTreeReaderArray<int>* Jet_puId;
   TTreeReaderArray<float>* Jet_btagDeepFlavB;
   TTreeReaderArray<int>* Jet_hadronFlavour;
+  TTreeReaderArray<int>* Jet_genJetIdx;
 
 private:
 
