@@ -32,7 +32,7 @@ Jet:
   Pt: 30
   Eta: 2.4
   ID: 6
-  PUID: 4
+  PUID: 1
   BTag: 0.2598
   Cleaning: false
 
@@ -43,7 +43,7 @@ Correction:
   Trigger: true
   ElecReco: true
   ElecID: true
-  ElecMisCharge: true
+  ElecMisCharge: false
   PileUp: true
   L1PreFiring: true
   JetPU: true
