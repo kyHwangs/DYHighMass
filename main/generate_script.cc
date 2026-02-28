@@ -594,6 +594,7 @@ eval "$@"
   std::vector<std::string> fEraVec = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
   std::vector<std::string> fTierVec = {"Data", "MC"};
   YAML::Node fConfig = YAML::LoadFile(std::string("../input/dataset.yml"));
+  if (fChannelTemp == "MUMU") fConfig = YAML::LoadFile(std::string("../input_v2/dataset.yml"));
 
   for (int i = 0; i < fChannelMap.size(); i++) {
 
