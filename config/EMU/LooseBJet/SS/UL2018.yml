@@ -72,7 +72,7 @@ Efficiency:
   ElecMisCharge:
     Path: ../../EfficiencyTable/elec/ChargeMisId/CFRate2018.root
   JetPU:
-    Path: ../../EfficiencyTable/JetPUID/2018_L.csv
+    Path: ../../correctionlib/JetPUID/2018.json
   BTag:
     Path: ../../correctionlib/bTag/2018.json
   BTagEff:

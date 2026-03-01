@@ -58,7 +58,7 @@ Efficiency:
     Data: NUM_HLT_DEN_HighPtLooseRelIsoProbes_DATAeff
     MC: NUM_HLT_DEN_HighPtLooseRelIsoProbes_MCeff
   JetPU:
-    Path: ../../EfficiencyTable/JetPUID/2018_L.csv
+    Path: ../../correctionlib/JetPUID/2018.json
   BTag:
     Path: ../../correctionlib/bTag/2018.json
   BTagEff:

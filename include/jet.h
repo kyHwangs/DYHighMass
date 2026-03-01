@@ -33,7 +33,7 @@ public:
     fJetID = fJetConf["ID"].as<int>();
     fJetPUID = fJetConf["PUID"].as<int>();
 
-    fJetPUIDTable = EffTable(fConfig["Efficiency"]["JetPU"]["Path"].as<std::string>());
+    fJetPUIDSF = correction::CorrectionSet::from_file(fConfig["Efficiency"]["JetPU"]["Path"].as<std::string>())->at("PUJetID_eff");
 
     fBTagWP = fJetConf["BTag"].as<std::string>();
 
@@ -68,9 +68,10 @@ public:
     int fID;
     int fHadFlav;
     int fGenJetIdx;
+    bool fPassingPUID;
 
-    StdJet(TLorentzVector fVec_, TLorentzVector fVecRaw_, bool fPassingBJetTagger_, int fID_, int fHadFlav_, int fGenJetIdx_)
-    : fVec(fVec_), fVecRaw(fVecRaw_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_), fHadFlav(fHadFlav_), fGenJetIdx(fGenJetIdx_)
+    StdJet(TLorentzVector fVec_, TLorentzVector fVecRaw_, bool fPassingBJetTagger_, int fID_, int fHadFlav_, int fGenJetIdx_, bool fPassingPUID_)
+    : fVec(fVec_), fVecRaw(fVecRaw_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_), fHadFlav(fHadFlav_), fGenJetIdx(fGenJetIdx_), fPassingPUID(fPassingPUID_)
     { };
   };
 
@@ -101,6 +102,7 @@ private:
 
   std::vector<StdJet> fFVecJets;
   std::vector<StdJet> fFVecBJets;
+  std::vector<StdJet> fFVecHSJet;
 
   float fJetPt;
   float fEta;
@@ -111,7 +113,8 @@ private:
   bool fCleaning;
   bool fIsMC;
 
-  EffTable fJetPUIDTable;
+  std::shared_ptr<const correction::Correction> fJetPUIDSF;
+  
   EffTable fJetBTagEffB;
   EffTable fJetBTagEffC;
   EffTable fJetBTagEffL;

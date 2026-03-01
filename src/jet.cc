@@ -32,6 +32,7 @@ bool JET::PrepareJet() {
 
   fFVecJets.clear();
   fFVecBJets.clear();
+  fFVecHSJet.clear();
 
   for (int i = 0; i < **nJet; i++) {
 
@@ -42,9 +43,6 @@ bool JET::PrepareJet() {
       continue;
 
     if (!(Jet_jetId->At(i) >= fJetID))
-      continue;
-
-    if (Jet_pt->At(i) < 50. && !(Jet_puId->At(i) >= fJetPUID))
       continue;
 
     TLorentzVector jets;
@@ -62,29 +60,102 @@ bool JET::PrepareJet() {
     if (Jet_btagDeepFlavB->At(i) > fBJetTaggerCut)
       isBJet = true;
 
-    fFVecJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav, genJetIdx));
-    if (isBJet)
-      fFVecBJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav, genJetIdx));
+    bool tPassingPUJetID = false;
+    if (Jet_puId->At(i) >= fJetPUID)
+      tPassingPUJetID = true;
 
+    if (Jet_pt->At(i) >= 50. || (Jet_pt->At(i) < 50. && tPassingPUJetID)) {
+
+      fFVecJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav, genJetIdx, tPassingPUJetID));
+      if (isBJet)
+        fFVecBJets.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav, genJetIdx, tPassingPUJetID));
+
+    }
+
+    if (Jet_pt->At(i) < 50. && genJetIdx != -1) {
+
+      fFVecHSJet.push_back(StdJet(jets, jets, isBJet, Jet_jetId->At(i), hadFlav, genJetIdx, tPassingPUJetID));
+    }
   }
+
+  // std::cout << "######################################################################" << std::endl;
+  // std::cout << "                            Jet Debugging                             " << std::endl;
+  // std::cout << "----------------------------------------------------------------------" << std::endl;
+  // std::cout << " number of jets: " << fFVecJets.size() << std::endl;
+  // for (int i = 0; i < fFVecJets.size(); i++) {
+  //   std::cout << "  " << i << " th jet: " << std::endl;
+  //   std::cout << "    " << i << " pT: " << fFVecJets.at(i).fVec.Pt() << std::endl;
+  //   std::cout << "    " << i << " eta: " << fFVecJets.at(i).fVec.Eta() << std::endl;
+  //   std::cout << "    " << i << " ID: " << fFVecJets.at(i).fID << std::endl;
+  //   std::cout << "    " << i << " b-tagging: " << fFVecJets.at(i).fPassingBJetTagger << std::endl;
+  //   std::cout << "    " << i << " PUID: " << fFVecJets.at(i).fPassingPUID << std::endl;
+  // }
+
+  // std::cout << " number of b-jets: " << fFVecBJets.size() << std::endl;
+  // for (int i = 0; i < fFVecBJets.size(); i++) {
+  //   std::cout << "  " << i << " th jet: " << std::endl;
+  //   std::cout << "    " << i << " pT: " << fFVecBJets.at(i).fVec.Pt() << std::endl;
+  //   std::cout << "    " << i << " eta: " << fFVecBJets.at(i).fVec.Eta() << std::endl;
+  //   std::cout << "    " << i << " ID: " << fFVecBJets.at(i).fID << std::endl;
+  //   std::cout << "    " << i << " b-tagging: " << fFVecBJets.at(i).fPassingBJetTagger << std::endl;
+  //   std::cout << "    " << i << " PUID: " << fFVecBJets.at(i).fPassingPUID << std::endl;
+  // }
+
+  // std::cout << " number of HS jets: " << fFVecHSJet.size() << std::endl;
+  // for (int i = 0; i < fFVecHSJet.size(); i++) {
+  //   std::cout << "  " << i << " th jet: " << std::endl;
+  //   std::cout << "    " << i << " pT: " << fFVecHSJet.at(i).fVec.Pt() << std::endl;
+  //   std::cout << "    " << i << " eta: " << fFVecHSJet.at(i).fVec.Eta() << std::endl;
+  //   std::cout << "    " << i << " ID: " << fFVecHSJet.at(i).fID << std::endl;
+  //   std::cout << "    " << i << " b-tagging: " << fFVecHSJet.at(i).fPassingBJetTagger << std::endl;
+  //   std::cout << "    " << i << " PUID: " << fFVecHSJet.at(i).fPassingPUID << std::endl;
+  // }
+  // std::cout << "######################################################################" << std::endl;
 
   return true;
 }
 
 double JET::GetPUIDSF() {
 
-  double weight = 1.;
+  double pMC = 1.;
+  double pData = 1.;
 
-  for (int i = 0; i < fFVecJets.size(); i++) {
+  // std::cout << "######################################################################" << std::endl;
+  // std::cout << "                          PUJetID Debugging                           " << std::endl;
+  // std::cout << "----------------------------------------------------------------------" << std::endl;
 
-    if (!(fFVecJets.at(i).fVec.Pt() < 50. && fFVecJets.at(i).fVec.Pt() >= 30.))
-      continue;
 
-    if (fFVecJets.at(i).fGenJetIdx == -1)
-      continue;
+  for (int i = 0; i < fFVecHSJet.size(); i++) {
 
-    weight *= fJetPUIDTable.getEfficiency(fFVecJets.at(i).fVec.Pt(), fFVecJets.at(i).fVec.Eta());
+    double tSF = fJetPUIDSF->evaluate({fFVecHSJet.at(i).fVec.Eta(), fFVecHSJet.at(i).fVec.Pt(), "nom", "L"});
+    double tEff = fJetPUIDSF->evaluate({fFVecHSJet.at(i).fVec.Eta(), fFVecHSJet.at(i).fVec.Pt(), "MCEff", "L"});
+
+    // std::cout << i << " th jet: " << std::endl;
+
+    if (fFVecHSJet.at(i).fPassingPUID) {
+
+
+      // std::cout << "    " << i << " " << fFVecHSJet.at(i).fPassingPUID << " " << tEff << "  " << tEff * tSF << std::endl;
+
+      pMC *= tEff;
+      pData *= tEff * tSF;
+    
+    } else {
+
+      // std::cout << "    " << i << " " << fFVecHSJet.at(i).fPassingPUID << " " << "1 - " << tEff << "  1 - " << tEff * tSF << std::endl;
+
+      pMC *= (1 - tEff);
+      pData *= (1 - tEff * tSF);
+
+    }
+
   }
+
+  double weight = 1.;
+  if (pMC > 0.) weight = pData / pMC;
+
+  // std::cout << "pMC: " << pMC << " pData: " << pData << " weight: " << weight << std::endl;
+  // std::cout << "######################################################################" << std::endl;
 
   return weight;
 }
