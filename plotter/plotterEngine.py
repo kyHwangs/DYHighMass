@@ -10,8 +10,8 @@ parser.add_argument('--era', help=' : era to plot')
 args = parser.parse_args()
 
 
-CMS.SetExtraText("Preliminary")
-CMS.SetEnergy("13")
+# CMS.SetExtraText("Preliminary")
+# CMS.SetEnergy("13")
 ROOT.gROOT.SetBatch(ROOT.kTRUE)
 
 TotalMCList = [
@@ -223,8 +223,6 @@ class Plotter:
 
     def PrepareFiles(self):
         self.fileSet = ROOT.TFile(self.rootPath, "READ");
-        print ("era: ", self.era)
-        print("file loaded: ", self.rootPath)
 
     def PrepareNorm(self):
         for mcSet in TotalMCList:
@@ -241,6 +239,17 @@ class Plotter:
             
         return hist_clone
 
+    def CheckSanity2D(self, hist):
+
+        hist_clone = hist.Clone(f"{hist.GetName()}_{uuid.uuid4()}_cl")
+        for i in range(1, hist_clone.GetNbinsX() + 1):
+            for j in range(1, hist_clone.GetNbinsY() + 1):
+                if hist_clone.GetBinContent(i, j) < 0:
+                    hist_clone.SetBinContent(i, j, 0)
+                    hist_clone.SetBinError(i, j, 0)
+            
+        return hist_clone
+
     def GetMCHist(self, histName, list):
         
         histSet = {}
@@ -248,6 +257,7 @@ class Plotter:
             hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
             hist.SetDirectory(0)
             hist.SetStats(0);
+            hist.Sumw2();
             if (self.era != "merged"):
                 hist.Scale(normFactor[mc]);
             hist = self.CheckSanity(hist)
@@ -260,9 +270,28 @@ class Plotter:
         
         return return_hist
 
+    def GetMCHist2D(self, histName, list):
+        
+        histSet = {}
+        for mc in list:
+            hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
+            hist.SetDirectory(0)
+            hist.SetStats(0);
+            hist.Sumw2();
+            if (self.era != "merged"):
+                hist.Scale(normFactor[mc]);
+            hist = self.CheckSanity2D(hist)
+
+            histSet[mc] = hist
+
+        return_hist = histSet[list[0]].Clone(f"{histName}_{uuid.uuid4()}")
+        for mc in list[1:]:
+            return_hist.Add(histSet[mc])
+        
+        return return_hist
+
     def GetSingleHist(self, histname, sample):
 
-        print("loading plot: ", sample, histname)
 
         hist = self.fileSet.Get(self.era + "/" + sample + "/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
         hist.SetDirectory(0)
