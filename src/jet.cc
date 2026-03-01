@@ -96,23 +96,18 @@ double JET::GetBTagSF() {
 
   for (int i = 0; i < fFVecJets.size(); i++) {
 
-    double tJetEta = fFVecJets.at(i).fVec.Eta();
+    double tJetEta = std::abs(fFVecJets.at(i).fVec.Eta());
     double tJetPt = fFVecJets.at(i).fVec.Pt();
     int tHadFlav = fFVecJets.at(i).fHadFlav;
 
     if (tJetPt >= 1000.)
       tJetPt = 800.;
 
-    // std::cout << fFVecJets.size() << " " << i << " " << tJetPt << " " << tJetEta << " " << tHadFlav << " " << fFVecJets.at(i).fPassingBJetTagger << " ";
+    double tSFcentral = 1.;
+    if (tHadFlav == 5 || tHadFlav == 4) tSFcentral = fBTagMuJets->evaluate({"central", fBTagWP, tHadFlav, std::abs(tJetEta), tJetPt});
+    else tSFcentral = fBTagIncl->evaluate({"central", fBTagWP, 0, std::abs(tJetEta), tJetPt});
 
-    BTagEntry::JetFlavor jFLAV;
-    if (tHadFlav == 5)        jFLAV = BTagEntry::FLAV_B;
-    else if (tHadFlav == 4)   jFLAV = BTagEntry::FLAV_C;
-    else                      jFLAV = BTagEntry::FLAV_UDSG;
-
-    double tSFcentral   = fBTagCalibReader->eval_auto_bounds("central", jFLAV, tJetEta, tJetPt);
-
-    double tJetEff = -1;
+    double tJetEff = 1.;
     if (tHadFlav == 5)        tJetEff = fJetBTagEffB.getEfficiency(tJetPt, tJetEta);
     else if (tHadFlav == 4)   tJetEff = fJetBTagEffC.getEfficiency(tJetPt, tJetEta);
     else                      tJetEff = fJetBTagEffL.getEfficiency(tJetPt, tJetEta);

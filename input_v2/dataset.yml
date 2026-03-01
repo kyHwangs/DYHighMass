@@ -597,7 +597,7 @@
 
   NNLO_tautau:
     Name: DYJetsToTauTau_M-50_AtLeastOneEorMuDecay_H2ErratumFix
-    nList: 41
+    nList: 40
     nEvent: 357593543
     IsMC: true
 
@@ -880,7 +880,7 @@
 
   TTTo2L2Nu:
     Name: TTTo2L2Nu
-    nList: 34
+    nList: 33
     nEvent: 145020000
     IsMC: true
 

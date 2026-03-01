@@ -29,7 +29,7 @@ Jet:
   Eta: 2.4
   ID: 6
   PUID: 1
-  BTag: 0.2489
+  BTag: M
   Cleaning: false
 
 Correction:
@@ -60,7 +60,7 @@ Efficiency:
   JetPU:
     Path: ../../EfficiencyTable/JetPUID/2016_L.csv
   BTag:
-    Path: ../../EfficiencyTable/BTag/wp_deepJet_2016postVFP.csv
+    Path: ../../correctionlib/bTag/2016postVFP.json
   BTagEff:
     bQuark: ../../EfficiencyTable/BTagEff/DY_2016_postVFP_h_BTagEff_B.txt
     cQuark: ../../EfficiencyTable/BTagEff/DY_2016_postVFP_h_BTagEff_C.txt
