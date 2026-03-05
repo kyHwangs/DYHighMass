@@ -50,14 +50,10 @@ public:
     fID =fJobID;
     
     YAML::Node fConfigSample = YAML::LoadFile(std::string("../../input/dataset.yml"));
-    if (fChannel == "MUMU")fConfigSample = YAML::LoadFile(std::string("../../input_v2/dataset.yml"));
 
     std::string fListPath =
         "../../input/" + (std::string)(fEra.Data()) + "/" + fConfigSample[(std::string)(fEra.Data())][(std::string)(fSample.Data())]["Name"].as<std::string>() +
         "/input_" + std::to_string(fJobID) + ".list";
-
-    if (fChannel == "MUMU") fListPath = "../../input_v2/" + (std::string)(fEra.Data()) + "/" + fConfigSample[(std::string)(fEra.Data())][(std::string)(fSample.Data())]["Name"].as<std::string>() +
-                                        "/input_" + std::to_string(fJobID) + ".list";
 
     std::cout << "######################################################################" << std::endl;
     std::cout << "                             Merging list                             " << std::endl;

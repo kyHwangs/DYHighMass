@@ -15,6 +15,8 @@
 
 #include "yaml-cpp/yaml.h"
 
+namespace fs = std::filesystem;
+
 static std::map<std::string, std::map<std::string, std::map<std::string, std::vector<std::string>>>> InputMap = {
   {
     {
@@ -449,6 +451,9 @@ int main(int argc, char* argv[]) {
     fInput = "output.root";
   }
 
+  // bool fErrorCorrection = false;
+  // fOpt->GetVariable("error", &fErrorCorrection);
+
   TFile* fFile = new TFile(fInput.c_str(), "READ");
 
   auto fChannelMap = InputMap[fChannelTemp];
@@ -502,9 +507,11 @@ int main(int argc, char* argv[]) {
     }
   }
 
+  std::vector<std::pair<std::string, std::string>> fErrorList;
   std::cout << "ERROR SAMPLES:" << std::endl;
   for (int i = 0; i < fErrorEra.size(); i++) {
     std::cout << "    " << fErrorEra[i] << " " << fErrorSample[i] << " ref: " << fErrorRef[i] << " target: " << fErrorTarget[i] << std::endl;
+    fErrorList.push_back(std::make_pair(fErrorEra[i], fErrorSample[i]));
   }
 
   return 1;

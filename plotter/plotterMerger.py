@@ -7,6 +7,9 @@ import array
 
 import plotterEngine
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--channel', help=' : channel to merge')
+args = parser.parse_args()
 
 class Merger:
     def __init__(self, plot_list, case_list, input_path = "output.root"):
@@ -35,6 +38,7 @@ class Merger:
                     self.merge_file.mkdir(f"merged/{sample}/{case}")
                 for plot in self.plot_list:
                     histname = case + "/" + plot + case
+                    if case == "": histname = plot
 
                     hist_p2016_preVFP = self.p2016_preVFP.GetSingleHist(histname, sample)
                     hist_p2016_postVFP = self.p2016_postVFP.GetSingleHist(histname, sample)
@@ -45,7 +49,6 @@ class Merger:
                     hist_merged.Add(hist_p2016_postVFP)
                     hist_merged.Add(hist_p2017)
                     hist_merged.Add(hist_p2018)
-
                     hist_merged.SetName(plot + case)
 
                     self.merge_file.cd(f"merged/{sample}/{case}")
@@ -53,13 +56,11 @@ class Merger:
 
         self.merge_file.Close()
 
-
-
-
-def main():
+def main(args):
 
     case_list = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
-    plot_list = [
+    
+    plot_list_mumu = [
         "h_JetPt",
         "h_JetEta",
         "h_JetPhi",
@@ -81,7 +82,33 @@ def main():
         "h_dimuonRap",
     ]
 
-    merger = Merger(plot_list, case_list)
+    plot_list_emu = [
+        "h_JetPt",
+        "h_JetEta",
+        "h_JetPhi",
+        "h_BJetPt",
+        "h_BJetEta",
+        "h_BJetPhi",
+        "h_ElecPt",
+        "h_ElecEta",
+        "h_ElecPhi",
+        "h_MuonPt",
+        "h_MuonEta",
+        "h_MuonPhi",
+        "h_PairMass",
+        "h_PairDeltaR",
+        "h_PairPt",
+        "h_PairRap"
+    ]
+
+    if args.channel == "MUMU":
+        merger = Merger(plot_list_mumu, case_list)
+    elif args.channel == "EMU":
+        merger = Merger(plot_list_emu, case_list)
+    else:
+        print("Invalid channel")
+        return
+
     merger.Merge()
 
 
@@ -89,4 +116,4 @@ if __name__ == "__main__" :
     ROOT.TH1.AddDirectory(False)
     ROOT.TH1.SetDefaultSumw2()
 
-    main()
+    main(args)

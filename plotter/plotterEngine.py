@@ -5,11 +5,6 @@ import uuid
 import cmsstyle as CMS
 import array
 
-parser = argparse.ArgumentParser()
-parser.add_argument('--era', help=' : era to plot')
-args = parser.parse_args()
-
-
 # CMS.SetExtraText("Preliminary")
 # CMS.SetEnergy("13")
 ROOT.gROOT.SetBatch(ROOT.kTRUE)
@@ -205,8 +200,6 @@ xSec = {
     "GGToEE_1500toInf_InelInel": 0.00002023,
 }
 
-normFactor = {}
-
 
 class Plotter:
     def __init__(self, era, rootPath = "output.root"):
@@ -218,6 +211,8 @@ class Plotter:
         CMS.SetLumi(self.lumi)
 
         self.PrepareFiles()
+
+        self.normFactor = {}
         self.PrepareNorm()
 
 
@@ -227,7 +222,7 @@ class Plotter:
     def PrepareNorm(self):
         for mcSet in TotalMCList:
             nEvent = self.fileSet.Get(self.era + "/" + mcSet + "/h_EventInfo").GetBinContent(4)
-            normFactor[mcSet] = (1000. * self.lumi * xSec[mcSet]) / nEvent;
+            self.normFactor[mcSet] = (1000. * self.lumi * xSec[mcSet]) / nEvent;
 
     def CheckSanity(self, hist):
 
@@ -259,7 +254,7 @@ class Plotter:
             hist.SetStats(0);
             hist.Sumw2();
             if (self.era != "merged"):
-                hist.Scale(normFactor[mc]);
+                hist.Scale(self.normFactor[mc]);
             hist = self.CheckSanity(hist)
 
             histSet[mc] = hist
@@ -279,7 +274,7 @@ class Plotter:
             hist.SetStats(0);
             hist.Sumw2();
             if (self.era != "merged"):
-                hist.Scale(normFactor[mc]);
+                hist.Scale(self.normFactor[mc]);
             hist = self.CheckSanity2D(hist)
 
             histSet[mc] = hist
@@ -292,15 +287,24 @@ class Plotter:
 
     def GetSingleHist(self, histname, sample):
 
-
         hist = self.fileSet.Get(self.era + "/" + sample + "/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
         hist.SetDirectory(0)
         hist.Sumw2()
         if sample != "Data":
-            hist.Scale(normFactor[sample]);
+            hist.Scale(self.normFactor[sample]);
         hist = self.CheckSanity(hist)
 
         return hist
+
+    def GetSingleHist_NoScale(self, histname, sample):
+
+        hist = self.fileSet.Get(self.era + "/" + sample + "/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
+        hist.SetDirectory(0)
+        hist.Sumw2()
+        hist = self.CheckSanity(hist)
+
+        return hist
+
 
     def GetDataHist(self, histName):
         hist = self.fileSet.Get(self.era + "/Data/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
