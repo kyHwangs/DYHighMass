@@ -488,6 +488,39 @@ int main(int argc, char* argv[]) {
   fs::path fLogDirFS(fLogDirStr.data());
   if( !(fs::exists(fLogDirFS)) ) fs::create_directory(fLogDirFS);
 
+  std::vector<std::string> fErrorSampleVec;
+  fOpt->GetVector("error-sample", &fErrorSampleVec);
+
+  std::string fJobList = "";
+  auto fChannelMap = InputMap[fChannelTemp];
+  YAML::Node fConfig = YAML::LoadFile(std::string("../input/dataset.yml"));
+
+  if (fErrorSampleVec.size() > 0) {
+    for (int i = 0; i < fErrorSampleVec.size(); i++) {
+      
+      size_t tLint = fErrorSampleVec.at(i).find('-');
+      std::string tEra = fErrorSampleVec.at(i).substr(0, tLint);
+      std::string tSample = fErrorSampleVec.at(i).substr(tLint + 1); 
+
+      int nList = fConfig[tEra][tSample]["nList"].as<int>();
+      for (int l = 0; l < nList; l++) {
+        fJobList += R"(../../config/)" + fChannel + fSuffix + R"(/UL)" + tEra + R"(.yml )" + tEra + R"( )" + tSample + R"( )" + std::to_string(l + 1) + "\n";
+      }
+    }
+    
+    std::string fJobListStr = fBaseDirStr + "/joblist.txt";
+    std::ofstream fJobListStream(fJobListStr);
+    if (fJobListStream.is_open()) {
+      fJobListStream << fJobList;
+      fJobListStream.close();
+    } else {
+      std::cout << "Failed to create config file: " << fJobListStr << std::endl;
+      return -1;
+    }
+
+    return 1;
+  }
+
   std::string fCondorSubmit = R"(universe              = vanilla
 executable            = condor_wrapper.sh
 getenv                = True
@@ -588,13 +621,9 @@ eval "$@"
     return -1;
   }
 
-  std::string fJobList = "";
-
-  auto fChannelMap = InputMap[fChannelTemp];
+  fJobList = "";
   std::vector<std::string> fEraVec = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
   std::vector<std::string> fTierVec = {"Data", "MC"};
-  YAML::Node fConfig = YAML::LoadFile(std::string("../input/dataset.yml"));
-  if (fChannelTemp == "MUMU") fConfig = YAML::LoadFile(std::string("../input_v2/dataset.yml"));
 
   for (int i = 0; i < fChannelMap.size(); i++) {
 
