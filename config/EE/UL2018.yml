@@ -22,7 +22,7 @@ Jet:
 Correction:
   Reco: true
   ID: true
-  Trigger: false
+  Trigger: true
   ElecMisCharge: true
   PileUp: true
   L1PreFiring: true
@@ -40,8 +40,9 @@ Efficiency:
     Path: ../../correctionlib/electron/reco/EGM_2018.json
     Name: UL-Electron-ID-SF
   Trigger:
-    Path: ../../correctionlib/muon/medium/2018.json
-    Name: NUM_Mu50_or_OldMu100_or_TkMu100_DEN_CutBasedIdGlobalHighPt_and_TkIsoLoose
+    Path: ../../correctionlib/electron/trigger/TriggerSF_2018.json
+    NameLeg1: ElectronTrigger_Leg1
+    NameLeg2: ElectronTrigger_Leg2
   ElecMisCharge:
     Path: ../../EfficiencyTable/elec/ChargeMisId/CFRate2018.root
   JetPU:
