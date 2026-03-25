@@ -35,6 +35,7 @@ void HistoSetEE::Init() {
   fPhiBins = {-9999, 60, -3.141593, 3.141593};
   fMassBins = {199, 200,  220,  243, 273, 320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4001};
   // fMassBins = {39, 40, 45, 50, 55, 60, 64, 68, 72, 76, 81, 86, 91, 96, 101, 106, 110, 115, 120, 126, 133, 141, 150, 160, 171, 185, 200, 220, 243, 273, 320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4001};
+
   fDeltaRBins = {-9999, 100, 0.0, 6.0};
   fNJetBins = {-9999, 20, 0, 20};
 
@@ -74,6 +75,7 @@ void HistoSetEE::Init() {
       SetHisto("h_ElecDeltaR" + tHistSuffix, fDeltaRBins);
 
       SetHisto("h_dielecMass" + tHistSuffix);
+      SetHisto("h_dielecMass_1GeVBin" + tHistSuffix, std::vector<double>{-9999, 6000, 0., 6000.});
       SetHisto("h_dielecPt" + tHistSuffix);
       SetHisto("h_dielecRap" + tHistSuffix, "Eta");
     }
@@ -327,6 +329,7 @@ void HistoSetEE::FillElec(TLorentzVector& fLeadingElec, TLorentzVector& fSublead
     fHistSet["h_ElecDeltaR" + suffix]->Fill(fLeadingElec.DeltaR(fSubleadingElec), weight);
 
     fHistSet["h_dielecMass" + suffix]->Fill(SetMassOverflow(fDielec.M()), weight);
+    fHistSet["h_dielecMass_1GeVBin" + suffix]->Fill(fDielec.M(), weight);
     fHistSet["h_dielecPt" + suffix]->Fill(SetPtOverflow(fDielec.Pt()), weight);
     fHistSet["h_dielecRap" + suffix]->Fill(fDielec.Rapidity(), weight);
   }
@@ -401,6 +404,7 @@ void HistoSetEE::WriteHisto(TString fEra, TString fSampleName, TString fOutputDi
 
     fHistSet["h_ElecDeltaR" + tSuffix]->Write();
     fHistSet["h_dielecMass" + tSuffix]->Write();
+    fHistSet["h_dielecMass_1GeVBin" + tSuffix]->Write();
     fHistSet["h_dielecPt" + tSuffix]->Write();
     fHistSet["h_dielecRap" + tSuffix]->Write();
     
@@ -450,6 +454,7 @@ void HistoSetEE::WriteHisto(TString fEra, TString fSampleName, TString fOutputDi
 
       fHistSet["h_ElecDeltaR" + tSuffix]->Write();
       fHistSet["h_dielecMass" + tSuffix]->Write();
+      fHistSet["h_dielecMass_1GeVBin" + tSuffix]->Write();
       fHistSet["h_dielecPt" + tSuffix]->Write();
       fHistSet["h_dielecRap" + tSuffix]->Write();
       

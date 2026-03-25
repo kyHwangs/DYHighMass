@@ -183,16 +183,16 @@ void DYLoopEE::Loop() {
       double tIDEffSFLeading = 0;
 
       if (tFVecLeadingElec.Pt() < 20.) tIDEffSFLeading = 0;
-      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tLeadingElec.SCEta())}); // HEEP ID
-      // else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // cutBased ID WP
+      // else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tLeadingElec.SCEta())}); // HEEP ID
+      else                             tIDEffSFLeading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tLeadingElec.SCEta(), tFVecLeadingElec.Pt()}); // cutBased ID WP
 
       tEventGenWeight *= tIDEffSFLeading;
 
       double tIDEffSFSubleading = 0;
 
       if (tFVecSubLeadingElec.Pt() < 20.) tIDEffSFSubleading = 0;
-      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSubLeadingElec.SCEta())}); // HEEP ID
-      // else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // cutBased ID WP
+      // else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSubLeadingElec.SCEta())}); // HEEP ID
+      else                                tIDEffSFSubleading = fID_SF->evaluate({(std::string)(fEra), "sf", tElecIDWP, tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt()}); // cutBased ID WP
 
       tEventGenWeight *= tIDEffSFSubleading;
 
@@ -207,43 +207,21 @@ void DYLoopEE::Loop() {
 
     if (fIsMC && fDoTRIGG) {
 
-      double elec_1_data = 0;
-      double elec_2_data = 0;
+      // Leading electron -> Leg1 SF, sub-leading electron -> Leg2 SF
+      // Event trigger SF = SF1 * SF2 (no trigger matching applied)
+      double tTrigEffSFLeading    = fTRIG_SF_Leg1->evaluate({tLeadingElec.SCEta(),    tFVecLeadingElec.Pt(),    "nominal"});
+      double tTrigEffSFSubleading = fTRIG_SF_Leg2->evaluate({tSubLeadingElec.SCEta(), tFVecSubLeadingElec.Pt(), "nominal"});
 
-      double elec_1_mc = 0;
-      double elec_2_mc = 0;
+      double tTrigEffSF = tTrigEffSFLeading * tTrigEffSFSubleading;
 
-      if (tFVecLeadingElec.Pt() < 52.) {
-        elec_1_data = 0.;
-        elec_1_mc = 0.;
-      } else {
-        elec_1_data = fTRIG_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.Pt(), "dataEff"});
-        elec_1_mc = fTRIG_SF->evaluate({std::abs(tFVecLeadingElec.Eta()), tFVecLeadingElec.Pt(), "mcEff"});
-      }
-
-      if (tFVecSubLeadingElec.Pt() < 52.) {
-        elec_2_data = 0.;
-        elec_2_mc = 0.;
-      } else {
-        elec_2_data = fTRIG_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.Pt(), "dataEff"});
-        elec_2_mc = fTRIG_SF->evaluate({std::abs(tFVecSubLeadingElec.Eta()), tFVecSubLeadingElec.Pt(), "mcEff"});
-      }
-
-      double data_tot = 1. - (1. - elec_1_data) * (1. - elec_2_data);
-      double mc_tot = 1. - (1. - elec_1_mc) * (1. - elec_2_mc);
-
-      double eventTriggerEffSF = 0.;
-      if ( mc_tot != 0 )
-        eventTriggerEffSF = data_tot / mc_tot;
-
-      tEventGenWeight *= eventTriggerEffSF;
+      tEventGenWeight *= tTrigEffSF;
 
       // std::cout << "######################################################################" << std::endl;
       // std::cout << "                       TRIGG efficiency debugging                     " << std::endl;
       // std::cout << "----------------------------------------------------------------------" << std::endl;
-      // std::cout << " LEADING: " << tFVecLeadingElec.Pt() << " " << tFVecLeadingElec.Eta() << " " << elec_1_data << " " << elec_1_mc << std::endl;
-      // std::cout << " SUB-LEADING: " << tFVecSubLeadingElec.Pt() << " " << tFVecSubLeadingElec.Eta() << " " << elec_2_data << " " << elec_2_mc << std::endl;
-      // std::cout << eventTriggerEffSF << std::endl;
+      // std::cout << " LEADING  SCEta=" << tLeadingElec.SCEta() << " Pt=" << tFVecLeadingElec.Pt() << " SF=" << tTrigEffSFLeading << std::endl;
+      // std::cout << " SUB-LEADING SCEta=" << tSubLeadingElec.SCEta() << " Pt=" << tFVecSubLeadingElec.Pt() << " SF=" << tTrigEffSFSubleading << std::endl;
+      // std::cout << " tTrigEffSF=" << tTrigEffSF << std::endl;
       // std::cout << "######################################################################" << std::endl;
       // std::cout << " " << std::endl;
     }
