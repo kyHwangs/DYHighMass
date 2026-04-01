@@ -240,7 +240,7 @@ void DYLoopEMU::Loop() {
       double tElecIDEffSFElec = 0;
 
       if (tFVecElec.Pt() < 20.) tElecIDEffSFElec = 0;
-      else                      tElecIDEffSFElec = fElecID_SF->evaluate({(std::string)(fEra), "sf", std::abs(tSCEtaElec)});
+      else                      tElecIDEffSFElec = fElecReco_SF->evaluate({(std::string)(fEra), "sf", "Medium", tSCEtaElec, tFVecElec.Pt()});
 
       tEventGenWeight *= tElecIDEffSFElec;
     }

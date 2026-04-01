@@ -102,6 +102,7 @@ public:
 
     fElecPt = fElecConf["Pt"].as<float>();
     fElecEta = fElecConf["Eta"].as<float>();
+    fElecID = fElecConf["ID"].as<int>();
     fElecIDinverted = fElecConf["IDinverted"].as<bool>();
 
     fIsOppositeCharge = true;
@@ -197,7 +198,7 @@ public:
   TTreeReaderArray<float>* Electron_phi;
   TTreeReaderArray<float>* Electron_mass;
   TTreeReaderArray<int>* Electron_charge;
-  TTreeReaderArray<bool>* Electron_cutBased_HEEP;
+  TTreeReaderArray<unsigned int>* Electron_cutBased;
 
   // TTreeReaderValue<unsigned int>* nGenPart;
   // TTreeReaderArray<float>* GenPart_pt;
@@ -229,6 +230,7 @@ private:
 
   float fElecPt;
   float fElecEta;
+  int fElecID;
   bool fElecIDinverted;
 
   bool fIsOppositeCharge;
