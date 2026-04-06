@@ -38,7 +38,7 @@ void EMU::init(TTreeReader* fTreeReader) {
   Electron_phi = new TTreeReaderArray<float>(*fTreeReader, "Electron_phi");
   Electron_charge = new TTreeReaderArray<int>(*fTreeReader, "Electron_charge");
   Electron_mass = new TTreeReaderArray<float>(*fTreeReader, "Electron_mass");
-  Electron_cutBased = new TTreeReaderArray<unsigned int>(*fTreeReader, "Electron_cutBased");
+  Electron_cutBased = new TTreeReaderArray<int>(*fTreeReader, "Electron_cutBased");
 }
 
 // void EMU::PrepareGenMuon() {

@@ -47,7 +47,7 @@ void DYLoopEMU::Loop() {
   double tTotalGenWeight = 0;
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
-
+    
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
       auto tCurrentTime = std::chrono::system_clock::now();
       auto tElapsed = tCurrentTime - tTimeBegin;
@@ -245,7 +245,6 @@ void DYLoopEMU::Loop() {
       tEventGenWeight *= tElecIDEffSFElec;
     }
 
-
     // Get gen-lv electrons (status == 1, abs(pdgId) == 11)
     bool tRecoGenMatched = false;
     bool tMisIdAssigned = false;
@@ -315,7 +314,7 @@ void DYLoopEMU::Loop() {
     if (fIsMC && fDoBTag) {
       double bTagWeight = fJets->GetBTagSF();
       tEventGenWeight *= bTagWeight;
-    }
+    }    
 
     tTotalGenWeight += tEventGenWeight;
 
