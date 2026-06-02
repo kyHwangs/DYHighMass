@@ -7,7 +7,7 @@ Z:
 
 Muon:
   LeadingMuonPt: 52
-  SubLeadingMuonPt: 15
+  SubLeadingMuonPt: 50
   Eta: 2.4
   ID: global
   ISO: 0.1
@@ -48,15 +48,15 @@ Efficiency:
     Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_RECO_2017_schemaV2.json
     Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
   ID:
-    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
-    Name: NUM_HighPtID_DEN_GlobalMuonProbes
+    Path: ../../correctionlib/muon/high/2017/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
+    Name: NUM_MediumID_DEN_GlobalMuonProbes
   ISO:
-    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
-    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
+    Path: ../../correctionlib/muon/high/2017/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
+    Name: NUM_probe_LooseRelTkIso_DEN_MediumIDProbes
   Trigger:
     Path: ../../correctionlib/muon/high/2017/ScaleFactors_Muon_highPt_HLT_2017_schemaV2.json
-    Data: NUM_HLT_DEN_HighPtLooseRelIsoProbes_DATAeff
-    MC: NUM_HLT_DEN_HighPtLooseRelIsoProbes_MCeff
+    Data: NUM_HLT_DEN_MediumIDLooseRelIsoProbes_DATAeff
+    MC: NUM_HLT_DEN_MediumIDLooseRelIsoProbes_MCeff
   JetPU:
     Path: ../../correctionlib/JetPUID/2017.json
   BTag:

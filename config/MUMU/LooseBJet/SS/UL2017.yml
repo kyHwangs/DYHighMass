@@ -7,7 +7,7 @@ Z:
 
 Muon:
   LeadingMuonPt: 52
-  SubLeadingMuonPt: 15
+  SubLeadingMuonPt: 50
   Eta: 2.4
   ID: global
   ISO: 0.1

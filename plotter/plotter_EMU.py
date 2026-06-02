@@ -65,15 +65,23 @@ def main():
         #                                 channel = <channel>, "EMU" or "MUMU"
         #                                 region = <region>) "OS", "SS", "OS_inverted", "SS_inverted"
 
-        plotter = plotterEngine.Plotter(era, rootPath = "./Bck/ROOT/EMU_OS.root", 
-                                        outputPath = "./plots/EMU_OS_withFakes/plots_" + era + "/",
-                                        channel = "EMU", 
-                                        region = "OS")
+        # plotter = plotterEngine.Plotter(era, 
+        #                                 rootPath = f"./Bck_260512/ROOT/EMU_OS.root", 
+        #                                 outputPath = f"./plots_260514/EMU_OSwithFake/plots" + era + "/",
+        #                                 channel = "EMU", 
+        #                                 region = "OS")
 
-        plotter.SetFakes(rootPath = "./Bck/EMU_FAKE.root")
+        plotter = plotterEngine.Plotter(era, 
+                                        rootPath = f"./Bck_260512/ROOT/EMU_SS_inverted.root", 
+                                        outputPath = f"./plots_260514/EMU_SS_inverted/plots" + era + "/",
+                                        channel = "EMU", 
+                                        region = "SS_inverted")
+
+        # plotter.SetFakes(rootPath = "./Bck_260512/EMU_FAKE.root")
 
         for case in cases:
-            plotter.Plot("h_PairMass", case, "", xTitle = "M(e#mu) [GeV]", xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
+            # plotter.Plot("h_PairMass", case, "", xTitle = "M(e#mu) [GeV]", xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
+            plotter.Plot("h_PairMass", case, "", xTitle = "M(e#mu) [GeV]", xmin = 200, xmax = 4000, logy = True, logx = True)
             
             # for massbin in massBins:
 

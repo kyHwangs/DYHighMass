@@ -149,6 +149,8 @@ void DYLoopEMU::Loop() {
 
     auto tEMuPair = tFVecMuon + tFVecElec;
 
+    double tMuonPt = tFVecRawMuon.Pt() > 50. ? tFVecRawMuon.Pt() : 50.1;
+
     if (fIsMC && fDoReco) {
 
       double tRecoEffSFMuon = 0;
@@ -172,8 +174,8 @@ void DYLoopEMU::Loop() {
 
       double tIDEffSFMuon = 0;
 
-      if (tFVecRawMuon.Pt() < 52.) tIDEffSFMuon = 0;
-      else                         tIDEffSFMuon = fID_SF->evaluate({std::abs(tFVecRawMuon.Eta()), tFVecRawMuon.Pt(), "nominal"});
+      if (tMuonPt < 50.) tIDEffSFMuon = 0;
+      else                         tIDEffSFMuon = fID_SF->evaluate({std::abs(tFVecRawMuon.Eta()), tMuonPt, "nominal"});
 
       tEventGenWeight *= tIDEffSFMuon;
 
@@ -191,8 +193,8 @@ void DYLoopEMU::Loop() {
 
       double tISOEffSFMuon = 0;
 
-      if (tFVecRawMuon.Pt() < 52.) tISOEffSFMuon = 0;
-      else                         tISOEffSFMuon = fISO_SF->evaluate({std::abs(tFVecRawMuon.Eta()), tFVecRawMuon.Pt(), "nominal"});
+      if (tMuonPt < 50.) tISOEffSFMuon = 0;
+      else                         tISOEffSFMuon = fISO_SF->evaluate({std::abs(tFVecRawMuon.Eta()), tMuonPt, "nominal"});
 
       tEventGenWeight *= tISOEffSFMuon;
 
@@ -212,8 +214,8 @@ void DYLoopEMU::Loop() {
 
       double tTRIGEffSFMuon = 0;
 
-      if (tFVecRawMuon.Pt() < 52.) tTRIGEffSFMuon = 0;
-      else                         tTRIGEffSFMuon = fTRIG_SF->evaluate({std::abs(tFVecRawMuon.Eta()), tFVecRawMuon.Pt(), "nominal"});
+      if (tMuonPt < 52.) tTRIGEffSFMuon = 0;
+      else                         tTRIGEffSFMuon = fTRIG_SF->evaluate({std::abs(tFVecRawMuon.Eta()), tMuonPt, "nominal"});
 
       tEventGenWeight *= tTRIGEffSFMuon;
 

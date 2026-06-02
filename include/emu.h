@@ -191,6 +191,7 @@ public:
   TTreeReaderArray<float>* Muon_tkRelIso;
   TTreeReaderArray<int>* Muon_nTrackerLayers;
   TTreeReaderArray<bool>* Muon_highPurity;
+  TTreeReaderArray<bool>* Muon_mediumId;
 
   TTreeReaderValue<unsigned int>* nElectron;
   TTreeReaderArray<float>* Electron_pt;

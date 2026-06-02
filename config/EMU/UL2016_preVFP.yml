@@ -21,7 +21,7 @@ Muon:
       sigma: 0.013 + 6.93e-5 * x -3.46e-8 * x^2 + 7.72e-12 * x^3
 
 Electron:
-  Pt: 20
+  Pt: 50
   Eta: 2.5
   ID: 3
   IDinverted: false
@@ -56,14 +56,14 @@ Efficiency:
     Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_RECO_2016_preVFP_schemaV2.json
     Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
   ID:
-    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2016_preVFP_schemaV2.json
-    Name: NUM_HighPtID_DEN_GlobalMuonProbes
+    Path: ../../correctionlib/muon/high/2016_preVFP/ScaleFactors_Muon_highPt_IDISO_2016_preVFP_schemaV2.json
+    Name: NUM_MediumID_DEN_GlobalMuonProbes
   ISO:
-    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_IDISO_2016_preVFP_schemaV2.json
-    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
+    Path: ../../correctionlib/muon/high/2016_preVFP/ScaleFactors_Muon_highPt_IDISO_2016_preVFP_schemaV2.json
+    Name: NUM_probe_LooseRelTkIso_DEN_MediumIDProbes
   Trigger:
     Path: ../../correctionlib/muon/high/2016_preVFP/ScaleFactors_Muon_highPt_HLT_2016_preVFP_schemaV2.json
-    Name: NUM_HLT_DEN_HighPtLooseRelIsoProbes
+    Name: NUM_HLT_DEN_MediumIDLooseRelIsoProbes
   ElecReco:
     Path: ../../correctionlib/electron/reco/EGM_2016preVFP.json
     Name: UL-Electron-ID-SF

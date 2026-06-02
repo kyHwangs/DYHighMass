@@ -21,7 +21,7 @@ Muon:
       sigma: 0.0121 + 5.92e-5 * x -2.61e-8 * x^2 + 5.11e-12 * x^3
 
 Electron:
-  Pt: 20
+  Pt: 50
   Eta: 2.5
   IDinverted: false
 

@@ -30,6 +30,7 @@ void EMU::init(TTreeReader* fTreeReader) {
   Muon_tkRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_tkRelIso");
   Muon_nTrackerLayers = new TTreeReaderArray<int>(*fTreeReader, "Muon_nTrackerLayers");
   Muon_highPurity = new TTreeReaderArray<bool>(*fTreeReader, "Muon_highPurity");
+  Muon_mediumId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_mediumId");
 
   nElectron = new TTreeReaderValue<unsigned int>(*fTreeReader, "nElectron");
   Electron_pt = new TTreeReaderArray<float>(*fTreeReader, "Electron_pt");
@@ -97,7 +98,10 @@ bool EMU::PrepareEMUPair() {
   fSelectedElecIdx = -1;
 
   for (int i = 0; i < **nMuon; i++) {
-    if ( !(Muon_highPtId->At(i) == fMuonID) )
+    // if ( !(Muon_highPtId->At(i) == fMuonID) )
+    //   continue;
+
+    if ( !Muon_mediumId->At(i) )
       continue;
 
     if ( !fMuonISOinverted && !(Muon_tkRelIso->At(i) < fMuonISO) )

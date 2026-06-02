@@ -176,6 +176,8 @@ void DYLoopMUMU::Loop() {
     
     auto tDiMuon = tFVecLeadingMuon + tFVecSubLeadingMuon;
 
+    double tSubLeadingMuonPt = tFVecRawSubLeadingMuon.Pt() > 50. ? tFVecRawSubLeadingMuon.Pt() : 50.1;
+
     if (fIsMC && fDoReco) {
 
       double tRecoEffSFLeading = 0;
@@ -207,7 +209,7 @@ void DYLoopMUMU::Loop() {
 
       double tIDEffSFLeading = 0;
 
-      if (tFVecRawLeadingMuon.Pt() < 15.) tIDEffSFLeading = 0;
+      if (tFVecRawLeadingMuon.Pt() < 50.) tIDEffSFLeading = 0;
       else                                tIDEffSFLeading = fID_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "nominal"});
 
       tEventGenWeight *= tIDEffSFLeading;
@@ -215,8 +217,8 @@ void DYLoopMUMU::Loop() {
 
       double tIDEffSFSubleading = 0;
 
-      if (tFVecRawSubLeadingMuon.Pt() < 15.) tIDEffSFSubleading = 0;
-      else                                   tIDEffSFSubleading = fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "nominal"});
+      if (tFVecRawSubLeadingMuon.Pt() < 50.) tIDEffSFSubleading = 0;
+      else                                   tIDEffSFSubleading = fID_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tSubLeadingMuonPt, "nominal"});
 
       tEventGenWeight *= tIDEffSFSubleading;
 
@@ -235,14 +237,14 @@ void DYLoopMUMU::Loop() {
       double tISOEffSFLeading = 0;
       double tISOEffSFSubleading = 0;
 
-      if (tFVecRawLeadingMuon.Pt() < 15.) tISOEffSFLeading = 0;
+      if (tFVecRawLeadingMuon.Pt() < 50.) tISOEffSFLeading = 0;
       else                                tISOEffSFLeading = fISO_SF->evaluate({std::abs(tFVecRawLeadingMuon.Eta()), tFVecRawLeadingMuon.Pt(), "nominal"});
       tEventGenWeight *= tISOEffSFLeading;
 
       if (!fIsInverted) {
 
-        if (tFVecRawSubLeadingMuon.Pt() < 15.) tISOEffSFSubleading = 0;
-        else                                   tISOEffSFSubleading = fISO_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tFVecRawSubLeadingMuon.Pt(), "nominal"});
+        if (tFVecRawSubLeadingMuon.Pt() < 50.) tISOEffSFSubleading = 0;
+        else                                   tISOEffSFSubleading = fISO_SF->evaluate({std::abs(tFVecRawSubLeadingMuon.Eta()), tSubLeadingMuonPt, "nominal"});
         tEventGenWeight *= tISOEffSFSubleading;
       }
 

@@ -31,6 +31,7 @@ void MUON::init(TTreeReader* fTreeReader) {
   Muon_tkRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_tkRelIso");
   Muon_nTrackerLayers = new TTreeReaderArray<int>(*fTreeReader, "Muon_nTrackerLayers");
   Muon_highPurity = new TTreeReaderArray<bool>(*fTreeReader, "Muon_highPurity");
+  Muon_mediumId = new TTreeReaderArray<bool>(*fTreeReader, "Muon_mediumId");
 }
 
 // void MUON::PrepareGenMuon() {
@@ -148,7 +149,10 @@ bool MUON::PrepareMuon() {
   fFVecMuons.clear();
 
   for (int i = 0; i < **nMuon; i++) {
-    if ( !(Muon_highPtId->At(i) == fID) )
+    // if ( !(Muon_highPtId->At(i) == fID) )
+    //   continue;
+    
+    if ( !Muon_mediumId->At(i) )
       continue;
 
     if (std::abs(Muon_eta->At(i)) > fEta)
