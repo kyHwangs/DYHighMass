@@ -49,16 +49,6 @@ install(TARGETS DYHighMassLIB EXPORT DYHighMassTarget
   PUBLIC_HEADER DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}" COMPONENT dev
 )
 
-# add_executable(analysis main/analysis.cc ${sources} ${headers})
-
-# target_link_libraries(
-#   analysis
-#   ${ROOT_LIBRARIES}
-#   ${YAML_CPP_LIBRARIES}
-#   correctionlib
-#   ${CMAKE_DL_LIBS}
-# )
-
 add_executable(analysis_MUMU main/analysis_MUMU.cc ${sources} ${headers})
 
 target_link_libraries(
@@ -109,6 +99,11 @@ target_link_libraries(
   ${CMAKE_DL_LIBS}
 )
 
+
+option(DEBUG_MODE "Enable debug output" OFF)
+if(DEBUG_MODE)
+  target_compile_definitions(DYHighMass PRIVATE DEBUGMODE=1)
+endif()
 
 install(FILES
   DESTINATION "${CMAKE_INSTALL_LIBDIR}"
