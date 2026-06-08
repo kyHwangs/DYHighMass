@@ -93,22 +93,11 @@ public:
     else throw std::runtime_error("Wrong definitions for HighPtID, allowed optsions: global, tracker");
 
     fISO = fMuonConf["ISO"].as<float>();
-    fISOinverted = fMuonConf["ISOinverted"].as<bool>();
-
-    fOppositeCharge = true;
-    if (fMuonConf["Charge"].as<std::string>() == "same")
-      fOppositeCharge = false;
-
-    fDoRoccoR = true;
-    if (!fMuonConf["doRoccoR"].as<bool>())
-      fDoRoccoR = false;
 
     fDoMCSmearing = true;
     if (!fMuonConf["doMCSmearing"].as<bool>())
       fDoMCSmearing = false;
-
-    fRoccoR = new RoccoR(fMuonConf["RoccoR"].as<std::string>());
-
+    
     std::cout << "######################################################################" << std::endl;
     std::cout << "                            Muon selection                            " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
@@ -117,18 +106,10 @@ public:
     std::cout << " Eta: " << fEta << std::endl;
     std::cout << " ID: " << fMuonConf["ID"].as<std::string>() << " " << fID << std::endl;
     std::cout << " ISO: " << fISO << std::endl;
-    std::cout << " ISOinverted: " << fISOinverted << std::endl;
     std::cout << " MassCut: " << fZMassCut << std::endl;
-    std::cout << " OppositeCharge: " << fOppositeCharge << std::endl;
-    std::cout << " doRoccoR: " << fDoRoccoR << std::endl;
     std::cout << " doMCSmearing: " << fDoMCSmearing << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
-
-    if (fDoRoccoR && fDoMCSmearing) {
-      std::cout << "Error: doRoccoR and doMCSmearing cannot be true at the same time" << std::endl;
-      exit(1);
-    }
 
     fSmearingEngine = new SmearingEngine(fMuonConf["MCSmearing"]);
   }
@@ -151,15 +132,16 @@ public:
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
 
   bool PrepareMuon();
-  // void PrepareGenMuon();
 
-  // TLorentzVector GetRochesterCorrectedMuon(TLorentzVector fMu, int fMuCharge, int nTkLayers);
   TLorentzVector GetMCSmearing(TLorentzVector fMu);
 
-  std::vector<StdMuon> GetMuons() { return fFVecMuons; }
-  std::vector<StdMuon> GetGenMuons() { return fFVecGenMuons; }
-  StdMuon GetLeadingMuon() { return fFVecMuons.at(fLeadingIdx); }
-  StdMuon GetSubLeadingMuon() { return fFVecMuons.at(fSubLeadingIdx); }
+  std::vector<StdMuon> GetMuons(std::string fType) {
+     if (fType == "OS") return fFVecOSMuons; 
+     else if (fType == "SS") return fFVecSSMuons; 
+     else if (fType == "OS_inverted") return fFVecOSinvertedMuons; 
+     else if (fType == "SS_inverted") return fFVecSSinvertedMuons; 
+     else throw std::runtime_error("Wrong definitions for GetMuons, allowed optsions: OS, SS, OSinverted, SSinverted");
+  }
 
   TTreeReaderValue<unsigned int>* nMuon;
   TTreeReaderArray<float>* Muon_pt;
@@ -174,38 +156,26 @@ public:
   TTreeReaderArray<bool>* Muon_highPurity;
   TTreeReaderArray<bool>* Muon_mediumId;
 
-
-  // TTreeReaderValue<unsigned int>* nGenPart;
-  // TTreeReaderArray<float>* GenPart_pt;
-  // TTreeReaderArray<float>* GenPart_eta;
-  // TTreeReaderArray<float>* GenPart_phi;
-  // TTreeReaderArray<float>* GenPart_mass;
-  // TTreeReaderArray<int>* GenPart_pdgId;
-
 private:
 
   std::vector<StdMuon> fFVecMuons;
-  std::vector<StdMuon> fFVecGenMuons;
+
+  std::vector<StdMuon> fFVecOSMuons;
+  std::vector<StdMuon> fFVecSSMuons;
+  std::vector<StdMuon> fFVecOSinvertedMuons;
+  std::vector<StdMuon> fFVecSSinvertedMuons;
 
   float fLeadingMuonPt;
   float fSubLeadingMuonPt;
   float fEta;
-  bool fOppositeCharge;
   float fZMassCut;
   UChar_t fID;
   float fISO;
-  bool fISOinverted;
 
-  RoccoR* fRoccoR;
   SmearingEngine* fSmearingEngine;
-  bool fDoRoccoR;
   bool fDoMCSmearing;
 
-  int fLeadingIdx;
-  int fSubLeadingIdx;
-
   bool fIsMC;
-
 };
 
 #endif

@@ -79,6 +79,10 @@ public:
         AddVariable("error", true);
       }
 
+      if (fArgv[i] == "--debug") {
+        AddVariable("debug", true);
+      }
+
       if (fArgv[i] == "--error-sample") {
 
         while (1) {

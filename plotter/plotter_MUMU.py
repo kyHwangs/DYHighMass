@@ -4,7 +4,7 @@ import os, ROOT, sys, pickle, argparse
 import uuid
 import cmsstyle as CMS
 import array
-import plotterEngine
+import plotterEngine_MUMU as plotterEngine
 
 
 def main():
@@ -95,12 +95,17 @@ def main():
         #                                 channel = "MUMU", 
         #                                 region = "OS")
 
+        # type = "OS_inverted"
+        type = "SS_inverted"
+        # type = "OS"
+        # type = "SS"
+
 
         plotter = plotterEngine.Plotter(era, 
-                                        rootPath = f"./Bck_260512/ROOT/MUMU_OS.root", 
-                                        outputPath = f"./plots_260514/MUMU_OS/plots" + era + "/",
+                                        rootPath = f"./ROOT/MUMU_NoReco.root", 
+                                        outputPath = f"./plots_260604/MUMU_NoReco/{type}/plots_{era}/",
                                         channel = "MUMU", 
-                                        region = "OS")
+                                        region = f"{type}")
 
         # plotter.SetBackground(rootPath = "./Bck_260512/EMU_FAKE.root", mcList = ["TOP"])
         # plotter.SetFakes(rootPath = "./Bck_260512/MUMU_FAKE.root")
@@ -110,36 +115,35 @@ def main():
 
         for case in cases:
             # plotter.Plot("h_dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
-            plotter.Plot("h_dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, logy = True, logx = True)
+            plotter.Plot("dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, logy = True, logx = True)
 
-            plotter.Plot("h_nJet",  case, "", xTitle = "N_{jet}", xmin = 0, xmax = 14)
-            plotter.Plot("h_nBJet", case, "", xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
+            # plotter.Plot("nJet",  case, "", xTitle = "N_{jet}", xmin = 0, xmax = 14)
+            # plotter.Plot("nBJet", case, "", xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
           
-            for massbin in massBins:
+            # for massbin in massBins:
 
-                plotter.Plot("h_JetPt", case, massbin               , xTitle = "pT(jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
-                plotter.Plot("h_JetEta", case, massbin              , xTitle = "#eta(jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-                plotter.Plot("h_JetPhi", case, massbin              , xTitle = "#phi(jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            #     plotter.Plot("JetPt", case, massbin               , xTitle = "pT(jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
+            #     plotter.Plot("JetEta", case, massbin              , xTitle = "#eta(jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            #     plotter.Plot("JetPhi", case, massbin              , xTitle = "#phi(jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-                plotter.Plot("h_BJetPt", case, massbin              , xTitle = "pT(b-jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
-                plotter.Plot("h_BJetEta", case, massbin             , xTitle = "#eta(b-jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-                plotter.Plot("h_BJetPhi", case, massbin             , xTitle = "#phi(b-jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            #     plotter.Plot("BJetPt", case, massbin              , xTitle = "pT(b-jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)
+            #     plotter.Plot("BJetEta", case, massbin             , xTitle = "#eta(b-jet)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            #     plotter.Plot("BJetPhi", case, massbin             , xTitle = "#phi(b-jet)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-                plotter.Plot("h_LeadingMuonPt", case, massbin       , xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-                plotter.Plot("h_LeadingMuonEta", case, massbin      , xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-                plotter.Plot("h_LeadingMuonPhi", case, massbin      , xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            #     plotter.Plot("LeadingMuonPt", case, massbin       , xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            #     plotter.Plot("LeadingMuonEta", case, massbin      , xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            #     plotter.Plot("LeadingMuonPhi", case, massbin      , xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-                plotter.Plot("h_SubleadingMuonPt", case, massbin    , xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-                plotter.Plot("h_SubleadingMuonEta", case, massbin   , xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-                plotter.Plot("h_SubleadingMuonPhi", case, massbin   , xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
+            #     plotter.Plot("SubleadingMuonPt", case, massbin    , xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            #     plotter.Plot("SubleadingMuonEta", case, massbin   , xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            #     plotter.Plot("SubleadingMuonPhi", case, massbin   , xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-                plotter.Plot("h_MuonPt", case, massbin              , xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
-                plotter.Plot("h_MuonEta", case, massbin             , xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
-                plotter.Plot("h_MuonPhi", case, massbin             , xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
-                plotter.Plot("h_MuonDeltaR", case, massbin          , xTitle = "#DeltaR(#mu_{1}, #mu_{2})" ,xmin = 0, xmax = 6.4, logy = True)
+            #     plotter.Plot("MuonPt", case, massbin              , xTitle = "pT(#mu) [GeV]"          ,xmin = 15, xmax = 1520, logy = True, logx = True)
+            #     plotter.Plot("MuonEta", case, massbin             , xTitle = "#eta(#mu)"              ,xmin = -2.5, xmax = 2.5, logy = True)
+            #     plotter.Plot("MuonPhi", case, massbin             , xTitle = "#phi(#mu)"              ,xmin = -3.141593, xmax = 3.141593, logy = True)
 
-                plotter.Plot("h_dimuonPt", case, massbin            , xTitle = "pT(#mu#mu) [GeV]" ,xmin = 0, xmax = 500, logy = True)
-                plotter.Plot("h_dimuonRap", case, massbin           , xTitle = "rapidity(#mu#mu)"      ,xmin = -2.8, xmax = 2.8, logy = True)
+            #     plotter.Plot("dimuonPt", case, massbin            , xTitle = "pT(#mu#mu) [GeV]" ,xmin = 0, xmax = 500, logy = True)
+            #     plotter.Plot("dimuonRap", case, massbin           , xTitle = "rapidity(#mu#mu)"      ,xmin = -2.8, xmax = 2.8, logy = True)
 
 
 if __name__ == "__main__" :

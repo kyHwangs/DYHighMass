@@ -19,17 +19,7 @@ void HistoSetMUMU::Init() {
   SetHisto("h_PileUp_Count_Interaction_before", std::vector<double>{-9999, 100, 0., 100.});
   SetHisto("h_PileUp_Count_Interaction_after", std::vector<double>{-9999, 100, 0., 100.});
 
-  fPtBins = {0,   15,  21,  27,  32,  37,  42,  47,  52,  57, 62,  67,  72,  77,  82,  87,  92,  97,  
-            102, 107, 112, 117, 122, 127, 132, 137, 142, 147, 152, 157, 162, 167, 172, 177, 182, 187, 
-            192, 197, 202, 207, 212, 217, 222, 227, 232, 237, 242, 247, 252, 257, 262, 267, 272, 277, 
-            282, 287, 292, 297, 302, 307, 312, 317, 322, 327, 332, 337, 342, 347, 352, 357, 362, 367, 
-            372, 377, 382, 387, 392, 397, 402, 407, 412, 417, 422, 427, 432, 437, 442, 447, 452, 457, 
-            462, 467, 472, 477, 482, 487, 492, 497, 500, 510, 520, 530, 540, 550, 560, 570, 580, 590, 600,
-            610, 620, 630, 640, 650, 660, 670, 680, 690, 700, 710, 720, 730, 740, 750, 760, 770, 780, 790, 800,
-            810, 820, 830, 840, 850, 860, 870, 880, 890, 900, 910, 920, 930, 940, 950, 960, 970, 980, 990, 1000,
-            1020, 1040, 1060, 1080, 1100, 1120, 1140, 1160, 1180, 1200, 1220, 1240, 1260, 1280, 1300, 1320, 1340, 1360, 1380, 1400,
-            1420, 1440, 1460, 1480, 1500, 1520};
-
+  fPtBins = {-9999, 300, 0., 1500.};
   fEtaBins = {-9999, 60, -3., 3.};
   fPhiBins = {-9999, 60, -3.141593, 3.141593};
   fMassBins = {199, 200,  220,  243, 273, 320, 380, 440, 510, 600, 700, 830, 1000, 1500, 4000, 4001};
@@ -39,6 +29,7 @@ void HistoSetMUMU::Init() {
 
   std::vector<std::string> fAddonMass = {""};
   std::vector<std::string> fAddonJet = {"", "_0J", "_1J", "_mt1J", "_0BJ", "_1BJ", "_mt1BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"};
+  std::vector<std::string> fAddonType = {"OS", "SS", "OS_inverted", "SS_inverted"};
   
   for (int i = 0; i < fMassBins.size() -1; i++) {
     fAddonMass.push_back("_m" + std::to_string((int)fMassBins[i]) + "_" + std::to_string((int)fMassBins[i+1]));
@@ -49,34 +40,35 @@ void HistoSetMUMU::Init() {
       std::string tHistSuffix = fAddonJet[j] + fAddonMass[i];
       fSuffix.push_back(tHistSuffix);
 
-      SetHisto("h_nJet" + tHistSuffix);    
-      SetHisto("h_JetPt" + tHistSuffix);
-      SetHisto("h_JetEta" + tHistSuffix);
-      SetHisto("h_JetPhi" + tHistSuffix);
+      for (auto fType : fAddonType) {
 
-      SetHisto("h_nBJet" + tHistSuffix);
-      SetHisto("h_BJetPt" + tHistSuffix);
-      SetHisto("h_BJetEta" + tHistSuffix);
-      SetHisto("h_BJetPhi" + tHistSuffix);
+        SetHisto("h_" + fType + "_nJet" + tHistSuffix);    
+        SetHisto("h_" + fType + "_JetPt" + tHistSuffix);
+        SetHisto("h_" + fType + "_JetEta" + tHistSuffix);
+        SetHisto("h_" + fType + "_JetPhi" + tHistSuffix);
 
-      SetHisto("h_LeadingMuonPt" + tHistSuffix);
-      SetHisto("h_LeadingMuonEta" + tHistSuffix);
-      SetHisto("h_LeadingMuonPhi" + tHistSuffix);
+        SetHisto("h_" + fType + "_nBJet" + tHistSuffix);
+        SetHisto("h_" + fType + "_BJetPt" + tHistSuffix);
+        SetHisto("h_" + fType + "_BJetEta" + tHistSuffix);
+        SetHisto("h_" + fType + "_BJetPhi" + tHistSuffix);
 
-      SetHisto("h_SubleadingMuonPt" + tHistSuffix);
-      SetHisto("h_SubleadingMuonEta" + tHistSuffix);
-      SetHisto("h_SubleadingMuonPhi" + tHistSuffix);
+        SetHisto("h_" + fType + "_LeadingMuonPt" + tHistSuffix);
+        SetHisto("h_" + fType + "_LeadingMuonEta" + tHistSuffix);
+        SetHisto("h_" + fType + "_LeadingMuonPhi" + tHistSuffix);
 
-      SetHisto("h_MuonPt" + tHistSuffix);
-      SetHisto("h_MuonEta" + tHistSuffix);
-      SetHisto("h_MuonPhi" + tHistSuffix);
-      SetHisto("h_MuonDeltaR" + tHistSuffix, fDeltaRBins);
-      SetHisto("h_MuonDeltaR_LeadingJet" + tHistSuffix, fDeltaRBins);
-      SetHisto("h_MuonCharge" + tHistSuffix, fChargeBins);
+        SetHisto("h_" + fType + "_SubleadingMuonPt" + tHistSuffix);
+        SetHisto("h_" + fType + "_SubleadingMuonEta" + tHistSuffix);
+        SetHisto("h_" + fType + "_SubleadingMuonPhi" + tHistSuffix);
 
-      SetHisto("h_dimuonMass" + tHistSuffix);
-      SetHisto("h_dimuonPt" + tHistSuffix);
-      SetHisto("h_dimuonRap" + tHistSuffix, "Eta");
+        SetHisto("h_" + fType + "_MuonPt" + tHistSuffix);
+        SetHisto("h_" + fType + "_MuonEta" + tHistSuffix);
+        SetHisto("h_" + fType + "_MuonPhi" + tHistSuffix);
+        SetHisto("h_" + fType + "_MuonCharge" + tHistSuffix, fChargeBins);
+
+        SetHisto("h_" + fType + "_dimuonMass" + tHistSuffix);
+        SetHisto("h_" + fType + "_dimuonPt" + tHistSuffix);
+        SetHisto("h_" + fType + "_dimuonRap" + tHistSuffix, "Eta");
+      }
     }
   }
 
@@ -293,10 +285,17 @@ double HistoSetMUMU::SetMassOverflow(double fMass) {
   else return fMass;
 }
 
-void HistoSetMUMU::FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSubleadingMuon, float tCharge, int nJet, int nBJet, TLorentzVector& fLeadingJet, double weight) {
+void HistoSetMUMU::FillMuon(
+  const TLorentzVector& fLeadingMuon, 
+  const TLorentzVector& fSubleadingMuon, 
+  const float& fCharge, 
+  const int& nJet, 
+  const int& nBJet, 
+  const double& fWeight,
+  const std::string& fType
+) {
 
   TLorentzVector fDimuon = fLeadingMuon + fSubleadingMuon;
-  float dR_diMu_LeadingJet = fDimuon.DeltaR(fLeadingJet);
 
   std::string tMassSuffix = GetMassBin(SetMassOverflow(fDimuon.M()));
   std::string tJetSuffix = GetJetBin(nJet);
@@ -309,57 +308,60 @@ void HistoSetMUMU::FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSuble
   
   for (auto suffix : tHistSuffix) {
 
-    fHistSet["h_LeadingMuonPt" + suffix]->Fill(SetPtOverflow(fLeadingMuon.Pt()), weight);
-    fHistSet["h_LeadingMuonEta" + suffix]->Fill(fLeadingMuon.Eta(), weight);
-    fHistSet["h_LeadingMuonPhi" + suffix]->Fill(fLeadingMuon.Phi(), weight);
+    fHistSet["h_" + fType + "_LeadingMuonPt" + suffix]->Fill(SetPtOverflow(fLeadingMuon.Pt()), fWeight);
+    fHistSet["h_" + fType + "_LeadingMuonEta" + suffix]->Fill(fLeadingMuon.Eta(), fWeight);
+    fHistSet["h_" + fType + "_LeadingMuonPhi" + suffix]->Fill(fLeadingMuon.Phi(), fWeight);
 
-    fHistSet["h_SubleadingMuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), weight);
-    fHistSet["h_SubleadingMuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), weight);
-    fHistSet["h_SubleadingMuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), weight);
+    fHistSet["h_" + fType + "_SubleadingMuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), fWeight);
+    fHistSet["h_" + fType + "_SubleadingMuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), fWeight);
+    fHistSet["h_" + fType + "_SubleadingMuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), fWeight);
 
-    fHistSet["h_MuonPt" + suffix]->Fill(SetPtOverflow(fLeadingMuon.Pt()), weight);
-    fHistSet["h_MuonEta" + suffix]->Fill(fLeadingMuon.Eta(), weight);
-    fHistSet["h_MuonPhi" + suffix]->Fill(fLeadingMuon.Phi(), weight);
+    fHistSet["h_" + fType + "_MuonPt" + suffix]->Fill(SetPtOverflow(fLeadingMuon.Pt()), fWeight);
+    fHistSet["h_" + fType + "_MuonEta" + suffix]->Fill(fLeadingMuon.Eta(), fWeight);
+    fHistSet["h_" + fType + "_MuonPhi" + suffix]->Fill(fLeadingMuon.Phi(), fWeight);
 
-    fHistSet["h_MuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), weight);
-    fHistSet["h_MuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), weight);
-    fHistSet["h_MuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), weight);
-    fHistSet["h_MuonCharge" + suffix]->Fill(tCharge, weight);
+    fHistSet["h_" + fType + "_MuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), fWeight);
+    fHistSet["h_" + fType + "_MuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), fWeight);
+    fHistSet["h_" + fType + "_MuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), fWeight);
+    fHistSet["h_" + fType + "_MuonCharge" + suffix]->Fill(fCharge, fWeight);
 
-    fHistSet["h_MuonDeltaR" + suffix]->Fill(fLeadingMuon.DeltaR(fSubleadingMuon), weight);
-    fHistSet["h_MuonDeltaR_LeadingJet" + suffix]->Fill(dR_diMu_LeadingJet, weight);
-
-    fHistSet["h_dimuonMass" + suffix]->Fill(SetMassOverflow(fDimuon.M()), weight);
-    fHistSet["h_dimuonPt" + suffix]->Fill(SetPtOverflow(fDimuon.Pt()), weight);
-    fHistSet["h_dimuonRap" + suffix]->Fill(fDimuon.Rapidity(), weight);
+    fHistSet["h_" + fType + "_dimuonMass" + suffix]->Fill(SetMassOverflow(fDimuon.M()), fWeight);
+    fHistSet["h_" + fType + "_dimuonPt" + suffix]->Fill(SetPtOverflow(fDimuon.Pt()), fWeight);
+    fHistSet["h_" + fType + "_dimuonRap" + suffix]->Fill(fDimuon.Rapidity(), fWeight);
   }
 }
 
-void HistoSetMUMU::FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJet>* fBJet, double fDimuonMass, double weight) {
+void HistoSetMUMU::FillJet(
+  const std::vector<JET::StdJet>& fJet, 
+  const std::vector<JET::StdJet>& fBJet, 
+  const double& fDimuonMass, 
+  const double& fWeight,
+  const std::string& fType
+) {
   
   std::string tMassSuffix = GetMassBin(SetMassOverflow(fDimuonMass));
-  std::string tJetSuffix = GetJetBin(fJet->size());
-  std::string tBJetSuffix = GetBJetBin(fBJet->size());
-  std::string tbVetoJetSuffix = GetbVetoJetBin(fJet->size());
+  std::string tJetSuffix = GetJetBin(fJet.size());
+  std::string tBJetSuffix = GetBJetBin(fBJet.size());
+  std::string tbVetoJetSuffix = GetbVetoJetBin(fJet.size());
 
   std::vector<std::string> tHistSuffix;
-  if (fBJet->size() == 0) tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix, tbVetoJetSuffix, tbVetoJetSuffix + tMassSuffix};
+  if (fBJet.size() == 0) tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix, tbVetoJetSuffix, tbVetoJetSuffix + tMassSuffix};
   else tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix};
 
   for (auto suffix : tHistSuffix) {
 
-    fHistSet["h_nJet" + suffix]->Fill(fJet->size(), weight);
-    for (int i = 0; i < fJet->size(); i++) {
-      fHistSet["h_JetPt" + suffix]->Fill(SetPtOverflow(fJet->at(i).fVec.Pt()), weight);
-      fHistSet["h_JetEta" + suffix]->Fill(fJet->at(i).fVec.Eta(), weight);
-      fHistSet["h_JetPhi" + suffix]->Fill(fJet->at(i).fVec.Phi(), weight);
+    fHistSet["h_" + fType + "_nJet" + suffix]->Fill(fJet.size(), fWeight);
+    for (int i = 0; i < fJet.size(); i++) {
+      fHistSet["h_" + fType + "_JetPt" + suffix]->Fill(SetPtOverflow(fJet.at(i).fVec.Pt()), fWeight);
+      fHistSet["h_" + fType + "_JetEta" + suffix]->Fill(fJet.at(i).fVec.Eta(), fWeight);
+      fHistSet["h_" + fType + "_JetPhi" + suffix]->Fill(fJet.at(i).fVec.Phi(), fWeight);
     }
 
-    fHistSet["h_nBJet" + suffix]->Fill(fBJet->size(), weight);
-    for (int i = 0; i < fBJet->size(); i++) {
-      fHistSet["h_BJetPt" + suffix]->Fill(SetPtOverflow(fBJet->at(i).fVec.Pt()), weight);
-      fHistSet["h_BJetEta" + suffix]->Fill(fBJet->at(i).fVec.Eta(), weight);
-      fHistSet["h_BJetPhi" + suffix]->Fill(fBJet->at(i).fVec.Phi(), weight);
+    fHistSet["h_" + fType + "_nBJet" + suffix]->Fill(fBJet.size(), fWeight);
+    for (int i = 0; i < fBJet.size(); i++) {
+      fHistSet["h_" + fType + "_BJetPt" + suffix]->Fill(SetPtOverflow(fBJet.at(i).fVec.Pt()), fWeight);
+      fHistSet["h_" + fType + "_BJetEta" + suffix]->Fill(fBJet.at(i).fVec.Eta(), fWeight);
+      fHistSet["h_" + fType + "_BJetPhi" + suffix]->Fill(fBJet.at(i).fVec.Phi(), fWeight);
     }
   }
 }
@@ -385,39 +387,42 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
   fHistSet["h_nPVGood_Count"]->Write();
   fHistSet["h_PileUp_Count_Interaction_before"]->Write();
   fHistSet["h_PileUp_Count_Interaction_after"]->Write();
-    
-  for (auto tSuffix : fSuffix) {
-    if (tSuffix != "")
-      fOutputFile->cd(fEra + '/' + fSampleName + '/' + tSuffix);
 
-    fHistSet["h_LeadingMuonPt" + tSuffix]->Write();
-    fHistSet["h_LeadingMuonEta" + tSuffix]->Write();
-    fHistSet["h_LeadingMuonPhi" + tSuffix]->Write();
+  std::vector<std::string> fPairType = {"OS", "SS", "OS_inverted", "SS_inverted"};
+  
+  for (const auto& fType : fPairType) {
+    for (auto tSuffix : fSuffix) {
+      if (tSuffix != "") fOutputFile->cd(fEra + '/' + fSampleName + '/' + tSuffix);
+      else fOutputFile->cd(fEra + '/' + fSampleName);
+        
 
-    fHistSet["h_SubleadingMuonPt" + tSuffix]->Write();
-    fHistSet["h_SubleadingMuonEta" + tSuffix]->Write();
-    fHistSet["h_SubleadingMuonPhi" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_LeadingMuonPt" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_LeadingMuonEta" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_LeadingMuonPhi" + tSuffix]->Write();
 
-    fHistSet["h_MuonPt" + tSuffix]->Write();  
-    fHistSet["h_MuonEta" + tSuffix]->Write();
-    fHistSet["h_MuonPhi" + tSuffix]->Write();
-    fHistSet["h_MuonCharge" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_SubleadingMuonPt" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_SubleadingMuonEta" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_SubleadingMuonPhi" + tSuffix]->Write();
 
-    fHistSet["h_MuonDeltaR_LeadingJet" + tSuffix]->Write();
-    fHistSet["h_MuonDeltaR" + tSuffix]->Write();
-    fHistSet["h_dimuonMass" + tSuffix]->Write();
-    fHistSet["h_dimuonPt" + tSuffix]->Write();
-    fHistSet["h_dimuonRap" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_MuonPt" + tSuffix]->Write();  
+      fHistSet["h_" + fType + "_MuonEta" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_MuonPhi" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_MuonCharge" + tSuffix]->Write();
 
-    fHistSet["h_nJet" + tSuffix]->Write();
-    fHistSet["h_JetPt" + tSuffix]->Write();
-    fHistSet["h_JetEta" + tSuffix]->Write();
-    fHistSet["h_JetPhi" + tSuffix]->Write();
-    
-    fHistSet["h_nBJet" + tSuffix]->Write();
-    fHistSet["h_BJetPt" + tSuffix]->Write();
-    fHistSet["h_BJetEta" + tSuffix]->Write();
-    fHistSet["h_BJetPhi" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_dimuonMass" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_dimuonPt" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_dimuonRap" + tSuffix]->Write();
+
+      fHistSet["h_" + fType + "_nJet" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_JetPt" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_JetEta" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_JetPhi" + tSuffix]->Write();
+      
+      fHistSet["h_" + fType + "_nBJet" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_BJetPt" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_BJetEta" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_BJetPhi" + tSuffix]->Write();
+    }
   }
 
   if (fIsData) {
@@ -437,46 +442,47 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
       if (tSuffix != "")
         fOutputFile->mkdir(fEra + "/Data/" + tSuffix);
 
-    for (auto tSuffix : fSuffix) {
-      if (tSuffix != "") fOutputFile->cd(fEra + "/Data/" + tSuffix);
-      else               fOutputFile->cd(fEra + "/Data");
+    for (const auto& fType : fPairType) {
+      for (auto tSuffix : fSuffix) {
+        if (tSuffix != "") fOutputFile->cd(fEra + "/Data/" + tSuffix);
+        else               fOutputFile->cd(fEra + "/Data");
 
-      fHistSet["h_LeadingMuonPt" + tSuffix]->Write();
-      fHistSet["h_LeadingMuonEta" + tSuffix]->Write();
-      fHistSet["h_LeadingMuonPhi" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_LeadingMuonPt" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_LeadingMuonEta" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_LeadingMuonPhi" + tSuffix]->Write();
 
-      fHistSet["h_SubleadingMuonPt" + tSuffix]->Write();
-      fHistSet["h_SubleadingMuonEta" + tSuffix]->Write();
-      fHistSet["h_SubleadingMuonPhi" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_SubleadingMuonPt" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_SubleadingMuonEta" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_SubleadingMuonPhi" + tSuffix]->Write();
 
-      fHistSet["h_MuonPt" + tSuffix]->Write();  
-      fHistSet["h_MuonEta" + tSuffix]->Write();
-      fHistSet["h_MuonPhi" + tSuffix]->Write();
-      fHistSet["h_MuonCharge" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_MuonPt" + tSuffix]->Write();  
+        fHistSet["h_" + fType + "_MuonEta" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_MuonPhi" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_MuonCharge" + tSuffix]->Write();
 
-      fHistSet["h_MuonDeltaR" + tSuffix]->Write();
-      fHistSet["h_dimuonMass" + tSuffix]->Write();
-      fHistSet["h_dimuonPt" + tSuffix]->Write();
-      fHistSet["h_dimuonRap" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_dimuonMass" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_dimuonPt" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_dimuonRap" + tSuffix]->Write();
 
-      fHistSet["h_nJet" + tSuffix]->Write();
-      fHistSet["h_JetPt" + tSuffix]->Write();
-      fHistSet["h_JetEta" + tSuffix]->Write();
-      fHistSet["h_JetPhi" + tSuffix]->Write();
-      
-      fHistSet["h_nBJet" + tSuffix]->Write();
-      fHistSet["h_BJetPt" + tSuffix]->Write();
-      fHistSet["h_BJetEta" + tSuffix]->Write();
-      fHistSet["h_BJetPhi" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_nJet" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_JetPt" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_JetEta" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_JetPhi" + tSuffix]->Write();
+        
+        fHistSet["h_" + fType + "_nBJet" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_BJetPt" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_BJetEta" + tSuffix]->Write();
+        fHistSet["h_" + fType + "_BJetPhi" + tSuffix]->Write();
+      }
     }
   }
 
   if (fHistSet2D.size() > 0) {
-    fOutputFile->mkdir("Hist2D");
+    fOutputFile->mkdir("Hist2D/" + fEra + '/' + fSampleName);
 
     for (auto [name, hist] : fHistSet2D) {
       hist->SetDirectory(fOutputFile);
-      fOutputFile->cd("Hist2D");
+      fOutputFile->cd("Hist2D/" + fEra + '/' + fSampleName);
       hist->Write();
     }
   }

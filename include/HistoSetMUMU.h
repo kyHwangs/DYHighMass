@@ -26,8 +26,47 @@ public:
 
   void Init();
 
-  void FillMuon(TLorentzVector& fLeadingMuon, TLorentzVector& fSubleadingMuon, float tCharge, int nJet, int nBJet, TLorentzVector& fLeadingJet, double weight = 1.);
-  void FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJet>* fBJet, double fDimuonMass, double weight = 1.);
+  /**
+    * \brief Filling the muon related histograms 
+    *
+    * \param fLeadingMuon: 4-vector of the leading muon
+    * \param fSubleadingMuon: 4-vector of the subleading muon
+    * \param fCharge: charge of the dimuon (eg. OS > 0, SS < 0)
+    * \param nJet: number of jets
+    * \param nBJet: number of b-jets
+    * \param weight: weight of the event
+    * \param fType: type of muon pair event (eg. "OS", "SS", "OS_inverted", "SS_inverted")
+    *
+    * \throws No exception is thrown for this function
+    */
+  void FillMuon(
+    const TLorentzVector& fLeadingMuon, 
+    const TLorentzVector& fSubleadingMuon, 
+    const float& tCharge, 
+    const int& nJet, 
+    const int& nBJet, 
+    const double& weight,
+    const std::string& fType
+  );
+
+  /**
+    * \brief Filling the muon related histograms 
+    *
+    * \param fJet: vector of jets in form of JET::StdJet
+    * \param fBJet: vector of b-jets in form of JET::StdJet
+    * \param fDimuonMass: mass of the dimuon
+    * \param fWeight: weight of the event
+    * \param fType: type of jet event (eg. "OS", "SS", "OS_inverted", "SS_inverted")
+    *
+    * \throws No exception is thrown for this function
+    */
+  void FillJet(
+    const std::vector<JET::StdJet>& fJet, 
+    const std::vector<JET::StdJet>& fBJet, 
+    const double& fDimuonMass, 
+    const double& fWeight,
+    const std::string& fType
+  );
 
   void FillHisto(std::string name, double value, double weight = 1.);
   void FillHisto(std::string name, float value, double weight = 1.);
@@ -40,7 +79,6 @@ public:
   void SetHisto(std::string name);
   void SetHisto(std::string name, std::string binning);
   void SetHisto(std::string name, std::string binning1, std::string binning2);
-  void SetHisto(std::string name, std::string binning1, std::string binning2, std::string binning3);
 
   std::string GetMassBin(double fDimuonMass);
   std::string GetJetBin(double fNJet);
@@ -65,7 +103,6 @@ private:
   std::vector<double> fDeltaRBins;
   std::vector<double> fNJetBins;
   std::vector<double> fChargeBins;
-
 };
 
 #endif

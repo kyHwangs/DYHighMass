@@ -81,8 +81,8 @@ public:
 
   bool PrepareJet();
 
-  std::vector<StdJet> GetJets() { return fFVecJets; }
-  std::vector<StdJet> GetBJets() { return fFVecBJets; }
+  const std::vector<StdJet>& GetJets() const { return fFVecJets; }
+  const std::vector<StdJet>& GetBJets() const { return fFVecBJets; }
 
   double GetPUIDSF();
   double GetBTagSF();
