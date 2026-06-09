@@ -308,26 +308,29 @@ void HistoSetMUMU::FillMuon(
   
   for (auto suffix : tHistSuffix) {
 
-    fHistSet["h_" + fType + "_LeadingMuonPt" + suffix]->Fill(SetPtOverflow(fLeadingMuon.Pt()), fWeight);
-    fHistSet["h_" + fType + "_LeadingMuonEta" + suffix]->Fill(fLeadingMuon.Eta(), fWeight);
-    fHistSet["h_" + fType + "_LeadingMuonPhi" + suffix]->Fill(fLeadingMuon.Phi(), fWeight);
+    if (fDimuon.M() > 200) {
+      fHistSet["h_" + fType + "_LeadingMuonPt" + suffix]->Fill(SetPtOverflow(fLeadingMuon.Pt()), fWeight);
+      fHistSet["h_" + fType + "_LeadingMuonEta" + suffix]->Fill(fLeadingMuon.Eta(), fWeight);
+      fHistSet["h_" + fType + "_LeadingMuonPhi" + suffix]->Fill(fLeadingMuon.Phi(), fWeight);
 
-    fHistSet["h_" + fType + "_SubleadingMuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), fWeight);
-    fHistSet["h_" + fType + "_SubleadingMuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), fWeight);
-    fHistSet["h_" + fType + "_SubleadingMuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), fWeight);
+      fHistSet["h_" + fType + "_SubleadingMuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), fWeight);
+      fHistSet["h_" + fType + "_SubleadingMuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), fWeight);
+      fHistSet["h_" + fType + "_SubleadingMuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), fWeight);
 
-    fHistSet["h_" + fType + "_MuonPt" + suffix]->Fill(SetPtOverflow(fLeadingMuon.Pt()), fWeight);
-    fHistSet["h_" + fType + "_MuonEta" + suffix]->Fill(fLeadingMuon.Eta(), fWeight);
-    fHistSet["h_" + fType + "_MuonPhi" + suffix]->Fill(fLeadingMuon.Phi(), fWeight);
+      fHistSet["h_" + fType + "_MuonPt" + suffix]->Fill(SetPtOverflow(fLeadingMuon.Pt()), fWeight);
+      fHistSet["h_" + fType + "_MuonEta" + suffix]->Fill(fLeadingMuon.Eta(), fWeight);
+      fHistSet["h_" + fType + "_MuonPhi" + suffix]->Fill(fLeadingMuon.Phi(), fWeight);
 
-    fHistSet["h_" + fType + "_MuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), fWeight);
-    fHistSet["h_" + fType + "_MuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), fWeight);
-    fHistSet["h_" + fType + "_MuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), fWeight);
-    fHistSet["h_" + fType + "_MuonCharge" + suffix]->Fill(fCharge, fWeight);
+      fHistSet["h_" + fType + "_MuonPt" + suffix]->Fill(SetPtOverflow(fSubleadingMuon.Pt()), fWeight);
+      fHistSet["h_" + fType + "_MuonEta" + suffix]->Fill(fSubleadingMuon.Eta(), fWeight);
+      fHistSet["h_" + fType + "_MuonPhi" + suffix]->Fill(fSubleadingMuon.Phi(), fWeight);
+      fHistSet["h_" + fType + "_MuonCharge" + suffix]->Fill(fCharge, fWeight);
+
+      fHistSet["h_" + fType + "_dimuonPt" + suffix]->Fill(SetPtOverflow(fDimuon.Pt()), fWeight);
+      fHistSet["h_" + fType + "_dimuonRap" + suffix]->Fill(fDimuon.Rapidity(), fWeight);
+    }
 
     fHistSet["h_" + fType + "_dimuonMass" + suffix]->Fill(SetMassOverflow(fDimuon.M()), fWeight);
-    fHistSet["h_" + fType + "_dimuonPt" + suffix]->Fill(SetPtOverflow(fDimuon.Pt()), fWeight);
-    fHistSet["h_" + fType + "_dimuonRap" + suffix]->Fill(fDimuon.Rapidity(), fWeight);
   }
 }
 
@@ -348,20 +351,22 @@ void HistoSetMUMU::FillJet(
   if (fBJet.size() == 0) tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix, tbVetoJetSuffix, tbVetoJetSuffix + tMassSuffix};
   else tHistSuffix = {"", tMassSuffix, tJetSuffix, tJetSuffix + tMassSuffix, tBJetSuffix, tBJetSuffix + tMassSuffix};
 
-  for (auto suffix : tHistSuffix) {
+  if (fDimuonMass > 200) {
+    for (auto suffix : tHistSuffix) {
 
-    fHistSet["h_" + fType + "_nJet" + suffix]->Fill(fJet.size(), fWeight);
-    for (int i = 0; i < fJet.size(); i++) {
-      fHistSet["h_" + fType + "_JetPt" + suffix]->Fill(SetPtOverflow(fJet.at(i).fVec.Pt()), fWeight);
-      fHistSet["h_" + fType + "_JetEta" + suffix]->Fill(fJet.at(i).fVec.Eta(), fWeight);
-      fHistSet["h_" + fType + "_JetPhi" + suffix]->Fill(fJet.at(i).fVec.Phi(), fWeight);
-    }
+      fHistSet["h_" + fType + "_nJet" + suffix]->Fill(fJet.size(), fWeight);
+      for (int i = 0; i < fJet.size(); i++) {
+        fHistSet["h_" + fType + "_JetPt" + suffix]->Fill(SetPtOverflow(fJet.at(i).fVec.Pt()), fWeight);
+        fHistSet["h_" + fType + "_JetEta" + suffix]->Fill(fJet.at(i).fVec.Eta(), fWeight);
+        fHistSet["h_" + fType + "_JetPhi" + suffix]->Fill(fJet.at(i).fVec.Phi(), fWeight);
+      }
 
-    fHistSet["h_" + fType + "_nBJet" + suffix]->Fill(fBJet.size(), fWeight);
-    for (int i = 0; i < fBJet.size(); i++) {
-      fHistSet["h_" + fType + "_BJetPt" + suffix]->Fill(SetPtOverflow(fBJet.at(i).fVec.Pt()), fWeight);
-      fHistSet["h_" + fType + "_BJetEta" + suffix]->Fill(fBJet.at(i).fVec.Eta(), fWeight);
-      fHistSet["h_" + fType + "_BJetPhi" + suffix]->Fill(fBJet.at(i).fVec.Phi(), fWeight);
+      fHistSet["h_" + fType + "_nBJet" + suffix]->Fill(fBJet.size(), fWeight);
+      for (int i = 0; i < fBJet.size(); i++) {
+        fHistSet["h_" + fType + "_BJetPt" + suffix]->Fill(SetPtOverflow(fBJet.at(i).fVec.Pt()), fWeight);
+        fHistSet["h_" + fType + "_BJetEta" + suffix]->Fill(fBJet.at(i).fVec.Eta(), fWeight);
+        fHistSet["h_" + fType + "_BJetPhi" + suffix]->Fill(fBJet.at(i).fVec.Phi(), fWeight);
+      }
     }
   }
 }
