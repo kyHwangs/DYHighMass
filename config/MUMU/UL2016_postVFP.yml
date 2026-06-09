@@ -11,10 +11,6 @@ Muon:
   Eta: 2.4
   ID: global
   ISO: 0.1
-  ISOinverted: false
-  Charge: opposite
-  doRoccoR: false
-  RoccoR: ../../RoccoR/RoccoR2018UL.txt
   doMCSmearing: true
   MCSmearing:
     barrel:
@@ -45,18 +41,18 @@ Correction:
 
 Efficiency:
   Reco:
-    Path: ../../EfficiencyTable/muon/high/ScaleFactors_Muon_highPt_RECO_2016_schemaV2.json
+    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_RECO_2016_schemaV2.json
     Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
   ID:
-    Path: ../../correctionlib/muon/high/2016_postVFP/ScaleFactors_Muon_highPt_IDISO_2016_schemaV2.json
-    Name: NUM_MediumID_DEN_GlobalMuonProbes
+    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_IDISO_2016_schemaV2.json
+    Name: NUM_HighPtID_DEN_GlobalMuonProbes
   ISO:
-    Path: ../../correctionlib/muon/high/2016_postVFP/ScaleFactors_Muon_highPt_IDISO_2016_schemaV2.json
-    Name: NUM_probe_LooseRelTkIso_DEN_MediumIDProbes
+    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_IDISO_2016_schemaV2.json
+    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
   Trigger:
-    Path: ../../correctionlib/muon/high/2016_postVFP/ScaleFactors_Muon_highPt_HLT_2016_schemaV2.json
-    Data: NUM_HLT_DEN_MediumIDLooseRelIsoProbes_DATAeff
-    MC: NUM_HLT_DEN_MediumIDLooseRelIsoProbes_MCeff
+    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_HLT_2016_schemaV2.json
+    Data: NUM_HLT_DEN_HighPtLooseRelIsoProbes_DATAeff
+    MC: NUM_HLT_DEN_HighPtLooseRelIsoProbes_MCeff
   JetPU:
     Path: ../../correctionlib/JetPUID/2016postVFP.json
   BTag:

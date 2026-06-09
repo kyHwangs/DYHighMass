@@ -5,20 +5,21 @@ import uuid
 import cmsstyle as CMS
 import array
 
-import plotterEngine
+import plotterEngine_MUMU as plotterEngine
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--channel', help=' : channel to merge')
 args = parser.parse_args()
 
 class Merger:
-    def __init__(self, plot_list, case_list, input_path = "output.root"):
+    def __init__(self, plot_list, case_list, type_list, input_path = "output.root"):
 
         output_path = input_path.replace(".root", "_merged.root")
         os.system(f"cp {input_path} {output_path}")
 
         self.plot_list = plot_list
         self.case_list = case_list
+        self.type_list = type_list
         self.merge_list = plotterEngine.TotalMCList.copy()
         self.merge_list.append("Data")
     
@@ -33,53 +34,57 @@ class Merger:
         self.merge_file.mkdir("merged")
         for sample in self.merge_list:
             self.merge_file.mkdir(f"merged/{sample}")
-            for case in self.case_list:
-                if case != "":
-                    self.merge_file.mkdir(f"merged/{sample}/{case}")
-                for plot in self.plot_list:
-                    histname = case + "/" + plot + case
-                    if case == "": histname = plot
+            
+            for atype in self.type_list:
+                for case in self.case_list:
+                    if case != "":
+                        if atype == "OS":
+                             self.merge_file.mkdir(f"merged/{sample}/{case}")
+                    for plot in self.plot_list:
+                        histname = case + "/h_" + atype + "_" + plot + case
+                        if case == "": 
+                            histname = "h_" + atype + "_" + plot
 
-                    hist_p2016_preVFP = self.p2016_preVFP.GetSingleHist(histname, sample)
-                    hist_p2016_postVFP = self.p2016_postVFP.GetSingleHist(histname, sample)
-                    hist_p2017 = self.p2017.GetSingleHist(histname, sample)
-                    hist_p2018 = self.p2018.GetSingleHist(histname, sample)
+                        hist_p2016_preVFP = self.p2016_preVFP.GetSingleHist(histname, sample)
+                        hist_p2016_postVFP = self.p2016_postVFP.GetSingleHist(histname, sample)
+                        hist_p2017 = self.p2017.GetSingleHist(histname, sample)
+                        hist_p2018 = self.p2018.GetSingleHist(histname, sample)
 
-                    hist_merged = hist_p2016_preVFP.Clone(plot + case)
-                    hist_merged.Add(hist_p2016_postVFP)
-                    hist_merged.Add(hist_p2017)
-                    hist_merged.Add(hist_p2018)
-                    hist_merged.SetName(plot + case)
+                        hist_merged = hist_p2016_preVFP.Clone(plot + case)
+                        hist_merged.Add(hist_p2016_postVFP)
+                        hist_merged.Add(hist_p2017)
+                        hist_merged.Add(hist_p2018)
+                        hist_merged.SetName(f"h_{atype}_{plot}{case}")
 
-                    self.merge_file.cd(f"merged/{sample}/{case}")
-                    hist_merged.Write()
+                        self.merge_file.cd(f"merged/{sample}/{case}")
+                        hist_merged.Write()
 
         self.merge_file.Close()
 
 def main(args):
 
     case_list = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
+    type_list = ["OS", "SS", "OS_inverted", "SS_inverted"]
     
     plot_list_mumu = [
-        "h_JetPt",
-        "h_JetEta",
-        "h_JetPhi",
-        "h_BJetPt",
-        "h_BJetEta",
-        "h_BJetPhi",
-        "h_LeadingMuonPt",
-        "h_LeadingMuonEta",
-        "h_LeadingMuonPhi",
-        "h_SubleadingMuonPt",
-        "h_SubleadingMuonEta",
-        "h_SubleadingMuonPhi",
-        "h_MuonPt",
-        "h_MuonEta",
-        "h_MuonPhi",
-        "h_MuonDeltaR",
-        "h_dimuonMass",
-        "h_dimuonPt",
-        "h_dimuonRap",
+        "JetPt",
+        "JetEta",
+        "JetPhi",
+        "BJetPt",
+        "BJetEta",
+        "BJetPhi",
+        "LeadingMuonPt",
+        "LeadingMuonEta",
+        "LeadingMuonPhi",
+        "SubleadingMuonPt",
+        "SubleadingMuonEta",
+        "SubleadingMuonPhi",
+        "MuonPt",
+        "MuonEta",
+        "MuonPhi",
+        "dimuonMass",
+        "dimuonPt",
+        "dimuonRap",
     ]
 
     plot_list_emu = [
@@ -102,9 +107,9 @@ def main(args):
     ]
 
     if args.channel == "MUMU":
-        merger = Merger(plot_list_mumu, case_list)
+        merger = Merger(plot_list_mumu, case_list, type_list)
     elif args.channel == "EMU":
-        merger = Merger(plot_list_emu, case_list)
+        merger = Merger(plot_list_emu, case_list, type_list)
     else:
         print("Invalid channel")
         return

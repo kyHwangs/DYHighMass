@@ -367,8 +367,6 @@ class Plotter:
 
     def GetMCHist(self, histName, list):
 
-        print (self.era, histName)
-
         histSet = {}
         for mc in list:
             hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
@@ -408,6 +406,7 @@ class Plotter:
         return return_hist
 
     def GetSingleHist(self, histname, sample):
+
 
         hist = self.fileSet.Get(self.era + "/" + sample + "/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
         hist.SetDirectory(0)
@@ -498,7 +497,10 @@ class Plotter:
             total_ratio = dataN / totalN
 
         
-        return f"data/Pred. = {(total_ratio):.3f}"
+        if self.IsSignalRegion:
+            return f"data/Pred. = {(total_ratio):.3f}"
+        else:
+            return f"Pred./Data = {(1/total_ratio):.3f}"
 
     def GetRatioRange(self, hist, xmin, xmax):
         if self.IsSignalRegion or self.IsEMUSignalRegion:
@@ -599,8 +601,6 @@ class Plotter:
         if case == "" and massbin == "":
             self.histName = "h_" + self.region + "_" + histName
 
-        print(self.histName)
-
         self.histOutputName = "h_" + self.region + "_" + histName + case + massbin
         canvasName = self.era + "_" + "h_" + self.region + "_" + histName
 
@@ -649,10 +649,10 @@ class Plotter:
         if doAutoYrange:
             if logy:
                 ymin = 0.01
-                ymax = data.GetMaximum() * 1e5
+                ymax = max(data.GetMaximum() * 1e5, 1.0)
             else:
                 ymin = 0
-                ymax = data.GetMaximum() * 1.3
+                ymax = max(data.GetMaximum() * 1.3, 1.0)
 
         if doAutoYRatiorange:
             yrmin, yrmax = self.GetRatioRange(dataOmc, xmin, xmax)
