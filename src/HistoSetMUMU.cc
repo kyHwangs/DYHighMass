@@ -115,6 +115,16 @@ void HistoSetMUMU::FillHisto(std::string name, int value, double weight) {
   fHistSet[name]->Fill(value, weight);
 }
 
+void HistoSetMUMU::Fill2DHisto(std::string name, double value1, double value2, double weight) {
+
+  if (fHistSet2D.find(name) == fHistSet2D.end()) {
+    std::cout << "Error: HistoSetMUMU::Fill2DHisto: Unknown histogram name: " << name << std::endl;
+    exit(1);
+  }
+
+  fHistSet2D[name]->Fill(value1, value2, weight);
+}
+
 void HistoSetMUMU::SetHisto(std::string name, std::vector<double> bins) {
 
   if (fHistSet.find(name) == fHistSet.end()) {
