@@ -162,6 +162,9 @@ double JET::GetPUIDSF() {
 
 double JET::GetBTagSF() {
 
+  if (fSampleName == "GG") 
+    return 1.;
+
   double pMC = 1.;
   double pData = 1.;
 
@@ -182,9 +185,9 @@ double JET::GetBTagSF() {
     else tSFcentral = fBTagIncl->evaluate({"central", fBTagWP, 0, tJetAbsEta, tJetPt});
 
     double tJetEff = 1.;
-    if (tHadFlav == 5)        tJetEff = fJetBTagEffB.getEfficiency(tJetPt, tJetEta);
-    else if (tHadFlav == 4)   tJetEff = fJetBTagEffC.getEfficiency(tJetPt, tJetEta);
-    else                      tJetEff = fJetBTagEffL.getEfficiency(tJetPt, tJetEta);
+    if (tHadFlav == 5)        tJetEff = fJetBTagEff.->evaluate({fEra, "B", fSampleName, tJetEta, tJetPt});
+    else if (tHadFlav == 4)   tJetEff = fJetBTagEff.->evaluate({fEra, "C", fSampleName, tJetEta, tJetPt});
+    else                      tJetEff = fJetBTagEff.->evaluate({fEra, "L", fSampleName, tJetEta, tJetPt});
 
     if (fFVecJets.at(i).fPassingBJetTagger) {
       pMC *= tJetEff;
