@@ -185,9 +185,9 @@ double JET::GetBTagSF() {
     else tSFcentral = fBTagIncl->evaluate({"central", fBTagWP, 0, tJetAbsEta, tJetPt});
 
     double tJetEff = 1.;
-    if (tHadFlav == 5)        tJetEff = fJetBTagEff.->evaluate({fEra, "B", fSampleName, tJetEta, tJetPt});
-    else if (tHadFlav == 4)   tJetEff = fJetBTagEff.->evaluate({fEra, "C", fSampleName, tJetEta, tJetPt});
-    else                      tJetEff = fJetBTagEff.->evaluate({fEra, "L", fSampleName, tJetEta, tJetPt});
+    if (tHadFlav == 5)        tJetEff = fJetBTagEff->evaluate({fEra, "B", fSampleName, tJetEta, tJetPt, "nominal"});
+    else if (tHadFlav == 4)   tJetEff = fJetBTagEff->evaluate({fEra, "C", fSampleName, tJetEta, tJetPt, "nominal"});
+    else                      tJetEff = fJetBTagEff->evaluate({fEra, "L", fSampleName, tJetEta, tJetPt, "nominal"});
 
     if (fFVecJets.at(i).fPassingBJetTagger) {
       pMC *= tJetEff;

@@ -77,17 +77,17 @@ public:
 
   void init(TTreeReader* fTreeReader);
 
-  void IsMC(bool fIsMC_) { fIsMC = fIsMC_; 
+  void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
   void SetSampleName(std::string fSampleName_) { 
 
-    if (fSmapleName_.contains("NNLO") != std::string::npos && fSmapleName_.contains("tau") == std::string::npos)
+    if (fSampleName_.find("NNLO") != std::string::npos && fSampleName_.find("tau") == std::string::npos)
       fSampleName = "DY";
     else if (fSampleName_ == "TTTo2L2Nu")
       fSampleName = fSampleName_;
-    else if (fSampleName_.contains("GG") != std::string::npos)
+    else if (fSampleName_.find("GG") != std::string::npos)
       fSampleName = "GG";
     else
-      fSampleName = "Medged";
+      fSampleName = "Merged";
   }
 
   bool PrepareJet();
