@@ -10,15 +10,6 @@
 
 void EMU::init(TTreeReader* fTreeReader) {
 
-  // if (fIsMC) {
-  //   nGenPart = new TTreeReaderValue<unsigned int>(*fTreeReader, "nGenPart");
-  //   GenPart_pt = new TTreeReaderArray<float>(*fTreeReader, "GenPart_pt");
-  //   GenPart_eta = new TTreeReaderArray<float>(*fTreeReader, "GenPart_eta");
-  //   GenPart_phi = new TTreeReaderArray<float>(*fTreeReader, "GenPart_phi");
-  //   GenPart_mass = new TTreeReaderArray<float>(*fTreeReader, "GenPart_mass");
-  //   GenPart_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenPart_pdgId");
-  // }
-
   nMuon = new TTreeReaderValue<unsigned int>(*fTreeReader, "nMuon");
   Muon_pt = new TTreeReaderArray<float>(*fTreeReader, "Muon_pt");
   Muon_tunepRelPt = new TTreeReaderArray<float>(*fTreeReader, "Muon_tunepRelPt");
@@ -41,27 +32,6 @@ void EMU::init(TTreeReader* fTreeReader) {
   Electron_mass = new TTreeReaderArray<float>(*fTreeReader, "Electron_mass");
   Electron_cutBased = new TTreeReaderArray<int>(*fTreeReader, "Electron_cutBased");
 }
-
-// void EMU::PrepareGenMuon() {
-
-//   fFVecGenMuons.clear();
-
-//   for (int i  = 0; i < **nGenPart; i++) {
-
-//     if ( !(std::abs(GenPart_pdgId->At(i)) == 13) )
-//       continue;
-
-//     TLorentzVector mu;
-//     mu.SetPtEtaPhiM(GenPart_pt->At(i), GenPart_eta->At(i), GenPart_phi->At(i), GenPart_mass->At(i));
-
-//     EMU_MUON mu_std = EMU_MUON(mu, mu, (-1) * (GenPart_pdgId->At(i) / std::abs(GenPart_pdgId->At(i))));
-//     fFVecGenMuons.push_back(mu_std);
-//   }
-
-//   std::sort(fFVecGenMuons.begin(), fFVecGenMuons.end(), [](const EMU_MUON &lhs, const EMU_MUON &rhs) {
-//     return lhs.fVec.Pt() > rhs.fVec.Pt();
-//   });
-// }
 
 TLorentzVector EMU::GetMuonMCSmearing (TLorentzVector fMu) {
 
@@ -94,21 +64,18 @@ bool EMU::PrepareEMUPair() {
   fFVecMuons.clear();
   fFVecElecs.clear();
 
-  fSelectedMuonIdx = -1;
-  fSelectedElecIdx = -1;
+  fFVecPair_OS.clear();
+  fFVecPair_SS.clear();
+  fFVecPair_OS_inverted.clear();
+  fFVecPair_SS_inverted.clear();
 
   for (int i = 0; i < **nMuon; i++) {
-    // if ( !(Muon_highPtId->At(i) == fMuonID) )
-    //   continue;
-
-    if ( !Muon_mediumId->At(i) )
+    if ( !(Muon_highPtId->At(i) == fMuonID) )
       continue;
 
-    if ( !fMuonISOinverted && !(Muon_tkRelIso->At(i) < fMuonISO) )
-      continue;
-
-    if ( fMuonISOinverted && Muon_tkRelIso->At(i) < fMuonISO )
-      continue;
+    bool tIso = false;
+    if (Muon_tkRelIso->At(i) < fMuonISO)
+      tIso = true;
 
     if (std::abs(Muon_eta->At(i)) > fMuonEta)
       continue;
@@ -126,7 +93,7 @@ bool EMU::PrepareEMUPair() {
     if ( !(mu_corr.Pt() > fMuonPt) )
       continue;
 
-    EMU_MUON mu_std = EMU_MUON(mu_corr, mu, Muon_charge->At(i));
+    EMU_MUON mu_std = EMU_MUON(mu_corr, mu, Muon_charge->At(i), tIso);
     fFVecMuons.push_back(mu_std);
   }
 
@@ -146,72 +113,91 @@ bool EMU::PrepareEMUPair() {
     if (std::abs(eSCEta) > 1.4442 && std::abs(eSCEta) < 1.5660)
       continue;
 
-    if (!fElecIDinverted && Electron_cutBased->At(i) < fElecID)
+    if (Electron_cutBased->At(i) > fElecID)
       continue;
-
-    if (fElecIDinverted && Electron_cutBased->At(i) >= fElecID)
-      continue;
-
+    
+    bool tID = false;
+    if (Electron_cutBased->At(i) == fElecID)
+      tID = true;
 
     TLorentzVector elecs;
     elecs.SetPtEtaPhiM(Electron_pt->At(i), Electron_eta->At(i), Electron_phi->At(i), Electron_mass->At(i));
 
-    fFVecElecs.push_back(EMU_ELEC(elecs, eSCEta, Electron_charge->At(i)));
+    fFVecElecs.push_back(EMU_ELEC(elecs, eSCEta, Electron_charge->At(i), tID));
   }
 
   std::sort(fFVecElecs.begin(), fFVecElecs.end(), [](const EMU_ELEC &lhs, const EMU_ELEC &rhs) {
     return lhs.fVec.Pt() > rhs.fVec.Pt();
   });
 
-  float tChargeSelection = 1;
-  if (!fIsOppositeCharge) tChargeSelection = -1;
-
   for (int i = 0; i < fFVecMuons.size(); i++) {
     for (int j = 0; j < fFVecElecs.size(); j++) {
-      if (tChargeSelection * (fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge) > 0)
-        continue;
 
-      fSelectedMuonIdx = i;
-      fSelectedElecIdx = j;
-      break;
+      if (fFVecPair_OS.size() == 0 &&
+        fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge < 0 &&
+        fFVecMuons.at(i).fIso &&
+        fFVecElecs.at(j).fID
+      ) {
+        fFVecPair_OS.push_back(std::make_pair(fFVecMuons.at(i), fFVecElecs.at(j)));
+        continue;
+      }
+
+      if (fFVecPair_SS.size() == 0 &&
+        fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge > 0 &&
+        fFVecMuons.at(i).fIso &&
+        fFVecElecs.at(j).fID
+      ) {
+        fFVecPair_SS.push_back(std::make_pair(fFVecMuons.at(i), fFVecElecs.at(j)));
+        continue;
+      }
+
+      if (fFVecPair_OS_inverted.size() == 0 &&
+        fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge < 0 &&
+        !fFVecMuons.at(i).fIso &&
+        !fFVecElecs.at(j).fID
+      ) {
+        fFVecPair_OS_inverted.push_back(std::make_pair(fFVecMuons.at(i), fFVecElecs.at(j)));
+        continue;
+      }
+
+      if (fFVecPair_SS_inverted.size() == 0 &&
+        fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge > 0 &&
+        !fFVecMuons.at(i).fIso &&
+        !fFVecElecs.at(j).fID
+      ) {
+        fFVecPair_SS_inverted.push_back(std::make_pair(fFVecMuons.at(i), fFVecElecs.at(j)));
+        continue;
+      }
+
     }
   }
 
-  // std::cout << "######################################################################" << std::endl;
-  // std::cout << "                       Debug EMu Pair Selection                       " << std::endl;
-  // std::cout << "----------------------------------------------------------------------" << std::endl;
-
-  // for (int i = 0; i < fFVecMuons.size(); i++)
-  //   std::cout << "Muon " << i << " Pt: " << fFVecMuons.at(i).fVec.Pt() << " Eta: " << fFVecMuons.at(i).fVec.Eta() << " Phi: " << fFVecMuons.at(i).fVec.Phi() << " Charge: " << fFVecMuons.at(i).fCharge << std::endl;
-  
-  // for (int i = 0; i < fFVecElecs.size(); i++) 
-  //   std::cout << "Elec " << i << " Pt: " << fFVecElecs.at(i).fVec.Pt() << " Eta: " << fFVecElecs.at(i).fVec.Eta() << " Phi: " << fFVecElecs.at(i).fVec.Phi() << " Charge: " << fFVecElecs.at(i).fCharge << std::endl;
-  
-  // std::cout << "----------------------------------------------------------------------" << std::endl;
-  // std::cout << "Selected Muon: " << fSelectedMuonIdx << " Selected Elec: " << fSelectedElecIdx << std::endl;
-
-  // if (fSelectedMuonIdx == -1 || fSelectedElecIdx == -1) {
-  //   std::cout << "No EMU pair found" << std::endl;
-  //   return false;
-  // } else {
-  //   auto tMuon = fFVecMuons.at(fSelectedMuonIdx).fVec;
-  //   auto tElec = fFVecElecs.at(fSelectedElecIdx).fVec;
-  //   double tEMUMass = (tMuon + tElec).M();
-
-  //   std::cout << "EMU Pair Mass: " << tEMUMass << std::endl;
+  // if (fFVecPair_OS.size() == 1 || fFVecPair_SS.size() == 1 || fFVecPair_OS_inverted.size() == 1 || fFVecPair_SS_inverted.size() == 1) {
+  //   std::cout << "######################################################################" << std::endl;
+  //   std::cout << "                       Debug EMu Pair Selection                       " << std::endl;
+  //   std::cout << "----------------------------------------------------------------------" << std::endl;
+  //   if (fFVecPair_OS.size() == 1) {
+  //     std::cout << "  OS Pair: " << std::endl;
+  //     std::cout << "    Muon: " << fFVecPair_OS.at(0).first.fVec.Pt() << " " << fFVecPair_OS.at(0).first.fVec.Eta() << " " << fFVecPair_OS.at(0).first.fCharge << " " << fFVecPair_OS.at(0).first.fIso << std::endl;
+  //     std::cout << "    Elec: " << fFVecPair_OS.at(0).second.fVec.Pt() << " " << fFVecPair_OS.at(0).second.fSCEta << " " << fFVecPair_OS.at(0).second.fCharge << " " << fFVecPair_OS.at(0).second.fID << std::endl;
+  //   }
+  //   if (fFVecPair_SS.size() == 1) {
+  //     std::cout << "  SS Pair: " << std::endl;
+  //     std::cout << "    Muon: " << fFVecPair_SS.at(0).first.fVec.Pt() << " " << fFVecPair_SS.at(0).first.fVec.Eta() << " " << fFVecPair_SS.at(0).first.fCharge << " " << fFVecPair_SS.at(0).first.fIso << std::endl;
+  //     std::cout << "    Elec: " << fFVecPair_SS.at(0).second.fVec.Pt() << " " << fFVecPair_SS.at(0).second.fSCEta << " " << fFVecPair_SS.at(0).second.fCharge << " " << fFVecPair_SS.at(0).second.fID << std::endl;
+  //   }
+  //   if (fFVecPair_OS_inverted.size() == 1) {
+  //     std::cout << "  OS Inverted Pair: " << std::endl;
+  //     std::cout << "    Muon: " << fFVecPair_OS_inverted.at(0).first.fVec.Pt() << " " << fFVecPair_OS_inverted.at(0).first.fVec.Eta() << " " << fFVecPair_OS_inverted.at(0).first.fCharge << " " << fFVecPair_OS_inverted.at(0).first.fIso << std::endl;
+  //     std::cout << "    Elec: " << fFVecPair_OS_inverted.at(0).second.fVec.Pt() << " " << fFVecPair_OS_inverted.at(0).second.fSCEta << " " << fFVecPair_OS_inverted.at(0).second.fCharge << " " << fFVecPair_OS_inverted.at(0).second.fID << std::endl;
+  //   }
+  //   if (fFVecPair_SS_inverted.size() == 1) {
+  //     std::cout << "  SS Inverted Pair: " << std::endl;
+  //     std::cout << "    Muon: " << fFVecPair_SS_inverted.at(0).first.fVec.Pt() << " " << fFVecPair_SS_inverted.at(0).first.fVec.Eta() << " " << fFVecPair_SS_inverted.at(0).first.fCharge << " " << fFVecPair_SS_inverted.at(0).first.fIso << std::endl;
+  //     std::cout << "    Elec: " << fFVecPair_SS_inverted.at(0).second.fVec.Pt() << " " << fFVecPair_SS_inverted.at(0).second.fSCEta << " " << fFVecPair_SS_inverted.at(0).second.fCharge << " " << fFVecPair_SS_inverted.at(0).second.fID << std::endl;
+  //   }
+  //   std::cout << "######################################################################" << std::endl;
   // }
 
-  // std::cout << "######################################################################" << std::endl;
-
-  if (fSelectedMuonIdx == -1 || fSelectedElecIdx == -1)
-    return false;
-
-  auto tMuon = fFVecMuons.at(fSelectedMuonIdx).fVec;
-  auto tElec = fFVecElecs.at(fSelectedElecIdx).fVec;
-  double tEMUMass = (tMuon + tElec).M();
-
-  if (tEMUMass < fMassCut)
-    return false;
-
-  return true;
+  return fFVecPair_OS.size() == 1 || fFVecPair_SS.size() == 1 || fFVecPair_OS_inverted.size() == 1 || fFVecPair_SS_inverted.size() == 1;
 }

@@ -28,8 +28,22 @@ public:
 
   void Init();
 
-  void FillEMUPair(TLorentzVector& fMuon, TLorentzVector& fElec, int nJet, int nBJet, double weight = 1.);
-  void FillJet(std::vector<JET::StdJet>* fJet, std::vector<JET::StdJet>* fBJet, double fEMUMass, double weight = 1.);
+  void FillEMUPair(
+    const TLorentzVector& fMuon, 
+    const TLorentzVector& fElec, 
+    const int& nJet, 
+    const int& nBJet, 
+    const double& fWeight,
+    const std::string& fType
+  );
+
+  void FillJet(
+    const std::vector<JET::StdJet>& fJet, 
+    const std::vector<JET::StdJet>& fBJet, 
+    const double& fEMUMass, 
+    const double& fWeight,
+    const std::string& fType
+  );
 
   void FillHisto(std::string name, double value, double weight = 1.);
   void FillHisto(std::string name, float value, double weight = 1.);

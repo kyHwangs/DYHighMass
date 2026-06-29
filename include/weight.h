@@ -124,7 +124,7 @@ inline void WeigthEnvelope::Print() {
     }
     std::cout << "  Total Weight: " << fWeightContents.GetTotalWeight() << std::endl;
     std::cout << "  MC Weight: " << fWeightContents.GetMCWeight() << std::endl;
-    std::cout << "  Reco Weight: " << fWeightContents.GetTotalWeight() << std::endl;
+    std::cout << "  Reco Weight: " << fWeightContents.GetRecoWeight() << std::endl;
   }
   std::cout << "######################################################################" << std::endl;
   std::cout << " " << std::endl;

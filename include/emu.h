@@ -89,25 +89,14 @@ public:
     else if (tIDString == "tracker") fMuonID = (UChar_t)(1);
     else throw std::runtime_error("Wrong definitions for HighPtID, allowed optsions: global, tracker");
 
-    fMuonISOinverted = fMuonConf["ISOinverted"].as<bool>();
-
     fMuonISO = fMuonConf["ISO"].as<float>();
-    
-    fDoMuonMCSmearing = true;
-    if (!fMuonConf["doMCSmearing"].as<bool>())
-      fDoMuonMCSmearing = false;
-
+    fDoMuonMCSmearing = fMuonConf["doMCSmearing"].as<bool>();
     
     YAML::Node fElecConf = fConfig["Electron"];
 
     fElecPt = fElecConf["Pt"].as<float>();
     fElecEta = fElecConf["Eta"].as<float>();
     fElecID = fElecConf["ID"].as<int>();
-    fElecIDinverted = fElecConf["IDinverted"].as<bool>();
-
-    fIsOppositeCharge = true;
-    if (fConfig["Pair"]["Charge"].as<std::string>() == "same")
-      fIsOppositeCharge = false;
 
     YAML::Node fZConf = fConfig["Z"];
     fMassCut = fZConf["MassCut"].as<float>();
@@ -118,7 +107,6 @@ public:
     std::cout << " Pt: " << fMuonPt << std::endl;
     std::cout << " Eta: " << fMuonEta << std::endl;
     std::cout << " ID: " << fMuonConf["ID"].as<std::string>() << " " << fMuonID << std::endl;
-    std::cout << " ISOinverted: " << fMuonISOinverted << std::endl;
     std::cout << " ISO: " << fMuonISO << std::endl;
     std::cout << " doMCSmearing: " << fDoMuonMCSmearing << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
@@ -127,13 +115,11 @@ public:
     std::cout << " Pt: " << fElecPt << std::endl;
     std::cout << " Eta: " << fElecEta << std::endl;
     std::cout << " ID: " << fElecID << std::endl;
-    std::cout << " IDinverted: " << fElecIDinverted << std::endl;
     std::cout << " ID: HEEP ID (not in config!)" << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << "                           EMU Pair selection                         " << std::endl;
     std::cout << "----------------------------------------------------------------------" << std::endl;
     std::cout << " MassCut: " << fMassCut << std::endl;
-    std::cout << " Charge: " << (fIsOppositeCharge ? "Opposite" : "Same") << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;
 
@@ -146,9 +132,10 @@ public:
     TLorentzVector fVec;
     TLorentzVector fVecRaw;
     int fCharge;
+    bool fIso;
 
-    EMU_MUON(TLorentzVector fVec_, TLorentzVector fVecRaw_, int fCharge_)
-    : fVec(fVec_), fVecRaw(fVecRaw_), fCharge(fCharge_)
+    EMU_MUON(TLorentzVector fVec_, TLorentzVector fVecRaw_, int fCharge_, bool fIso_)
+    : fVec(fVec_), fVecRaw(fVecRaw_), fCharge(fCharge_), fIso(fIso_)
     { };
   };
 
@@ -156,9 +143,10 @@ public:
     TLorentzVector fVec;
     float fSCEta;
     int fCharge;
+    bool fID;
 
-    EMU_ELEC(TLorentzVector fVec_, float fSCEta_,int fCharge_)
-    : fVec(fVec_), fSCEta(fSCEta_), fCharge(fCharge_)
+    EMU_ELEC(TLorentzVector fVec_, float fSCEta_,int fCharge_, bool fID_)
+    : fVec(fVec_), fSCEta(fSCEta_), fCharge(fCharge_), fID(fID_)
     { };
 
     float SCEta() { return fSCEta; }
@@ -169,16 +157,21 @@ public:
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
 
   bool PrepareEMUPair();
-  // void PrepareGenMuon();
 
   TLorentzVector GetMuonMCSmearing(TLorentzVector fMu);
 
   std::vector<EMU_MUON> GetMuons() { return fFVecMuons; }
-  std::vector<EMU_MUON> GetGenMuons() { return fFVecGenMuons; }
   std::vector<EMU_ELEC> GetElecs() { return fFVecElecs; }
 
-  EMU_MUON GetMuon() { return fFVecMuons.at(fSelectedMuonIdx); }
-  EMU_ELEC GetElec() { return fFVecElecs.at(fSelectedElecIdx); }
+  std::pair<EMU_MUON, EMU_ELEC> GetPair_OS() const { return fFVecPair_OS.at(0); }
+  std::pair<EMU_MUON, EMU_ELEC> GetPair_SS() const { return fFVecPair_SS.at(0); }
+  std::pair<EMU_MUON, EMU_ELEC> GetPair_OS_inverted() const { return fFVecPair_OS_inverted.at(0); }
+  std::pair<EMU_MUON, EMU_ELEC> GetPair_SS_inverted() const { return fFVecPair_SS_inverted.at(0); }
+
+  const bool HasPair_OS() const { return fFVecPair_OS.size() == 1; }
+  const bool HasPair_SS() const { return fFVecPair_SS.size() == 1; }
+  const bool HasPair_OS_inverted() const { return fFVecPair_OS_inverted.size() == 1; }
+  const bool HasPair_SS_inverted() const { return fFVecPair_SS_inverted.size() == 1; }
 
   TTreeReaderValue<unsigned int>* nMuon;
   TTreeReaderArray<float>* Muon_pt;
@@ -202,30 +195,22 @@ public:
   TTreeReaderArray<int>* Electron_charge;
   TTreeReaderArray<int>* Electron_cutBased;
 
-  // TTreeReaderValue<unsigned int>* nGenPart;
-  // TTreeReaderArray<float>* GenPart_pt;
-  // TTreeReaderArray<float>* GenPart_eta;
-  // TTreeReaderArray<float>* GenPart_phi;
-  // TTreeReaderArray<float>* GenPart_mass;
-  // TTreeReaderArray<int>* GenPart_pdgId;
-
 private:
 
   std::vector<EMU_MUON> fFVecMuons;
-  std::vector<EMU_MUON> fFVecGenMuons;
-  
   std::vector<EMU_ELEC> fFVecElecs;
-  std::vector<EMU_ELEC> fFvecGenElecs;
+
+  std::vector<std::pair<EMU_MUON, EMU_ELEC>> fFVecPair_OS;
+  std::vector<std::pair<EMU_MUON, EMU_ELEC>> fFVecPair_SS;
+  std::vector<std::pair<EMU_MUON, EMU_ELEC>> fFVecPair_OS_inverted;
+  std::vector<std::pair<EMU_MUON, EMU_ELEC>> fFVecPair_SS_inverted;
   
-  int fSelectedMuonIdx;
-  int fSelectedElecIdx;
 
   bool fIsMC;
 
   float fMuonPt;
   float fMuonEta;
   UChar_t fMuonID;
-  bool fMuonISOinverted;
   float fMuonISO;
   SmearingEngineEMU* fMuonSmearingEngine;
   bool fDoMuonMCSmearing;
@@ -233,9 +218,6 @@ private:
   float fElecPt;
   float fElecEta;
   int fElecID;
-  bool fElecIDinverted;
-
-  bool fIsOppositeCharge;
   
   float fMassCut;
 };
