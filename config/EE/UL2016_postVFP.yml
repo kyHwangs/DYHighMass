@@ -50,7 +50,7 @@ Efficiency:
   BTag:
     Path: ../../correctionlib/bTag/2016postVFP.json
   BTagEff:
-    Path: ../../correctionlib/bTag/eff/BTagEff_MUMU.json
+    Path: ../../correctionlib/bTag/eff/BTagEff_EE_eff_AbsEta_PtMerged.json
 
 Pileup:
   Data: PileupHistogram-goldenJSON-13tev-2016-postVFP-69200ub-99bins.root

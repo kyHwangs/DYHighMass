@@ -121,6 +121,7 @@ public:
     fJets = new JET(fConfig);
     fJets->IsMC(fIsMC);
     fJets->init(fNtuples->GetTreeReader());
+    fJets->SetSampleName(fSampleName.Data());
 
     std::cout << std::fixed;
   }
@@ -149,9 +150,7 @@ public:
     std::cout << " fDoL1Pre: " << fDoL1Pre << " " << std::endl;
     std::cout << " fDoJetPUID: " << fDoJetPUID << " " << fConfig["Efficiency"]["JetPU"]["Path"].as<std::string>() << std::endl;
     std::cout << " fDoBTag: " << fDoBTag << " " << fConfig["Efficiency"]["BTag"]["Path"].as<std::string>() << std::endl;
-    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["bQuark"].as<std::string>() << std::endl;
-    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["cQuark"].as<std::string>() << std::endl;
-    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["lQuark"].as<std::string>() << std::endl;
+    std::cout << "            " << fConfig["Efficiency"]["BTagEff"]["Path"].as<std::string>() << std::endl;
     std::cout << " fDoTopPtReweighing: " << fDoTopPtReweighing << std::endl;
     std::cout << "######################################################################" << std::endl;
     std::cout << " " << std::endl;

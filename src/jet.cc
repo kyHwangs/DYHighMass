@@ -162,9 +162,6 @@ double JET::GetPUIDSF() {
 
 double JET::GetBTagSF() {
 
-  if (fSampleName == "GG") 
-    return 1.;
-
   double pMC = 1.;
   double pData = 1.;
 
@@ -172,8 +169,6 @@ double JET::GetBTagSF() {
 
     double tJetAbsEta = std::abs(fFVecJets.at(i).fVec.Eta());
     double tJetEta = fFVecJets.at(i).fVec.Eta();
-    if (tJetEta < -2.4) tJetEta = -2.3;
-    if (tJetEta > 2.4) tJetEta = 2.3;
     double tJetPt = fFVecJets.at(i).fVec.Pt();
     int tHadFlav = fFVecJets.at(i).fHadFlav;
 
@@ -185,9 +180,9 @@ double JET::GetBTagSF() {
     else tSFcentral = fBTagIncl->evaluate({"central", fBTagWP, 0, tJetAbsEta, tJetPt});
 
     double tJetEff = 1.;
-    if (tHadFlav == 5)        tJetEff = fJetBTagEff->evaluate({fEra, "B", fSampleName, tJetEta, tJetPt, "nominal"});
-    else if (tHadFlav == 4)   tJetEff = fJetBTagEff->evaluate({fEra, "C", fSampleName, tJetEta, tJetPt, "nominal"});
-    else                      tJetEff = fJetBTagEff->evaluate({fEra, "L", fSampleName, tJetEta, tJetPt, "nominal"});
+    if (tHadFlav == 5)        tJetEff = fJetBTagEff->evaluate({fEra, "B", fSampleName, tJetAbsEta, tJetPt, "nominal"});
+    else if (tHadFlav == 4)   tJetEff = fJetBTagEff->evaluate({fEra, "C", fSampleName, tJetAbsEta, tJetPt, "nominal"});
+    else                      tJetEff = fJetBTagEff->evaluate({fEra, "L", fSampleName, tJetAbsEta, tJetPt, "nominal"});
 
     if (fFVecJets.at(i).fPassingBJetTagger) {
       pMC *= tJetEff;
