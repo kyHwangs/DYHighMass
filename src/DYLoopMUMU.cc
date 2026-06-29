@@ -197,6 +197,40 @@ void DYLoopMUMU::Loop() {
         // std::cout << "fWeightEnvelope.GetRecoWeight(\"OS\"): " << fWeightEnvelope.GetRecoWeight("OS") << std::endl;
         // std::cout << "######################################################################" << std::endl;
         // std::cout << " " << std::endl;
+
+        if (fSampleName.Contains("NNLO_MUMU")) {
+
+          auto tDreessedOrigin = fNtuples->GetGenDressedLepton(13);
+
+          auto tDressedLeptons = fMuons->GetFiducialMuons(tDreessedOrigin);
+          auto tGenMuon = fNtuples->GetGenPartWithFlag(13, 1);
+          auto tGenElec = fNtuples->GetGenPartWithFlag(11, 1);
+
+          // if (tDressedLeptons.size() != 2) {
+          //   for (int i = 0; i < tDreessedOrigin.size(); i++) {
+          //     std::cout << i + 1 << " / " << tDreessedOrigin.size() << " - " << tDreessedOrigin.at(i).second.Pt() << " " << tDreessedOrigin.at(i).second.Eta() << " " << tDreessedOrigin.at(i).second.Phi() << " " << tDreessedOrigin.at(i).first << std::endl;
+          //   }
+          // }
+
+          if (tDressedLeptons.size() == 2) {
+
+            auto tGenLep = tGenMuon;
+            for (int k = 0; k < tGenElec.size(); k++)
+              tGenLep.push_back(tGenElec.at(k));
+
+            auto tGenJets = fNtuples->GetGenJet(30., tGenLep);
+
+            fHistoSet->FillGenInfo(
+              tDressedLeptons,
+              tGenJets.size(),
+              tMuon_OS,
+              nJets,
+              nBJets,
+              fWeightEnvelope.GetMCWeight("OS"),
+              fWeightEnvelope.GetRecoWeight("OS")
+            );
+          }
+        }
       }
       
       if (tMuon_SS.size() == 2)  {
@@ -350,4 +384,7 @@ void DYLoopMUMU::Loop() {
 void DYLoopMUMU::EndOfJob() {
 
   fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root", !fIsMC);
+  
+  if (fSampleName.Contains("NNLO_MUMU"))
+    fHistoSet->WriteGenHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root");
 }

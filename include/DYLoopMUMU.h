@@ -74,23 +74,23 @@ public:
     fIsMC = fConfigSample[std::string(fEra)][std::string(fSampleName)]["IsMC"].as<bool>();
 
     fHistoSet = new HistoSetMUMU();
+    if (fSampleName.Contains("NNLO_MUMU"))
+      fHistoSet->InitGenInfo();
 
     fNtuples = new NT(fConfig, fIsMC);
     fNtuples->SetSampleName(fSampleName);
     fNtuples->SetEra(fEra);
     fNtuples->AddChain(fSampleName, fJobID);
-
     std::cout << " " << std::endl;
 
     fMaxEntries = fNtuples->GetEntries();
     fNtuples->init();
-
     std::cout << " " << std::endl;
 
     fMuons = new MUON(fConfig);
     fMuons->IsMC(fIsMC);
     fMuons->init(fNtuples->GetTreeReader());
-
+    
     fJets = new JET(fConfig);
     fJets->IsMC(fIsMC);
     fJets->init(fNtuples->GetTreeReader());
@@ -181,13 +181,11 @@ public:
         double mu_1_mc = 0;
         double mu_2_mc = 0;
 
-        if (fLMu.Pt() < 52.) {
-          mu_1_data = 0.;
-          mu_1_mc = 0.;
-        } else {
-          mu_1_data = fTRIG_Eff_Data->evaluate({std::abs(fLMu.Eta()), fLMu.Pt(), "nominal"});
-          mu_1_mc = fTRIG_Eff_MC->evaluate({std::abs(fLMu.Eta()), fLMu.Pt(), "nominal"});
-        }
+        double mu_1_pt = fLMu.Pt();
+        if (mu_1_pt < 52.) mu_1_pt = 52.01;
+
+        mu_1_data = fTRIG_Eff_Data->evaluate({std::abs(fLMu.Eta()), mu_1_pt, "nominal"});
+        mu_1_mc = fTRIG_Eff_MC->evaluate({std::abs(fLMu.Eta()), mu_1_pt, "nominal"});
 
         if (fSMu.Pt() < 52.) {
           mu_2_data = 0.;
@@ -222,14 +220,11 @@ public:
         
         double mu_1_data = 0;
         double mu_1_mc = 0;
+        double mu_1_pt = fLMu.Pt();
+        if (mu_1_pt < 52.) mu_1_pt = 52.01;
 
-        if (fLMu.Pt() < 52.) {
-          mu_1_data = 0.;
-          mu_1_mc = 1.;
-        } else {
-          mu_1_data = fTRIG_Eff_Data->evaluate({std::abs(fLMu.Eta()), fLMu.Pt(), "nominal"});
-          mu_1_mc = fTRIG_Eff_MC->evaluate({std::abs(fLMu.Eta()), fLMu.Pt(), "nominal"});
-        }
+        mu_1_data = fTRIG_Eff_Data->evaluate({std::abs(fLMu.Eta()), mu_1_pt, "nominal"});
+        mu_1_mc = fTRIG_Eff_MC->evaluate({std::abs(fLMu.Eta()), mu_1_pt, "nominal"});
 
         // std::cout << "######################################################################" << std::endl;
         // std::cout << "                       TRIGG efficiency debugging                     " << std::endl;

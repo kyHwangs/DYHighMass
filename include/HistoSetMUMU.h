@@ -7,6 +7,7 @@
 #include <typeinfo>
 
 #include "jet.h"
+#include "muon.h"
 
 #include "TFile.h"
 #include "TROOT.h"
@@ -25,6 +26,7 @@ public:
   }
 
   void Init();
+  void InitGenInfo();
 
   /**
     * \brief Filling the muon related histograms 
@@ -68,6 +70,16 @@ public:
     const std::string& fType
   );
 
+  void FillGenInfo(
+    const std::vector<TLorentzVector>& tDressedLeptons,
+    const int& tGenJets,
+    const std::vector<MUON::StdMuon>& tMuon_OS,
+    const int& nJets,
+    const int& nBJets,
+    const double& fMCWeight,
+    const double& fRecoWeight
+  );
+
   void FillHisto(std::string name, double value, double weight = 1.);
   void FillHisto(std::string name, float value, double weight = 1.);
   void FillHisto(std::string name, int value, double weight = 1.);
@@ -80,6 +92,8 @@ public:
   void SetHisto(std::string name, std::string binning);
   void SetHisto(std::string name, std::string binning1, std::string binning2);
 
+  void SetHistoGenInfo(std::string name, std::vector<double> bins);
+
   std::string GetMassBin(double fDimuonMass);
   std::string GetJetBin(double fNJet);
   std::string GetBJetBin(double fNBJet);
@@ -88,13 +102,33 @@ public:
   double SetPtOverflow(double fPt);
   double SetMassOverflow(double fMass);
 
+  double GetNJetBinIndex(int nJet) {
+    if (nJet == 0) return 0.;
+    if (nJet == 1) return 1.;
+    
+    return 2.;
+  }
+
+  double GetMassBinIndex(double fMass) {
+
+    for (int i = 0; i < fMassBins.size(); i++)
+     if (fMass >= fMassBins.at(i) && fMass < fMassBins.at(i + 1))
+      return i;
+
+    return -1;
+  }
+
   void WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData);
+  void WriteGenHisto(TString fEra, TString fSampleName, TString fOutputDir);
 
 private:
   std::map<std::string, TH1D*> fHistSet;
   std::map<std::string, TH2D*> fHistSet2D;
 
+  std::map<std::string, TH1D*> fHistSetGenInfo;
+
   std::vector<std::string> fSuffix;
+  std::vector<std::string> fSuffixGenInfo;
 
   std::vector<double> fPtBins;
   std::vector<double> fEtaBins;

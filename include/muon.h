@@ -143,6 +143,8 @@ public:
      else throw std::runtime_error("Wrong definitions for GetMuons, allowed optsions: OS, SS, OSinverted, SSinverted");
   }
 
+  std::vector<TLorentzVector> GetFiducialMuons(const std::vector<std::pair<int, TLorentzVector>>& fMuons) const;
+
   TTreeReaderValue<unsigned int>* nMuon;
   TTreeReaderArray<float>* Muon_pt;
   TTreeReaderArray<float>* Muon_tunepRelPt;

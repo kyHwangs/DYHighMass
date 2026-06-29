@@ -85,6 +85,40 @@ void HistoSetMUMU::Init() {
   std::cout << " " << std::endl;
 }
 
+void HistoSetMUMU::InitGenInfo() {
+
+  std::vector<std::string> fAddonJet = {"", "_0J", "_1J", "_mt1J"};
+
+  for (int i = 0; i < fAddonJet.size(); i++) {
+    
+    std::string tHistSuffix = fAddonJet[i];
+    fSuffixGenInfo.emplace_back(tHistSuffix);
+
+    SetHistoGenInfo("h_nJet" + tHistSuffix, fNJetBins);    
+
+    SetHistoGenInfo("h_LeadingMuonPt" + tHistSuffix, fPtBins);
+    SetHistoGenInfo("h_LeadingMuonEta" + tHistSuffix, fEtaBins);
+    SetHistoGenInfo("h_LeadingMuonPhi" + tHistSuffix, fPhiBins);
+
+    SetHistoGenInfo("h_SubleadingMuonPt" + tHistSuffix, fPtBins);
+    SetHistoGenInfo("h_SubleadingMuonEta" + tHistSuffix, fEtaBins);
+    SetHistoGenInfo("h_SubleadingMuonPhi" + tHistSuffix, fPhiBins);
+
+    SetHistoGenInfo("h_MuonPt" + tHistSuffix, fPtBins);
+    SetHistoGenInfo("h_MuonEta" + tHistSuffix, fEtaBins);
+    SetHistoGenInfo("h_MuonPhi" + tHistSuffix, fPhiBins);
+
+    SetHistoGenInfo("h_dimuonMass" + tHistSuffix, fMassBins);
+    SetHistoGenInfo("h_dimuonPt" + tHistSuffix, fPtBins);
+    SetHistoGenInfo("h_dimuonRap" + tHistSuffix, fEtaBins);
+  }
+  
+  fHistSet2D["h_ResponseMatrix"] = 
+      new TH2D("h_ResponseMatrix", "h_ResponseMatrix", 
+                45, 0., 45., 45, 0., 45.);
+
+}
+
 void HistoSetMUMU::FillHisto(std::string name, double value, double weight) {
 
   if (fHistSet.find(name) == fHistSet.end()) {
@@ -123,6 +157,17 @@ void HistoSetMUMU::Fill2DHisto(std::string name, double value1, double value2, d
   }
 
   fHistSet2D[name]->Fill(value1, value2, weight);
+}
+
+void HistoSetMUMU::SetHistoGenInfo(std::string name, std::vector<double> bins) {
+
+  if (fHistSetGenInfo.find(name) == fHistSetGenInfo.end()) {
+    if (bins[0] == -9999) fHistSetGenInfo[name] = new TH1D(name.c_str(), name.c_str(), bins[1], bins[2], bins[3]);
+    else                 fHistSetGenInfo[name] = new TH1D(name.c_str(), name.c_str(), bins.size() - 1, &(bins[0]));
+  } else {
+    if (bins[0] == -9999) fHistSetGenInfo[name]->SetBins(bins[1], bins[2], bins[3]);
+    else                 fHistSetGenInfo[name]->SetBins(bins.size() - 1, &(bins[0]));
+  }
 }
 
 void HistoSetMUMU::SetHisto(std::string name, std::vector<double> bins) {
@@ -381,6 +426,79 @@ void HistoSetMUMU::FillJet(
   }
 }
 
+void HistoSetMUMU::FillGenInfo(
+  const std::vector<TLorentzVector>& tDressedLeptons,
+  const int& tNGenJets,
+  const std::vector<MUON::StdMuon>& tMuon_OS,
+  const int& nJets,
+  const int& nBJets,
+  const double& fMCWeight,
+  const double& fRecoWeight
+) {
+
+  double tTotalWeight = fMCWeight * fRecoWeight;
+
+  std::string tGenJetSuffix = GetJetBin(tNGenJets);
+  std::string tRecoJetSuffix = GetJetBin(nJets);
+  std::string tRecoBJetSuffix = GetBJetBin(nBJets);
+
+  auto tGenDiMuon = tDressedLeptons.at(0) + tDressedLeptons.at(1);
+  auto tGenMass = SetMassOverflow(tGenDiMuon.M());
+
+  auto tRecoDiMuon = tMuon_OS.at(0).fVec + tMuon_OS.at(1).fVec;
+  auto tRecoMass = SetMassOverflow(tRecoDiMuon.M());
+
+  std::vector<std::string> fAddonGenJet = {""};
+  fAddonGenJet.emplace_back(tGenJetSuffix);
+
+  for (auto suffix : fAddonGenJet) {
+
+    fHistSetGenInfo["h_dimuonMass" + suffix]->Fill(tGenMass, tTotalWeight);
+    
+    if (tGenMass > 200) {
+      fHistSetGenInfo["h_nJet" + suffix]->Fill(tNGenJets, tTotalWeight);
+
+      fHistSetGenInfo["h_LeadingMuonPt" + suffix]->Fill(tDressedLeptons.at(0).Pt(), tTotalWeight);
+      fHistSetGenInfo["h_LeadingMuonEta" + suffix]->Fill(tDressedLeptons.at(0).Eta(), tTotalWeight);
+      fHistSetGenInfo["h_LeadingMuonPhi" + suffix]->Fill(tDressedLeptons.at(0).Phi(), tTotalWeight);
+
+      fHistSetGenInfo["h_SubleadingMuonPt" + suffix]->Fill(tDressedLeptons.at(1).Pt(), tTotalWeight);
+      fHistSetGenInfo["h_SubleadingMuonEta" + suffix]->Fill(tDressedLeptons.at(1).Eta(), tTotalWeight);
+      fHistSetGenInfo["h_SubleadingMuonPhi" + suffix]->Fill(tDressedLeptons.at(1).Phi(), tTotalWeight);
+
+      fHistSetGenInfo["h_MuonPt" + suffix]->Fill(tDressedLeptons.at(0).Pt(), tTotalWeight);
+      fHistSetGenInfo["h_MuonEta" + suffix]->Fill(tDressedLeptons.at(0).Eta(), tTotalWeight);
+      fHistSetGenInfo["h_MuonPhi" + suffix]->Fill(tDressedLeptons.at(0).Phi(), tTotalWeight);
+  
+      fHistSetGenInfo["h_MuonPt" + suffix]->Fill(tDressedLeptons.at(1).Pt(), tTotalWeight);
+      fHistSetGenInfo["h_MuonEta" + suffix]->Fill(tDressedLeptons.at(1).Eta(), tTotalWeight);
+      fHistSetGenInfo["h_MuonPhi" + suffix]->Fill(tDressedLeptons.at(1).Phi(), tTotalWeight);
+
+      fHistSetGenInfo["h_dimuonPt" + suffix]->Fill(tGenDiMuon.Pt(), tTotalWeight);
+      fHistSetGenInfo["h_dimuonRap" + suffix]->Fill(tGenDiMuon.Rapidity(), tTotalWeight);
+    }
+  }
+
+  if (nBJets == 0) {
+    double tGenMassIndex = GetMassBinIndex(tGenMass);
+    double tRecoMassIndex = GetMassBinIndex(tRecoMass);
+    double tGenJetIndex = GetNJetBinIndex(tNGenJets);
+    double tRecoJetIndex = GetNJetBinIndex(nJets);
+
+    double tXbin = 15. * tRecoJetIndex + tRecoMassIndex + 0.5;
+    double tYbin = 15. * tGenJetIndex + tGenMassIndex + 0.5;
+
+    // std::cout << tGenMassIndex << " " << tGenMass << std::endl;
+    // std::cout << tRecoMassIndex << " " << tRecoMass << std::endl;
+    // std::cout << tGenJetIndex << " " << tNGenJets << std::endl;
+    // std::cout << tRecoJetIndex << " " << nJets << std::endl;
+    // std::cout << tXbin << " " << tYbin << std::endl;
+
+    fHistSet2D["h_ResponseMatrix"]->Fill(tXbin, tYbin, tTotalWeight);
+  }
+
+}
+
 void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData) {
 
   if (fSampleName.Contains("NNLO_MUMU_10to50"))
@@ -388,13 +506,13 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
   
   TFile* fOutputFile = new TFile(fOutputDir, "RECREATE");
   
-  fOutputFile->mkdir(fEra + '/' + fSampleName);
+  fOutputFile->mkdir(fEra + "/" + fSampleName);
 
   for (auto tSuffix : fSuffix)
     if (tSuffix != "")
-      fOutputFile->mkdir(fEra + '/' + fSampleName + '/' + tSuffix);
+      fOutputFile->mkdir(fEra + "/" + fSampleName + "/" + tSuffix);
 
-  fOutputFile->cd(fEra + '/' + fSampleName);
+  fOutputFile->cd(fEra + "/" + fSampleName);
   fHistSet["h_EventInfo"]->Write();
   fHistSet["h_GenWeight"]->Write();
   fHistSet["h_LHEDimuonMass"]->Write();
@@ -407,8 +525,8 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
   
   for (const auto& fType : fPairType) {
     for (auto tSuffix : fSuffix) {
-      if (tSuffix != "") fOutputFile->cd(fEra + '/' + fSampleName + '/' + tSuffix);
-      else fOutputFile->cd(fEra + '/' + fSampleName);
+      if (tSuffix != "") fOutputFile->cd(fEra + "/" + fSampleName + "/" + tSuffix);
+      else fOutputFile->cd(fEra + "/" + fSampleName);
         
 
       fHistSet["h_" + fType + "_LeadingMuonPt" + tSuffix]->Write();
@@ -492,16 +610,49 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
     }
   }
 
-  if (fHistSet2D.size() > 0) {
-    fOutputFile->mkdir("Hist2D/" + fEra + '/' + fSampleName);
+  // if (fHistSet2D.size() > 0) {
+  //   fOutputFile->mkdir("Hist2D/" + fEra + "/" + fSampleName);
 
-    for (auto [name, hist] : fHistSet2D) {
-      hist->SetDirectory(fOutputFile);
-      fOutputFile->cd("Hist2D/" + fEra + '/' + fSampleName);
-      hist->Write();
-    }
-  }
+  //   for (auto [name, hist] : fHistSet2D) {
+  //     hist->SetDirectory(fOutputFile);
+  //     fOutputFile->cd("Hist2D/" + fEra + "/" + fSampleName);
+  //     hist->Write();
+  //   }
+  // }
 
   fOutputFile->Close();
+}
+
+void HistoSetMUMU::WriteGenHisto(TString fEra, TString fSampleName, TString fOutputDir) {
+  
+  if (fSampleName.Contains("NNLO_MUMU_10to50"))
+    fSampleName = "NNLO_MUMU_10to50";
+
+  TFile* fOutputFile = new TFile(fOutputDir, "UPDATE");
+
+  fOutputFile->mkdir(fEra + "/" + fSampleName + "/GenInfo");
+  fOutputFile->cd(fEra + "/" + fSampleName + "/GenInfo");
+  fHistSet2D["h_ResponseMatrix"]->Write();
+
+  for (auto tSuffix : fSuffixGenInfo) {
+    if (tSuffix != "") {
+      fOutputFile->mkdir(fEra + "/" + fSampleName + "/GenInfo/" + tSuffix);
+      fOutputFile->cd(fEra + "/" + fSampleName + "/GenInfo/" + tSuffix);
+    }
+
+    fHistSetGenInfo["h_nJet" + tSuffix]->Write();
+    fHistSetGenInfo["h_LeadingMuonPt" + tSuffix]->Write();
+    fHistSetGenInfo["h_LeadingMuonEta" + tSuffix]->Write();
+    fHistSetGenInfo["h_LeadingMuonPhi" + tSuffix]->Write();
+    fHistSetGenInfo["h_SubleadingMuonPt" + tSuffix]->Write();
+    fHistSetGenInfo["h_SubleadingMuonEta" + tSuffix]->Write();
+    fHistSetGenInfo["h_SubleadingMuonPhi" + tSuffix]->Write();
+    fHistSetGenInfo["h_MuonPt" + tSuffix]->Write();
+    fHistSetGenInfo["h_MuonEta" + tSuffix]->Write();
+    fHistSetGenInfo["h_MuonPhi" + tSuffix]->Write();
+    fHistSetGenInfo["h_dimuonMass" + tSuffix]->Write();
+    fHistSetGenInfo["h_dimuonPt" + tSuffix]->Write();
+    fHistSetGenInfo["h_dimuonRap" + tSuffix]->Write();
+  }
 }
 

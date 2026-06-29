@@ -133,8 +133,8 @@ bool MUON::PrepareMuon() {
           && fFVecMuons.at(i).fCharge * fFVecMuons.at(j).fCharge < 0
           && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(j).fISO == -1) ||
                (fFVecMuons.at(i).fISO == -1 && fFVecMuons.at(j).fISO == 1) )
-          && ( (fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
-               (fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
+          && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
+               (fFVecMuons.at(j).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
          ) {
 
         if (fFVecMuons.at(i).fISO == 1) {
@@ -152,8 +152,8 @@ bool MUON::PrepareMuon() {
           && fFVecMuons.at(i).fCharge * fFVecMuons.at(j).fCharge > 0
           && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(j).fISO == -1) ||
                (fFVecMuons.at(i).fISO == -1 && fFVecMuons.at(j).fISO == 1) )
-          && ( (fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
-               (fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
+          && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
+               (fFVecMuons.at(j).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
          ) {
         
         if (fFVecMuons.at(i).fISO == 1) {
@@ -205,4 +205,51 @@ bool MUON::PrepareMuon() {
   // std::cout << " " << std::endl;
 
   return (fFVecOSMuons.size() == 2 || fFVecSSMuons.size() == 2 || fFVecOSinvertedMuons.size() == 2 || fFVecSSinvertedMuons.size() == 2);
+}
+
+std::vector<TLorentzVector> MUON::GetFiducialMuons(const std::vector<std::pair<int, TLorentzVector>>& fMuons) const {
+  
+  std::vector<TLorentzVector> tReturnVec = {};
+  bool tIsFiducial = false;
+
+  for (int i = 0; i < fMuons.size(); i++) {
+    
+    if (std::abs(fMuons.at(i).second.Eta()) > fEta)
+      continue;
+
+    if (fMuons.at(i).second.Pt() < fSubLeadingMuonPt)
+      continue;
+    
+    for (int j = i + 1; j < fMuons.size(); j++) {
+      
+      if (std::abs(fMuons.at(j).second.Eta()) > fEta)
+        continue;
+
+      if (fMuons.at(j).second.Pt() < fSubLeadingMuonPt)
+        continue;
+
+      if (
+        fMuons.at(i).first * fMuons.at(j).first < 0 &&
+        ((fMuons.at(i).second.Pt() > fLeadingMuonPt && fMuons.at(j).second.Pt() > fSubLeadingMuonPt) ||
+         (fMuons.at(i).second.Pt() > fSubLeadingMuonPt && fMuons.at(j).second.Pt() > fLeadingMuonPt))
+      ) {
+
+        if (fMuons.at(i).second.Pt() > fMuons.at(j).second.Pt()) {
+          tReturnVec.push_back(fMuons.at(i).second);
+          tReturnVec.push_back(fMuons.at(j).second);
+        } else {
+          tReturnVec.push_back(fMuons.at(j).second);
+          tReturnVec.push_back(fMuons.at(i).second);
+        }
+
+        tIsFiducial = true;
+      }
+
+      if (tIsFiducial) break;
+    }
+
+    if (tIsFiducial) break;
+  }
+  
+  return tReturnVec;
 }
