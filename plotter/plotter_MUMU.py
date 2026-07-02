@@ -9,8 +9,8 @@ import plotterEngine_MUMU as plotterEngine
 
 def main():
 
-    eras = ["merged", "2018", "2017", "2016_postVFP", "2016_preVFP"]
-    # eras = ["2018", "2017", "2016_postVFP", "2016_preVFP"]
+    # eras = ["2016_preVFP"]
+    eras = ["2018", "2017", "2016_postVFP", "2016_preVFP", "merged"]
 
     # cases = ["", "_0J", "_1J", "_mtJ", "_0BJ", "_1BJ", "_mt1BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
     cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
@@ -95,28 +95,30 @@ def main():
         #                                 channel = "MUMU", 
         #                                 region = "OS")
 
-        type_list = ["OS_inverted", "SS_inverted", "OS", "SS"]
+        # type_list = ["OS_inverted", "SS_inverted", "SS"]
+        type_list = ["OS"]
         for type in type_list:
             plotter = plotterEngine.Plotter(era, 
-                                            rootPath = f"./output_merged.root", 
-                                            outputPath = f"./plot_valid_v2/{type}/plots_{era}/",
+                                            rootPath = f"./Bck_260702/MUMU_nominal.root", 
+                                            outputPath = f"./plots_260702/MUMU_{type}_WithFake/plots_{era}/",
                                             channel = "MUMU", 
                                             region = f"{type}")
 
-            # plotter.SetBackground(rootPath = "./Bck_260512/EMU_FAKE.root", mcList = ["TOP"])
-            # plotter.SetFakes(rootPath = "./Bck_260512/MUMU_FAKE.root")
+            plotter.SetBackground(rootPath = "./Bck_260702/EMU_FAKE.root", mcList = ["TOP"])
+            plotter.SetFakes(rootPath = "./Bck_260702/MUMU_FAKE.root")
+            hasBack = True
 
             # plotter.Plot("h_nJet",  "", "", xTitle = "N_{jet}", xmin = 0, xmax = 14)
             # plotter.Plot("h_nBJet", "", "", xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
 
             for case in cases:
-                # plotter.Plot("h_dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
-                plotter.Plot("dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, logy = True, logx = True)
+                if type == "OS": plotter.Plot("dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
+                else: plotter.Plot("dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, logy = True, logx = True)
 
                 # plotter.Plot("nJet",  case, "", xTitle = "N_{jet}", xmin = 0, xmax = 14)
                 # plotter.Plot("nBJet", case, "", xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
 
-                if type == "OS":
+                if type == "OS" and not hasBack:
                     for massbin in massBins:
 
                         plotter.Plot("JetPt", case, massbin               , xTitle = "pT(jet) [GeV]"          ,xmin = 0, xmax = 500, logy = True)

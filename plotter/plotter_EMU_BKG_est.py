@@ -4,7 +4,7 @@ import os, ROOT, sys, pickle, argparse
 import uuid
 import cmsstyle as CMS
 import array
-import plotterEngine
+import plotterEngine_MUMU as plotterEngine
 
 CMS.SetExtraText("Private Work")
 CMS.SetEnergy("13")
@@ -147,9 +147,9 @@ emu_mcList_woTop = [
 refLumi = {
     "2016_preVFP": 19.5,
     "2016_postVFP": 16.8,
-    "2017": 41.5,
-    "2018": 59.8,
-    "merged": 137.6
+    "2017": 42.12,
+    "2018": 59.45,
+    "merged": 137.88
 }
 
 def GetOSFromSS(EMU_SS_FAKE, SStoOS):
@@ -166,16 +166,23 @@ def GetOSFromSS(EMU_SS_FAKE, SStoOS):
     return EMU_OS_FAKE_DataDriven
 
 
+def GetHistoName(name, type, jet):
+    
+    histoName = ""
+    if jet != "":
+        histoName = f"{jet}/h_{type}_{name}{jet}"
+    if jet == "":
+        histoName = f"h_{type}_{name}"
+
+    return histoName
+
 def main():
 
     eras = ["2016_preVFP", "2016_postVFP", "2017", "2018", "merged"]
     cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
     
-
-    histoName = "h_PairMass"
-    histoName_MUMU = "h_dimuonMass"
-    outputPath = "./Bck_260512/EMU_FAKE/"
-    outputRoot = "./Bck_260512/EMU_FAKE.root"
+    outputPath = "./plots_260702/EMU_FAKE/"
+    outputRoot = "./plots_260702/EMU_FAKE.root"
 
     os.makedirs(outputPath, exist_ok=True)
 
@@ -211,27 +218,27 @@ def main():
         outputFile.mkdir(f"{era}/TOP_EMUtoMUMU")
         outputFile.mkdir(f"{era}/TOP_MUMU")
 
-        EMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/EMU_OS.root", 
+        EMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260702/EMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "EMU", 
                                         region = "OS")
 
-        EMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/EMU_SS.root", 
+        EMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260702/EMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "EMU", 
                                         region = "SS")
 
-        EMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/EMU_OS_inverted.root", 
+        EMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260702/EMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "EMU", 
                                         region = "OS_inverted")
 
-        EMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/EMU_SS_inverted.root", 
+        EMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260702/EMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "EMU", 
                                         region = "SS_inverted")
 
-        MUMU = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/MUMU_OS.root", 
+        MUMU = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "MUMU", 
                                         region = "OS")
@@ -245,34 +252,27 @@ def main():
                 latex_copy_mumu[2] = f"{latex_copy_mumu[2]}, {addon_hook_jet[case]}"
                 latex_copy_emu[2] = f"{latex_copy_emu[2]}, {addon_hook_jet[case]}"
 
-            histoName = "h_PairMass"
-            histoName_MUMU = "h_dimuonMass"
-            if case != "":
-                histoName = case + "/" + histoName + case
-                histoName_MUMU = case + "/" + histoName_MUMU + case
-            if case == "":
-                histoName = histoName
-                histoName_MUMU = histoName_MUMU
 
-            EMU_OS_TotalMC = EMU_OS.GetMCHist(histoName, emu_mcList)
-            EMU_OS_data = EMU_OS.GetDataHist(histoName)
 
-            EMU_OS_TT = EMU_OS.GetMCHist(histoName, ["TTTo2L2Nu"])
+            EMU_OS_TotalMC = EMU_OS.GetMCHist(GetHistoName("PairMass", "OS", case), emu_mcList)
+            EMU_OS_data = EMU_OS.GetDataHist(GetHistoName("PairMass", "OS", case))
+
+            EMU_OS_TT = EMU_OS.GetMCHist(GetHistoName("PairMass", "OS", case), ["TTTo2L2Nu"])
             EMU_OS_TT.SetName("EMU_OS_TT" + case)
-            EMU_OS_TW = EMU_OS.GetMCHist(histoName, ["ST_tW_AntiTop", "ST_tW_Top"])
+            EMU_OS_TW = EMU_OS.GetMCHist(GetHistoName("PairMass", "OS", case), ["ST_tW_AntiTop", "ST_tW_Top"])
             EMU_OS_TW.SetName("EMU_OS_TW" + case)
-            EMU_OS_WW = EMU_OS.GetMCHist(histoName, ["WW"])
+            EMU_OS_WW = EMU_OS.GetMCHist(GetHistoName("PairMass", "OS", case), ["WW"])
             EMU_OS_WW.SetName("EMU_OS_WW" + case)
 
             EMU_OS_TOP = EMU_OS_TT.Clone("EMU_OS_TOP" + case)
             EMU_OS_TOP.Add(EMU_OS_TW)
             EMU_OS_TOP.Add(EMU_OS_WW)
 
-            MUMU_OS_TT = MUMU.GetMCHist(histoName_MUMU, ["TTTo2L2Nu"])
+            MUMU_OS_TT = MUMU.GetMCHist(GetHistoName("dimuonMass", "OS", case), ["TTTo2L2Nu"])
             MUMU_OS_TT.SetName("MUMU_OS_TT" + case)
-            MUMU_OS_TW = MUMU.GetMCHist(histoName_MUMU, ["ST_tW_AntiTop", "ST_tW_Top"])
+            MUMU_OS_TW = MUMU.GetMCHist(GetHistoName("dimuonMass", "OS", case), ["ST_tW_AntiTop", "ST_tW_Top"])
             MUMU_OS_TW.SetName("MUMU_OS_TW" + case)
-            MUMU_OS_WW = MUMU.GetMCHist(histoName_MUMU, ["WW"])
+            MUMU_OS_WW = MUMU.GetMCHist(GetHistoName("dimuonMass", "OS", case), ["WW"])
             MUMU_OS_WW.SetName("MUMU_OS_WW" + case)
 
             MUMU_OS_TOP = MUMU_OS_TT.Clone("MUMU_OS_TOP" + case)
@@ -283,23 +283,23 @@ def main():
             TOP_EMUtoMUMU.Divide(EMU_OS_TOP)
             TOP_EMUtoMUMU.SetName("TOP_EMUtoMUMU" + case)
 
-            EMU_SS_TotalMC = EMU_SS.GetMCHist(histoName, emu_mcList)
-            EMU_SS_data = EMU_SS.GetDataHist(histoName)
+            EMU_SS_TotalMC = EMU_SS.GetMCHist(GetHistoName("PairMass", "SS", case), emu_mcList)
+            EMU_SS_data = EMU_SS.GetDataHist(GetHistoName("PairMass", "SS", case))
             
             EMU_SS_FAKE = EMU_SS_data.Clone(f"EMU_SS_FAKE_{uuid.uuid4()}")
             EMU_SS_FAKE.Add(EMU_SS_TotalMC, -1)
             EMU_SS_FAKE.SetName("EMU_SS_FAKE" + case)
             EMU_SS_FAKE = SanityCheck(EMU_SS_FAKE)
 
-            EMU_OS_inverted_TotalMC = EMU_OS_inverted.GetMCHist(histoName, emu_mcList)
-            EMU_OS_inverted_data = EMU_OS_inverted.GetDataHist(histoName)
+            EMU_OS_inverted_TotalMC = EMU_OS_inverted.GetMCHist(GetHistoName("PairMass", "OS_inverted", case), emu_mcList)
+            EMU_OS_inverted_data = EMU_OS_inverted.GetDataHist(GetHistoName("PairMass", "OS_inverted", case))
             
             EMU_OS_inverted_FAKE = EMU_OS_inverted_data.Clone(f"EMU_OS_inverted_FAKE_{uuid.uuid4()}")
             EMU_OS_inverted_FAKE.Add(EMU_OS_inverted_TotalMC, -1)
             EMU_OS_inverted_FAKE = SanityCheck(EMU_OS_inverted_FAKE)
 
-            EMU_SS_inverted_TotalMC = EMU_SS_inverted.GetMCHist(histoName, emu_mcList)
-            EMU_SS_inverted_data = EMU_SS_inverted.GetDataHist(histoName)
+            EMU_SS_inverted_TotalMC = EMU_SS_inverted.GetMCHist(GetHistoName("PairMass", "SS_inverted", case), emu_mcList)
+            EMU_SS_inverted_data = EMU_SS_inverted.GetDataHist(GetHistoName("PairMass", "SS_inverted", case))
 
             EMU_SS_inverted_FAKE = EMU_SS_inverted_data.Clone(f"EMU_SS_inverted_FAKE_{uuid.uuid4()}")
             EMU_SS_inverted_FAKE.Add(EMU_SS_inverted_TotalMC, -1)
@@ -312,7 +312,7 @@ def main():
             EMU_OS_FAKE_DataDriven = GetOSFromSS(EMU_SS_FAKE, EMU_inverted_SStoOS)
             EMU_OS_FAKE_DataDriven.SetName("EMU_OS_FAKE_DataDriven" + case)
 
-            EMU_OS_TotalMC_ex_TOP = EMU_OS.GetMCHist(histoName, emu_mcList_woTop)
+            EMU_OS_TotalMC_ex_TOP = EMU_OS.GetMCHist(GetHistoName("PairMass", "OS", case), emu_mcList_woTop)
             EMU_OS_TotalMC_ex_TOP.Add(EMU_OS_FAKE_DataDriven)
 
             EMU_OS_TOP_DataDriven = EMU_OS_data.Clone(f"EMU_OS_TOP_DataDriven_{uuid.uuid4()}")

@@ -405,7 +405,29 @@ class Plotter:
         
         return return_hist
 
+    def GetResponseMatrix(self, list):
+        
+        histSet = {}
+        for mc in list:
+            hist = self.fileSet.Get(self.era + "/" + mc + "/GenInfo/h_ResponseMatrix").Clone(f"h_ResponseMatrix_{uuid.uuid4()}")
+            hist.SetDirectory(0)
+            hist.SetStats(0);
+            # hist.Sumw2();
+            if (self.era != "merged"):
+                hist.Scale(self.normFactor[mc]);
+            hist = self.CheckSanity2D(hist)
+
+            histSet[mc] = hist
+
+        return_hist = histSet[list[0]].Clone(f"h_ResponseMatrix_{uuid.uuid4()}")
+        for mc in list[1:]:
+            return_hist.Add(histSet[mc])
+        
+        return return_hist
+
     def GetSingleHist(self, histname, sample):
+
+        print (self.era + "/" + sample + "/" + histname)
 
 
         hist = self.fileSet.Get(self.era + "/" + sample + "/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
@@ -418,6 +440,8 @@ class Plotter:
         return hist
 
     def GetDataHist(self, histName):
+
+        print (self.era + "/Data/" + histName)
 
         hist = self.fileSet.Get(self.era + "/Data/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
         hist.SetDirectory(0)

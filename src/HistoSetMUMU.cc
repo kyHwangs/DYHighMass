@@ -66,6 +66,7 @@ void HistoSetMUMU::Init() {
         SetHisto("h_" + fType + "_MuonCharge" + tHistSuffix, fChargeBins);
 
         SetHisto("h_" + fType + "_dimuonMass" + tHistSuffix);
+        SetHisto("h_" + fType + "_dimuonMassFailGen" + tHistSuffix);
         SetHisto("h_" + fType + "_dimuonPt" + tHistSuffix);
         SetHisto("h_" + fType + "_dimuonRap" + tHistSuffix, "Eta");
       }
@@ -347,7 +348,8 @@ void HistoSetMUMU::FillMuon(
   const int& nJet, 
   const int& nBJet, 
   const double& fWeight,
-  const std::string& fType
+  const std::string& fType,
+  const bool& fHasGen
 ) {
 
   TLorentzVector fDimuon = fLeadingMuon + fSubleadingMuon;
@@ -386,6 +388,7 @@ void HistoSetMUMU::FillMuon(
     }
 
     fHistSet["h_" + fType + "_dimuonMass" + suffix]->Fill(SetMassOverflow(fDimuon.M()), fWeight);
+    if (!fHasGen) fHistSet["h_" + fType + "_dimuonMassFailGen" + suffix]->Fill(SetMassOverflow(fDimuon.M()), fWeight);
   }
 }
 
@@ -543,6 +546,7 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
       fHistSet["h_" + fType + "_MuonCharge" + tSuffix]->Write();
 
       fHistSet["h_" + fType + "_dimuonMass" + tSuffix]->Write();
+      fHistSet["h_" + fType + "_dimuonMassFailGen" + tSuffix]->Write();
       fHistSet["h_" + fType + "_dimuonPt" + tSuffix]->Write();
       fHistSet["h_" + fType + "_dimuonRap" + tSuffix]->Write();
 

@@ -37,10 +37,15 @@ class Merger:
             
             for atype in self.type_list:
                 for case in self.case_list:
+
                     if case != "":
                         if atype == "OS":
                              self.merge_file.mkdir(f"merged/{sample}/{case}")
                     for plot in self.plot_list:
+
+                        if plot == "dimuonMassFailGen" and sample == "Data":
+                            continue
+
                         histname = case + "/h_" + atype + "_" + plot + case
                         if case == "": 
                             histname = "h_" + atype + "_" + plot
@@ -82,28 +87,28 @@ def main(args):
         "MuonPt",
         "MuonEta",
         "MuonPhi",
+        "dimuonMassFailGen",
         "dimuonMass",
         "dimuonPt",
         "dimuonRap",
     ]
 
     plot_list_emu = [
-        "h_JetPt",
-        "h_JetEta",
-        "h_JetPhi",
-        "h_BJetPt",
-        "h_BJetEta",
-        "h_BJetPhi",
-        "h_ElecPt",
-        "h_ElecEta",
-        "h_ElecPhi",
-        "h_MuonPt",
-        "h_MuonEta",
-        "h_MuonPhi",
-        "h_PairMass",
-        "h_PairDeltaR",
-        "h_PairPt",
-        "h_PairRap"
+        "JetPt",
+        "JetEta",
+        "JetPhi",
+        "BJetPt",
+        "BJetEta",
+        "BJetPhi",
+        "ElecPt",
+        "ElecEta",
+        "ElecPhi",
+        "MuonPt",
+        "MuonEta",
+        "MuonPhi",
+        "PairMass",
+        "PairPt",
+        "PairRap"
     ]
 
     if args.channel == "MUMU":

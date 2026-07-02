@@ -48,7 +48,8 @@ public:
     const int& nJet, 
     const int& nBJet, 
     const double& weight,
-    const std::string& fType
+    const std::string& fType,
+    const bool& fHasGen
   );
 
   /**

@@ -4,7 +4,7 @@ import os, ROOT, sys, pickle, argparse
 import uuid
 import cmsstyle as CMS
 import array
-import plotterEngine
+import plotterEngine_MUMU as plotterEngine
 
 CMS.SetExtraText("Private Work")
 CMS.SetEnergy("13")
@@ -122,14 +122,24 @@ def GetOSFromSS(SS_Fake, SStoOS):
     return FAKE_DataDriven
 
 
+def GetHistoName(name, type, jet):
+
+    histoName = ""
+    if jet != "":
+        histoName = f"{jet}/h_{type}_{name}{jet}"
+    if jet == "":
+        histoName = f"h_{type}_{name}"
+
+    return histoName
+
 def main():
 
     eras = ["2016_preVFP", "2016_postVFP", "2017", "2018", "merged"]
     cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
     
     histoName_MUMU = "h_dimuonMass"
-    outputPath = "./Bck_260512/MUMU_FAKE/"
-    outputRoot = "./Bck_260512/MUMU_FAKE.root"
+    outputPath = "./Bck_260702/MUMU_FAKE/"
+    outputRoot = "./Bck_260702/MUMU_FAKE.root"
 
     os.makedirs(outputPath, exist_ok=True)
 
@@ -155,22 +165,22 @@ def main():
         outputFile.mkdir(f"{era}/FAKE_MUMU_SS")
         outputFile.mkdir(f"{era}/FAKE_MUMU_SStoOS")
 
-        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/MUMU_OS.root", 
+        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS")
 
-        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/MUMU_SS.root", 
+        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS")
 
-        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/MUMU_OS_inverted.root", 
+        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS_inverted")
 
-        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260512/ROOT/MUMU_SS_inverted.root", 
+        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS_inverted")
@@ -182,29 +192,23 @@ def main():
             if case != "":
                 latex_copy_mumu[2] = f"{latex_copy_mumu[2]}, {addon_hook_jet[case]}"
 
-            histoName = "h_dimuonMass"
-            if case != "":
-                histoName = case + "/" + histoName + case
-            if case == "":
-                histoName = histoName
-
-            MUMU_SS_TotalMC = MUMU_SS.GetMCHist(histoName, mcList)
-            MUMU_SS_data = MUMU_SS.GetDataHist(histoName)
+            MUMU_SS_TotalMC = MUMU_SS.GetMCHist(GetHistoName("dimuonMass", "SS", case), mcList)
+            MUMU_SS_data = MUMU_SS.GetDataHist(GetHistoName("dimuonMass", "SS", case))
 
             MUMU_SS_FAKE = MUMU_SS_data.Clone(f"MUMU_SS_FAKE_{uuid.uuid4()}")
             MUMU_SS_FAKE.Add(MUMU_SS_TotalMC, -1)
             MUMU_SS_FAKE = SanityCheck(MUMU_SS_FAKE)
             MUMU_SS_FAKE.SetName("MUMU_SS_FAKE" + case)
 
-            MUMU_OS_inverted_TotalMC = MUMU_OS_inverted.GetMCHist(histoName, mcList)
-            MUMU_OS_inverted_data = MUMU_OS_inverted.GetDataHist(histoName)
+            MUMU_OS_inverted_TotalMC = MUMU_OS_inverted.GetMCHist(GetHistoName("dimuonMass", "OS_inverted", case), mcList)
+            MUMU_OS_inverted_data = MUMU_OS_inverted.GetDataHist(GetHistoName("dimuonMass", "OS_inverted", case))
             
             MUMU_OS_inverted_FAKE = MUMU_OS_inverted_data.Clone(f"MUMU_OS_inverted_FAKE_{uuid.uuid4()}")
             MUMU_OS_inverted_FAKE.Add(MUMU_OS_inverted_TotalMC, -1)
             MUMU_OS_inverted_FAKE = SanityCheck(MUMU_OS_inverted_FAKE)
 
-            MUMU_SS_inverted_TotalMC = MUMU_SS_inverted.GetMCHist(histoName, mcList)
-            MUMU_SS_inverted_data = MUMU_SS_inverted.GetDataHist(histoName)
+            MUMU_SS_inverted_TotalMC = MUMU_SS_inverted.GetMCHist(GetHistoName("dimuonMass", "SS_inverted", case), mcList)
+            MUMU_SS_inverted_data = MUMU_SS_inverted.GetDataHist(GetHistoName("dimuonMass", "SS_inverted", case))
 
             MUMU_SS_inverted_FAKE = MUMU_SS_inverted_data.Clone(f"MUMU_SS_inverted_FAKE_{uuid.uuid4()}")
             MUMU_SS_inverted_FAKE.Add(MUMU_SS_inverted_TotalMC, -1)
