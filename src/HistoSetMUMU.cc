@@ -439,6 +439,9 @@ void HistoSetMUMU::FillGenInfo(
   const double& fRecoWeight
 ) {
 
+  if (nBJets != 0)
+    return;
+  
   double tTotalWeight = fMCWeight * fRecoWeight;
 
   std::string tGenJetSuffix = GetJetBin(tNGenJets);
@@ -482,23 +485,22 @@ void HistoSetMUMU::FillGenInfo(
     }
   }
 
-  if (nBJets == 0) {
-    double tGenMassIndex = GetMassBinIndex(tGenMass);
-    double tRecoMassIndex = GetMassBinIndex(tRecoMass);
-    double tGenJetIndex = GetNJetBinIndex(tNGenJets);
-    double tRecoJetIndex = GetNJetBinIndex(nJets);
+  double tGenMassIndex = GetMassBinIndex(tGenMass);
+  double tRecoMassIndex = GetMassBinIndex(tRecoMass);
+  double tGenJetIndex = GetNJetBinIndex(tNGenJets);
+  double tRecoJetIndex = GetNJetBinIndex(nJets);
 
-    double tXbin = 15. * tRecoJetIndex + tRecoMassIndex + 0.5;
-    double tYbin = 15. * tGenJetIndex + tGenMassIndex + 0.5;
+  double tXbin = 15. * tRecoJetIndex + tRecoMassIndex + 0.5;
+  double tYbin = 15. * tGenJetIndex + tGenMassIndex + 0.5;
 
-    // std::cout << tGenMassIndex << " " << tGenMass << std::endl;
-    // std::cout << tRecoMassIndex << " " << tRecoMass << std::endl;
-    // std::cout << tGenJetIndex << " " << tNGenJets << std::endl;
-    // std::cout << tRecoJetIndex << " " << nJets << std::endl;
-    // std::cout << tXbin << " " << tYbin << std::endl;
+  // std::cout << tGenMassIndex << " " << tGenMass << std::endl;
+  // std::cout << tRecoMassIndex << " " << tRecoMass << std::endl;
+  // std::cout << tGenJetIndex << " " << tNGenJets << std::endl;
+  // std::cout << tRecoJetIndex << " " << nJets << std::endl;
+  // std::cout << tXbin << " " << tYbin << std::endl;
 
-    fHistSet2D["h_ResponseMatrix"]->Fill(tXbin, tYbin, tTotalWeight);
-  }
+  fHistSet2D["h_ResponseMatrix"]->Fill(tXbin, tYbin, tTotalWeight);
+
 
 }
 

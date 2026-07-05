@@ -113,11 +113,8 @@ bool EMU::PrepareEMUPair() {
     if (std::abs(eSCEta) > 1.4442 && std::abs(eSCEta) < 1.5660)
       continue;
 
-    if (Electron_cutBased->At(i) > fElecID)
-      continue;
-    
     bool tID = false;
-    if (Electron_cutBased->At(i) == fElecID)
+    if (Electron_cutBased->At(i) >= fElecID)
       tID = true;
 
     TLorentzVector elecs;
