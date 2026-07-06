@@ -95,18 +95,18 @@ def main():
         #                                 channel = "MUMU", 
         #                                 region = "OS")
 
-        # type_list = ["OS_inverted", "SS_inverted", "SS"]
-        type_list = ["OS"]
+        type_list = ["OS", "OS_inverted", "SS_inverted", "SS"]
+        # type_list = ["OS"]
         for type in type_list:
             plotter = plotterEngine.Plotter(era, 
-                                            rootPath = f"./Bck_260702/MUMU_nominal.root", 
-                                            outputPath = f"./plots_260702/MUMU_{type}_WithFake/plots_{era}/",
+                                            rootPath = f"./Bck_260706/MUMU_nominal.root", 
+                                            outputPath = f"./plots_260706/MUMU_{type}/plots_{era}/",
                                             channel = "MUMU", 
                                             region = f"{type}")
 
-            plotter.SetBackground(rootPath = "./Bck_260702/EMU_FAKE.root", mcList = ["TOP"])
-            plotter.SetFakes(rootPath = "./Bck_260702/MUMU_FAKE.root")
-            hasBack = True
+            # plotter.SetBackground(rootPath = "./Bck_260706/EMU_FAKE.root", mcList = ["TOP"])
+            # plotter.SetFakes(rootPath = "./Bck_260706/MUMU_FAKE.root")
+            hasBack = False
 
             # plotter.Plot("h_nJet",  "", "", xTitle = "N_{jet}", xmin = 0, xmax = 14)
             # plotter.Plot("h_nBJet", "", "", xTitle = "N_{b-jet}", xmin = 0, xmax = 14)

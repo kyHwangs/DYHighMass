@@ -181,8 +181,8 @@ def main():
     eras = ["2016_preVFP", "2016_postVFP", "2017", "2018", "merged"]
     cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
     
-    outputPath = "./plots_260702/EMU_FAKE/"
-    outputRoot = "./plots_260702/EMU_FAKE.root"
+    outputPath = "./plots_260706/EMU_FAKE/"
+    outputRoot = "./Bck_260706/EMU_FAKE.root"
 
     os.makedirs(outputPath, exist_ok=True)
 
@@ -194,14 +194,14 @@ def main():
 
         latex_mumu = [
             f"{era}",
-            "p_{T}(#mu) > 52 (15) GeV, |#eta(#mu)| < 2.4",
+            "p_{T}(#mu) > 52 (50) GeV, |#eta(#mu)| < 2.4",
             "M_{#mu#mu} > 200 GeV",
             ""
         ]
 
         latex_emu = [
             f"{era}",
-            "p_{T}(#mu(e)) > 52 (20) GeV, |#eta(#mu(e))| < 2.4 (2.5)",
+            "p_{T}(#mu(e)) > 52 (50) GeV, |#eta(#mu(e))| < 2.4 (2.5)",
             "M_{e#mu} > 200 GeV",
             ""
         ]
@@ -218,27 +218,27 @@ def main():
         outputFile.mkdir(f"{era}/TOP_EMUtoMUMU")
         outputFile.mkdir(f"{era}/TOP_MUMU")
 
-        EMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260702/EMU_nominal.root", 
+        EMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260706/EMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "EMU", 
                                         region = "OS")
 
-        EMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260702/EMU_nominal.root", 
+        EMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260706/EMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "EMU", 
                                         region = "SS")
 
-        EMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260702/EMU_nominal.root", 
+        EMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260706/EMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "EMU", 
                                         region = "OS_inverted")
 
-        EMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260702/EMU_nominal.root", 
+        EMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260706/EMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "EMU", 
                                         region = "SS_inverted")
 
-        MUMU = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
+        MUMU = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
                                         outputPath = "./plots/temp/plots" + era + "/",
                                         channel = "MUMU", 
                                         region = "OS")
@@ -344,7 +344,7 @@ def main():
                 200,
                 4000,
                 0,
-                EMU_SS_FAKE.GetMaximum() * 1.3,
+                EMU_SS_FAKE.GetBinContent(2) * 1.3,
                 "M(e#mu) [GeV]",
                 "Events",
                 square = True,
@@ -388,7 +388,7 @@ def main():
                 200,
                 4000,
                 0,
-                EMU_SS_inverted_FAKE.GetMaximum() * 1.3,
+                EMU_SS_inverted_FAKE.GetBinContent(2) * 1.3,
                 "M(e#mu) [GeV]",
                 "Events",
                 square = True,
@@ -432,7 +432,7 @@ def main():
                 200,
                 4000,
                 0,
-                EMU_OS_FAKE_DataDriven.GetMaximum() * 1.3,
+                EMU_OS_FAKE_DataDriven.GetBinContent(2) * 1.3,
                 "M(e#mu) [GeV]",
                 "Events",
                 square = True,
@@ -475,7 +475,7 @@ def main():
                 200,
                 4000,
                 0,
-                EMU_OS_inverted_FAKE.GetMaximum() * 1.3,
+                EMU_OS_inverted_FAKE.GetBinContent(2) * 1.3,
                 "M(e#mu) [GeV]",
                 "Events",
                 square = True,
@@ -521,7 +521,7 @@ def main():
                 200,
                 4000,
                 2e-2,
-                EMU_OS_inverted_FAKE.GetMaximum() * 1e3,
+                EMU_OS_inverted_FAKE.GetBinContent(2) * 1e3,
                 yrmin,
                 yrmax,
                 "M(e#mu) [GeV]",
@@ -575,7 +575,7 @@ def main():
                 200,
                 4000,
                 2e-2,
-                MUMU_OS_TOP.GetMaximum() * 1e3,
+                MUMU_OS_TOP.GetBinContent(2) * 1e3,
                 1 - 0.55,
                 1 + 0.55,
                 "Mass [GeV]",
@@ -627,7 +627,7 @@ def main():
                 200,
                 4000,
                 2e-2,
-                MUMU_OS_TOP_DataDriven.GetMaximum() * 1e3,
+                MUMU_OS_TOP_DataDriven.GetBinContent(2) * 1e3,
                 1 - 0.55,
                 1 + 0.55,
                 "M(#mu#mu) [GeV]",

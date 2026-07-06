@@ -138,8 +138,8 @@ def main():
     cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
     
     histoName_MUMU = "h_dimuonMass"
-    outputPath = "./Bck_260702/MUMU_FAKE/"
-    outputRoot = "./Bck_260702/MUMU_FAKE.root"
+    outputPath = "./plots_260706/MUMU_FAKE/"
+    outputRoot = "./Bck_260706/MUMU_FAKE.root"
 
     os.makedirs(outputPath, exist_ok=True)
 
@@ -152,7 +152,7 @@ def main():
 
         latex_mumu = [
             f"{era}",
-            "p_{T}(#mu) > 52 (15) GeV, |#eta(#mu)| < 2.4",
+            "p_{T}(#mu) > 52 (50) GeV, |#eta(#mu)| < 2.4",
             "M_{#mu#mu} > 200 GeV",
             ""
         ]
@@ -165,22 +165,22 @@ def main():
         outputFile.mkdir(f"{era}/FAKE_MUMU_SS")
         outputFile.mkdir(f"{era}/FAKE_MUMU_SStoOS")
 
-        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
+        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS")
 
-        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
+        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS")
 
-        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
+        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS_inverted")
 
-        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260702/MUMU_nominal.root", 
+        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS_inverted")
@@ -237,7 +237,7 @@ def main():
                 200,
                 4000,
                 0,
-                MUMU_SS_FAKE.GetMaximum() * 1.3,
+                MUMU_SS_FAKE.GetBinContent(2) * 1.3,
                 "M(#mu#mu) [GeV]",
                 "Events",
                 square = True,
@@ -280,7 +280,7 @@ def main():
                 200,
                 4000,
                 0,
-                MUMU_SS_inverted_FAKE.GetMaximum() * 1.3,
+                MUMU_SS_inverted_FAKE.GetBinContent(2) * 1.3,
                 "M(#mu#mu) [GeV]",
                 "Events",
                 square = True,
@@ -324,7 +324,7 @@ def main():
                 200,
                 4000,
                 0,
-                MUMU_OS_FAKE_DataDriven.GetMaximum() * 1.3,
+                MUMU_OS_FAKE_DataDriven.GetBinContent(2) * 1.3,
                 "M(#mu#mu) [GeV]",
                 "Events",
                 square = True,
@@ -367,7 +367,7 @@ def main():
                 200,
                 4000,
                 0,
-                MUMU_OS_inverted_FAKE.GetMaximum() * 1.3,
+                MUMU_OS_inverted_FAKE.GetBinContent(2) * 1.3,
                 "M(#mu#mu) [GeV]",
                 "Events",
                 square = True,
@@ -415,7 +415,7 @@ def main():
                 200,
                 4000,
                 2e-2,
-                MUMU_OS_inverted_FAKE.GetMaximum() * 1e3,
+                MUMU_OS_inverted_FAKE.GetBinContent(2) * 1e3,
                 yrmin,
                 yrmax,
                 "M(#mu#mu) [GeV]",

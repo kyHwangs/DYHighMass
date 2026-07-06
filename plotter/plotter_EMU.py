@@ -71,16 +71,17 @@ def main():
         #                                 channel = "EMU", 
         #                                 region = "OS")
 
-        type_list = ["OS", "SS", "OS_inverted", "SS_inverted"]
+        # type_list = ["OS", "SS", "OS_inverted", "SS_inverted"]
+        type_list = ["OS"]
 
         for type in type_list:
             plotter = plotterEngine.Plotter(era, 
-                                            rootPath = f"Bck_260702/EMU_nominal.root", 
-                                            outputPath = f"./plots_260702/EMU_{type}/plots_" + era + "/",
+                                            rootPath = f"./Bck_260706/EMU_nominal.root", 
+                                            outputPath = f"./plots_260706/EMU_{type}_WithFake/plots_" + era + "/",
                                             channel = "EMU", 
                                             region = f"{type}")
 
-            # plotter.SetFakes(rootPath = "./Bck_260629/EMU_FAKE.root")
+            plotter.SetFakes(rootPath = "./Bck/EMU_FAKE.root")
 
             for case in cases:
                 # plotter.Plot("h_PairMass", case, "", xTitle = "M(e#mu) [GeV]", xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
