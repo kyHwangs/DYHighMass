@@ -95,6 +95,24 @@ void HistoSetMUMU::InitGenInfo() {
     std::string tHistSuffix = fAddonJet[i];
     fSuffixGenInfo.emplace_back(tHistSuffix);
 
+    SetHistoGenInfo("h_nJet_WithReco" + tHistSuffix, fNJetBins);    
+
+    SetHistoGenInfo("h_LeadingMuonPt_WithReco" + tHistSuffix, fPtBins);
+    SetHistoGenInfo("h_LeadingMuonEta_WithReco" + tHistSuffix, fEtaBins);
+    SetHistoGenInfo("h_LeadingMuonPhi_WithReco" + tHistSuffix, fPhiBins);
+
+    SetHistoGenInfo("h_SubleadingMuonPt_WithReco" + tHistSuffix, fPtBins);
+    SetHistoGenInfo("h_SubleadingMuonEta_WithReco" + tHistSuffix, fEtaBins);
+    SetHistoGenInfo("h_SubleadingMuonPhi_WithReco" + tHistSuffix, fPhiBins);
+
+    SetHistoGenInfo("h_MuonPt_WithReco" + tHistSuffix, fPtBins);
+    SetHistoGenInfo("h_MuonEta_WithReco" + tHistSuffix, fEtaBins);
+    SetHistoGenInfo("h_MuonPhi_WithReco" + tHistSuffix, fPhiBins);
+
+    SetHistoGenInfo("h_dimuonMass_WithReco" + tHistSuffix, fMassBins);
+    SetHistoGenInfo("h_dimuonPt_WithReco" + tHistSuffix, fPtBins);
+    SetHistoGenInfo("h_dimuonRap_WithReco" + tHistSuffix, fEtaBins);
+
     SetHistoGenInfo("h_nJet" + tHistSuffix, fNJetBins);    
 
     SetHistoGenInfo("h_LeadingMuonPt" + tHistSuffix, fPtBins);
@@ -114,9 +132,8 @@ void HistoSetMUMU::InitGenInfo() {
     SetHistoGenInfo("h_dimuonRap" + tHistSuffix, fEtaBins);
   }
   
-  fHistSet2D["h_ResponseMatrix"] = 
-      new TH2D("h_ResponseMatrix", "h_ResponseMatrix", 
-                45, 0., 45., 45, 0., 45.);
+  fHistSet2D["h_ResponseMatrix"] = new TH2D("h_ResponseMatrix", "h_ResponseMatrix", 45, 0., 45., 45, 0., 45.);
+  fHistSet2D["h_ResponseMatrix_inc"] = new TH2D("h_ResponseMatrix_inc", "h_ResponseMatrix_inc", 15, 0., 15., 15, 0., 15.);
 
 }
 
@@ -336,6 +353,7 @@ double HistoSetMUMU::SetPtOverflow(double fPt) {
   else return fPt;
 }
 double HistoSetMUMU::SetMassOverflow(double fMass) {
+  if (fMass < 0) return -0.5;
   if (fMass < 200) return 199.5;
   if (fMass >= 4000) return 4000.5;
   else return fMass;
@@ -459,49 +477,189 @@ void HistoSetMUMU::FillGenInfo(
 
   for (auto suffix : fAddonGenJet) {
 
-    fHistSetGenInfo["h_dimuonMass" + suffix]->Fill(tGenMass, tTotalWeight);
+    fHistSetGenInfo["h_dimuonMass_WithReco" + suffix]->Fill(tGenMass, tTotalWeight);
     
     if (tGenMass > 200) {
-      fHistSetGenInfo["h_nJet" + suffix]->Fill(tNGenJets, tTotalWeight);
+      fHistSetGenInfo["h_nJet_WithReco" + suffix]->Fill(tNGenJets, tTotalWeight);
 
-      fHistSetGenInfo["h_LeadingMuonPt" + suffix]->Fill(tDressedLeptons.at(0).Pt(), tTotalWeight);
-      fHistSetGenInfo["h_LeadingMuonEta" + suffix]->Fill(tDressedLeptons.at(0).Eta(), tTotalWeight);
-      fHistSetGenInfo["h_LeadingMuonPhi" + suffix]->Fill(tDressedLeptons.at(0).Phi(), tTotalWeight);
+      fHistSetGenInfo["h_LeadingMuonPt_WithReco" + suffix]->Fill(tDressedLeptons.at(0).Pt(), tTotalWeight);
+      fHistSetGenInfo["h_LeadingMuonEta_WithReco" + suffix]->Fill(tDressedLeptons.at(0).Eta(), tTotalWeight);
+      fHistSetGenInfo["h_LeadingMuonPhi_WithReco" + suffix]->Fill(tDressedLeptons.at(0).Phi(), tTotalWeight);
 
-      fHistSetGenInfo["h_SubleadingMuonPt" + suffix]->Fill(tDressedLeptons.at(1).Pt(), tTotalWeight);
-      fHistSetGenInfo["h_SubleadingMuonEta" + suffix]->Fill(tDressedLeptons.at(1).Eta(), tTotalWeight);
-      fHistSetGenInfo["h_SubleadingMuonPhi" + suffix]->Fill(tDressedLeptons.at(1).Phi(), tTotalWeight);
+      fHistSetGenInfo["h_SubleadingMuonPt_WithReco" + suffix]->Fill(tDressedLeptons.at(1).Pt(), tTotalWeight);
+      fHistSetGenInfo["h_SubleadingMuonEta_WithReco" + suffix]->Fill(tDressedLeptons.at(1).Eta(), tTotalWeight);
+      fHistSetGenInfo["h_SubleadingMuonPhi_WithReco" + suffix]->Fill(tDressedLeptons.at(1).Phi(), tTotalWeight);
 
-      fHistSetGenInfo["h_MuonPt" + suffix]->Fill(tDressedLeptons.at(0).Pt(), tTotalWeight);
-      fHistSetGenInfo["h_MuonEta" + suffix]->Fill(tDressedLeptons.at(0).Eta(), tTotalWeight);
-      fHistSetGenInfo["h_MuonPhi" + suffix]->Fill(tDressedLeptons.at(0).Phi(), tTotalWeight);
+      fHistSetGenInfo["h_MuonPt_WithReco" + suffix]->Fill(tDressedLeptons.at(0).Pt(), tTotalWeight);
+      fHistSetGenInfo["h_MuonEta_WithReco" + suffix]->Fill(tDressedLeptons.at(0).Eta(), tTotalWeight);
+      fHistSetGenInfo["h_MuonPhi_WithReco" + suffix]->Fill(tDressedLeptons.at(0).Phi(), tTotalWeight);
   
-      fHistSetGenInfo["h_MuonPt" + suffix]->Fill(tDressedLeptons.at(1).Pt(), tTotalWeight);
-      fHistSetGenInfo["h_MuonEta" + suffix]->Fill(tDressedLeptons.at(1).Eta(), tTotalWeight);
-      fHistSetGenInfo["h_MuonPhi" + suffix]->Fill(tDressedLeptons.at(1).Phi(), tTotalWeight);
+      fHistSetGenInfo["h_MuonPt_WithReco" + suffix]->Fill(tDressedLeptons.at(1).Pt(), tTotalWeight);
+      fHistSetGenInfo["h_MuonEta_WithReco" + suffix]->Fill(tDressedLeptons.at(1).Eta(), tTotalWeight);
+      fHistSetGenInfo["h_MuonPhi_WithReco" + suffix]->Fill(tDressedLeptons.at(1).Phi(), tTotalWeight);
 
-      fHistSetGenInfo["h_dimuonPt" + suffix]->Fill(tGenDiMuon.Pt(), tTotalWeight);
-      fHistSetGenInfo["h_dimuonRap" + suffix]->Fill(tGenDiMuon.Rapidity(), tTotalWeight);
+      fHistSetGenInfo["h_dimuonPt_WithReco" + suffix]->Fill(tGenDiMuon.Pt(), tTotalWeight);
+      fHistSetGenInfo["h_dimuonRap_WithReco" + suffix]->Fill(tGenDiMuon.Rapidity(), tTotalWeight);
     }
   }
 
-  double tGenMassIndex = GetMassBinIndex(tGenMass);
-  double tRecoMassIndex = GetMassBinIndex(tRecoMass);
+  // double tGenMassIndex = GetMassBinIndex(tGenMass);
+  // double tRecoMassIndex = GetMassBinIndex(tRecoMass);
+  // double tGenJetIndex = GetNJetBinIndex(tNGenJets);
+  // double tRecoJetIndex = GetNJetBinIndex(nJets);
+
+  // double tXbin = 15. * tRecoJetIndex + tRecoMassIndex + 0.5;
+  // double tYbin = 15. * tGenJetIndex + tGenMassIndex + 0.5;
+
+  // // std::cout << tGenMassIndex << " " << tGenMass << std::endl;
+  // // std::cout << tRecoMassIndex << " " << tRecoMass << std::endl;
+  // // std::cout << tGenJetIndex << " " << tNGenJets << std::endl;
+  // // std::cout << tRecoJetIndex << " " << nJets << std::endl;
+  // // std::cout << tXbin << " " << tYbin << std::endl;
+
+  // fHistSet2D["h_ResponseMatrix"]->Fill(tXbin, tYbin, tTotalWeight);
+
+
+}
+
+void HistoSetMUMU::FillGenInfoIndependently(
+  const std::vector<TLorentzVector>& tDressedLeptons,
+  const int& tNGenJets,
+  const double& fMCWeight
+) {
+  
+  std::string tGenJetSuffix = GetJetBin(tNGenJets);
+
+  auto tGenDiMuon = tDressedLeptons.at(0) + tDressedLeptons.at(1);
+  auto tGenMass = SetMassOverflow(tGenDiMuon.M());
+
+  std::vector<std::string> fAddonGenJet = {""};
+  fAddonGenJet.emplace_back(tGenJetSuffix);
+
+  for (auto suffix : fAddonGenJet) {
+
+    fHistSetGenInfo["h_dimuonMass" + suffix]->Fill(tGenMass, fMCWeight);
+    
+    if (tGenMass > 200) {
+      fHistSetGenInfo["h_nJet" + suffix]->Fill(tNGenJets, fMCWeight);
+
+      fHistSetGenInfo["h_LeadingMuonPt" + suffix]->Fill(tDressedLeptons.at(0).Pt(), fMCWeight);
+      fHistSetGenInfo["h_LeadingMuonEta" + suffix]->Fill(tDressedLeptons.at(0).Eta(), fMCWeight);
+      fHistSetGenInfo["h_LeadingMuonPhi" + suffix]->Fill(tDressedLeptons.at(0).Phi(), fMCWeight);
+
+      fHistSetGenInfo["h_SubleadingMuonPt" + suffix]->Fill(tDressedLeptons.at(1).Pt(), fMCWeight);
+      fHistSetGenInfo["h_SubleadingMuonEta" + suffix]->Fill(tDressedLeptons.at(1).Eta(), fMCWeight);
+      fHistSetGenInfo["h_SubleadingMuonPhi" + suffix]->Fill(tDressedLeptons.at(1).Phi(), fMCWeight);
+
+      fHistSetGenInfo["h_MuonPt" + suffix]->Fill(tDressedLeptons.at(0).Pt(), fMCWeight);
+      fHistSetGenInfo["h_MuonEta" + suffix]->Fill(tDressedLeptons.at(0).Eta(), fMCWeight);
+      fHistSetGenInfo["h_MuonPhi" + suffix]->Fill(tDressedLeptons.at(0).Phi(), fMCWeight);
+  
+      fHistSetGenInfo["h_MuonPt" + suffix]->Fill(tDressedLeptons.at(1).Pt(), fMCWeight);
+      fHistSetGenInfo["h_MuonEta" + suffix]->Fill(tDressedLeptons.at(1).Eta(), fMCWeight);
+      fHistSetGenInfo["h_MuonPhi" + suffix]->Fill(tDressedLeptons.at(1).Phi(), fMCWeight);
+
+      fHistSetGenInfo["h_dimuonPt" + suffix]->Fill(tGenDiMuon.Pt(), fMCWeight);
+      fHistSetGenInfo["h_dimuonRap" + suffix]->Fill(tGenDiMuon.Rapidity(), fMCWeight);
+    }
+  }
+}
+
+void HistoSetMUMU::FillResponseMatrix(
+  const double& tGenMass,
+  const int& tNGenJets,
+  const double& tRecoMass,
+  const int& nJets,
+  const int& nBJets,
+  const double& fMCWeight,
+  const double& fRecoWeight,
+  const bool& tPassingOfflineEventSelection
+) {
+
+  double tTotalWeight = fMCWeight * fRecoWeight;
+  
+  double tGenMassIndex = GetMassBinIndex(SetMassOverflow(tGenMass));
+  double tRecoMassIndex = GetMassBinIndex(SetMassOverflow(tRecoMass));
+  double tGenJetIndex = GetNJetBinIndex(tNGenJets);
+  double tRecoJetIndex = GetNJetBinIndex(nJets);
+
+  bool tPassingOffline = (nBJets == 0) && (tRecoMass > 0) && tPassingOfflineEventSelection;
+
+  double tXbin = 15. * tRecoJetIndex + tRecoMassIndex + 0.5;
+  double tYbin = 15. * tGenJetIndex + tGenMassIndex + 0.5;
+
+  double tXbin_inc = tRecoMassIndex + 0.5;
+  double tYbin_inc = tGenMassIndex + 0.5;
+  
+  if (!tPassingOffline) {
+    tXbin = -0.5;
+    tXbin_inc = -0.5;
+  }
+
+  std::cout << "PassingOffline: " << tPassingOffline << " " << tRecoMass << " " << nBJets << " " << tPassingOfflineEventSelection << std::endl;
+
+  std::cout << "GenMassIndex: " << tGenMassIndex << " " << tGenMass << std::endl;
+  std::cout << "RecoMassIndex: " << tRecoMassIndex << " " << tRecoMass << std::endl;
+  std::cout << "GenJetIndex: " << tGenJetIndex << " " << tNGenJets << std::endl;
+  std::cout << "RecoJetIndex: " << tRecoJetIndex << " " << nJets << std::endl;
+  std::cout << "Xbin: " << tXbin << " " << tYbin << std::endl;
+  std::cout << "Xbin_inc: " << tXbin_inc << " " << tYbin_inc << std::endl;
+
+  std::cout << "TotalWeight: " << tTotalWeight << std::endl;
+  std::cout << "MCWeight: " << fMCWeight << std::endl;
+  std::cout << "RecoWeight: " << fRecoWeight << std::endl;
+
+  if (tPassingOffline) {
+    fHistSet2D["h_ResponseMatrix"]->Fill(tXbin, tYbin, tTotalWeight);
+    fHistSet2D["h_ResponseMatrix_inc"]->Fill(tXbin_inc, tYbin_inc, tTotalWeight);
+  }
+
+  if (!tPassingOffline) {
+    fHistSet2D["h_ResponseMatrix"]->Fill(-0.5, tYbin, fMCWeight); 
+    fHistSet2D["h_ResponseMatrix_inc"]->Fill(-0.5, tYbin_inc, fMCWeight); 
+  }
+
+  if (tPassingOffline && fRecoWeight != 1) {
+    fHistSet2D["h_ResponseMatrix"]->Fill(-0.5, tYbin, fMCWeight * (1. - fRecoWeight));
+    fHistSet2D["h_ResponseMatrix_inc"]->Fill(-0.5, tYbin_inc, fMCWeight * (1. - fRecoWeight));
+  }
+}
+
+void HistoSetMUMU::FillResponseMatrix_v2(
+  const double& tGenMass,
+  const int& tNGenJets,
+  const double& tRecoMass,
+  const int& nJets,
+  const double& fMCWeight,
+  const double& fRecoWeight,
+  const bool& tPassingReco
+) {
+
+  double tGenMassIndex = GetMassBinIndex(SetMassOverflow(tGenMass));
+  double tRecoMassIndex = GetMassBinIndex(SetMassOverflow(tRecoMass));
   double tGenJetIndex = GetNJetBinIndex(tNGenJets);
   double tRecoJetIndex = GetNJetBinIndex(nJets);
 
   double tXbin = 15. * tRecoJetIndex + tRecoMassIndex + 0.5;
   double tYbin = 15. * tGenJetIndex + tGenMassIndex + 0.5;
 
-  // std::cout << tGenMassIndex << " " << tGenMass << std::endl;
-  // std::cout << tRecoMassIndex << " " << tRecoMass << std::endl;
-  // std::cout << tGenJetIndex << " " << tNGenJets << std::endl;
-  // std::cout << tRecoJetIndex << " " << nJets << std::endl;
-  // std::cout << tXbin << " " << tYbin << std::endl;
+  double tXbin_inc = tRecoMassIndex + 0.5;
+  double tYbin_inc = tGenMassIndex + 0.5;
 
-  fHistSet2D["h_ResponseMatrix"]->Fill(tXbin, tYbin, tTotalWeight);
+  if (tPassingReco) {
+    fHistSet2D["h_ResponseMatrix"]->Fill(tXbin, tYbin, fMCWeight * fRecoWeight);
+    fHistSet2D["h_ResponseMatrix_inc"]->Fill(tXbin_inc, tYbin_inc, fMCWeight * fRecoWeight);
+  }
 
+  if (!tPassingReco) {
+    fHistSet2D["h_ResponseMatrix"]->Fill(-0.5, tYbin, fMCWeight); 
+    fHistSet2D["h_ResponseMatrix_inc"]->Fill(-0.5, tYbin_inc, fMCWeight); 
+  }
 
+  if (tPassingReco && fRecoWeight != 1) {
+    fHistSet2D["h_ResponseMatrix"]->Fill(-0.5, tYbin, fMCWeight * (1. - fRecoWeight));
+    fHistSet2D["h_ResponseMatrix_inc"]->Fill(-0.5, tYbin_inc, fMCWeight * (1. - fRecoWeight));
+  }
 }
 
 void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData) {
@@ -639,12 +797,27 @@ void HistoSetMUMU::WriteGenHisto(TString fEra, TString fSampleName, TString fOut
   fOutputFile->mkdir(fEra + "/" + fSampleName + "/GenInfo");
   fOutputFile->cd(fEra + "/" + fSampleName + "/GenInfo");
   fHistSet2D["h_ResponseMatrix"]->Write();
+  fHistSet2D["h_ResponseMatrix_inc"]->Write();
 
   for (auto tSuffix : fSuffixGenInfo) {
     if (tSuffix != "") {
       fOutputFile->mkdir(fEra + "/" + fSampleName + "/GenInfo/" + tSuffix);
       fOutputFile->cd(fEra + "/" + fSampleName + "/GenInfo/" + tSuffix);
     }
+
+    fHistSetGenInfo["h_nJet_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_LeadingMuonPt_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_LeadingMuonEta_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_LeadingMuonPhi_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_SubleadingMuonPt_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_SubleadingMuonEta_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_SubleadingMuonPhi_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_MuonPt_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_MuonEta_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_MuonPhi_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_dimuonMass_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_dimuonPt_WithReco" + tSuffix]->Write();
+    fHistSetGenInfo["h_dimuonRap_WithReco" + tSuffix]->Write();
 
     fHistSetGenInfo["h_nJet" + tSuffix]->Write();
     fHistSetGenInfo["h_LeadingMuonPt" + tSuffix]->Write();

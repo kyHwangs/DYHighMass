@@ -81,6 +81,33 @@ public:
     const double& fRecoWeight
   );
 
+  void FillGenInfoIndependently(
+    const std::vector<TLorentzVector>& tDressedLeptons,
+    const int& tGenJets,
+    const double& fMCWeight
+  );
+
+  void FillResponseMatrix(
+    const double& tGenMass,
+    const int& tNGenJets,
+    const double& tRecoMass,
+    const int& nJets,
+    const int& nBJets,
+    const double& fMCWeight,
+    const double& fRecoWeight,
+    const bool& tPassingOfflineEventSelection
+  );
+
+  void FillResponseMatrix_v2(
+    const double& tGenMass,
+    const int& tNGenJets,
+    const double& tRecoMass,
+    const int& nJets,
+    const double& fMCWeight,
+    const double& fRecoWeight,
+    const bool& tPassingReco
+  );
+
   void FillHisto(std::string name, double value, double weight = 1.);
   void FillHisto(std::string name, float value, double weight = 1.);
   void FillHisto(std::string name, int value, double weight = 1.);
@@ -112,9 +139,13 @@ public:
 
   double GetMassBinIndex(double fMass) {
 
-    for (int i = 0; i < fMassBins.size(); i++)
+    // std::cout << "fMass: " << fMass << std::endl;
+
+    for (int i = 0; i < fMassBins.size() - 1; i++) {
+      // std::cout << "fMassBins.at(i): " << fMassBins.at(i) << " " << fMassBins.at(i + 1) << std::endl;
      if (fMass >= fMassBins.at(i) && fMass < fMassBins.at(i + 1))
       return i;
+    }
 
     return -1;
   }
