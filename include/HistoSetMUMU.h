@@ -153,6 +153,8 @@ public:
   void WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData);
   void WriteGenHisto(TString fEra, TString fSampleName, TString fOutputDir);
 
+  void SetEra(TString fEra_) { fEra = fEra_; }
+
 private:
   std::map<std::string, TH1D*> fHistSet;
   std::map<std::string, TH2D*> fHistSet2D;
@@ -161,6 +163,8 @@ private:
 
   std::vector<std::string> fSuffix;
   std::vector<std::string> fSuffixGenInfo;
+
+  TString fEra;
 
   std::vector<double> fPtBins;
   std::vector<double> fEtaBins;

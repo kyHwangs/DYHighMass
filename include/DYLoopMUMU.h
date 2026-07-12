@@ -76,6 +76,8 @@ public:
     fHistoSet = new HistoSetMUMU();
     if (fSampleName.Contains("NNLO_MUMU"))
       fHistoSet->InitGenInfo();
+    
+    fHistoSet->SetEra(fEra);
 
     fNtuples = new NT(fConfig, fIsMC);
     fNtuples->SetSampleName(fSampleName);

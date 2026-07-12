@@ -134,6 +134,7 @@ void HistoSetMUMU::InitGenInfo() {
   
   fHistSet2D["h_ResponseMatrix"] = new TH2D("h_ResponseMatrix", "h_ResponseMatrix", 45, 0., 45., 45, 0., 45.);
   fHistSet2D["h_ResponseMatrix_inc"] = new TH2D("h_ResponseMatrix_inc", "h_ResponseMatrix_inc", 15, 0., 15., 15, 0., 15.);
+  fHistSet2D["h_ResponseMatrix_merged"] = new TH2D("h_ResponseMatrix_merged", "h_ResponseMatrix_merged", 180, 0., 180., 45, 0., 45.);
 
 }
 
@@ -635,6 +636,11 @@ void HistoSetMUMU::FillResponseMatrix_v2(
   const bool& tPassingReco
 ) {
 
+  double fEraOffset = 0;
+  if (fEra == "2016_postVFP") fEraOffset = 45.;
+  if (fEra == "2017") fEraOffset = 90.;
+  if (fEra == "2018") fEraOffset = 135.;
+
   double tGenMassIndex = GetMassBinIndex(SetMassOverflow(tGenMass));
   double tRecoMassIndex = GetMassBinIndex(SetMassOverflow(tRecoMass));
   double tGenJetIndex = GetNJetBinIndex(tNGenJets);
@@ -649,16 +655,19 @@ void HistoSetMUMU::FillResponseMatrix_v2(
   if (tPassingReco) {
     fHistSet2D["h_ResponseMatrix"]->Fill(tXbin, tYbin, fMCWeight * fRecoWeight);
     fHistSet2D["h_ResponseMatrix_inc"]->Fill(tXbin_inc, tYbin_inc, fMCWeight * fRecoWeight);
+    fHistSet2D["h_ResponseMatrix_merged"]->Fill(tXbin + fEraOffset, tYbin, fMCWeight * fRecoWeight);
   }
 
   if (!tPassingReco) {
     fHistSet2D["h_ResponseMatrix"]->Fill(-0.5, tYbin, fMCWeight); 
     fHistSet2D["h_ResponseMatrix_inc"]->Fill(-0.5, tYbin_inc, fMCWeight); 
+    fHistSet2D["h_ResponseMatrix_merged"]->Fill(-0.5, tYbin, fMCWeight); 
   }
 
   if (tPassingReco && fRecoWeight != 1) {
     fHistSet2D["h_ResponseMatrix"]->Fill(-0.5, tYbin, fMCWeight * (1. - fRecoWeight));
     fHistSet2D["h_ResponseMatrix_inc"]->Fill(-0.5, tYbin_inc, fMCWeight * (1. - fRecoWeight));
+    fHistSet2D["h_ResponseMatrix_merged"]->Fill(-0.5, tYbin, fMCWeight * (1. - fRecoWeight));
   }
 }
 
@@ -798,6 +807,7 @@ void HistoSetMUMU::WriteGenHisto(TString fEra, TString fSampleName, TString fOut
   fOutputFile->cd(fEra + "/" + fSampleName + "/GenInfo");
   fHistSet2D["h_ResponseMatrix"]->Write();
   fHistSet2D["h_ResponseMatrix_inc"]->Write();
+  fHistSet2D["h_ResponseMatrix_merged"]->Write();
 
   for (auto tSuffix : fSuffixGenInfo) {
     if (tSuffix != "") {
