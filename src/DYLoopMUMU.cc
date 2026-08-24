@@ -130,14 +130,7 @@ void DYLoopMUMU::Loop() {
 
       if (tDressedLeptons.size() == 2) tHasGen = true;
 
-      auto tGenMuon = fNtuples->GetGenPartWithFlag(13, 1);
-      auto tGenElec = fNtuples->GetGenPartWithFlag(11, 1);
-
-      auto tGenLep = tGenMuon;
-      for (int k = 0; k < tGenElec.size(); k++)
-        tGenLep.push_back(tGenElec.at(k));
-
-      tGenJets = fNtuples->GetGenJet(30., tGenLep);
+      tGenJets = fNtuples->GetGenJet(30., tDressedLeptons);
     }
 
     if (tDressedLeptons.size() == 2 && fSampleName.Contains("NNLO_MUMU")) {
