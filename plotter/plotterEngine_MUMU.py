@@ -129,6 +129,21 @@ GGList = [
     "GGToMuMu_1500toInf_InelInel",
 ]
 
+QCDList = [
+    "QCD_Pt-15To20_MuEnrichedPt5",
+    "QCD_Pt-20To30_MuEnrichedPt5",
+    "QCD_Pt-30To50_MuEnrichedPt5",
+    "QCD_Pt-50To80_MuEnrichedPt5",
+    "QCD_Pt-80To120_MuEnrichedPt5",
+    "QCD_Pt-120To170_MuEnrichedPt5",
+    "QCD_Pt-170To300_MuEnrichedPt5",
+    "QCD_Pt-300To470_MuEnrichedPt5",
+    "QCD_Pt-470To600_MuEnrichedPt5",
+    "QCD_Pt-600To800_MuEnrichedPt5",
+    "QCD_Pt-800To1000_MuEnrichedPt5",
+    "QCD_Pt-1000_MuEnrichedPt5",
+]
+
 refLumi = {
     "2016_preVFP": 19.5,
     "2016_postVFP": 16.8,
@@ -225,6 +240,19 @@ xSec = {
     "GGToEE_50to200_InelInel": 0.5615,
     "GGToEE_200to1500_InelInel": 0.02173,
     "GGToEE_1500toInf_InelInel": 0.00002023,
+
+    "QCD_Pt-15To20_MuEnrichedPt5": 2797000.0,
+    "QCD_Pt-20To30_MuEnrichedPt5": 2518000.0,
+    "QCD_Pt-30To50_MuEnrichedPt5": 1361000.0,
+    "QCD_Pt-50To80_MuEnrichedPt5": 377800.0,
+    "QCD_Pt-80To120_MuEnrichedPt5": 88620.0,
+    "QCD_Pt-120To170_MuEnrichedPt5": 21070.0,
+    "QCD_Pt-170To300_MuEnrichedPt5": 7019.0,
+    "QCD_Pt-300To470_MuEnrichedPt5": 622.4,
+    "QCD_Pt-470To600_MuEnrichedPt5": 58.86,
+    "QCD_Pt-600To800_MuEnrichedPt5": 18.22,
+    "QCD_Pt-800To1000_MuEnrichedPt5": 3.25,
+    "QCD_Pt-1000_MuEnrichedPt5": 1.0,
 }
 
 

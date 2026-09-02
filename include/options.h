@@ -35,9 +35,19 @@ public:
         AddVariable("config", (TString)(fArgv[i]));
       }
 
+      if (fArgv[i] == "--OutputDir") {
+        i++;
+        AddVariable("OutputDir", (TString)(fArgv[i]));
+      }
+
       if (fArgv[i] == "--base") {
         i++;
         AddVariable("base", (std::string)(fArgv[i]));
+      }
+
+      if (fArgv[i] == "--input") {
+        i++;
+        AddVariable("input", (std::string)(fArgv[i]));
       }
 
       if (fArgv[i] == "--era") {

@@ -129,40 +129,66 @@ bool MUON::PrepareMuon() {
         continue;
       }
 
+      // if (fFVecOSinvertedMuons.size() == 0
+      //     && fFVecMuons.at(i).fCharge * fFVecMuons.at(j).fCharge < 0
+      //     && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(j).fISO == -1) ||
+      //          (fFVecMuons.at(i).fISO == -1 && fFVecMuons.at(j).fISO == 1) )
+      //     && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
+      //          (fFVecMuons.at(j).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
+      //    ) {
+
+      //   if (fFVecMuons.at(i).fISO == 1) {
+      //     fFVecOSinvertedMuons.push_back(fFVecMuons.at(i));
+      //     fFVecOSinvertedMuons.push_back(fFVecMuons.at(j));
+      //   } else {
+      //     fFVecOSinvertedMuons.push_back(fFVecMuons.at(j));
+      //     fFVecOSinvertedMuons.push_back(fFVecMuons.at(i));
+      //   }
+
+      //   continue;
+      // }
+
       if (fFVecOSinvertedMuons.size() == 0
           && fFVecMuons.at(i).fCharge * fFVecMuons.at(j).fCharge < 0
-          && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(j).fISO == -1) ||
-               (fFVecMuons.at(i).fISO == -1 && fFVecMuons.at(j).fISO == 1) )
-          && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
-               (fFVecMuons.at(j).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
+          && (fFVecMuons.at(i).fISO + fFVecMuons.at(j).fISO <= 0)
+          && ( (fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
+               (fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
          ) {
 
-        if (fFVecMuons.at(i).fISO == 1) {
-          fFVecOSinvertedMuons.push_back(fFVecMuons.at(i));
-          fFVecOSinvertedMuons.push_back(fFVecMuons.at(j));
-        } else {
-          fFVecOSinvertedMuons.push_back(fFVecMuons.at(j));
-          fFVecOSinvertedMuons.push_back(fFVecMuons.at(i));
-        }
+        fFVecOSinvertedMuons.push_back(fFVecMuons.at(i));
+        fFVecOSinvertedMuons.push_back(fFVecMuons.at(j));
 
         continue;
       }
 
+      // if (fFVecSSinvertedMuons.size() == 0
+      //     && fFVecMuons.at(i).fCharge * fFVecMuons.at(j).fCharge > 0
+      //     && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(j).fISO == -1) ||
+      //          (fFVecMuons.at(i).fISO == -1 && fFVecMuons.at(j).fISO == 1) )
+      //     && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
+      //          (fFVecMuons.at(j).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
+      //    ) {
+        
+      //   if (fFVecMuons.at(i).fISO == 1) {
+      //     fFVecSSinvertedMuons.push_back(fFVecMuons.at(i));
+      //     fFVecSSinvertedMuons.push_back(fFVecMuons.at(j));
+      //   } else {
+      //     fFVecSSinvertedMuons.push_back(fFVecMuons.at(j));
+      //     fFVecSSinvertedMuons.push_back(fFVecMuons.at(i));
+      //   }
+
+      //   continue;
+      // }
+
       if (fFVecSSinvertedMuons.size() == 0
           && fFVecMuons.at(i).fCharge * fFVecMuons.at(j).fCharge > 0
-          && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(j).fISO == -1) ||
-               (fFVecMuons.at(i).fISO == -1 && fFVecMuons.at(j).fISO == 1) )
-          && ( (fFVecMuons.at(i).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
-               (fFVecMuons.at(j).fISO == 1 && fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
-         ) {
-        
-        if (fFVecMuons.at(i).fISO == 1) {
-          fFVecSSinvertedMuons.push_back(fFVecMuons.at(i));
-          fFVecSSinvertedMuons.push_back(fFVecMuons.at(j));
-        } else {
-          fFVecSSinvertedMuons.push_back(fFVecMuons.at(j));
-          fFVecSSinvertedMuons.push_back(fFVecMuons.at(i));
-        }
+          && (fFVecMuons.at(i).fISO + fFVecMuons.at(j).fISO <= 0)
+          && ( (fFVecMuons.at(i).fVec.Pt() > fLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fSubLeadingMuonPt) ||
+              (fFVecMuons.at(i).fVec.Pt() > fSubLeadingMuonPt && fFVecMuons.at(j).fVec.Pt() > fLeadingMuonPt) ) 
+        ) {
+      
+        fFVecSSinvertedMuons.push_back(fFVecMuons.at(j));
+        fFVecSSinvertedMuons.push_back(fFVecMuons.at(i));
 
         continue;
       }

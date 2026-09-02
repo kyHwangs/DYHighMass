@@ -58,6 +58,7 @@ public:
     fOpt->GetVariable("era", &fEra);
     fOpt->GetVariable("sample", &fSampleName);
     fOpt->GetVariable("debug", &fDebug);
+    fOpt->GetVariable("OutputDir", &fOutputDir);
 
     fCorrectionFuncs = {}; 
 
@@ -343,6 +344,7 @@ private:
   TString fSampleName;
   int fJobID;
   bool fIsMC;
+  TString fOutputDir;
 
   LumiReWeighting* fPuReweighting;
   std::shared_ptr<const correction::Correction> fReco_SF;
