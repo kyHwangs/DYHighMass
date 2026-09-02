@@ -150,8 +150,7 @@ bool EMU::PrepareEMUPair() {
 
       if (fFVecPair_OS_inverted.size() == 0 &&
         fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge < 0 &&
-        !fFVecMuons.at(i).fIso &&
-        !fFVecElecs.at(j).fID
+        !(fFVecMuons.at(i).fIso && fFVecElecs.at(j).fID)
       ) {
         fFVecPair_OS_inverted.push_back(std::make_pair(fFVecMuons.at(i), fFVecElecs.at(j)));
         continue;
@@ -159,8 +158,7 @@ bool EMU::PrepareEMUPair() {
 
       if (fFVecPair_SS_inverted.size() == 0 &&
         fFVecMuons.at(i).fCharge * fFVecElecs.at(j).fCharge > 0 &&
-        !fFVecMuons.at(i).fIso &&
-        !fFVecElecs.at(j).fID
+        !(fFVecMuons.at(i).fIso && fFVecElecs.at(j).fID)
       ) {
         fFVecPair_SS_inverted.push_back(std::make_pair(fFVecMuons.at(i), fFVecElecs.at(j)));
         continue;

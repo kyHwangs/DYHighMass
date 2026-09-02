@@ -48,6 +48,8 @@ void DYLoopEMU::Loop() {
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
 
+    if (tMaxLoop == 10000) break;
+
     fWeightEnvelope.Clear();
     
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {
@@ -204,5 +206,5 @@ void DYLoopEMU::Loop() {
 
 void DYLoopEMU::EndOfJob() {
 
-  fHistoSet->WriteHisto(fEra, fSampleName, "./ROOT/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root", !fIsMC);
+  fHistoSet->WriteHisto(fEra, fSampleName, fOutputDir + "/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root", !fIsMC);
 }
