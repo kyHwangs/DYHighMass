@@ -621,7 +621,7 @@ transfer_input_files = )" + fWorkspaceStr + R"(/envset.sh, \
                        )" + fWorkspaceStr + R"(/install/bin
 
 JobBatchName          = )" + fBaseDir + R"(
-+JobType = "heavy"
++JobType = "long"
 
 output                = log/$(era)_$(sample)_$(id).out
 error                 = log/$(era)_$(sample)_$(id).err
