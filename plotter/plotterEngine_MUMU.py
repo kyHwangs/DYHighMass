@@ -29,6 +29,8 @@ TotalMCList = [
     "ST_tW_AntiTop",
     "ST_tW_Top",
 
+    "WJetsToLNu",
+
     "TTTo2L2Nu",
     
     "WW",
@@ -52,6 +54,19 @@ TotalMCList = [
     "GGToMuMu_50to200_InelInel",
     "GGToMuMu_200to1500_InelInel",
     "GGToMuMu_1500toInf_InelInel",
+
+    "QCD_Pt-15To20_MuEnrichedPt5",
+    "QCD_Pt-20To30_MuEnrichedPt5",
+    "QCD_Pt-30To50_MuEnrichedPt5",
+    "QCD_Pt-50To80_MuEnrichedPt5",
+    "QCD_Pt-80To120_MuEnrichedPt5",
+    "QCD_Pt-120To170_MuEnrichedPt5",
+    "QCD_Pt-170To300_MuEnrichedPt5",
+    "QCD_Pt-300To470_MuEnrichedPt5",
+    "QCD_Pt-470To600_MuEnrichedPt5",
+    "QCD_Pt-600To800_MuEnrichedPt5",
+    "QCD_Pt-800To1000_MuEnrichedPt5",
+    "QCD_Pt-1000_MuEnrichedPt5",
 ]
 
 TWMCList = [
@@ -107,6 +122,38 @@ DYMCList = [
     "NNLO_MUMU_1000to1500",
     "NNLO_MUMU_1500to2000",
     "NNLO_MUMU_2000toInf",
+]
+
+STList = [
+    "ST_s",
+    "ST_t_AntiTop",
+    "ST_t_Top",
+    # "ST_tW_AntiTop",
+    # "ST_tW_Top",
+]
+
+GGELEL = [
+    "GGToMuMu_10to30_ElEl",
+    "GGToMuMu_30to50_ElEl",
+    "GGToMuMu_50to200_ElEl",
+    "GGToMuMu_200to1500_ElEl",
+    "GGToMuMu_1500toInf_ElEl", 
+]
+
+GGINELEL = [
+    "GGToMuMu_10to30_InelElElInel",
+    "GGToMuMu_30to50_InelElElInel",
+    "GGToMuMu_50to200_InelElElInel",
+    "GGToMuMu_200to1500_InelElElInel",
+    "GGToMuMu_1500toInf_InelElElInel",
+]
+
+GGINEL = [
+    "GGToMuMu_10to30_InelInel",
+    "GGToMuMu_30to50_InelInel",
+    "GGToMuMu_50to200_InelInel",
+    "GGToMuMu_200to1500_InelInel",
+    "GGToMuMu_1500toInf_InelInel",
 ]
 
 GGList = [
@@ -373,45 +420,71 @@ class Plotter:
         self.HasFakes = True
 
     def CheckSanity(self, hist):
-
         hist_clone = hist.Clone(f"{hist.GetName()}_{uuid.uuid4()}_cl")
         for i in range(1, hist_clone.GetNbinsX() + 1):
             if hist_clone.GetBinContent(i) < 0:
                 hist_clone.SetBinContent(i, 0)
-                hist_clone.SetBinError(i, 0)
             
         return hist_clone
 
     def CheckSanity2D(self, hist):
-
         hist_clone = hist.Clone(f"{hist.GetName()}_{uuid.uuid4()}_cl")
         for i in range(1, hist_clone.GetNbinsX() + 1):
             for j in range(1, hist_clone.GetNbinsY() + 1):
                 if hist_clone.GetBinContent(i, j) < 0:
                     hist_clone.SetBinContent(i, j, 0)
-                    hist_clone.SetBinError(i, j, 0)
             
         return hist_clone
 
-    def GetMCHist(self, histName, list):
+    def GetSingleHist(self, histname, sample, CheckSanity = False):
+        hist = self.fileSet.Get(self.era + "/" + sample + "/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
+        hist.SetDirectory(0)
 
-        histSet = {}
-        for mc in list:
-            hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
-            hist.SetDirectory(0)
-            hist.SetStats(0)
-            
-            if (self.era != "merged"):
-                hist.Scale(self.normFactor[mc]);
+        if sample != "Data":
+            hist.Scale(self.normFactor[sample]);
+        
+        if CheckSanity:
             hist = self.CheckSanity(hist)
 
-            histSet[mc] = hist
+        return hist
 
-        return_hist = histSet[list[0]].Clone(f"{histName}_{uuid.uuid4()}")
-        for mc in list[1:]:
-            return_hist.Add(histSet[mc])
-        
-        return return_hist
+
+    def GetMCHist(self, histName, list, CheckSanity = False):
+
+        if list[0] == "GG":
+
+            GG_ELEL = self.GetMCHist(histName, GGELEL, CheckSanity = False)
+            GG_INELEL = self.GetMCHist(histName, GGINELEL, CheckSanity = False)
+            GG_INELINEL = self.GetMCHist(histName, GGINEL, CheckSanity = False)
+
+            GG = GG_ELEL.Clone(f"{histName}_{uuid.uuid4()}")
+            GG.Add(GG_INELEL)
+            GG.Add(GG_INELINEL)
+
+            return GG
+
+        else:
+            histSet = {}
+            for mc in list:
+                hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
+                hist.SetDirectory(0)
+                hist.SetStats(0)
+                
+                if (self.era != "merged"):
+                    hist.Scale(self.normFactor[mc]);
+
+                if CheckSanity:
+                    hist = self.CheckSanity(hist)
+
+                histSet[mc] = hist
+
+            return_hist = histSet[list[0]].Clone(f"{histName}_{uuid.uuid4()}")
+            for mc in list[1:]:
+                return_hist.Add(histSet[mc])
+            
+            return_hist = self.CheckSanity(return_hist)
+
+            return return_hist
 
     def GetMCHist2D(self, histName, list):
         
@@ -420,7 +493,7 @@ class Plotter:
             hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
             hist.SetDirectory(0)
             hist.SetStats(0);
-            # hist.Sumw2();
+            
             if (self.era != "merged"):
                 hist.Scale(self.normFactor[mc]);
             hist = self.CheckSanity2D(hist)
@@ -440,10 +513,9 @@ class Plotter:
             hist = self.fileSet.Get(self.era + "/" + mc + "/GenInfo/h_ResponseMatrix").Clone(f"h_ResponseMatrix_{uuid.uuid4()}")
             hist.SetDirectory(0)
             hist.SetStats(0);
-            # hist.Sumw2();
+            
             if (self.era != "merged"):
                 hist.Scale(self.normFactor[mc]);
-            hist = self.CheckSanity2D(hist)
 
             histSet[mc] = hist
 
@@ -453,24 +525,7 @@ class Plotter:
         
         return return_hist
 
-    def GetSingleHist(self, histname, sample):
-
-        print (self.era + "/" + sample + "/" + histname)
-
-
-        hist = self.fileSet.Get(self.era + "/" + sample + "/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
-        hist.SetDirectory(0)
-        # hist.Sumw2()
-        if sample != "Data":
-            hist.Scale(self.normFactor[sample]);
-        hist = self.CheckSanity(hist)
-
-        return hist
-
     def GetDataHist(self, histName):
-
-        print (self.era + "/Data/" + histName)
-
         hist = self.fileSet.Get(self.era + "/Data/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
         hist.SetDirectory(0)
         hist.SetStats(0);
@@ -484,16 +539,17 @@ class Plotter:
             hist = self.fileSet.Get(self.era + "/" + mc + "/GenInfo/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
             hist.SetDirectory(0)
             hist.SetStats(0);
-            # hist.Sumw2();
+
             if (self.era != "merged"):
                 hist.Scale(self.normFactor[mc]);
-            hist = self.CheckSanity(hist)
 
             histSet[mc] = hist
 
         return_hist = histSet[list[0]].Clone(f"{histName}_{uuid.uuid4()}")
         for mc in list[1:]:
             return_hist.Add(histSet[mc])
+
+        return_hist = self.CheckSanity(return_hist)
         
         return return_hist
 
@@ -506,18 +562,13 @@ class Plotter:
 
         return return_hist
 
-    def GetRatioHistNoError(self, num, den):
+    def GetRatioHist(self, num, den, NoError = False):
         ratio = num.Clone(f"ratio_{uuid.uuid4()}")
         ratio.Divide(den)
 
-        for i in range(1, ratio.GetNbinsX() + 1):
-            ratio.SetBinError(i, 1e-7)
-
-        return ratio
-
-    def GetRatioHist(self, num, den):
-        ratio = num.Clone(f"ratio_{uuid.uuid4()}")
-        ratio.Divide(den)
+        if NoError:
+            for i in range(1, ratio.GetNbinsX() + 1):
+                ratio.SetBinError(i, 1e-7)
 
         return ratio
 
@@ -548,11 +599,14 @@ class Plotter:
         else:
             total_ratio = dataN / totalN
 
+        inverted_ratio = 0;
+        if total_ratio > 0:
+            inverted_ratio = 1 / total_ratio
         
         if self.IsSignalRegion:
-            return f"data/Pred. = {(total_ratio):.3f}"
+            return f"Data/Pred. = {(total_ratio):.3f}"
         else:
-            return f"Pred./Data = {(1/total_ratio):.3f}"
+            return f"Pred./Data = {(inverted_ratio):.3f}"
 
     def GetRatioRange(self, hist, xmin, xmax):
         if self.IsSignalRegion or self.IsEMUSignalRegion:
@@ -657,11 +711,16 @@ class Plotter:
         canvasName = self.era + "_" + "h_" + self.region + "_" + histName
 
         data = self.GetDataHist(self.histName)
-        DY = self.GetMCHist(self.histName, DYMCList)
-        TT = self.GetMCHist(self.histName, TWMCList)
-        DY_tau = self.GetMCHist(self.histName, ["NNLO_tautau"])
-        EW = self.GetMCHist(self.histName, ["WZ", "ZZ"])
-        GG = self.GetMCHist(self.histName, GGList)
+        DY = self.GetMCHist(self.histName, DYMCList, CheckSanity = False)
+        TT = self.GetMCHist(self.histName, TWMCList, CheckSanity = True)
+        DY_tau = self.GetMCHist(self.histName, ["NNLO_tautau"], CheckSanity = False)
+        EW = self.GetMCHist(self.histName, ["WZ", "ZZ"], CheckSanity = True)
+        GG = self.GetMCHist(self.histName, ["GG"], CheckSanity = True)
+
+        QCD = self.GetMCHist(self.histName, QCDList, CheckSanity = False)
+        WJet = self.GetMCHist(self.histName, ["WJetsToLNu"], CheckSanity = True)
+        ST = self.GetMCHist(self.histName, STList, CheckSanity = True)
+
         Fake = None;
 
         if self.HasTopBkg:
@@ -677,6 +736,9 @@ class Plotter:
         TotalMC.Add(GG)
         TotalMC.Add(EW)
         TotalMC.Add(TT)
+        TotalMC.Add(QCD)
+        TotalMC.Add(WJet)
+        TotalMC.Add(ST)
 
         if self.IsSignalRegion:
             TotalMC.Add(DY)
@@ -684,7 +746,7 @@ class Plotter:
         if self.HasFakes:
             TotalMC.Add(Fake)
 
-        dataOmc = self.GetRatioHistNoError(data, TotalMC)
+        dataOmc = self.GetRatioHist(data, TotalMC, NoError = True)
 
         if (not self.IsSignalRegion):
             dataOmc = self.GetRatioHist(TotalMC, data)
@@ -740,6 +802,9 @@ class Plotter:
         leg = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
 
         stackSeet = {
+            "QCD": QCD,
+            "WJets": WJet,
+            "Single Top": ST,
             "DY#rightarrow#tau#tau": DY_tau,
             "#gamma#gamma#rightarrow#mu#mu": GG,
             "ZZ + ZW": EW,
@@ -749,6 +814,9 @@ class Plotter:
 
         if not self.IsSignalRegion:
             stackSeet = {
+                "Single Top": ST,
+                "WJets": WJet,
+                "QCD": QCD,
                 "DY#rightarrow#tau#tau": DY_tau,
                 "#gamma#gamma#rightarrow#mu#mu": GG,
                 "ZZ + ZW": EW,

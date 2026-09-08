@@ -5,6 +5,7 @@ import uuid
 import cmsstyle as CMS
 import array
 import plotterEngine_MUMU as plotterEngine
+import numpy as np
 
 CMS.SetExtraText("Private Work")
 CMS.SetEnergy("13")
@@ -29,7 +30,18 @@ def GetYRange(hist):
     yrmin = yrmin * 0.9
     yrmax = yrmax * 1.1
 
+    if yrmin > 1: yrmin = 0
+
     return yrmin, yrmax
+
+def Rebin(hist):
+      
+    fRebinBins = np.array([199, 200, 220, 273, 380, 510, 700, 1000, 4000, 4001], dtype=np.double)
+    fReturnHist = hist.Rebin(len(fRebinBins) - 1, f"h_dimuonMass_rebin_{uuid.uuid4()}", fRebinBins)
+
+    return fReturnHist
+
+
 
 addon_hook_jet = {
     "": "",
@@ -100,13 +112,6 @@ emu_mcList_woTop = [
     "GGToMuMu_1500toInf_InelInel",
 ]
 
-refLumi = {
-    "2016_preVFP": 19.5,
-    "2016_postVFP": 16.8,
-    "2017": 41.5,
-    "2018": 59.8,
-    "merged": 137.6
-}
 
 def GetOSFromSS(SS_Fake, SStoOS):
 
@@ -121,6 +126,21 @@ def GetOSFromSS(SS_Fake, SStoOS):
 
     return FAKE_DataDriven
 
+def GetOSFromSS_rebin(SS_Fake, SStoOS):
+
+    FAKE_DataDriven = SS_Fake.Clone(f"FAKE_DataDriven_rebin_{uuid.uuid4()}")
+    FAKE_DataDriven.Reset("ICES");
+
+    for i in range(1, SS_Fake.GetNbinsX() + 1):
+        # print (
+        #     f"{i} {SS_Fake.GetBinLowEdge(i)} {SS_Fake.GetBinCenter(i)} {SS_Fake.GetBinLowEdge(i) + SS_Fake.GetBinWidth(i)} {SStoOS.FindBin(SS_Fake.GetBinCenter(i))} {SStoOS.GetBinLowEdge(SStoOS.FindBin(SS_Fake.GetBinCenter(i)))} {SStoOS.GetBinLowEdge(SStoOS.FindBin(SS_Fake.GetBinCenter(i))) + SStoOS.GetBinWidth(SStoOS.FindBin(SS_Fake.GetBinCenter(i)))}"
+        # )
+        if SStoOS.GetBinContent(SStoOS.FindBin(SS_Fake.GetBinCenter(i))) == 0 or SS_Fake.GetBinContent(i) <= 0:
+            FAKE_DataDriven.SetBinContent(i, 0)
+        else:
+            FAKE_DataDriven.SetBinContent(i, SS_Fake.GetBinContent(i) * SStoOS.GetBinContent(SStoOS.FindBin(SS_Fake.GetBinCenter(i))))
+            
+    return FAKE_DataDriven
 
 def GetHistoName(name, type, jet):
 
@@ -138,8 +158,8 @@ def main():
     cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
     
     histoName_MUMU = "h_dimuonMass"
-    outputPath = "./plots_260706/MUMU_FAKE/"
-    outputRoot = "./Bck_260706/MUMU_FAKE.root"
+    outputPath = "./plots_260908/MUMU_FAKE/"
+    outputRoot = "./Bck/MUMU_FAKE.root"
 
     os.makedirs(outputPath, exist_ok=True)
 
@@ -147,7 +167,7 @@ def main():
 
     for era in eras:
 
-        CMS.SetLumi(refLumi[era])
+        CMS.SetLumi(plotterEngine.refLumi[era])
         os.makedirs(f"{outputPath}era_{era}", exist_ok=True)
 
         latex_mumu = [
@@ -164,23 +184,25 @@ def main():
         outputFile.mkdir(f"{era}/FAKE_MUMU_OS")
         outputFile.mkdir(f"{era}/FAKE_MUMU_SS")
         outputFile.mkdir(f"{era}/FAKE_MUMU_SStoOS")
+        outputFile.mkdir(f"{era}/FAKE_MUMU_OS_Inv_rebin")
+        outputFile.mkdir(f"{era}/FAKE_MUMU_SS_Inv_rebin")
 
-        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
+        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck/root/MUMU_OneOrBothInverted.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS")
 
-        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
+        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck/root/MUMU_OneOrBothInverted.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS")
 
-        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
+        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck/root/MUMU_OneOrBothInverted.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS_inverted")
 
-        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck_260706/MUMU_nominal.root", 
+        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck/root/MUMU_OneOrBothInverted.root", 
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS_inverted")
@@ -214,19 +236,33 @@ def main():
             MUMU_SS_inverted_FAKE.Add(MUMU_SS_inverted_TotalMC, -1)
             MUMU_SS_inverted_FAKE = SanityCheck(MUMU_SS_inverted_FAKE)
 
-            MUMU_inverted_SStoOS = MUMU_OS_inverted_FAKE.Clone(f"MUMU_inverted_SStoOS_{uuid.uuid4()}")
-            MUMU_inverted_SStoOS.Divide(MUMU_SS_inverted_FAKE)
+
+            MUMU_OS_inverted_FAKE_rebin = Rebin(MUMU_OS_inverted_FAKE)
+            MUMU_SS_inverted_FAKE_rebin = Rebin(MUMU_SS_inverted_FAKE)
+
+            MUMU_inverted_SStoOS = MUMU_OS_inverted_FAKE_rebin.Clone(f"MUMU_inverted_SStoOS_{uuid.uuid4()}")
+            MUMU_inverted_SStoOS.Divide(MUMU_SS_inverted_FAKE_rebin)
             MUMU_inverted_SStoOS.SetName("MUMU_inverted_SStoOS" + case)
 
-            MUMU_OS_FAKE_DataDriven = GetOSFromSS(MUMU_SS_FAKE, MUMU_inverted_SStoOS)
+            MUMU_OS_FAKE_DataDriven = GetOSFromSS_rebin(MUMU_SS_FAKE, MUMU_inverted_SStoOS)
             MUMU_OS_FAKE_DataDriven.SetName("MUMU_OS_FAKE_DataDriven" + case)
 
             outputFile.cd(f"{era}/FAKE_MUMU_SStoOS")
             MUMU_inverted_SStoOS.Write()
+
             outputFile.cd(f"{era}/FAKE_MUMU_SS")
             MUMU_SS_FAKE.Write()
+
             outputFile.cd(f"{era}/FAKE_MUMU_OS")
             MUMU_OS_FAKE_DataDriven.Write()
+
+            outputFile.cd(f"{era}/FAKE_MUMU_OS_Inv_rebin")
+            MUMU_OS_inverted_FAKE_rebin.Write()
+            
+            outputFile.cd(f"{era}/FAKE_MUMU_SS_Inv_rebin")
+            MUMU_SS_inverted_FAKE_rebin.Write()
+
+
 
 
             #################################################################
@@ -443,7 +479,7 @@ def main():
 
 
             latex_SStoOS_item = latex_copy_mumu.copy()
-            latex_SStoOS_item[0] = f"{latex_SStoOS_item[0]}, OS/SS, only one muon with inverted ISO"
+            latex_SStoOS_item[0] = f"{latex_SStoOS_item[0]}, OS/SS, One or Both muons with inverted ISO"
 
             Latex_SStoOS = ROOT.TLatex()
             Latex_SStoOS.SetTextAlign(14);

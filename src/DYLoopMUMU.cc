@@ -299,12 +299,6 @@ void DYLoopMUMU::Loop() {
         fWeightEnvelope.AddWeight("OS_inverted", "IDEff", std::get<FuncSingleMuonCorrection>(fCorrectionFuncs["IDEff"])(tMuon_OSinverted.at(0).fVecRaw));
         fWeightEnvelope.AddWeight("OS_inverted", "IDEff", std::get<FuncSingleMuonCorrection>(fCorrectionFuncs["IDEff"])(tMuon_OSinverted.at(1).fVecRaw));
       }
-      // if (fIsMC && fDoISO) {
-      //   fWeightEnvelope.AddWeight("OS_inverted", "IsoEff", std::get<FuncSingleMuonCorrection>(fCorrectionFuncs["IsoEff"])(tMuon_OSinverted.at(0).fVecRaw));
-      // }
-      // if (fIsMC && fDoTRIGG) {
-      //   fWeightEnvelope.AddWeight("OS_inverted", "SingleTriggerEff", std::get<FuncSingleMuonCorrection>(fCorrectionFuncs["SingleTriggerEff"])(tMuon_OSinverted.at(0).fVecRaw));
-      // }
       if (fIsMC && fDoJetPUID) {
         fWeightEnvelope.AddWeight("OS_inverted", "PUJetIDEff", std::get<FuncEmptyInput>(fCorrectionFuncs["PUJetIDEff"])());
       }
@@ -340,12 +334,6 @@ void DYLoopMUMU::Loop() {
         fWeightEnvelope.AddWeight("SS_inverted", "IDEff", std::get<FuncSingleMuonCorrection>(fCorrectionFuncs["IDEff"])(tMuon_SSinverted.at(0).fVecRaw));
         fWeightEnvelope.AddWeight("SS_inverted", "IDEff", std::get<FuncSingleMuonCorrection>(fCorrectionFuncs["IDEff"])(tMuon_SSinverted.at(1).fVecRaw));
       }
-      // if (fIsMC && fDoISO) {
-      //   fWeightEnvelope.AddWeight("SS_inverted", "IsoEff", std::get<FuncSingleMuonCorrection>(fCorrectionFuncs["IsoEff"])(tMuon_SSinverted.at(0).fVecRaw));
-      // }
-      // if (fIsMC && fDoTRIGG) {
-      //   fWeightEnvelope.AddWeight("SS_inverted", "SingleTriggerEff", std::get<FuncSingleMuonCorrection>(fCorrectionFuncs["SingleTriggerEff"])(tMuon_SSinverted.at(0).fVecRaw));
-      // }
       if (fIsMC && fDoJetPUID) {
         fWeightEnvelope.AddWeight("SS_inverted", "PUJetIDEff", std::get<FuncEmptyInput>(fCorrectionFuncs["PUJetIDEff"])());
       }

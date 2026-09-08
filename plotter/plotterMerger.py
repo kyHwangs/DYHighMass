@@ -14,8 +14,12 @@ args = parser.parse_args()
 class Merger:
     def __init__(self, plot_list, case_list, type_list, input_path = "output.root"):
 
-        output_path = input_path.replace(".root", "_merged.root")
-        os.system(f"cp {input_path} {output_path}")
+        baseDir = "/pnfs/knu.ac.kr/data/cms/store/user/khwang/CMS/HighMassDY/"
+        inputFile = baseDir + input_path
+
+        output_path = "./" + input_path.replace(".root", "_merged.root")
+        
+        os.system(f"cp {inputFile} {output_path}")
 
         self.plot_list = plot_list
         self.case_list = case_list
@@ -23,10 +27,10 @@ class Merger:
         self.merge_list = plotterEngine.TotalMCList.copy()
         self.merge_list.append("Data")
     
-        self.p2016_preVFP = plotterEngine.Plotter("2016_preVFP", rootPath = input_path)
-        self.p2016_postVFP = plotterEngine.Plotter("2016_postVFP", rootPath = input_path)
-        self.p2017 = plotterEngine.Plotter("2017", rootPath = input_path)
-        self.p2018 = plotterEngine.Plotter("2018", rootPath = input_path)
+        self.p2016_preVFP = plotterEngine.Plotter("2016_preVFP", rootPath = inputFile)
+        self.p2016_postVFP = plotterEngine.Plotter("2016_postVFP", rootPath = inputFile)
+        self.p2017 = plotterEngine.Plotter("2017", rootPath = inputFile)
+        self.p2018 = plotterEngine.Plotter("2018", rootPath = inputFile)
 
         self.merge_file = ROOT.TFile(output_path, "UPDATE")
 
@@ -111,8 +115,12 @@ def main(args):
         "PairRap"
     ]
 
+    # input_name = "260824_MUMU_bothInverted.root"
+    # input_name = "260901_MUMU_OneInverted.root"
+    input_name = "260902_MUMU_OneOrTwoNonIso.root"
+
     if args.channel == "MUMU":
-        merger = Merger(plot_list_mumu, case_list, type_list)
+        merger = Merger(plot_list_mumu, case_list, type_list, input_path = input_name)
     elif args.channel == "EMU":
         merger = Merger(plot_list_emu, case_list, type_list)
     else:
