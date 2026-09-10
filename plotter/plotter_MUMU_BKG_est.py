@@ -158,7 +158,7 @@ def main():
     cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
     
     histoName_MUMU = "h_dimuonMass"
-    outputPath = "./plots_260908/MUMU_FAKE/"
+    outputPath = "./plots_260910/MUMU_FAKE/"
     outputRoot = "./Bck/MUMU_FAKE.root"
 
     os.makedirs(outputPath, exist_ok=True)
@@ -187,22 +187,22 @@ def main():
         outputFile.mkdir(f"{era}/FAKE_MUMU_OS_Inv_rebin")
         outputFile.mkdir(f"{era}/FAKE_MUMU_SS_Inv_rebin")
 
-        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck/root/MUMU_OneOrBothInverted.root", 
+        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck/root/260908_MUMU_Update_merged.root",
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS")
 
-        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck/root/MUMU_OneOrBothInverted.root", 
+        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck/root/260908_MUMU_Update_merged.root",
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS")
 
-        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck/root/MUMU_OneOrBothInverted.root", 
+        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck/root/260908_MUMU_Update_merged.root",
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS_inverted")
 
-        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck/root/MUMU_OneOrBothInverted.root", 
+        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck/root/260908_MUMU_Update_merged.root",
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS_inverted")

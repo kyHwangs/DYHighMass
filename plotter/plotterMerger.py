@@ -117,7 +117,7 @@ def main(args):
 
     # input_name = "260824_MUMU_bothInverted.root"
     # input_name = "260901_MUMU_OneInverted.root"
-    input_name = "260902_MUMU_OneOrTwoNonIso.root"
+    input_name = "260908_MUMU_Update.root"
 
     if args.channel == "MUMU":
         merger = Merger(plot_list_mumu, case_list, type_list, input_path = input_name)
