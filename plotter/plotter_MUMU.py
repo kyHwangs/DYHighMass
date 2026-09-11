@@ -105,13 +105,13 @@ def main():
         for type in type_list:
             plotter = plotterEngine.Plotter(era, 
                                             rootPath = f"{input_file}.root", 
-                                            outputPath = f"./plots_260910/MUMU_{type}/plots_{era}/",
+                                            outputPath = f"./plots_260911/MUMU_WithFakes/MUMU_{type}/plots_{era}/",
                                             channel = "MUMU", 
                                             region = f"{type}")
 
             # plotter.SetBackground(rootPath = "./Bck_260706/EMU_FAKE.root", mcList = ["TOP"])
-            # plotter.SetFakes(rootPath = "./Bck/MUMU_FAKE.root")
-            hasBack = False
+            plotter.SetFakes(rootPath = "./Bck/MUMU_FAKE.root")
+            hasBack = True
 
             # plotter.Plot("h_nJet",  "", "", xTitle = "N_{jet}", xmin = 0, xmax = 14)
             # plotter.Plot("h_nBJet", "", "", xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
@@ -152,4 +152,6 @@ def main():
 
 if __name__ == "__main__" :
     ROOT.TH1.AddDirectory(False)
+    ROOT.TH1.SetDefaultSumw2()
+    
     main()

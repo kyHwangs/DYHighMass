@@ -112,6 +112,14 @@ emu_mcList_woTop = [
     "GGToMuMu_1500toInf_InelInel",
 ]
 
+def ErrorPropagation(x1, dx1, x2, dx2):
+
+    if x1 == 0 or x2 == 0:
+        # print(f"Error Zero Central value x1: {x1}, dx1: {dx1}, x2: {x2}, dx2: {dx2}")
+        return 0
+
+    return (x1 * x2) * np.sqrt((dx1 / x1)**2 + (dx2 / x2)**2)
+
 
 def GetOSFromSS(SS_Fake, SStoOS):
 
@@ -132,13 +140,12 @@ def GetOSFromSS_rebin(SS_Fake, SStoOS):
     FAKE_DataDriven.Reset("ICES");
 
     for i in range(1, SS_Fake.GetNbinsX() + 1):
-        # print (
-        #     f"{i} {SS_Fake.GetBinLowEdge(i)} {SS_Fake.GetBinCenter(i)} {SS_Fake.GetBinLowEdge(i) + SS_Fake.GetBinWidth(i)} {SStoOS.FindBin(SS_Fake.GetBinCenter(i))} {SStoOS.GetBinLowEdge(SStoOS.FindBin(SS_Fake.GetBinCenter(i)))} {SStoOS.GetBinLowEdge(SStoOS.FindBin(SS_Fake.GetBinCenter(i))) + SStoOS.GetBinWidth(SStoOS.FindBin(SS_Fake.GetBinCenter(i)))}"
-        # )
         if SStoOS.GetBinContent(SStoOS.FindBin(SS_Fake.GetBinCenter(i))) == 0 or SS_Fake.GetBinContent(i) <= 0:
             FAKE_DataDriven.SetBinContent(i, 0)
+            FAKE_DataDriven.SetBinError(i, ErrorPropagation(SStoOS.GetBinContent(SStoOS.FindBin(SS_Fake.GetBinCenter(i))), SStoOS.GetBinError(SStoOS.FindBin(SS_Fake.GetBinCenter(i))), SS_Fake.GetBinContent(i), SS_Fake.GetBinError(i)))
         else:
             FAKE_DataDriven.SetBinContent(i, SS_Fake.GetBinContent(i) * SStoOS.GetBinContent(SStoOS.FindBin(SS_Fake.GetBinCenter(i))))
+            FAKE_DataDriven.SetBinError(i, ErrorPropagation(SStoOS.GetBinContent(SStoOS.FindBin(SS_Fake.GetBinCenter(i))), SStoOS.GetBinError(SStoOS.FindBin(SS_Fake.GetBinCenter(i))), SS_Fake.GetBinContent(i), SS_Fake.GetBinError(i)))
             
     return FAKE_DataDriven
 
@@ -219,7 +226,7 @@ def main():
 
             MUMU_SS_FAKE = MUMU_SS_data.Clone(f"MUMU_SS_FAKE_{uuid.uuid4()}")
             MUMU_SS_FAKE.Add(MUMU_SS_TotalMC, -1)
-            MUMU_SS_FAKE = SanityCheck(MUMU_SS_FAKE)
+            # MUMU_SS_FAKE = SanityCheck(MUMU_SS_FAKE)
             MUMU_SS_FAKE.SetName("MUMU_SS_FAKE" + case)
 
             MUMU_OS_inverted_TotalMC = MUMU_OS_inverted.GetMCHist(GetHistoName("dimuonMass", "OS_inverted", case), mcList)
@@ -227,24 +234,25 @@ def main():
             
             MUMU_OS_inverted_FAKE = MUMU_OS_inverted_data.Clone(f"MUMU_OS_inverted_FAKE_{uuid.uuid4()}")
             MUMU_OS_inverted_FAKE.Add(MUMU_OS_inverted_TotalMC, -1)
-            MUMU_OS_inverted_FAKE = SanityCheck(MUMU_OS_inverted_FAKE)
+            # MUMU_OS_inverted_FAKE = SanityCheck(MUMU_OS_inverted_FAKE)
 
             MUMU_SS_inverted_TotalMC = MUMU_SS_inverted.GetMCHist(GetHistoName("dimuonMass", "SS_inverted", case), mcList)
             MUMU_SS_inverted_data = MUMU_SS_inverted.GetDataHist(GetHistoName("dimuonMass", "SS_inverted", case))
 
             MUMU_SS_inverted_FAKE = MUMU_SS_inverted_data.Clone(f"MUMU_SS_inverted_FAKE_{uuid.uuid4()}")
             MUMU_SS_inverted_FAKE.Add(MUMU_SS_inverted_TotalMC, -1)
-            MUMU_SS_inverted_FAKE = SanityCheck(MUMU_SS_inverted_FAKE)
-
+            # MUMU_SS_inverted_FAKE = SanityCheck(MUMU_SS_inverted_FAKE)
 
             MUMU_OS_inverted_FAKE_rebin = Rebin(MUMU_OS_inverted_FAKE)
             MUMU_SS_inverted_FAKE_rebin = Rebin(MUMU_SS_inverted_FAKE)
 
             MUMU_inverted_SStoOS = MUMU_OS_inverted_FAKE_rebin.Clone(f"MUMU_inverted_SStoOS_{uuid.uuid4()}")
             MUMU_inverted_SStoOS.Divide(MUMU_SS_inverted_FAKE_rebin)
+            MUMU_inverted_SStoOS = SanityCheck(MUMU_inverted_SStoOS)
             MUMU_inverted_SStoOS.SetName("MUMU_inverted_SStoOS" + case)
 
             MUMU_OS_FAKE_DataDriven = GetOSFromSS_rebin(MUMU_SS_FAKE, MUMU_inverted_SStoOS)
+            MUMU_OS_FAKE_DataDriven = SanityCheck(MUMU_OS_FAKE_DataDriven)
             MUMU_OS_FAKE_DataDriven.SetName("MUMU_OS_FAKE_DataDriven" + case)
 
             outputFile.cd(f"{era}/FAKE_MUMU_SStoOS")
@@ -261,9 +269,6 @@ def main():
             
             outputFile.cd(f"{era}/FAKE_MUMU_SS_Inv_rebin")
             MUMU_SS_inverted_FAKE_rebin.Write()
-
-
-
 
             #################################################################
             # Fake SS
@@ -504,4 +509,6 @@ def main():
 
 if __name__ == "__main__" :
     ROOT.TH1.AddDirectory(False)
+    ROOT.TH1.SetDefaultSumw2()
+    
     main()

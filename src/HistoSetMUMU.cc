@@ -671,13 +671,11 @@ void HistoSetMUMU::FillResponseMatrix_v2(
   }
 }
 
-void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData) {
+void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TFile* fOutputFile, bool fIsData) {
 
   if (fSampleName.Contains("NNLO_MUMU_10to50"))
     fSampleName = "NNLO_MUMU_10to50";
-  
-  TFile* fOutputFile = new TFile(fOutputDir, "RECREATE");
-  
+    
   fOutputFile->mkdir(fEra + "/" + fSampleName);
 
   for (auto tSuffix : fSuffix)
@@ -792,16 +790,12 @@ void HistoSetMUMU::WriteHisto(TString fEra, TString fSampleName, TString fOutput
   //     hist->Write();
   //   }
   // }
-
-  fOutputFile->Close();
 }
 
-void HistoSetMUMU::WriteGenHisto(TString fEra, TString fSampleName, TString fOutputDir) {
+void HistoSetMUMU::WriteGenHisto(TString fEra, TFile* fOutputFile, TString fOutputDir) {
   
   if (fSampleName.Contains("NNLO_MUMU_10to50"))
     fSampleName = "NNLO_MUMU_10to50";
-
-  TFile* fOutputFile = new TFile(fOutputDir, "UPDATE");
 
   fOutputFile->mkdir(fEra + "/" + fSampleName + "/GenInfo");
   fOutputFile->cd(fEra + "/" + fSampleName + "/GenInfo");
@@ -844,4 +838,3 @@ void HistoSetMUMU::WriteGenHisto(TString fEra, TString fSampleName, TString fOut
     fHistSetGenInfo["h_dimuonRap" + tSuffix]->Write();
   }
 }
-

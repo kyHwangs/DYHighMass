@@ -386,8 +386,14 @@ void DYLoopMUMU::Loop() {
 
 void DYLoopMUMU::EndOfJob() {
 
-  fHistoSet->WriteHisto(fEra, fSampleName, fOutputDir + "/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root", !fIsMC);
+  TString fOutputFileName = fOutputDir + "/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root"
+
+  TFile* fOutputFile = new TFile(fOutputFileName, "RECREATE");
+
+  fHistoSet->WriteHisto(fEra, fSampleName, fOutputFile, !fIsMC);
   
   if (fSampleName.Contains("NNLO_MUMU"))
-    fHistoSet->WriteGenHisto(fEra, fSampleName, fOutputDir + "/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root");
+    fHistoSet->WriteGenHisto(fEra, fSampleName, fOutputFile);
+
+  fOutputFile->Close();
 }

@@ -150,8 +150,8 @@ public:
     return -1;
   }
 
-  void WriteHisto(TString fEra, TString fSampleName, TString fOutputDir, bool fIsData);
-  void WriteGenHisto(TString fEra, TString fSampleName, TString fOutputDir);
+  void WriteHisto(TString fEra, TString fSampleName, TFile* fOutputFile, bool fIsData);
+  void WriteGenHisto(TString fEra, TString fSampleName, TFile* fOutputFile);
 
   void SetEra(TString fEra_) { fEra = fEra_; }
 

@@ -45,6 +45,7 @@ class Merger:
                     if case != "":
                         if atype == "OS":
                              self.merge_file.mkdir(f"merged/{sample}/{case}")
+                    
                     for plot in self.plot_list:
 
                         if plot == "dimuonMassFailGen" and sample == "Data":
