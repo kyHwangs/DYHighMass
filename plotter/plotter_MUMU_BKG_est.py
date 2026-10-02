@@ -165,7 +165,7 @@ def main():
     cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
     
     histoName_MUMU = "h_dimuonMass"
-    outputPath = "./plots_260917/MUMU_FAKE/"
+    outputPath = "./plots_260921_v4/MUMU_FAKE/"
     outputRoot = "./Bck/MUMU_FAKE.root"
 
     os.makedirs(outputPath, exist_ok=True)
@@ -194,22 +194,22 @@ def main():
         outputFile.mkdir(f"{era}/FAKE_MUMU_OS_Inv_rebin")
         outputFile.mkdir(f"{era}/FAKE_MUMU_SS_Inv_rebin")
 
-        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./Bck/root/260908_MUMU_Update_merged.root",
+        MUMU_OS = plotterEngine.Plotter(era, rootPath = "./root/260911_MUMU_GenUpdate_merged.root",
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS")
 
-        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./Bck/root/260908_MUMU_Update_merged.root",
+        MUMU_SS = plotterEngine.Plotter(era, rootPath = "./root/260911_MUMU_GenUpdate_merged.root",
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS")
 
-        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck/root/260908_MUMU_Update_merged.root",
+        MUMU_OS_inverted = plotterEngine.Plotter(era, rootPath = "./root/260911_MUMU_GenUpdate_merged.root",
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "OS_inverted")
 
-        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./Bck/root/260908_MUMU_Update_merged.root",
+        MUMU_SS_inverted = plotterEngine.Plotter(era, rootPath = "./root/260911_MUMU_GenUpdate_merged.root",
                                             outputPath = "./plots/temp/plots" + era + "/",
                                             channel = "MUMU", 
                                             region = "SS_inverted")
@@ -246,15 +246,15 @@ def main():
             MUMU_OS_inverted_FAKE_rebin = Rebin(MUMU_OS_inverted_FAKE)
             MUMU_SS_inverted_FAKE_rebin = Rebin(MUMU_SS_inverted_FAKE)
 
-            # MUMU_inverted_SStoOS = MUMU_OS_inverted_FAKE_rebin.Clone(f"MUMU_inverted_SStoOS_{uuid.uuid4()}")
-            # MUMU_inverted_SStoOS.Divide(MUMU_SS_inverted_FAKE_rebin)
-            # MUMU_inverted_SStoOS = SanityCheck(MUMU_inverted_SStoOS)
-            # MUMU_inverted_SStoOS.SetName("MUMU_inverted_SStoOS" + case)
-
-            MUMU_inverted_SStoOS = MUMU_OS_inverted_FAKE.Clone(f"MUMU_inverted_SStoOS_{uuid.uuid4()}")
-            MUMU_inverted_SStoOS.Divide(MUMU_SS_inverted_FAKE)
+            MUMU_inverted_SStoOS = MUMU_OS_inverted_FAKE_rebin.Clone(f"MUMU_inverted_SStoOS_{uuid.uuid4()}")
+            MUMU_inverted_SStoOS.Divide(MUMU_SS_inverted_FAKE_rebin)
             MUMU_inverted_SStoOS = SanityCheck(MUMU_inverted_SStoOS)
             MUMU_inverted_SStoOS.SetName("MUMU_inverted_SStoOS" + case)
+
+            # MUMU_inverted_SStoOS = MUMU_OS_inverted_FAKE.Clone(f"MUMU_inverted_SStoOS_{uuid.uuid4()}")
+            # MUMU_inverted_SStoOS.Divide(MUMU_SS_inverted_FAKE)
+            # MUMU_inverted_SStoOS = SanityCheck(MUMU_inverted_SStoOS)
+            # MUMU_inverted_SStoOS.SetName("MUMU_inverted_SStoOS" + case)
 
             MUMU_OS_FAKE_DataDriven = GetOSFromSS_rebin(MUMU_SS_FAKE, MUMU_inverted_SStoOS)
             MUMU_OS_FAKE_DataDriven = SanityCheck(MUMU_OS_FAKE_DataDriven)

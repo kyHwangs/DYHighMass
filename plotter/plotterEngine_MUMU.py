@@ -128,8 +128,6 @@ STList = [
     "ST_s",
     "ST_t_AntiTop",
     "ST_t_Top",
-    # "ST_tW_AntiTop",
-    # "ST_tW_Top",
 ]
 
 GGELEL = [
@@ -448,43 +446,60 @@ class Plotter:
 
         return hist
 
+    def GetSingleGenHist(self, histname, sample):
+        hist = self.fileSet.Get(self.era + "/" + sample + "/GenInfo/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
+        hist.SetDirectory(0)
+
+        if sample != "Data":
+            hist.Scale(self.normFactor[sample]);
+        
+        return hist
+
 
     def GetMCHist(self, histName, list, CheckSanity = False):
 
-        if list[0] == "GG":
 
-            GG_ELEL = self.GetMCHist(histName, GGELEL, CheckSanity = False)
-            GG_INELEL = self.GetMCHist(histName, GGINELEL, CheckSanity = False)
-            GG_INELINEL = self.GetMCHist(histName, GGINEL, CheckSanity = False)
+        histSet = {}
+        for mc in list:
 
-            GG = GG_ELEL.Clone(f"{histName}_{uuid.uuid4()}")
-            GG.Add(GG_INELEL)
-            GG.Add(GG_INELINEL)
 
-            return GG
+            hist = None
 
-        else:
-            histSet = {}
-            for mc in list:
+            if mc == "GG":
+                GG_ELEL = self.GetMCHist(histName, GGELEL, CheckSanity = False)
+                GG_INELEL = self.GetMCHist(histName, GGINELEL, CheckSanity = False)
+                GG_INELINEL = self.GetMCHist(histName, GGINEL, CheckSanity = False)
+
+                GG = GG_ELEL.Clone(f"{histName}_{uuid.uuid4()}")
+                GG.Add(GG_INELEL)
+                GG.Add(GG_INELINEL)
+
+                hist = GG
+            
+            elif mc == "DY":
+                hist = self.GetMCHist(histName, DYMCList, CheckSanity = False)
+        
+
+            else: 
                 hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
                 hist.SetDirectory(0)
                 hist.SetStats(0)
-                
-                if (self.era != "merged"):
-                    hist.Scale(self.normFactor[mc]);
-
-                if CheckSanity:
-                    hist = self.CheckSanity(hist)
-
-                histSet[mc] = hist
-
-            return_hist = histSet[list[0]].Clone(f"{histName}_{uuid.uuid4()}")
-            for mc in list[1:]:
-                return_hist.Add(histSet[mc])
             
-            return_hist = self.CheckSanity(return_hist)
+            if (self.era != "merged" and mc != "DY" and mc != "GG"):
+                hist.Scale(self.normFactor[mc]);
 
-            return return_hist
+            if CheckSanity:
+                hist = self.CheckSanity(hist)
+
+            histSet[mc] = hist
+
+        return_hist = histSet[list[0]].Clone(f"{histName}_{uuid.uuid4()}")
+        for mc in list[1:]:
+            return_hist.Add(histSet[mc])
+        
+        return_hist = self.CheckSanity(return_hist)
+
+        return return_hist
 
     def GetMCHist2D(self, histName, list):
         
@@ -672,8 +687,20 @@ class Plotter:
             elif residual < 0.4:
                 yrmax = 0.48
 
-            else:
+            elif residual < 0.5:
                 yrmax = 0.6
+
+            elif residual < 0.6:
+                yrmax = 0.72
+            
+            elif residual < 0.8:
+                yrmax = 0.96
+
+            elif residual < 1.0:
+                yrmax = 1.2
+            
+            else:
+                yrmax = 1.5
 
             return 0, yrmax
 
@@ -687,7 +714,7 @@ class Plotter:
 
         addon = self.plot_addon.copy()
         if case != "":
-            addon[2] = f"{addon[2]}, {addon_hook_jet[case]}"
+            addon[2] = f"{addon_hook_mass[massbin]}, {addon_hook_jet[case]}"
 
         doAutoXrange = False
         doAutoYrange = False
@@ -703,7 +730,7 @@ class Plotter:
         if case != "" and massbin == "":
             self.histName += case + "/h_" + self.region + "_" + histName + case
         if case == "" and massbin != "":
-            self.histName += massBin + "/h_" + self.region + "_" + histName + massBin
+            self.histName += massbin + "/h_" + self.region + "_" + histName + massbin
         if case == "" and massbin == "":
             self.histName = "h_" + self.region + "_" + histName
 
@@ -711,19 +738,19 @@ class Plotter:
         canvasName = self.era + "_" + "h_" + self.region + "_" + histName
 
         data = self.GetDataHist(self.histName)
-        DY = self.GetMCHist(self.histName, DYMCList, CheckSanity = False)
+        DY = self.GetMCHist(self.histName, ["DY"], CheckSanity = False)
         TT = self.GetMCHist(self.histName, TWMCList, CheckSanity = True)
         DY_tau = self.GetMCHist(self.histName, ["NNLO_tautau"], CheckSanity = False)
         EW = self.GetMCHist(self.histName, ["WZ", "ZZ"], CheckSanity = True)
         GG = self.GetMCHist(self.histName, ["GG"], CheckSanity = True)
 
-        QCD = self.GetMCHist(self.histName, QCDList, CheckSanity = False)
-        WJet = self.GetMCHist(self.histName, ["WJetsToLNu"], CheckSanity = True)
-        ST = self.GetMCHist(self.histName, STList, CheckSanity = True)
+        # QCD = self.GetMCHist(self.histName, QCDList, CheckSanity = False)
+        # WJet = self.GetMCHist(self.histName, ["WJetsToLNu"], CheckSanity = True)
+        # ST = self.GetMCHist(self.histName, STList, CheckSanity = True)
 
         Fake = None;
 
-        if self.HasTopBkg:
+        if self.HasTopBkg and self.region == "OS" and self.channel == "MUMU":
             TT = self.BkgFile.Get(self.era + "/TOP_MUMU/MUMU_OS_TOP_DataDriven" + case)
 
         if self.HasFakes:
@@ -736,15 +763,19 @@ class Plotter:
         TotalMC.Add(GG)
         TotalMC.Add(EW)
         TotalMC.Add(TT)
-        TotalMC.Add(QCD)
-        TotalMC.Add(WJet)
-        TotalMC.Add(ST)
+
+        # if not self.HasFakes:
+        #     TotalMC.Add(QCD)
+        #     TotalMC.Add(WJet)
+        #     TotalMC.Add(ST)
+        # else:
+        #     TotalMC.Add(Fake)
+
+        if self.HasFakes:
+            TotalMC.Add(Fake)
 
         if self.IsSignalRegion:
             TotalMC.Add(DY)
-        
-        if self.HasFakes:
-            TotalMC.Add(Fake)
 
         dataOmc = self.GetRatioHist(data, TotalMC, NoError = True)
 
@@ -802,9 +833,9 @@ class Plotter:
         leg = CMS.cmsLeg(0.70, 0.89 - 0.05 * 6, 0.89, 0.89, textSize=0.03)
 
         stackSeet = {
-            "QCD": QCD,
-            "WJets": WJet,
-            "Single Top": ST,
+            # "Single Top": ST,
+            # "WJets": WJet,
+            # "QCD": QCD,
             "DY#rightarrow#tau#tau": DY_tau,
             "#gamma#gamma#rightarrow#mu#mu": GG,
             "ZZ + ZW": EW,
@@ -814,16 +845,17 @@ class Plotter:
 
         if not self.IsSignalRegion:
             stackSeet = {
-                "Single Top": ST,
-                "WJets": WJet,
-                "QCD": QCD,
+                # "Single Top": ST,
+                # "WJets": WJet,
+                # "QCD": QCD,
                 "DY#rightarrow#tau#tau": DY_tau,
                 "#gamma#gamma#rightarrow#mu#mu": GG,
                 "ZZ + ZW": EW,
                 "tt + tW + WW": TT,
             }
 
-        if self.HasFakes and self.IsSignalRegion:
+
+        if self.channel == "MUMU" and self.HasFakes and self.region == "OS":
             stackSeet = {
                 "Fake": Fake,
                 "DY#rightarrow#tau#tau": DY_tau,
@@ -833,7 +865,7 @@ class Plotter:
                 "DY#rightarrow#mu#mu": DY
             }
 
-        if self.HasFakes and not self.IsSignalRegion:
+        if self.channel == "EMU" and self.HasFakes and self.region == "OS":
             stackSeet = {
                 "Fake": Fake,
                 "DY#rightarrow#tau#tau": DY_tau,
@@ -855,7 +887,7 @@ class Plotter:
 
         dicanv.cd(2)
         if logx: dicanv.cd(2).SetLogx(True)
-        latex.DrawLatexNDC(0.72, 0.83, totalRatioString.encode('utf-8'))
+        if "Mass" in self.histOutputName: latex.DrawLatexNDC(0.72, 0.83, totalRatioString.encode('utf-8'))
 
 
         if self.IsSignalRegion:

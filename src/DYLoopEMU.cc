@@ -47,9 +47,7 @@ void DYLoopEMU::Loop() {
   double tTotalGenWeight = 0;
   while(fNtuples->GetNext()) { // Event loop starts here
     tMaxLoop++;
-
-    if (tMaxLoop == 10000) break;
-
+    
     fWeightEnvelope.Clear();
     
     if (static_cast<int>(tMaxLoop) % 10000 == 0 ) {

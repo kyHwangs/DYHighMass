@@ -77,9 +77,8 @@ bool MUON::PrepareMuon() {
     mu.SetPtEtaPhiM(Muon_pt->At(i) * Muon_tunepRelPt->At(i), Muon_eta->At(i), Muon_phi->At(i), Muon_mass->At(i));
 
     TLorentzVector mu_corr;
-
-    if (fDoMCSmearing)
-      mu_corr = GetMCSmearing(mu);
+    if (fIsMC && fDoMCSmearing) mu_corr = GetMCSmearing(mu);
+    else mu_corr = mu;
     
     if ( !(mu_corr.Pt() > fSubLeadingMuonPt) )
       continue;

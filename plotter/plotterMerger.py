@@ -8,7 +8,19 @@ import array
 import plotterEngine_MUMU as plotterEngine
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--channel', help=' : channel to merge')
+
+parser.add_argument(
+    '--channel',
+    default = "MUMU",
+    help = ' : channel to merge'
+)
+
+parser.add_argument(
+    '--input',
+    default = "output.root",
+    help=' : input root file'
+)
+
 args = parser.parse_args()
 
 class Merger:
@@ -34,6 +46,9 @@ class Merger:
 
         self.merge_file = ROOT.TFile(output_path, "UPDATE")
 
+    def SetGenInfo(self, gen_list):
+        self.GenInfo = gen_list
+    
     def Merge(self):
         self.merge_file.mkdir("merged")
         for sample in self.merge_list:
@@ -41,6 +56,7 @@ class Merger:
             
             for atype in self.type_list:
                 for case in self.case_list:
+
 
                     if case != "":
                         if atype == "OS":
@@ -67,6 +83,41 @@ class Merger:
                         hist_merged.SetName(f"h_{atype}_{plot}{case}")
 
                         self.merge_file.cd(f"merged/{sample}/{case}")
+                        hist_merged.Write()
+
+                    # if atype == "OS" and sample.contains("NNLO_MUMU"):
+                    #     self.merge_file.mkdir(f"merged/{sample}/{case}/GenInfo")
+
+            if "NNLO_MUMU" in sample and args.channel == "MUMU":
+                gen_cases = ["", "_0J", "_1J", "_mt1J"]
+
+                for gen_case in gen_cases:
+                    if gen_case == "": self.merge_file.mkdir(f"merged/{sample}/GenInfo")
+                    else: self.merge_file.mkdir(f"merged/{sample}/GenInfo/{gen_case}")
+
+                    for aPlot in self.GenInfo:
+
+                        if gen_case != "" and "Response" in aPlot:
+                            continue
+
+                        hist_name = aPlot
+                        if gen_case != "": hist_name = f"{gen_case}/{hist_name}{gen_case}"
+
+
+                        hist_p2016_preVFP = self.p2016_preVFP.GetSingleGenHist(hist_name, sample)
+                        hist_p2016_postVFP = self.p2016_postVFP.GetSingleGenHist(hist_name, sample)
+                        hist_p2017 = self.p2017.GetSingleGenHist(hist_name, sample)
+                        hist_p2018 = self.p2018.GetSingleGenHist(hist_name, sample)
+
+                        hist_merged = hist_p2016_preVFP.Clone(hist_name)
+                        hist_merged.Add(hist_p2016_postVFP)
+                        hist_merged.Add(hist_p2017)
+                        hist_merged.Add(hist_p2018)
+                        hist_merged.SetName(f"{aPlot}{gen_case}")
+
+                        self.merge_file.cd(f"merged/{sample}/GenInfo")
+                        if gen_case != "": self.merge_file.cd(f"merged/{sample}/GenInfo/{gen_case}")
+
                         hist_merged.Write()
 
         self.merge_file.Close()
@@ -116,14 +167,45 @@ def main(args):
         "PairRap"
     ]
 
-    # input_name = "260824_MUMU_bothInverted.root"
-    # input_name = "260901_MUMU_OneInverted.root"
-    input_name = "260911_MUMU_GenUpdate.root"
+    plot_list_mumu_Gen = [
+        "h_ResponseMatrix", 
+        "h_ResponseMatrix_inc", 
+        "h_ResponseMatrix_merged", 
+        "h_nJet_WithReco", 
+        "h_LeadingMuonPt_WithReco", 
+        "h_LeadingMuonEta_WithReco", 
+        "h_LeadingMuonPhi_WithReco", 
+        "h_SubleadingMuonPt_WithReco", 
+        "h_SubleadingMuonEta_WithReco", 
+        "h_SubleadingMuonPhi_WithReco", 
+        "h_MuonPt_WithReco", 
+        "h_MuonEta_WithReco", 
+        "h_MuonPhi_WithReco", 
+        "h_dimuonMass_WithReco", 
+        "h_dimuonPt_WithReco", 
+        "h_dimuonRap_WithReco", 
+        "h_nJet", 
+        "h_LeadingMuonPt", 
+        "h_LeadingMuonEta", 
+        "h_LeadingMuonPhi", 
+        "h_SubleadingMuonPt", 
+        "h_SubleadingMuonEta", 
+        "h_SubleadingMuonPhi", 
+        "h_MuonPt", 
+        "h_MuonEta", 
+        "h_MuonPhi", 
+        "h_dimuonMass", 
+        "h_dimuonPt", 
+        "h_dimuonRap", 
+    ]
+
+    input_name = args.input
 
     if args.channel == "MUMU":
         merger = Merger(plot_list_mumu, case_list, type_list, input_path = input_name)
+        merger.SetGenInfo(plot_list_mumu_Gen)
     elif args.channel == "EMU":
-        merger = Merger(plot_list_emu, case_list, type_list)
+        merger = Merger(plot_list_emu, case_list, type_list, input_path = input_name)
     else:
         print("Invalid channel")
         return
