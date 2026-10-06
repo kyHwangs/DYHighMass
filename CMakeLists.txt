@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(ROOT REQUIRED)
+list(APPEND ROOT_LIBRARIES ROOT::Unfold)
 find_package(yaml-cpp REQUIRED)
 find_package(correctionlib REQUIRED)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -16,11 +17,11 @@ include_directories(
   ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-file(GLOB sources
+file(GLOB sources CONFIGURE_DEPENDS
   ${PROJECT_SOURCE_DIR}/src/*.cc
 )
 
-file(GLOB headers
+file(GLOB headers CONFIGURE_DEPENDS
   ${PROJECT_SOURCE_DIR}/include/*.h
 )
 
@@ -98,8 +99,6 @@ target_link_libraries(
   correctionlib
   ${CMAKE_DL_LIBS}
 )
-
-
 option(DEBUG_MODE "Enable debug output" OFF)
 if(DEBUG_MODE)
   target_compile_definitions(DYHighMass PRIVATE DEBUGMODE=1)

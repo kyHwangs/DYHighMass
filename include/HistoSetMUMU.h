@@ -14,19 +14,41 @@
 #include "TStopwatch.h"
 #include "TChain.h"
 #include "TLorentzVector.h"
+#include "TUnfoldBinning.h"
+#include "HistoSetBase.h"
 #include "TH1.h"
 #include "TH2.h"
 
-
-class HistoSetMUMU
+class HistoSetMUMU : public HistoSetBase
 {
 public:
-  HistoSetMUMU() {
+  HistoSetMUMU(TString fEra_, TString fSampleName_) : HistoSetBase(fEra_, fSampleName_) {
+    // SetMassExclusive();
     Init();
+    if (GetSampleName().Contains("NNLO_MUMU")) InitGenInfo();
   }
 
   void Init();
   void InitGenInfo();
+
+  /**
+    * \brief Get binning definition
+    *
+    * \param name: target binning name
+    *
+    * \throws No exception is thrown for this function, return {0.} when search failed
+    */
+  std::vector<double> GetBinning(std::string name) override {
+
+    if (name.find("Pt") != std::string::npos) return fPtBins;
+    else if (name.find("Eta") != std::string::npos || name.find("Rap") != std::string::npos) return fEtaBins;
+    else if (name.find("Phi") != std::string::npos) return fPhiBins;
+    else if (name.find("Mass") != std::string::npos) return fMassBins;
+    else if (name.find("DeltaR") != std::string::npos) return fDeltaRBins;
+    else if (name.find("nJet") != std::string::npos || name.find("nBJet") != std::string::npos) return fNJetBins;
+    else if (name.find("Charge") != std::string::npos) return fChargeBins;
+    else return {};
+  }
 
   /**
     * \brief Filling the muon related histograms 
@@ -71,6 +93,18 @@ public:
     const std::string& fType
   );
 
+
+  /**
+    * \brief Filling dressed level Gen Info with events has reco information
+    * \param tDressedLeptons: pair of dressed muon pair
+    * \param tGenJets: number of gen jets
+    * \param tMuon_OS: pair of offline muon pair
+    * \param nJets: number of offline jets
+    * \param nBJets: number of offline b-jets
+    * \param fMCWeight: MC Weight
+    * \param fRecoWeight: Reco Weight
+    * \throws No exception is thrown for this function
+    */
   void FillGenInfo(
     const std::vector<TLorentzVector>& tDressedLeptons,
     const int& tGenJets,
@@ -81,7 +115,14 @@ public:
     const double& fRecoWeight
   );
 
-  void FillGenInfoIndependently(
+  /**
+    * \brief Filling dressed level Gen Info
+    * \param tDressedLeptons: pair of dressed muon pair
+    * \param tGenJets: number of gen jets
+    * \param fMCWeight: MC Weight
+    * \throws No exception is thrown for this function
+    */
+  void FillGenInfoDressedLevel(
     const std::vector<TLorentzVector>& tDressedLeptons,
     const int& tGenJets,
     const double& fMCWeight
@@ -92,35 +133,10 @@ public:
     const int& tNGenJets,
     const double& tRecoMass,
     const int& nJets,
-    const int& nBJets,
-    const double& fMCWeight,
-    const double& fRecoWeight,
-    const bool& tPassingOfflineEventSelection
-  );
-
-  void FillResponseMatrix_v2(
-    const double& tGenMass,
-    const int& tNGenJets,
-    const double& tRecoMass,
-    const int& nJets,
     const double& fMCWeight,
     const double& fRecoWeight,
     const bool& tPassingReco
   );
-
-  void FillHisto(std::string name, double value, double weight = 1.);
-  void FillHisto(std::string name, float value, double weight = 1.);
-  void FillHisto(std::string name, int value, double weight = 1.);
-  void Fill2DHisto(std::string name, double value1, double value2, double weight = 1.);
-
-  void SetHisto(std::string name, std::vector<double> bins);
-  void SetHisto(std::string name, std::vector<double> bins1, std::vector<double> bins2);
-
-  void SetHisto(std::string name);
-  void SetHisto(std::string name, std::string binning);
-  void SetHisto(std::string name, std::string binning1, std::string binning2);
-
-  void SetHistoGenInfo(std::string name, std::vector<double> bins);
 
   std::string GetMassBin(double fDimuonMass);
   std::string GetJetBin(double fNJet);
@@ -130,49 +146,15 @@ public:
   double SetPtOverflow(double fPt);
   double SetMassOverflow(double fMass);
 
-  double GetNJetBinIndex(int nJet) {
-    if (nJet == 0) return 0.;
+  double GetNJetBinIndex(int nJet) const {
+    if (nJet <= 0) return 0.;
     if (nJet == 1) return 1.;
-    
     return 2.;
   }
 
-  double GetMassBinIndex(double fMass) {
-
-    // std::cout << "fMass: " << fMass << std::endl;
-
-    for (int i = 0; i < fMassBins.size() - 1; i++) {
-      // std::cout << "fMassBins.at(i): " << fMassBins.at(i) << " " << fMassBins.at(i + 1) << std::endl;
-     if (fMass >= fMassBins.at(i) && fMass < fMassBins.at(i + 1))
-      return i;
-    }
-
-    return -1;
-  }
-
-  void WriteHisto(TString fEra, TString fSampleName, TFile* fOutputFile, bool fIsData);
-  void WriteGenHisto(TString fEra, TString fSampleName, TFile* fOutputFile);
-
-  void SetEra(TString fEra_) { fEra = fEra_; }
-
 private:
-  std::map<std::string, TH1D*> fHistSet;
-  std::map<std::string, TH2D*> fHistSet2D;
-
-  std::map<std::string, TH1D*> fHistSetGenInfo;
-
-  std::vector<std::string> fSuffix;
-  std::vector<std::string> fSuffixGenInfo;
-
-  TString fEra;
-
-  std::vector<double> fPtBins;
-  std::vector<double> fEtaBins;
-  std::vector<double> fPhiBins;
-  std::vector<double> fMassBins;
-  std::vector<double> fDeltaRBins;
-  std::vector<double> fNJetBins;
-  std::vector<double> fChargeBins;
+  TUnfoldBinning fGlobalBinningGen{"generator"};
+  TUnfoldBinning fGlobalBinningReco{"reco"};
 };
 
 #endif

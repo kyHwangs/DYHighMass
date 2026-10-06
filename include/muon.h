@@ -16,12 +16,11 @@
 #include "TTreeReaderValue.h"
 #include "TLorentzVector.h"
 #include "TF1.h"
+#include "TRandom3.h"
 
 class SmearingEngine {
 public:
   SmearingEngine(YAML::Node fConfig) {
-
-    YAML::Node fMCSmearingConf = fConfig["MCSmearing"];
 
     fBarrelSmearingFactor = fConfig["barrel"]["smearing"].as<double>();
     fEndcapSmearingFactor = fConfig["endcap"]["smearing"].as<double>();
@@ -130,6 +129,7 @@ public:
   void init(TTreeReader* fTreeReader);
 
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
+  void SetSmearingSeed(UInt_t fSeed) { fRandom.SetSeed(fSeed); }
 
   bool PrepareMuon();
 
@@ -175,6 +175,7 @@ private:
   float fISO;
 
   SmearingEngine* fSmearingEngine;
+  TRandom3 fRandom;
   bool fDoMCSmearing;
 
   bool fIsMC;

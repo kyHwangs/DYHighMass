@@ -69,10 +69,10 @@ void DYLoopEMU::Loop() {
       std::cout << tProgress << std::endl;
     }
 
-    if (fIsMC) {
-      fHistoSet->FillHisto((std::string)"h_PileUp_Count_Interaction_before", **(fNtuples->Pileup_nTrueInt), 1.);
-      fHistoSet->FillHisto((std::string)"h_PileUp_Count_Interaction_after", **(fNtuples->Pileup_nTrueInt), fPuReweighting->weight(**(fNtuples->Pileup_nTrueInt)));
-    }
+    // if (fIsMC) {
+    //   fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "PileUpBefore", **(fNtuples->Pileup_nTrueInt), 1.);
+    //   fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "PileUpAfter", **(fNtuples->Pileup_nTrueInt), fPuReweighting->weight(**(fNtuples->Pileup_nTrueInt)));
+    // }
 
     // for the gen weight
     double tEventGenWeight = 1.;
@@ -84,12 +84,12 @@ void DYLoopEMU::Loop() {
         else                     tEventGenWeight = -1;
       }
 
-      fHistoSet->FillHisto((std::string)"h_GenWeight", tEventGenWeight, 1.);
+      fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "GenWeight", tEventGenWeight, 1.);
       fWeightEnvelope.AddWeightToAll("GenWeight", tEventGenWeight);
     }
 
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
+    fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 1, 1);
+    fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 4, tEventGenWeight);
 
     if ( !(fNtuples->PassinNoiseFilter()) )
       continue;
@@ -180,9 +180,9 @@ void DYLoopEMU::Loop() {
     } 
   } // End of event loop
 
-  fHistoSet->FillHisto((std::string)"h_EventInfo", 5, tTotalGenWeight);
-  fHistoSet->FillHisto((std::string)"h_EventInfo", 2, tMaxLoop);
-  fHistoSet->FillHisto((std::string)"h_EventInfo", 3, fMaxEntries);
+  fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 5, tTotalGenWeight);
+  fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 2, tMaxLoop);
+  fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 3, fMaxEntries);
 
   std::chrono::duration tTimeTaken = std::chrono::system_clock::now() - tTimeBegin;
   std::chrono::minutes tTimeMin = std::chrono::duration_cast<std::chrono::minutes>(tTimeTaken);
@@ -204,5 +204,8 @@ void DYLoopEMU::Loop() {
 
 void DYLoopEMU::EndOfJob() {
 
-  fHistoSet->WriteHisto(fEra, fSampleName, fOutputDir + "/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root", !fIsMC);
+  TString fOutputFileName = fOutputDir + "/output_" + fEra + "_" + fSampleName + "_" + std::to_string(fJobID) + ".root";
+  TFile* fOutputFile = new TFile(fOutputFileName, "RECREATE");
+  fHistoSet->WriteHisto(fOutputFile, !fIsMC);
+  fOutputFile->Close();
 }

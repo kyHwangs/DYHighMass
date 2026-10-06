@@ -7,6 +7,7 @@
   #define DYLOG(head, msg)
 #endif
 
+#include <cstdint>
 #include <functional>
 #include <iostream>
 #include <map>
@@ -74,12 +75,8 @@ public:
     fIsMC = false;
     fIsMC = fConfigSample[std::string(fEra)][std::string(fSampleName)]["IsMC"].as<bool>();
 
-    fHistoSet = new HistoSetMUMU();
-    if (fSampleName.Contains("NNLO_MUMU"))
-      fHistoSet->InitGenInfo();
+    fHistoSet = new HistoSetMUMU(fEra, fSampleName);
     
-    fHistoSet->SetEra(fEra);
-
     fNtuples = new NT(fConfig, fIsMC);
     fNtuples->SetSampleName(fSampleName);
     fNtuples->SetEra(fEra);
@@ -92,6 +89,10 @@ public:
 
     fMuons = new MUON(fConfig);
     fMuons->IsMC(fIsMC);
+    if (fIsMC) {
+      const UInt_t tSmearingSeed = MakeMuonSmearingSeed(fEra, fSampleName, fJobID);
+      fMuons->SetSmearingSeed(tSmearingSeed);
+    }
     fMuons->init(fNtuples->GetTreeReader());
     
     fJets = new JET(fConfig);
@@ -337,6 +338,21 @@ public:
 
 
 private:
+  static UInt_t MakeMuonSmearingSeed(const TString& fEra, const TString& fSampleName, int fJobID) {
+    const std::string tKey =
+      std::string(fEra.Data()) + ":" +
+      std::string(fSampleName.Data()) + ":" +
+      std::to_string(fJobID);
+
+    std::uint32_t tHash = 2166136261u;
+    for (const unsigned char tCharacter : tKey) {
+      tHash ^= tCharacter;
+      tHash *= 16777619u;
+    }
+
+    return tHash == 0 ? 1u : tHash;
+  }
+
   void InitCorrections();
 
   TString fConfigPath;

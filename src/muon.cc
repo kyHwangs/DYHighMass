@@ -6,7 +6,6 @@
 #include "TChain.h"
 #include "TTreeReader.h"
 #include "TTreeReaderArray.h"
-#include "TRandom.h"
 
 void MUON::init(TTreeReader* fTreeReader) {
 
@@ -29,7 +28,7 @@ TLorentzVector MUON::GetMCSmearing (TLorentzVector fMu) {
   if (std::abs(fMu.Eta()) <= 1.2 && fSmearingEngine->DoBarrel()) { // barrel
 
     double fMomentum = fMu.P();
-    double tSmearingFactor = 1 + gRandom->Gaus(0, fSmearingEngine->GetBarrelSmearingFactor() * fSmearingEngine->GetBarrelSigma(fMomentum));
+    double tSmearingFactor = 1 + fRandom.Gaus(0, fSmearingEngine->GetBarrelSmearingFactor() * fSmearingEngine->GetBarrelSigma(fMomentum));
 
     TLorentzVector fMuReturn;
     fMuReturn.SetPtEtaPhiM(tSmearingFactor * fMu.Pt(), fMu.Eta(), fMu.Phi(), fMu.M());
@@ -38,7 +37,7 @@ TLorentzVector MUON::GetMCSmearing (TLorentzVector fMu) {
   } else if (std::abs(fMu.Eta()) > 1.2 && std::abs(fMu.Eta()) < 2.4 && fSmearingEngine->DoEndcap()) { // endcap
     
     double fMomentum = fMu.P();
-    double tSmearingFactor = 1 + gRandom->Gaus(0, fSmearingEngine->GetEndcapSmearingFactor() * fSmearingEngine->GetEndcapSigma(fMomentum));
+    double tSmearingFactor = 1 + fRandom.Gaus(0, fSmearingEngine->GetEndcapSmearingFactor() * fSmearingEngine->GetEndcapSigma(fMomentum));
 
     TLorentzVector fMuReturn;
     fMuReturn.SetPtEtaPhiM(tSmearingFactor * fMu.Pt(), fMu.Eta(), fMu.Phi(), fMu.M());

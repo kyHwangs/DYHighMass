@@ -1,6 +1,7 @@
 #ifndef DYLoopEMU_h
 #define DYLoopEMU_h 1
 
+#include <cstdint>
 #include <iostream>
 #include <map>
 #include <string>
@@ -195,7 +196,7 @@ public:
 
     Print();
 
-    fHistoSet = new HistoSetEMU();
+    fHistoSet = new HistoSetEMU(fEra, fSampleName);
 
     fNtuples = new NT(fConfig, fIsMC);
     fNtuples->SetSampleName(fSampleName);
@@ -211,6 +212,10 @@ public:
 
     fEMU = new EMU(fConfig);
     fEMU->IsMC(fIsMC);
+    if (fIsMC) {
+      const UInt_t tSmearingSeed = MakeMuonSmearingSeed(fEra, fSampleName, fJobID);
+      fEMU->SetMuonSmearingSeed(tSmearingSeed);
+    }
     fEMU->init(fNtuples->GetTreeReader());
 
     fJets = new JET(fConfig);
@@ -283,6 +288,21 @@ public:
 
 
 private:
+  static UInt_t MakeMuonSmearingSeed(const TString& fEra, const TString& fSampleName, int fJobID) {
+    const std::string tKey =
+      std::string(fEra.Data()) + ":" +
+      std::string(fSampleName.Data()) + ":" +
+      std::to_string(fJobID);
+
+    std::uint32_t tHash = 2166136261u;
+    for (const unsigned char tCharacter : tKey) {
+      tHash ^= tCharacter;
+      tHash *= 16777619u;
+    }
+
+    return tHash == 0 ? 1u : tHash;
+  }
+
   TString fConfigPath;
   TString fEra;
   TString fSampleName;

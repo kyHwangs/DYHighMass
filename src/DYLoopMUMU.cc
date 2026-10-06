@@ -72,10 +72,10 @@ void DYLoopMUMU::Loop() {
     }
 
     // for the PU reweighting
-    if (fIsMC) {
-      fHistoSet->FillHisto((std::string)"h_PileUp_Count_Interaction_before", **(fNtuples->Pileup_nTrueInt), 1.);
-      fHistoSet->FillHisto((std::string)"h_PileUp_Count_Interaction_after", **(fNtuples->Pileup_nTrueInt), fPuReweighting->weight(**(fNtuples->Pileup_nTrueInt)));
-    }
+    // if (fIsMC) {
+    //   fHistoSet->FillHisto((std::string)"h_PileUp_Count_Interaction_before", **(fNtuples->Pileup_nTrueInt), 1.);
+    //   fHistoSet->FillHisto((std::string)"h_PileUp_Count_Interaction_after", **(fNtuples->Pileup_nTrueInt), fPuReweighting->weight(**(fNtuples->Pileup_nTrueInt)));
+    // }
 
     // for the gen weight
     double tEventGenWeight = 1.;
@@ -87,7 +87,7 @@ void DYLoopMUMU::Loop() {
         else                     tEventGenWeight = -1;
       }
 
-      fHistoSet->FillHisto((std::string)"h_GenWeight", tEventGenWeight, 1.);
+      fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "GenWeight", tEventGenWeight, 1.);
       fWeightEnvelope.AddWeightToAll("GenWeight", tEventGenWeight);
     }
 
@@ -95,7 +95,7 @@ void DYLoopMUMU::Loop() {
     if (fIsMC && fSampleName.Contains("NNLO")) {
       auto tLHEMuons = fNtuples->GetLHE(13);
 
-      fHistoSet->FillHisto((std::string)"h_LHEnMuon", static_cast<int>(tLHEMuons.size()));
+      fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "nLHEMuon", static_cast<int>(tLHEMuons.size()), 1.);
 
 
       double tDiMuonMassLHE = 0;
@@ -108,12 +108,12 @@ void DYLoopMUMU::Loop() {
       if (fSampleName.Contains("NNLO") && fSampleName.Contains("inc") && tDiMuonMassLHE > 100 )
         continue;
 
-      fHistoSet->FillHisto((std::string)"h_LHEDimuonMass", tDiMuonMassLHE, tEventGenWeight);
+      fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "LHEDimuonMass", tDiMuonMassLHE, tEventGenWeight);
     }
     
     // for the event info
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 1, 1);
-    fHistoSet->FillHisto((std::string)"h_EventInfo", 4, tEventGenWeight);
+    fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 1, 1);
+    fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 4, tEventGenWeight);
 
 
     std::vector<std::pair<int, TLorentzVector>> tDreessedOrigin = {};
@@ -136,7 +136,7 @@ void DYLoopMUMU::Loop() {
     if (tDressedLeptons.size() == 2 && fSampleName.Contains("NNLO_MUMU")) {
       tGenMass = (tDressedLeptons.at(0) + tDressedLeptons.at(1)).M();
       
-      fHistoSet->FillGenInfoIndependently(
+      fHistoSet->FillGenInfoDressedLevel(
         tDressedLeptons,
         tGenJets.size(),
         fWeightEnvelope.GetMCWeight("OS")
@@ -224,7 +224,7 @@ void DYLoopMUMU::Loop() {
       // std::cout << " " << std::endl;
 
       if (fSampleName.Contains("NNLO_MUMU") && nBJets == 0 && tDressedLeptons.size() == 2) {
-        fHistoSet->FillResponseMatrix_v2(tGenMass, tGenJets.size(), (tMuon_OS.at(0).fVec + tMuon_OS.at(1).fVec).M(), nJets, fWeightEnvelope.GetMCWeight("OS"), fWeightEnvelope.GetRecoWeight("OS"), true);
+        fHistoSet->FillResponseMatrix(tGenMass, tGenJets.size(), (tMuon_OS.at(0).fVec + tMuon_OS.at(1).fVec).M(), nJets, fWeightEnvelope.GetMCWeight("OS"), fWeightEnvelope.GetRecoWeight("OS"), true);
         fHistoSet->FillGenInfo(
           tDressedLeptons,
           tGenJets.size(),
@@ -238,13 +238,7 @@ void DYLoopMUMU::Loop() {
     }
     
     if (fSampleName.Contains("NNLO_MUMU") && tDressedLeptons.size() == 2 && (tMuon_OS.size() != 2 || nBJets != 0 || !tPassingEventOfflineSelection)) {
-      if (tGenMass < 0) {
-        std::cout << "tGenMass: " << tGenMass << std::endl;
-        std::cout << "tGenJets.size(): " << tGenJets.size() << std::endl;
-        std::cout << "(tDressedLeptons.at(0) + tDressedLeptons.at(1)).M(): " << (tDressedLeptons.at(0) + tDressedLeptons.at(1)).M() << std::endl;
-      }
-      
-      fHistoSet->FillResponseMatrix_v2(tGenMass, tGenJets.size(), -9999, 0, fWeightEnvelope.GetMCWeight("OS"), fWeightEnvelope.GetRecoWeight("OS"), false);
+      fHistoSet->FillResponseMatrix(tGenMass, tGenJets.size(), -9999, 0, fWeightEnvelope.GetMCWeight("OS"), fWeightEnvelope.GetRecoWeight("OS"), false);
     }
     
 
@@ -362,9 +356,9 @@ void DYLoopMUMU::Loop() {
 
   } // End of event loop
 
-  fHistoSet->FillHisto((std::string)"h_EventInfo", 5, tTotalGenWeight);
-  fHistoSet->FillHisto((std::string)"h_EventInfo", 2, tMaxLoop);
-  fHistoSet->FillHisto((std::string)"h_EventInfo", 3, fMaxEntries);
+  fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 5, tTotalGenWeight);
+  fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 2, tMaxLoop);
+  fHistoSet->FillHisto(HistoSetBase::HistGroup::EventInfo, "EventInfo", 3, fMaxEntries);
 
   std::chrono::duration tTimeTaken = std::chrono::system_clock::now() - tTimeBegin;
   std::chrono::minutes tTimeMin = std::chrono::duration_cast<std::chrono::minutes>(tTimeTaken);
@@ -387,13 +381,7 @@ void DYLoopMUMU::Loop() {
 void DYLoopMUMU::EndOfJob() {
 
   TString fOutputFileName = fOutputDir + "/output_" + fEra + "_" +  fSampleName + "_" + std::to_string(fJobID) + ".root";
-
   TFile* fOutputFile = new TFile(fOutputFileName, "RECREATE");
-
-  fHistoSet->WriteHisto(fEra, fSampleName, fOutputFile, !fIsMC);
-  
-  if (fSampleName.Contains("NNLO_MUMU"))
-    fHistoSet->WriteGenHisto(fEra, fSampleName, fOutputFile);
-
+  fHistoSet->WriteHisto(fOutputFile, !fIsMC);
   fOutputFile->Close();
 }

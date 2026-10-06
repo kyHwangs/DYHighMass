@@ -16,12 +16,11 @@
 #include "TTreeReaderValue.h"
 #include "TLorentzVector.h"
 #include "TF1.h"
+#include "TRandom3.h"
 
 class SmearingEngineEMU {
 public:
   SmearingEngineEMU(YAML::Node fConfig) {
-
-    YAML::Node fMCSmearingConf = fConfig["MCSmearing"];
 
     fBarrelSmearingFactor = fConfig["barrel"]["smearing"].as<double>();
     fEndcapSmearingFactor = fConfig["endcap"]["smearing"].as<double>();
@@ -155,6 +154,7 @@ public:
   void init(TTreeReader* fTreeReader);
 
   void IsMC(bool fIsMC_) { fIsMC = fIsMC_; }
+  void SetMuonSmearingSeed(UInt_t fSeed) { fMuonRandom.SetSeed(fSeed); }
 
   bool PrepareEMUPair();
 
@@ -213,6 +213,7 @@ private:
   UChar_t fMuonID;
   float fMuonISO;
   SmearingEngineEMU* fMuonSmearingEngine;
+  TRandom3 fMuonRandom;
   bool fDoMuonMCSmearing;
 
   float fElecPt;
