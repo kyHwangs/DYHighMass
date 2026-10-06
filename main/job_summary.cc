@@ -545,44 +545,85 @@ int main(int argc, char* argv[]) {
   std::vector<std::string> fErrorSample;
   std::vector<double> fErrorRef;
   std::vector<double> fErrorTarget;
+  
+  if (fChannel == "EE") {
+    for (int i = 0; i < fChannelMap.size(); i++) {
 
-  for (int i = 0; i < fChannelMap.size(); i++) {
+      auto fEraMap = fChannelMap[fEraVec[i]];
+      for (int j = 0; j < fTierVec.size(); j++) {
 
-    auto fEraMap = fChannelMap[fEraVec[i]];
-    for (int j = 0; j < fTierVec.size(); j++) {
+        auto fSampleMap = fEraMap[fTierVec[j]];
+        for (int k = 0; k < fSampleMap.size(); k++) {
+          // std::cout << "Processing: " << fEraVec[i] << " " << fSampleMap[k] << std::endl;
 
-      auto fSampleMap = fEraMap[fTierVec[j]];
-      for (int k = 0; k < fSampleMap.size(); k++) {
-        // std::cout << "Processing: " << fEraVec[i] << " " << fSampleMap[k] << std::endl;
+          double nEventRef    = fConfig[fEraVec[i]][fSampleMap[k]]["nEvent"].as<double>();
+          if (fSampleMap[k] == "NNLO_EE_10to50") nEventRef += fConfig[fEraVec[i]]["NNLO_EE_10to50_v2"]["nEvent"].as<double>();
+          if (fSampleMap[k] == "NNLO_MUMU_10to50") nEventRef += fConfig[fEraVec[i]]["NNLO_MUMU_10to50_v2"]["nEvent"].as<double>();
+          auto fEventHist = (TH1D*)fFile->Get((fEraVec[i] + "/" + fSampleMap[k] + "/h_EventInfo").c_str());
+          
+          double nEventTarget = 0;
+          if (fEventHist == nullptr) {
+            fErrorEra.push_back(fEraVec[i]);
+            fErrorSample.push_back(fSampleMap[k]);
+            fErrorRef.push_back(-1);
+            fErrorTarget.push_back(-1);
 
-        double nEventRef    = fConfig[fEraVec[i]][fSampleMap[k]]["nEvent"].as<double>();
-        if (fSampleMap[k] == "NNLO_EE_10to50") nEventRef += fConfig[fEraVec[i]]["NNLO_EE_10to50_v2"]["nEvent"].as<double>();
-        if (fSampleMap[k] == "NNLO_MUMU_10to50") nEventRef += fConfig[fEraVec[i]]["NNLO_MUMU_10to50_v2"]["nEvent"].as<double>();
-        auto fEventHist = (TH1D*)fFile->Get((fEraVec[i] + "/" + fSampleMap[k] + "/h_EventInfo").c_str());
-        
-        double nEventTarget = 0;
-        if (fEventHist == nullptr) {
-          fErrorEra.push_back(fEraVec[i]);
-          fErrorSample.push_back(fSampleMap[k]);
-          fErrorRef.push_back(-1);
-          fErrorTarget.push_back(-1);
+            continue;
+          } else {
+            nEventTarget = ((TH1D*)fFile->Get((fEraVec[i] + "/" + fSampleMap[k] + "/h_EventInfo").c_str()))->GetBinContent(2);
+          }
 
-          continue;
-        } else {
-          nEventTarget = ((TH1D*)fFile->Get((fEraVec[i] + "/" + fSampleMap[k] + "/h_EventInfo").c_str()))->GetBinContent(2);
+          if (nEventRef != nEventTarget) {
+            // std::cout << "ERROR: " << fEraVec[i] << " " << fSampleMap[k] << " ref: " << nEventRef << " target: " << nEventTarget << std::endl;
+
+            fErrorEra.push_back(fEraVec[i]);
+            fErrorSample.push_back(fSampleMap[k]);
+            fErrorRef.push_back(nEventRef);
+            fErrorTarget.push_back(nEventTarget);
+          } else {
+            // std::cout << "OK: " << fEraVec[i] << " " << fSampleMap[k] << " ref: " << nEventRef << " target: " << nEventTarget << std::endl;
+          }
         }
+      }
+    }
+  } else {
+    for (int i = 0; i < fChannelMap.size(); i++) {
 
-        if (nEventRef != nEventTarget) {
-          // std::cout << "ERROR: " << fEraVec[i] << " " << fSampleMap[k] << " ref: " << nEventRef << " target: " << nEventTarget << std::endl;
+      auto fEraMap = fChannelMap[fEraVec[i]];
+      for (int j = 0; j < fTierVec.size(); j++) {
 
-          fErrorEra.push_back(fEraVec[i]);
-          fErrorSample.push_back(fSampleMap[k]);
-          fErrorRef.push_back(nEventRef);
-          fErrorTarget.push_back(nEventTarget);
-        } else {
-          // std::cout << "OK: " << fEraVec[i] << " " << fSampleMap[k] << " ref: " << nEventRef << " target: " << nEventTarget << std::endl;
+        auto fSampleMap = fEraMap[fTierVec[j]];
+        for (int k = 0; k < fSampleMap.size(); k++) {
+          // std::cout << "Processing: " << fEraVec[i] << " " << fSampleMap[k] << std::endl;
+
+          double nEventRef    = fConfig[fEraVec[i]][fSampleMap[k]]["nEvent"].as<double>();
+          if (fSampleMap[k] == "NNLO_EE_10to50") nEventRef += fConfig[fEraVec[i]]["NNLO_EE_10to50_v2"]["nEvent"].as<double>();
+          if (fSampleMap[k] == "NNLO_MUMU_10to50") nEventRef += fConfig[fEraVec[i]]["NNLO_MUMU_10to50_v2"]["nEvent"].as<double>();
+          auto fEventHist = (TH1D*)fFile->Get((fEraVec[i] + "/" + fSampleMap[k] + "/EventInfo/h_EventInfo").c_str());
+          
+          double nEventTarget = 0;
+          if (fEventHist == nullptr) {
+            fErrorEra.push_back(fEraVec[i]);
+            fErrorSample.push_back(fSampleMap[k]);
+            fErrorRef.push_back(-1);
+            fErrorTarget.push_back(-1);
+
+            continue;
+          } else {
+            nEventTarget = fEventHist->GetBinContent(2);
+          }
+
+          if (nEventRef != nEventTarget) {
+            // std::cout << "ERROR: " << fEraVec[i] << " " << fSampleMap[k] << " ref: " << nEventRef << " target: " << nEventTarget << std::endl;
+
+            fErrorEra.push_back(fEraVec[i]);
+            fErrorSample.push_back(fSampleMap[k]);
+            fErrorRef.push_back(nEventRef);
+            fErrorTarget.push_back(nEventTarget);
+          } else {
+            // std::cout << "OK: " << fEraVec[i] << " " << fSampleMap[k] << " ref: " << nEventRef << " target: " << nEventTarget << std::endl;
+          }
         }
-
       }
     }
   }

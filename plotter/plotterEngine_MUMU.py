@@ -302,33 +302,34 @@ xSec = {
 
 
 addon_hook_jet = {
-    "": "",
-    "_0J": "N(jet) = 0",
-    "_1J": "N(jet) = 1",
-    "_mt1J": "N(jet) > 1",
-    "_0BJ": "b-veto",
-    "_1BJ": "N(b-jet) = 1",
-    "_mt1BJ": "N(b-jet) > 1",
-    "_bVeto_0J": "b-veto, N(jet) = 0",
-    "_bVeto_1J": "b-veto, N(jet) = 1",
-    "_bVeto_mt1J": "b-veto, N(jet) > 1",
+    "inc": "",
+    "0J": "N(jet) = 0",
+    "1J": "N(jet) = 1",
+    "mt1J": "N(jet) > 1",
+    "0BJ": "b-veto",
+    "1BJ": "N(b-jet) = 1",
+    "mt1BJ": "N(b-jet) > 1",
+    "bVeto_0J": "b-veto, N(jet) = 0",
+    "bVeto": "b-veto",
+    "bVeto_1J": "b-veto, N(jet) = 1",
+    "bVeto_mt1J": "b-veto, N(jet) > 1",
 }
 
 addon_hook_mass = {
-    "": "M_{#mu#mu} > 200 GeV",
-    "_m200_220": "200 < M_{#mu#mu} < 220 GeV",
-    "_m220_243": "220 < M_{#mu#mu} < 243 GeV",
-    "_m243_273": "243 < M_{#mu#mu} < 273 GeV",
-    "_m273_320": "273 < M_{#mu#mu} < 320 GeV",
-    "_m320_380": "320 < M_{#mu#mu} < 380 GeV",
-    "_m380_440": "380 < M_{#mu#mu} < 440 GeV",
-    "_m440_510": "440 < M_{#mu#mu} < 510 GeV",
-    "_m510_600": "510 < M_{#mu#mu} < 600 GeV",
-    "_m600_700": "600 < M_{#mu#mu} < 700 GeV",
-    "_m700_830": "700 < M_{#mu#mu} < 830 GeV",
-    "_m830_1000": "830 < M_{#mu#mu} < 1000 GeV",
-    "_m1000_1500": "1000 < M_{#mu#mu} < 1500 GeV",
-    "_m1500_4000": "1500 < M_{#mu#mu} < 4000 GeV"
+    "inc": "M_{#mu#mu} > 200 GeV",
+    "m200_220": "200 < M_{#mu#mu} < 220 GeV",
+    "m220_243": "220 < M_{#mu#mu} < 243 GeV",
+    "m243_273": "243 < M_{#mu#mu} < 273 GeV",
+    "m273_320": "273 < M_{#mu#mu} < 320 GeV",
+    "m320_380": "320 < M_{#mu#mu} < 380 GeV",
+    "m380_440": "380 < M_{#mu#mu} < 440 GeV",
+    "m440_510": "440 < M_{#mu#mu} < 510 GeV",
+    "m510_600": "510 < M_{#mu#mu} < 600 GeV",
+    "m600_700": "600 < M_{#mu#mu} < 700 GeV",
+    "m700_830": "700 < M_{#mu#mu} < 830 GeV",
+    "m830_1000": "830 < M_{#mu#mu} < 1000 GeV",
+    "m1000_1500": "1000 < M_{#mu#mu} < 1500 GeV",
+    "m1500_4000": "1500 < M_{#mu#mu} < 4000 GeV"
 }
 
 class Plotter:
@@ -402,7 +403,7 @@ class Plotter:
 
     def PrepareNorm(self):
         for mcSet in TotalMCList:
-            nEvent = self.fileSet.Get(self.era + "/" + mcSet + "/h_EventInfo").GetBinContent(4)
+            nEvent = self.fileSet.Get(self.era + "/" + mcSet + "/EventInfo/h_EventInfo").GetBinContent(4)
             self.normFactor[mcSet] = (1000. * self.lumi * xSec[mcSet]) / nEvent;
 
     def SetBackground(self, rootPath, mcList):
@@ -434,9 +435,14 @@ class Plotter:
             
         return hist_clone
 
-    def GetSingleHist(self, histname, sample, CheckSanity = False):
-        hist = self.fileSet.Get(self.era + "/" + sample + "/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
+    def GetSingleHist(self, histname, sample, jetbin, massbin, CheckSanity = False):
+
+        hist = self.fileSet.Get(f"{self.era}/{sample}/{self.region}/{jetbin}/{massbin}/h_{histname}").Clone(f"{histname}_{uuid.uuid4()}")
         hist.SetDirectory(0)
+        
+        if hist == None:
+            print(f"Error: {self.era}/{sample}/{self.region}/{jetbin}/{massbin}/h_{histname}")
+            exit()
 
         if sample != "Data":
             hist.Scale(self.normFactor[sample]);
@@ -447,6 +453,7 @@ class Plotter:
         return hist
 
     def GetSingleGenHist(self, histname, sample):
+
         hist = self.fileSet.Get(self.era + "/" + sample + "/GenInfo/" + histname).Clone(f"{histname}_{uuid.uuid4()}")
         hist.SetDirectory(0)
 
@@ -481,7 +488,7 @@ class Plotter:
         
 
             else: 
-                hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
+                hist = self.fileSet.Get(self.era + "/" + mc + "/" + histName).Clone(f"{histName}_{uuid.uuid4()}")                
                 hist.SetDirectory(0)
                 hist.SetStats(0)
             
@@ -541,7 +548,7 @@ class Plotter:
         return return_hist
 
     def GetDataHist(self, histName):
-        hist = self.fileSet.Get(self.era + "/Data/" + histName).Clone(f"{histName}_{uuid.uuid4()}")
+        hist = self.fileSet.Get(f"{self.era}/Data/{histName}").Clone(f"{histName}_{uuid.uuid4()}")
         hist.SetDirectory(0)
         hist.SetStats(0);
         
@@ -713,7 +720,7 @@ class Plotter:
         CMS.SetEnergy("13")
 
         addon = self.plot_addon.copy()
-        if case != "":
+        if case != "inc":
             addon[2] = f"{addon_hook_mass[massbin]}, {addon_hook_jet[case]}"
 
         doAutoXrange = False
@@ -724,17 +731,9 @@ class Plotter:
         if (ymin == -1 and ymax == -1): doAutoYrange = True
         if (yrmin == -1 and yrmax == -1): doAutoYRatiorange = True
 
-        self.histName = ""
-        if case != "" and massbin != "":
-            self.histName += case + massbin + "/h_" + self.region + "_" + histName + case + massbin
-        if case != "" and massbin == "":
-            self.histName += case + "/h_" + self.region + "_" + histName + case
-        if case == "" and massbin != "":
-            self.histName += massbin + "/h_" + self.region + "_" + histName + massbin
-        if case == "" and massbin == "":
-            self.histName = "h_" + self.region + "_" + histName
+        self.histName = f"{self.region}/{case}/{massbin}/h_{histName}"
 
-        self.histOutputName = "h_" + self.region + "_" + histName + case + massbin
+        self.histOutputName = f"h_{self.region}_{histName}_{case}_{massbin}"
         canvasName = self.era + "_" + "h_" + self.region + "_" + histName
 
         data = self.GetDataHist(self.histName)

@@ -12,68 +12,59 @@ def main():
     # eras = ["merged"]
     eras = ["2018", "2017", "2016_postVFP", "2016_preVFP", "merged"]
 
-    # cases = ["", "_0J", "_1J", "_mtJ", "_0BJ", "_1BJ", "_mt1BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
-    # cases = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
-    cases = ["_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
-    # cases = ["_0BJ"]
-    # cases = [""]
+    # cases = ["inc", "bVeto", "bVeto_0J", "bVeto_1J", "bVeto_mt1J", "0J", "1J", "mtJ", "0BJ", "1BJ", "mt1BJ"]
+    cases = ["inc", "bVeto", "bVeto_0J", "bVeto_1J", "bVeto_mt1J"]
 
-    # massBins = ["", "_m200_220", "_m220_243", "_m243_273", "_m273_320", "_m320_380", "_m380_440", "_m440_510", "_m510_600", "_m600_700", "_m700_830", "_m830_1000", "_m1000_1500", "_m1500_4000"]
-    # massBins = ["", "_m830_1000", "_m1000_1500", "_m1500_4000"]
-    massBins = [""] 
+    # massBins = ["inc", "m200_220", "m220_243", "m243_273", "m273_320", "m320_380", "m380_440", "m440_510", "m510_600", "m600_700", "m700_830", "m830_1000", "m1000_1500", "m1500_4000"]
+    massBins = ["inc"] 
 
     yrmax_vec = {
-        "": 1 + 0.18,
-        "_0J": 1 + 0.18,
-        "_1J": 1 + 0.24,
-        "_mtJ": 1 + 0.48,
-        "_0BJ": 1 + 0.18,
-        "_1BJ": 1 + 0.48,
-        "_mt1BJ": 1 + 0.48,
-        "_bVeto_0J": 1 + 0.18,
-        "_bVeto_1J": 1 + 0.24,
-        "_bVeto_mt1J": 1 + 0.48 
+        "inc": 1 + 0.18,
+        "0J": 1 + 0.18,
+        "1J": 1 + 0.24,
+        "mtJ": 1 + 0.48,
+        "0BJ": 1 + 0.18,
+        "1BJ": 1 + 0.48,
+        "mt1BJ": 1 + 0.48,
+        "bVeto": 1 + 0.18,
+        "bVeto_0J": 1 + 0.18,
+        "bVeto_1J": 1 + 0.24,
+        "bVeto_mt1J": 1 + 0.48 
     }
 
     yrmin_vec = {
-        "": 1 - 0.18,
-        "_0J": 1 - 0.18,
-        "_1J": 1 - 0.24,
-        "_mt1J": 1 - 0.48,
-        "_0BJ": 1 - 0.18,
-        "_1BJ": 1 - 0.48,
-        "_mt1BJ": 1 - 0.48,
-        "_bVeto_0J": 1 - 0.18,
-        "_bVeto_1J": 1 - 0.24,
-        "_bVeto_mt1J": 1 - 0.48,
+        "inc": 1 - 0.18,
+        "0J": 1 - 0.18,
+        "1J": 1 - 0.24,
+        "mt1J": 1 - 0.48,
+        "0BJ": 1 - 0.18,
+        "1BJ": 1 - 0.48,
+        "mt1BJ": 1 - 0.48,
+        "bVeto": 1 - 0.18,
+        "bVeto_0J": 1 - 0.18,
+        "bVeto_1J": 1 - 0.24,
+        "bVeto_mt1J": 1 - 0.48,
     }
  
     for era in eras:
 
         type_list = ["OS", "OS_inverted", "SS_inverted", "SS"]
-        # type_list = ["SS"]
-        # type_list = ["OS"]
 
-        # input_file = "MUMU_BothInverted"
-        # input_file = "MUMU_OneInverted"
-        input_file = "./root/260922_mumu_bugfix_merged.root"
+        input_file = "./root/261002_MUMU_merged.root"
 
         for type in type_list:
             plotter = plotterEngine.Plotter(era, 
                                             rootPath = f"{input_file}", 
-                                            outputPath = f"./plots_260925_v1/MUMU/{type}/plots_{era}/",
+                                            outputPath = f"./plots_261006/MUMU/{type}/plots_{era}/",
                                             channel = "MUMU", 
                                             region = f"{type}")
 
             # plotter.SetBackground(rootPath = "./Bck/EMU_FAKE.root", mcList = ["TOP"])
             # plotter.SetFakes(rootPath = "./Bck/MUMU_FAKE.root")
 
-            # plotter.Plot("h_nJet",  "", "", xTitle = "N_{jet}", xmin = 0, xmax = 14)
-            # plotter.Plot("h_nBJet", "", "", xTitle = "N_{b-jet}", xmin = 0, xmax = 14)
-
             for case in cases:
-                if type == "OS": plotter.Plot("dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
-                else: plotter.Plot("dimuonMass", case, "", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, logy = True, logx = True)
+                if type == "OS": plotter.Plot("dimuonMass", case, "inc", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, yrmin = yrmin_vec[case], yrmax = yrmax_vec[case], logy = True, logx = True)
+                else: plotter.Plot("dimuonMass", case, "inc", xTitle = "M(#mu#mu) [GeV]", xmin = 200, xmax = 4000, logy = True, logx = True)
 
                 # plotter.Plot("nJet",  case, "", xTitle = "N_{jet}", xmin = 0, xmax = 14)
                 # plotter.Plot("nBJet", case, "", xTitle = "N_{b-jet}", xmin = 0, xmax = 14)

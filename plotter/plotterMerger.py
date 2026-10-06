@@ -27,22 +27,17 @@ class Merger:
     def __init__(self, plot_list, case_list, type_list, input_path = "output.root"):
 
         baseDir = "/pnfs/knu.ac.kr/data/cms/store/user/khwang/CMS/HighMassDY/"
-        inputFile = baseDir + input_path
+        self.inputFile = baseDir + input_path
 
         output_path = "./" + input_path.replace(".root", "_merged.root")
         
-        os.system(f"cp {inputFile} {output_path}")
+        os.system(f"cp {self.inputFile} {output_path}")
 
         self.plot_list = plot_list
         self.case_list = case_list
         self.type_list = type_list
         self.merge_list = plotterEngine.TotalMCList.copy()
         self.merge_list.append("Data")
-    
-        self.p2016_preVFP = plotterEngine.Plotter("2016_preVFP", rootPath = inputFile)
-        self.p2016_postVFP = plotterEngine.Plotter("2016_postVFP", rootPath = inputFile)
-        self.p2017 = plotterEngine.Plotter("2017", rootPath = inputFile)
-        self.p2018 = plotterEngine.Plotter("2018", rootPath = inputFile)
 
         self.merge_file = ROOT.TFile(output_path, "UPDATE")
 
@@ -55,35 +50,38 @@ class Merger:
             self.merge_file.mkdir(f"merged/{sample}")
             
             for atype in self.type_list:
+                self.merge_file.mkdir(f"merged/{sample}/{atype}")
+
+                self.p2016_preVFP = plotterEngine.Plotter("2016_preVFP", region = atype, rootPath = self.inputFile)
+                self.p2016_postVFP = plotterEngine.Plotter("2016_postVFP", region = atype, rootPath = self.inputFile)
+                self.p2017 = plotterEngine.Plotter("2017", region = atype, rootPath = self.inputFile)
+                self.p2018 = plotterEngine.Plotter("2018", region = atype, rootPath = self.inputFile)
+
                 for case in self.case_list:
 
-
-                    if case != "":
-                        if atype == "OS":
-                             self.merge_file.mkdir(f"merged/{sample}/{case}")
-                    
+                    self.merge_file.mkdir(f"merged/{sample}/{atype}/{case}")
+                    self.merge_file.mkdir(f"merged/{sample}/{atype}/{case}/inc")
+                
                     for plot in self.plot_list:
 
                         if plot == "dimuonMassFailGen" and sample == "Data":
                             continue
 
-                        histname = case + "/h_" + atype + "_" + plot + case
-                        if case == "": 
-                            histname = "h_" + atype + "_" + plot
-
-                        hist_p2016_preVFP = self.p2016_preVFP.GetSingleHist(histname, sample)
-                        hist_p2016_postVFP = self.p2016_postVFP.GetSingleHist(histname, sample)
-                        hist_p2017 = self.p2017.GetSingleHist(histname, sample)
-                        hist_p2018 = self.p2018.GetSingleHist(histname, sample)
+                        hist_p2016_preVFP = self.p2016_preVFP.GetSingleHist(plot, sample, case, "inc")
+                        hist_p2016_postVFP = self.p2016_postVFP.GetSingleHist(plot, sample, case, "inc")
+                        hist_p2017 = self.p2017.GetSingleHist(plot, sample, case, "inc")
+                        hist_p2018 = self.p2018.GetSingleHist(plot, sample, case, "inc")
 
                         hist_merged = hist_p2016_preVFP.Clone(plot + case)
+                        hist_merged.SetDirectory(0)
                         hist_merged.Add(hist_p2016_postVFP)
                         hist_merged.Add(hist_p2017)
                         hist_merged.Add(hist_p2018)
-                        hist_merged.SetName(f"h_{atype}_{plot}{case}")
+                        hist_merged.SetName(f"h_{plot}")
 
-                        self.merge_file.cd(f"merged/{sample}/{case}")
+                        self.merge_file.cd(f"merged/{sample}/{atype}/{case}/inc")
                         hist_merged.Write()
+                        del hist_merged
 
                     # if atype == "OS" and sample.contains("NNLO_MUMU"):
                     #     self.merge_file.mkdir(f"merged/{sample}/{case}/GenInfo")
@@ -91,18 +89,14 @@ class Merger:
             if "NNLO_MUMU" in sample and args.channel == "MUMU":
                 gen_cases = ["", "_0J", "_1J", "_mt1J"]
 
+                self.merge_file.mkdir(f"merged/{sample}/GenInfo")
                 for gen_case in gen_cases:
-                    if gen_case == "": self.merge_file.mkdir(f"merged/{sample}/GenInfo")
-                    else: self.merge_file.mkdir(f"merged/{sample}/GenInfo/{gen_case}")
-
                     for aPlot in self.GenInfo:
 
                         if gen_case != "" and "Response" in aPlot:
                             continue
 
-                        hist_name = aPlot
-                        if gen_case != "": hist_name = f"{gen_case}/{hist_name}{gen_case}"
-
+                        hist_name = aPlot + gen_case
 
                         hist_p2016_preVFP = self.p2016_preVFP.GetSingleGenHist(hist_name, sample)
                         hist_p2016_postVFP = self.p2016_postVFP.GetSingleGenHist(hist_name, sample)
@@ -116,7 +110,6 @@ class Merger:
                         hist_merged.SetName(f"{aPlot}{gen_case}")
 
                         self.merge_file.cd(f"merged/{sample}/GenInfo")
-                        if gen_case != "": self.merge_file.cd(f"merged/{sample}/GenInfo/{gen_case}")
 
                         hist_merged.Write()
 
@@ -124,7 +117,7 @@ class Merger:
 
 def main(args):
 
-    case_list = ["", "_0BJ", "_bVeto_0J", "_bVeto_1J", "_bVeto_mt1J"]
+    case_list = ["inc", "bVeto", "bVeto_0J", "bVeto_1J", "bVeto_mt1J"]
     type_list = ["OS", "SS", "OS_inverted", "SS_inverted"]
     
     plot_list_mumu = [
@@ -169,21 +162,6 @@ def main(args):
 
     plot_list_mumu_Gen = [
         "h_ResponseMatrix", 
-        "h_ResponseMatrix_inc", 
-        "h_ResponseMatrix_merged", 
-        "h_nJet_WithReco", 
-        "h_LeadingMuonPt_WithReco", 
-        "h_LeadingMuonEta_WithReco", 
-        "h_LeadingMuonPhi_WithReco", 
-        "h_SubleadingMuonPt_WithReco", 
-        "h_SubleadingMuonEta_WithReco", 
-        "h_SubleadingMuonPhi_WithReco", 
-        "h_MuonPt_WithReco", 
-        "h_MuonEta_WithReco", 
-        "h_MuonPhi_WithReco", 
-        "h_dimuonMass_WithReco", 
-        "h_dimuonPt_WithReco", 
-        "h_dimuonRap_WithReco", 
         "h_nJet", 
         "h_LeadingMuonPt", 
         "h_LeadingMuonEta", 
