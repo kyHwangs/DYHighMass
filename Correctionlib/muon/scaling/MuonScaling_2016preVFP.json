@@ -1,0 +1,379 @@
+{
+  "schema_version": 2,
+  "description": "kappa_b map, 2016preVFP",
+  "corrections": [
+    {
+      "name": "kappa_b",
+      "description": "Muon curvature bias kappa_b in (eta, phi) for 2016preVFP",
+      "version": 1,
+      "inputs": [
+        {
+          "name": "eta",
+          "type": "real",
+          "description": "Muon eta"
+        },
+        {
+          "name": "phi",
+          "type": "real",
+          "description": "Muon phi [rad]"
+        },
+        {
+          "name": "scale_factors",
+          "type": "string",
+          "description": "'nominal' or 'syst'"
+        }
+      ],
+      "output": {
+        "name": "kappa_b",
+        "type": "real",
+        "description": "kappa_b value (nominal) or its uncertainty (syst)"
+      },
+      "data": {
+        "nodetype": "binning",
+        "input": "eta",
+        "edges": [
+          -2.4,
+          -2.1,
+          -1.2,
+          0.0,
+          1.2,
+          2.1,
+          2.4
+        ],
+        "content": [
+          {
+            "nodetype": "binning",
+            "input": "phi",
+            "edges": [
+              -3.141592653589793,
+              -1.0471975511965976,
+              1.0471975511965976,
+              3.141592653589793
+            ],
+            "content": [
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.075
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.088
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.049
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.101
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.007
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.06
+                  }
+                ]
+              }
+            ],
+            "flow": "clamp"
+          },
+          {
+            "nodetype": "binning",
+            "input": "phi",
+            "edges": [
+              -3.141592653589793,
+              -1.0471975511965976,
+              1.0471975511965976,
+              3.141592653589793
+            ],
+            "content": [
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.053
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.055
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.1
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.04
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": 0.003
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.038
+                  }
+                ]
+              }
+            ],
+            "flow": "clamp"
+          },
+          {
+            "nodetype": "binning",
+            "input": "phi",
+            "edges": [
+              -3.141592653589793,
+              -1.0471975511965976,
+              1.0471975511965976,
+              3.141592653589793
+            ],
+            "content": [
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.02
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.029
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": 0.072
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.03
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.015
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.03
+                  }
+                ]
+              }
+            ],
+            "flow": "clamp"
+          },
+          {
+            "nodetype": "binning",
+            "input": "phi",
+            "edges": [
+              -3.141592653589793,
+              -1.0471975511965976,
+              1.0471975511965976,
+              3.141592653589793
+            ],
+            "content": [
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.009
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.029
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": 0.057
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.034
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.003
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.036
+                  }
+                ]
+              }
+            ],
+            "flow": "clamp"
+          },
+          {
+            "nodetype": "binning",
+            "input": "phi",
+            "edges": [
+              -3.141592653589793,
+              -1.0471975511965976,
+              1.0471975511965976,
+              3.141592653589793
+            ],
+            "content": [
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.01
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.04
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.036
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.043
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": 0.06
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.04
+                  }
+                ]
+              }
+            ],
+            "flow": "clamp"
+          },
+          {
+            "nodetype": "binning",
+            "input": "phi",
+            "edges": [
+              -3.141592653589793,
+              -1.0471975511965976,
+              1.0471975511965976,
+              3.141592653589793
+            ],
+            "content": [
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": 0.078
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.067
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.073
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.102
+                  }
+                ]
+              },
+              {
+                "nodetype": "category",
+                "input": "scale_factors",
+                "content": [
+                  {
+                    "key": "nominal",
+                    "value": -0.196
+                  },
+                  {
+                    "key": "syst",
+                    "value": 0.084
+                  }
+                ]
+              }
+            ],
+            "flow": "clamp"
+          }
+        ],
+        "flow": "error"
+      }
+    }
+  ]
+}

@@ -1,0 +1,303 @@
+{
+    "schema_version": 2,
+    "description": "https://twiki.cern.ch/twiki/bin/view/CMS/EgammaUL2016To2018#HEEP_ID_Scale_Factor_for_UL",
+    "corrections": [
+        {
+            "name": "UL-Electron-ID-SF",
+            "description": "These are the electron HEEP ID Scale Factors (nominal, up or down) for Run2 Ultra Legacy dataset.",
+            "version": 2,
+            "inputs": [
+                {
+                    "name": "year",
+                    "type": "string",
+                    "description": "year/scenario: 2016_preVFP, 2016_postVFP, 2017, 2018"
+                },
+                {
+                    "name": "ValType",
+                    "type": "string",
+                    "description": "sf/syst/stat"
+                },
+                {
+                    "name": "eta",
+                    "type": "real",
+                    "description": "supercluster eta"
+                }
+            ],
+            "output": {
+                "name": "weight",
+                "type": "real",
+                "description": "value of scale factor (nominal, up or down)"
+            },
+            "data": {
+                "nodetype": "category",
+                "input": "year",
+                "content": [
+                    {
+                        "key": "2016_preVFP",
+                        "value": {
+                            "nodetype": "category",
+                            "input": "ValType",
+                            "content": [
+                                {
+                                    "key": "sf",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.985,
+                                            0.0,
+                                            0.990
+                                        ],
+                                        "flow": "error"
+                                    }
+                                },
+                                {
+                                    "key": "syst",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.004,
+                                            0.0,
+                                            0.007
+                                        ],
+                                        "flow": "error"
+                                    }
+                                },
+                                {
+                                    "key": "stat",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.001,
+                                            0.0,
+                                            0.003
+                                        ],
+                                        "flow": "error"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "2016_postVFP",
+                        "value": {
+                            "nodetype": "category",
+                            "input": "ValType",
+                            "content": [
+                                {
+                                    "key": "sf",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.985,
+                                            0.0,
+                                            0.990
+                                        ],
+                                        "flow": "error"
+                                    }
+                                },
+                                {
+                                    "key": "syst",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.004,
+                                            0.0,
+                                            0.007
+                                        ],
+                                        "flow": "error"
+                                    }
+                                },
+                                {
+                                    "key": "stat",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.001,
+                                            0.0,
+                                            0.003
+                                        ],
+                                        "flow": "error"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "2017",
+                        "value": {
+                            "nodetype": "category",
+                            "input": "ValType",
+                            "content": [
+                                {
+                                    "key": "sf",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.979,
+                                            0.0,
+                                            0.987
+                                        ],
+                                        "flow": "error"
+                                    }
+                                },
+                                {
+                                    "key": "syst",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.005,
+                                            0.0,
+                                            0.010
+                                        ],
+                                        "flow": "error"
+                                    }
+                                },
+                                {
+                                    "key": "stat",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.001,
+                                            0.0,
+                                            0.002
+                                        ],
+                                        "flow": "error"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "key": "2018",
+                        "value": {
+                            "nodetype": "category",
+                            "input": "ValType",
+                            "content": [
+                                {
+                                    "key": "sf",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.973,
+                                            0.0,
+                                            0.980
+                                        ],
+                                        "flow": "error"
+                                    }
+                                },
+                                {
+                                    "key": "syst",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.004,
+                                            0.0,
+                                            0.011
+                                        ],
+                                        "flow": "error"
+                                    }
+                                },
+                                {
+                                    "key": "stat",
+                                    "value": {
+                                        "nodetype": "binning",
+                                        "input": "eta",
+                                        "edges": [
+                                            0.0,
+                                            1.4442,
+                                            1.5660,
+                                            2.5
+                                        ],
+                                        "content": [
+                                            0.001,
+                                            0.0,
+                                            0.002
+                                        ],
+                                        "flow": "error"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

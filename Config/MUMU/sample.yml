@@ -1,0 +1,120 @@
+Info:
+  Era: 2018
+  Trigger: [HLT_Mu50, HLT_TkMu100, HLT_OldMu100]
+
+ObjectProducer:
+  - Type: RawMuonProducer
+    Name: RawMuonMaker
+    OutputName: RawMuons
+    Eta: 2.4
+    Id: global
+    Iso: 0.1
+    
+  - Type: JetProducer
+    Name: NominalJetMaker
+    OutputJetName: SelectedJets
+    OutputBJetName: SelectedBJets
+    OutputHSJetName: SelectedHSJets
+    Pt: 30
+    Eta: 2.5
+    ID: 6
+    PUID: 4
+    BTag: M
+    Cleaning: false
+  
+  - Type: ZbosonProducer
+    Name: OSMuonPairMaker
+    OutputName: OS
+    src: RawMuons
+    LeadingMuonPt: 52
+    SubLeadingMuonPt: 50
+    IsolationConj: 2
+    ChargeConj: -1
+
+  - Type: ZbosonProducer
+    Name: SSMuonPairMaker
+    OutputName: SS
+    src: RawMuons
+    LeadingMuonPt: 52
+    SubLeadingMuonPt: 50
+    IsolationConj: 2
+    ChargeConj: 1
+  
+  - Type: ZbosonProducer
+    Name: OSMuonPairMaker_inverted
+    OutputName: OS_inverted
+    src: RawMuons
+    LeadingMuonPt: 52
+    SubLeadingMuonPt: 50
+    IsolationConj: 0
+    ChargeConj: -1
+
+  - Type: ZbosonProducer
+    Name: SSMuonPairMaker_inverted
+    OutputName: SS_inverted
+    src: RawMuons
+    LeadingMuonPt: 52
+    SubLeadingMuonPt: 50
+    IsolationConj: 0
+    ChargeConj: 1
+
+Factory:
+- Type: MuonSmearingFactory
+  Name: MuonSmearingFactory
+  barrel:
+    smearing: -1
+    sigma: 0.0108 + 5.93e-5 * x -3.08e-8 * x^2 + 6.04e-12 * x^3
+  endcap:
+    smearing: 0.46
+    sigma: 0.0136 + 5.47e-5 * x -2.3e-8 * x^2 + 4.66e-12 * x^3
+
+- Type: MuonScalingFactory
+  Name: MuonScalingFactory
+
+LHEContent:
+  Name: LHEContentMaker
+  OutputName: LHECollection
+  LeadingPt: 52
+  SubleadingPt: 50
+  Eta: 2.4
+  Pid: 13
+
+DressedLeptonContent:
+  Name: DressedLeptonMaker
+  OutputName: DressedLeptonCollection
+  LeadingPt: 52
+  SubleadingPt: 50
+  Eta: 2.4
+  Pid: 13
+
+GenJetContent:
+  Name: GenJetCollection
+  OutputName: GenJetCollection
+  Veto: DressedLeptonCollection
+  Pt: 30
+  Eta: 2.5
+
+EfficiencyFactory:
+  MuonReco:
+    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_RECO_2018_schemaV2.json
+    Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
+  MuonId:
+    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_IDISO_2018_schemaV2.json
+    Name: NUM_HighPtID_DEN_GlobalMuonProbes
+  MuonIso:
+    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_IDISO_2018_schemaV2.json
+    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
+  MuonTrigger:
+    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_HLT_2018_schemaV2.json
+    Data: NUM_HLT_DEN_HighPtLooseRelIsoProbes_DATAeff
+    MC: NUM_HLT_DEN_HighPtLooseRelIsoProbes_MCeff
+  JetPU:
+    Path: ../../correctionlib/JetPUID/2018.json
+  BTag:
+    Path: ../../correctionlib/bTag/2018.json
+  BTagEff:
+    Path: ../../correctionlib/bTag/eff/BTagEff_MUMU_eff_AbsEta_PtMerged.json
+
+Pileup:
+  Data: PileupHistogram-goldenJSON-13tev-2018-69200ub-99bins.root
+  MC: MC_2018.root
