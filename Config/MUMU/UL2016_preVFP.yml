@@ -148,7 +148,7 @@ Systematics:
     input: Hessian
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, PDF_Hessian]
+    Path: [era, sample, OS, syst, PDF_Hessian]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -158,7 +158,7 @@ Systematics:
     input: alphaS
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, PDF_alphaS]
+    Path: [era, sample, OS, syst, PDF_alphaS]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -168,7 +168,7 @@ Systematics:
     input: scale
     SystType: EfficiencyVariation
     Iter: 6
-    Path: [era, sample, syst, PDF_scale]
+    Path: [era, sample, OS, syst, PDF_scale]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -178,7 +178,7 @@ Systematics:
     input: uncorrelated
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, Norm_uncorrelated]
+    Path: [era, sample, OS, syst, Norm_uncorrelated]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -188,7 +188,7 @@ Systematics:
     input: correlated_161718
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, Norm_correlated_161718]
+    Path: [era, sample, OS, syst, Norm_correlated_161718]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -198,7 +198,7 @@ Systematics:
     input: correlated_1718
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, Norm_correlated_1718]
+    Path: [era, sample, OS, syst, Norm_correlated_1718]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -208,7 +208,7 @@ Systematics:
     input: stat
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffReco_stat]
+    Path: [era, sample, OS, syst, MuonEffReco_stat]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -218,7 +218,7 @@ Systematics:
     input: tagIso
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffReco_tagIso]
+    Path: [era, sample, OS, syst, MuonEffReco_tagIso]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -228,7 +228,7 @@ Systematics:
     input: massRange
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffReco_massRange]
+    Path: [era, sample, OS, syst, MuonEffReco_massRange]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -238,7 +238,7 @@ Systematics:
     input: stat
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffId_stat]
+    Path: [era, sample, OS, syst, MuonEffId_stat]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -248,7 +248,7 @@ Systematics:
     input: tagIso
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffId_tagIso]
+    Path: [era, sample, OS, syst, MuonEffId_tagIso]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -258,7 +258,7 @@ Systematics:
     input: massRange
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffId_massRange]
+    Path: [era, sample, OS, syst, MuonEffId_massRange]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -268,7 +268,7 @@ Systematics:
     input: stat
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffIso_stat]
+    Path: [era, sample, OS, syst, MuonEffIso_stat]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -278,7 +278,7 @@ Systematics:
     input: tagIso
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffIso_tagIso]
+    Path: [era, sample, OS, syst, MuonEffIso_tagIso]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -288,7 +288,7 @@ Systematics:
     input: massRange
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffIso_massRange]
+    Path: [era, sample, OS, syst, MuonEffIso_massRange]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -298,7 +298,7 @@ Systematics:
     input: data:stat
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffTrigData_stat]
+    Path: [era, sample, OS, syst, MuonEffTrigData_stat]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -308,7 +308,7 @@ Systematics:
     input: data:tagIso
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffTrigData_tagIso]
+    Path: [era, sample, OS, syst, MuonEffTrigData_tagIso]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -318,7 +318,7 @@ Systematics:
     input: data:massRange
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffTrigData_massRange]
+    Path: [era, sample, OS, syst, MuonEffTrigData_massRange]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -328,7 +328,7 @@ Systematics:
     input: mc:stat
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffTrigMC_stat]
+    Path: [era, sample, OS, syst, MuonEffTrigMC_stat]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -338,7 +338,7 @@ Systematics:
     input: mc:tagIso
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffTrigMC_tagIso]
+    Path: [era, sample, OS, syst, MuonEffTrigMC_tagIso]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -348,7 +348,7 @@ Systematics:
     input: mc:massRange
     SystType: EfficiencyVariation
     Iter: 100
-    Path: [era, sample, syst, MuonEffTrigMC_massRange]
+    Path: [era, sample, OS, syst, MuonEffTrigMC_massRange]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -358,7 +358,7 @@ Systematics:
     input: dummy
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, PileUpReweighting]
+    Path: [era, sample, OS, syst, PileUpReweighting]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -368,7 +368,7 @@ Systematics:
     input: dummy
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, JetPuID]
+    Path: [era, sample, OS, syst, JetPuID]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -378,7 +378,7 @@ Systematics:
     input: bc_correlated
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, BTagging_bc_correlated]
+    Path: [era, sample, OS, syst, BTagging_bc_correlated]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -388,7 +388,7 @@ Systematics:
     input: light_correlated
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, BTagging_light_correlated]
+    Path: [era, sample, OS, syst, BTagging_light_correlated]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -398,7 +398,7 @@ Systematics:
     input: bc_uncorrelated
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, BTagging_bc_uncorrelated]
+    Path: [era, sample, OS, syst, BTagging_bc_uncorrelated]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -408,7 +408,7 @@ Systematics:
     input: light_uncorrelated
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, BTagging_light_uncorrelated]
+    Path: [era, sample, OS, syst, BTagging_light_uncorrelated]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -418,7 +418,7 @@ Systematics:
     input: dummy
     SystType: EfficiencyVariation
     Iter: 2
-    Path: [era, sample, syst, L1Prefiring]
+    Path: [era, sample, OS, syst, L1Prefiring]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false
@@ -426,7 +426,7 @@ Systematics:
   - Name: MuonSmearingSyst
     SystType: MuonSelection
     Iter: 1
-    Path: [era, sample, syst, MuonSmearing]
+    Path: [era, sample, OS, syst, MuonSmearing]
     MuonSrc: MuonPair_SmearingSyst
     JetSrc: NominalJets
     Detail: false
@@ -434,7 +434,7 @@ Systematics:
   - Name: MuonScalingSyst
     SystType: MuonSelection
     Iter: 100
-    Path: [era, sample, syst, MuonScaling]
+    Path: [era, sample, OS, syst, MuonScaling]
     MuonSrc: MuonPair_ScalingSyst
     JetSrc: NominalJets
     Detail: false
@@ -443,7 +443,7 @@ Systematics:
     input: Smearing
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergySmearing]
+    Path: [era, sample, OS, syst, JetEnergySmearing]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_SmearingSyst
     Detail: false
@@ -452,7 +452,7 @@ Systematics:
     input: FlavorQCD
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_FlavorQCD]
+    Path: [era, sample, OS, syst, JetEnergyScale_FlavorQCD]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_FlavorQCD
     Detail: false
@@ -461,7 +461,7 @@ Systematics:
     input: RelativeBal
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_RelativeBal]
+    Path: [era, sample, OS, syst, JetEnergyScale_RelativeBal]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_RelativeBal
     Detail: false
@@ -470,7 +470,7 @@ Systematics:
     input: HF
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_HF]
+    Path: [era, sample, OS, syst, JetEnergyScale_HF]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_HF
     Detail: false
@@ -479,7 +479,7 @@ Systematics:
     input: BBEC1
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_BBEC1]
+    Path: [era, sample, OS, syst, JetEnergyScale_BBEC1]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_BBEC1
     Detail: false
@@ -488,7 +488,7 @@ Systematics:
     input: EC2
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_EC2]
+    Path: [era, sample, OS, syst, JetEnergyScale_EC2]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_EC2
     Detail: false
@@ -497,7 +497,7 @@ Systematics:
     input: Absolute
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_Absolute]
+    Path: [era, sample, OS, syst, JetEnergyScale_Absolute]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_Absolute
     Detail: false
@@ -506,7 +506,7 @@ Systematics:
     input: RelativeSample_Uncor
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_RelativeSample_Uncor]
+    Path: [era, sample, OS, syst, JetEnergyScale_RelativeSample_Uncor]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_RelativeSample_Uncor
     Detail: false
@@ -515,7 +515,7 @@ Systematics:
     input: HF_Uncor
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_HF_Uncor]
+    Path: [era, sample, OS, syst, JetEnergyScale_HF_Uncor]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_HF_Uncor
     Detail: false
@@ -524,7 +524,7 @@ Systematics:
     input: BBEC1_Uncor
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_BBEC1_Uncor]
+    Path: [era, sample, OS, syst, JetEnergyScale_BBEC1_Uncor]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_BBEC1_Uncor
     Detail: false
@@ -533,7 +533,7 @@ Systematics:
     input: EC2_Uncor
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_EC2_Uncor]
+    Path: [era, sample, OS, syst, JetEnergyScale_EC2_Uncor]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_EC2_Uncor
     Detail: false
@@ -542,7 +542,7 @@ Systematics:
     input: Absolute_Uncor
     SystType: JetSelection
     Iter: 2
-    Path: [era, sample, syst, JetEnergyScale_Absolute_Uncor]
+    Path: [era, sample, OS, syst, JetEnergyScale_Absolute_Uncor]
     MuonSrc: MuonPair_Nominal
     JetSrc: Jets_ScaleSyst_Absolute_Uncor
     Detail: false
