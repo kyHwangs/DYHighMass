@@ -626,7 +626,7 @@ output                = log/$(era)_$(sample)_$(id).out
 error                 = log/$(era)_$(sample)_$(id).err
 log                   = log/$(era)_$(sample)_$(id).log
 
-queue config,sample,id,base from joblist.txt
+queue config,era,sample,id,base from joblist.txt
 )"; 
   else fCondorSubmit = R"(universe              = vanilla
   executable            = condor_wrapper.sh
@@ -743,7 +743,7 @@ eval "$@"
         int nList = fConfig[fEraVec[i]][fSampleMap[k]]["nList"].as<int>();
         for (int l = 0; l < nList; l++) {
 
-          if (fChannelTemp == "MUMU") fJobList += R"(../../Config/)" + fChannel + fSuffix + R"(/UL)" + fEraVec[i] + R"(.yml )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + R"( /pnfs/knu.ac.kr/data/cms/store/user/khwang/CMS/HighMassDY/)" + fBaseDir + "\n";
+          if (fChannelTemp == "MUMU") fJobList += R"(../../Config/)" + fChannel + fSuffix + R"(/UL)" + fEraVec[i] + R"(.yml )" + fEraVec[i] + R"( )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + R"( /pnfs/knu.ac.kr/data/cms/store/user/khwang/CMS/HighMassDY/)" + fBaseDir + "\n";
           else fJobList += R"(../../config/)" + fChannel + fSuffix + R"(/UL)" + fEraVec[i] + R"(.yml )" + fEraVec[i] + R"( )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + "\n";
         }
       }
