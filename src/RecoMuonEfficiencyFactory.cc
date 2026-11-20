@@ -34,15 +34,24 @@ float RecoMuonEfficiencyFactory::GetValue(EventContentPool& pool, const WeightIn
 
   const TLorentzVector& fVec1 = tMuonPair.fFirst.fVecRaw;
   const TLorentzVector& fVec2 = tMuonPair.fSecond.fVecRaw;
+  
+  float fP1 = fVec1.P();
+  float fP2 = fVec2.P();
+  
+  if (std::abs(fVec1.Eta()) < 1.6) fP1 = fP1 < 50 ? 50.1 : fP1;
+  else fP1 = fP1 < 100 ? 100.1 : fP1;
+
+  if (std::abs(fVec2.Eta()) < 1.6) fP2 = fP2 < 50 ? 50.1 : fP2;
+  else fP2 = fP2 < 100 ? 100.1 : fP2;
 
   if (fSystIdx == 0) {
-    fNominal = fCorrection->evaluate({std::abs(fVec1.Eta()), fVec1.P(), "nominal"});
-    fNominal *= fCorrection->evaluate({std::abs(fVec2.Eta()), fVec2.P(), "nominal"});
+    fNominal = fCorrection->evaluate({std::abs(fVec1.Eta()), fP1, "nominal"});
+    fNominal *= fCorrection->evaluate({std::abs(fVec2.Eta()), fP2, "nominal"});
     return fNominal;
   } else {
     return  (
-      (fCorrection->evaluate({std::abs(fVec1.Eta()), fVec1.P(), "nominal"}) + fVariation->evaluate({"variation_" + std::to_string(fSystIdx), std::abs(fVec1.Eta()), fVec1.P()}) * fCorrection->evaluate({std::abs(fVec1.Eta()), fVec1.P(), fSyst.c_str()})) *
-      (fCorrection->evaluate({std::abs(fVec2.Eta()), fVec2.P(), "nominal"}) + fVariation->evaluate({"variation_" + std::to_string(fSystIdx), std::abs(fVec2.Eta()), fVec2.P()}) * fCorrection->evaluate({std::abs(fVec2.Eta()), fVec2.P(), fSyst.c_str()}))
+      (fCorrection->evaluate({std::abs(fVec1.Eta()), fP1, "nominal"}) + fVariation->evaluate({"variation_" + std::to_string(fSystIdx), std::abs(fVec1.Eta()), fP1}) * fCorrection->evaluate({std::abs(fVec1.Eta()), fP1, fSyst.c_str()})) *
+      (fCorrection->evaluate({std::abs(fVec2.Eta()), fP2, "nominal"}) + fVariation->evaluate({"variation_" + std::to_string(fSystIdx), std::abs(fVec2.Eta()), fP2}) * fCorrection->evaluate({std::abs(fVec2.Eta()), fP2, fSyst.c_str()}))
     ) / fNominal;
   }
 
