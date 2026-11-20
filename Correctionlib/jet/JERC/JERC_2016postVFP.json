@@ -1475322,7 +1475322,7 @@
         "MC_L1FastJet",
         "MC_L2Relative",
         "MC_L3Absolute",
-        "MC_L2L3Residual_AK4PFchs"
+        "MC_L2L3Residual"
       ]
     },
     {
@@ -1475368,7 +1475368,7 @@
         "DATA_L1FastJet",
         "DATA_L2Relative",
         "DATA_L3Absolute",
-        "DATA_L2L3Residual_AK4PFchs"
+        "DATA_L2L3Residual"
       ]
     }
   ]
