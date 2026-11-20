@@ -3,6 +3,7 @@
 
 #include "EventContentPool.h"
 #include "Producer.h"
+#include "HistoBooker.h"
 
 #include "yaml-cpp/yaml.h"
 
@@ -23,6 +24,8 @@ public:
 
   std::string getCurrentTimeString();
   std::string formatDuration(const std::chrono::high_resolution_clock::duration& tDuration);
+  std::string getTotalTime();
+
   void Print(int tCurrent);
 
   void Init(long long tMaxEvents) { 
@@ -41,10 +44,8 @@ public:
 
   DYLoopMUMU(options* fOpt);
 
-  void EndOfJob() {}
-
   void Loop();
-
+  void EndOfJob();
 
 private:
 
@@ -77,9 +78,11 @@ private:
   std::unique_ptr<TimeProgress> fTimeProgress;
   
   ProducerList fProducers;
-  std::unordered_map<std::string, std::unique_ptr<Producer>> fIndivProducers;
+  std::unique_ptr<HistoBooker> fHistoBooker;
 
   double fMaxEntries;
+  int fElapsedLoop;
+  
 };
 
 #endif

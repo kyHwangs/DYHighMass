@@ -28,11 +28,13 @@ GenJetProducer::GenJetProducer(const YAML::Node& fConfig) {
 void GenJetProducer::Init(EventContentPool& pool) {
 
   fIsMC = pool.GetEventInfo().isMC;
+  fSample = pool.GetEventInfo().sampleName;
 }
 
 void GenJetProducer::Produce(EventContentPool& pool) {
 
   if (!fIsMC) return;
+  if (fSample.find("NNLO_MUMU") == std::string::npos && fVeto != "None") return;
 
   const auto& nt = pool.Source();
 
@@ -42,8 +44,11 @@ void GenJetProducer::Produce(EventContentPool& pool) {
   std::vector<TLorentzVector> tVetoLeptons;
   if (fVeto != "None") {
     tVetoMuon = pool.Get<GEN::DressedMuon>(fVeto);
-    tVetoLeptons.push_back(tVetoMuon.first);
-    tVetoLeptons.push_back(tVetoMuon.second);
+    
+    if (tVetoMuon.fMass > 0) {
+      tVetoLeptons.push_back(tVetoMuon.first);
+      tVetoLeptons.push_back(tVetoMuon.second);
+    }
   }
 
   for (unsigned int iGenJet = 0; iGenJet < **nt.nGenJet; iGenJet++) {
@@ -57,13 +62,14 @@ void GenJetProducer::Produce(EventContentPool& pool) {
     );
 
     if (fVec.Pt() < fPt) continue;
-    if (fabs(fVec.Eta()) > fEta) continue;
+    if (fabs(fVec.Eta()) >= fEta) continue;
 
+    bool tIsOverlap = false;
     if (fVeto != "None")
       for (const auto& tVeto : tVetoLeptons)
-        if (tVeto.DeltaR(fVec) < 0.3) continue;
+        if (tVeto.DeltaR(fVec) < 0.4) tIsOverlap = true;
 
-    tGenJetCollection.push_back(fVec);
+    if (!tIsOverlap) tGenJetCollection.push_back(fVec);
   }
 
   pool.Put(fOutputName, tGenJetCollection);

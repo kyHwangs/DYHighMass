@@ -12,7 +12,7 @@ void NT::init_LHE() {
 
 void NT::init_MC() {
   
-  genWeight = new TTreeReaderValue<float>(*fTreeReader, "genWeight");
+  // genWeight = new TTreeReaderValue<float>(*fTreeReader, "genWeight");
 
   Jet_genJetIdx = new TTreeReaderArray<int>(*fTreeReader, "Jet_genJetIdx");
   Jet_hadronFlavour = new TTreeReaderArray<int>(*fTreeReader, "Jet_hadronFlavour");
@@ -40,7 +40,7 @@ void NT::init_MC() {
   GenDressedLepton_pt = new TTreeReaderArray<float>(*fTreeReader, "GenDressedLepton_pt");
   GenDressedLepton_pdgId = new TTreeReaderArray<int>(*fTreeReader, "GenDressedLepton_pdgId");
   
-  Pileup_nTrueInt = new TTreeReaderValue<float>(*fTreeReader, "Pileup_nTrueInt");
+  // Pileup_nTrueInt = new TTreeReaderValue<float>(*fTreeReader, "Pileup_nTrueInt");
 }
 
 
@@ -74,10 +74,6 @@ void NT::init() {
   Muon_highPtId = new TTreeReaderArray<unsigned char>(*fTreeReader, "Muon_highPtId");
   Muon_tkRelIso = new TTreeReaderArray<float>(*fTreeReader, "Muon_tkRelIso");
   Muon_highPurity = new TTreeReaderArray<bool>(*fTreeReader, "Muon_highPurity");
-  
-  L1PreFiringWeight_Nom = new TTreeReaderValue<float>(*fTreeReader, "L1PreFiringWeight_Nom");
-  L1PreFiringWeight_Dn = new TTreeReaderValue<float>(*fTreeReader, "L1PreFiringWeight_Dn");
-  L1PreFiringWeight_Up = new TTreeReaderValue<float>(*fTreeReader, "L1PreFiringWeight_Up");  
 
 
   auto optionalBool = [this](const char* name) -> TTreeReaderValue<bool>* {

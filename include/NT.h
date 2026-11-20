@@ -79,7 +79,7 @@ public:
   void init_MC();
   void init_LHE();
 
-  TTreeReader* GetTreeReader() { return fTreeReader; }
+  TTreeReader* GetTreeReader() const { return fTreeReader; }
 
   bool GetNext() { return fTreeReader->Next(); }
 
@@ -125,6 +125,7 @@ public:
   TTreeReaderValue<bool>* HLT_TkMu50;
   TTreeReaderValue<bool>* HLT_TkMu100;
   TTreeReaderValue<bool>* HLT_OldMu100;
+  
   TTreeReaderValue<float>* fixedGridRhoFastjetAll;
 
   // TTreeReaderValue<float>* LHEWeight_originalXWGTUP;
@@ -165,11 +166,7 @@ public:
   // TTreeReaderValue<int>* Pileup_sumEOOT;
   // TTreeReaderValue<int>* Pileup_sumLOOT;
 
-  TTreeReaderValue<float>* genWeight;
-
-  TTreeReaderValue<float>* L1PreFiringWeight_Nom;
-  TTreeReaderValue<float>* L1PreFiringWeight_Dn;
-  TTreeReaderValue<float>* L1PreFiringWeight_Up;
+  // TTreeReaderValue<float>* genWeight;
 
   TTreeReaderValue<unsigned int>* nGenPart;
   TTreeReaderArray<float>* GenPart_eta;

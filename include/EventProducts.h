@@ -54,6 +54,18 @@ struct JetSystConfigs {
   };
 };
 
+struct PlottingSystConfigs {
+  std::string fType;
+  std::string fName;
+  std::string fPath;
+  std::string fTarget;
+  std::string fInput;
+  int fIter;
+  std::string fMunoSrc;
+  std::string fJetSrc;
+  bool fDetail;
+};
+
 namespace GEN {
   struct LHEContent {
     TLorentzVector first;
@@ -134,35 +146,5 @@ namespace JET {
     int nBJet;
   };
 }
-
-// struct SelectedJets {
-//   std::vector<JET::StdJet> jets = std::vector<JET::StdJet>();
-//   std::vector<JET::StdJet> bJets = std::vector<JET::StdJet>();
-//   int nJet = 0;
-//   int nBJet = 0;
-// };
-
-// inline MuonPairCollection MakeMuonPairCollection (const std::vector<MUON::StdMuon>& muons) {
-  
-//   MuonPairCollection pairs;
-//   if (muons.size() >= 2) {
-//     pairs.push_back(MuonPair{muons[0], muons[1], 2});
-//   }
-  
-//   return pairs;
-// }
-
-// struct JET {
-//   TLorentzVector fVec;
-//   TLorentzVector fVecRaw;
-//   bool fIsBJet;
-//   int fHadFlav;
-//   int fGenJetIdx;
-//   bool fPassingPUID;
-
-//   StdJet(TLorentzVector fVec_, TLorentzVector fVecRaw_, bool fPassingBJetTagger_, int fID_, int fHadFlav_, int fGenJetIdx_, bool fPassingPUID_)
-//   : fVec(fVec_), fVecRaw(fVecRaw_), fPassingBJetTagger(fPassingBJetTagger_), fID(fID_), fHadFlav(fHadFlav_), fGenJetIdx(fGenJetIdx_), fPassingPUID(fPassingPUID_)
-//   { };
-// };
 
 #endif

@@ -1,65 +1,548 @@
 Info:
   Era: 2017
-  Channel: MUMU
+  Trigger: [HLT_Mu50, HLT_TkMu100, HLT_OldMu100]
 
-Z:
-  MassCut: 200
+ObjectProducer:
+  - Type: LHEProducer
+    Name: LHEContentMaker
+    OutputName: LHECollection
+    LeadingPt: 52
+    SubleadingPt: 50
+    Eta: 2.4
+    Pid: 13
 
-Muon:
-  LeadingMuonPt: 52
-  SubLeadingMuonPt: 50
-  Eta: 2.4
-  ID: global
-  ISO: 0.1
-  doMCSmearing: true
-  MCSmearing:
-    barrel:
-      smearing: -1
-      sigma: 0.0104 +6.11e-5 * x -3.31e-8 * x^2 + 6.73e-12 * x^3
-    endcap:
-      smearing: 0.3202
-      sigma: 0.0121 + 5.92e-5 * x -2.61e-8 * x^2 + 5.11e-12 * x^3
+  - Type: DressedLeptonProducer
+    Name: DressedLeptonProducer
+    OutputName: DressedMuons
+    LeadingPt: 52
+    SubleadingPt: 50
+    Eta: 2.4
+    Pid: 13
 
-Jet:
-  Pt: 30
-  Eta: 2.5
-  ID: 6
-  PUID: 4
-  BTag: M
-  Cleaning: false
+  - Type: GenJetProducer
+    Name: GenJetProducer
+    OutputName: GenJetsJERC
+    Eta: 2.7
+    Pt: 5
+    Veto: None
 
-Correction:
-  Reco: true
-  ID: true
-  ISO: true
-  Trigger: true
-  PileUp: true
-  L1PreFiring: true
-  JetPU: true
-  BTag: true
-  TopPtReweighing: true
+  - Type: GenJetProducer
+    Name: GenJetProducer
+    OutputName: GenJets
+    Eta: 2.5
+    Pt: 30
+    Veto: DressedMuons
 
-Efficiency:
-  Reco:
-    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_RECO_2017_schemaV2.json
-    Name: NUM_GlobalMuons_DEN_TrackerMuonProbes
-  ID:
-    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
-    Name: NUM_HighPtID_DEN_GlobalMuonProbes
-  ISO:
-    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
-    Name: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
-  Trigger:
-    Path: ../../correctionlib/muon/high/ScaleFactors_Muon_highPt_HLT_2017_schemaV2.json
+  - Type: RawMuonProducer
+    Name: RawMuonMaker
+    OutputName: RawMuons
+    Eta: 2.4
+    Id: global
+    Iso: 0.1
+
+  - Type: RawJetProducer
+    Name: RawJetProducer
+    OutputName: RawJets
+    Eta: 2.5
+    Id: 2 # 2 bit -> TightLepVeto, 1 bit -> Tight, 0 bit -> Loose
+    BTagWP: M
+    Path: ../../Correctionlib/jet/bTag/2017.json
+
+  - Type: ZbosonProducer
+    Name: OSMuonPairMaker
+    OutputName: MuonPair_Nominal
+    src: RawMuons
+    LeadingMuonPt: 52
+    SubLeadingMuonPt: 50
+    IsolationConj: 2
+    ChargeConj: -1
+    Correction:
+      MuonMomentumCorrection:
+        Type: MuonMomentumCorrectionFactory
+        Name: MuonMomentumCorrectionFactory
+        MuonSmearing:
+          barrel:
+            smearing: -1
+            sigma: 0.0104 +6.11e-5 * x -3.31e-8 * x^2 + 6.73e-12 * x^3
+          endcap:
+            smearing: 0.3202
+            sigma: 0.0121 + 5.92e-5 * x -2.61e-8 * x^2 + 5.11e-12 * x^3
+        MuonScaling:
+          Default: ../../Correctionlib/muon/scaling/MuonScaling_2017.json
+          Variation: ../../Correctionlib/muon/scaling/MuonScalingVariation_2017.json
+
+  - Type: JetProducer
+    Name: JetProducer
+    OutputName: NominalJets
+    src: RawJets
+    MCsrc: GenJetsJERC
+    Pt: 30
+    PUId: 4
+    Correction:
+      JetEnergyCorrection:
+        Type: JetEnergyCorrectionFactory
+        Name: JetEnergyCorrectionFactory
+        JERC: ../../Correctionlib/jet/JERC/JERC_2017.json
+
+EfficinecyFactory:
+  - Type: RecoMuonEfficiencyFactory
+    Name: MuonReco
+    Path: ../../Correctionlib/muon/efficiency/ScaleFactors_Muon_highPt_RECO_2017_schemaV2.json
+    SystPath: ../../Correctionlib/muon/efficiency/syst_variation/2017/Reco.json
+    GetPath: NUM_GlobalMuons_DEN_TrackerMuonProbes
+  
+  - Type: SingleMuonEfficiencyFactory
+    Name: MuonId
+    Path: ../../Correctionlib/muon/efficiency/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
+    SystPath: ../../Correctionlib/muon/efficiency/syst_variation/2017/ID.json
+    GetPath: NUM_HighPtID_DEN_GlobalMuonProbes
+  
+  - Type: SingleMuonEfficiencyFactory
+    Name: MuonIso
+    Path: ../../Correctionlib/muon/efficiency/ScaleFactors_Muon_highPt_IDISO_2017_schemaV2.json
+    SystPath: ../../Correctionlib/muon/efficiency/syst_variation/2017/ISO.json
+    GetPath: NUM_probe_LooseRelTkIso_DEN_HighPtProbes
+  
+  - Type: MuonTriggerEfficiencyFactory
+    Name: MuonTrigger
+    Path: ../../Correctionlib/muon/efficiency/ScaleFactors_Muon_highPt_HLT_2017_schemaV2.json
+    SystPath: ../../Correctionlib/muon/efficiency/syst_variation/2017/Trigger.json
     Data: NUM_HLT_DEN_HighPtLooseRelIsoProbes_DATAeff
     MC: NUM_HLT_DEN_HighPtLooseRelIsoProbes_MCeff
-  JetPU:
-    Path: ../../correctionlib/JetPUID/2017.json
-  BTag:
-    Path: ../../correctionlib/bTag/2017.json
-  BTagEff:
-    Path: ../../correctionlib/bTag/eff/BTagEff_MUMU_eff_AbsEta_PtMerged.json
+  
+  - Type: JetPUIdEfficiencyFactory
+    Name: JetPU
+    Path: ../../Correctionlib/jet/JetPUID/2017.json
 
-Pileup:
-  Data: PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root
-  MC: MC_2017.root
+  - Type: BTagEffcieincyFactory
+    Name: BTag
+    EfficiencyPath: ../../Correctionlib/jet/bTag/eff/BTagEff_MUMU_eff_AbsEta_PtMerged.json
+    SFPath: ../../Correctionlib/jet/bTag/2017.json
+
+  - Type: TopPtReweightingFactory
+    Name: TopPtReweighting
+    Formula: exp(0.0615 - 0.0005 * x)
+
+  - Type: PileUpReweightingFactory
+    Name: PileUpReweighting
+    DataPath: ../../PileupInfo/PileupHistogram-goldenJSON-13tev-2017-69200ub-99bins.root
+    DataUp: ../../PileupInfo/PileupHistogram-goldenJSON-13tev-2017-72400ub-99bins.root
+    DataDown: ../../PileupInfo/PileupHistogram-goldenJSON-13tev-2017-66000ub-99bins.root
+    MCPath: ../../PileupInfo/MC_2017.root
+
+  - Type: L1PrefiringFactory
+    Name: L1Prefiring
+    
+    
+Systematics:
+  - Name: Nominal
+    SystType: None
+    Iter: 1
+    Path: [era, sample, OS]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: PDF_Hessian
+    target: GenWeight
+    input: Hessian
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, PDF_Hessian]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: PDF_alphaS
+    target: GenWeight
+    input: alphaS
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, PDF_alphaS]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: PDF_scale
+    target: GenWeight
+    input: scale
+    SystType: EfficiencyVariation
+    Iter: 6
+    Path: [era, sample, syst, PDF_scale]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+  
+  - Name: Norm_uncorrelated
+    target: Normalization
+    input: uncorrelated
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, Norm_uncorrelated]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: Norm_correlated_161718
+    target: Normalization
+    input: correlated_161718
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, Norm_correlated_161718]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: Norm_correlated_1718
+    target: Normalization
+    input: correlated_1718
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, Norm_correlated_1718]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffReco_stat
+    target: MuonReco
+    input: stat
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffReco_stat]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffReco_tagIso
+    target: MuonReco
+    input: tagIso
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffReco_tagIso]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffReco_massRange
+    target: MuonReco
+    input: massRange
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffReco_massRange]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffId_stat
+    target: MuonId
+    input: stat
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffId_stat]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffId_tagIso
+    target: MuonId
+    input: tagIso
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffId_tagIso]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffId_massRange
+    target: MuonId
+    input: massRange
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffId_massRange]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+  
+  - Name: MuonEffIso_stat
+    target: MuonIso
+    input: stat
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffIso_stat]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffIso_tagIso
+    target: MuonIso
+    input: tagIso
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffIso_tagIso]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffIso_massRange
+    target: MuonIso
+    input: massRange
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffIso_massRange]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+  
+  - Name: MuonEffTrigData_stat
+    target: MuonTrigger
+    input: data:stat
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffTrigData_stat]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffTrigData_tagIso
+    target: MuonTrigger
+    input: data:tagIso
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffTrigData_tagIso]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffTrigData_massRange
+    target: MuonTrigger
+    input: data:massRange
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffTrigData_massRange]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+  
+  - Name: MuonEffTrigMC_stat
+    target: MuonTrigger
+    input: mc:stat
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffTrigMC_stat]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffTrigMC_tagIso
+    target: MuonTrigger
+    input: mc:tagIso
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffTrigMC_tagIso]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonEffTrigMC_massRange
+    target: MuonTrigger
+    input: mc:massRange
+    SystType: EfficiencyVariation
+    Iter: 100
+    Path: [era, sample, syst, MuonEffTrigMC_massRange]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: PileUpReweighting
+    target: PileUpReweighting
+    input: dummy
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, PileUpReweighting]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: JetPuID
+    target: JetPU
+    input: dummy
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, JetPuID]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: BTagging_bc_correlated
+    target: BTag
+    input: bc_correlated
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, BTagging_bc_correlated]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: BTagging_light_correlated
+    target: BTag
+    input: light_correlated
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, BTagging_light_correlated]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: BTagging_bc_uncorrelated
+    target: BTag
+    input: bc_uncorrelated
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, BTagging_bc_uncorrelated]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: BTagging_light_uncorrelated
+    target: BTag
+    input: light_uncorrelated
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, BTagging_light_uncorrelated]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: L1Prefiring
+    target: L1Prefiring
+    input: dummy
+    SystType: EfficiencyVariation
+    Iter: 2
+    Path: [era, sample, syst, L1Prefiring]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: MuonSmearingSyst
+    SystType: MuonSelection
+    Iter: 1
+    Path: [era, sample, syst, MuonSmearing]
+    MuonSrc: MuonPair_SmearingSyst
+    JetSrc: NominalJets
+    Detail: false
+  
+  - Name: MuonScalingSyst
+    SystType: MuonSelection
+    Iter: 100
+    Path: [era, sample, syst, MuonScaling]
+    MuonSrc: MuonPair_ScalingSyst
+    JetSrc: NominalJets
+    Detail: false
+
+  - Name: JetEnergySmeringSyst
+    input: Smearing
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergySmearing]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_SmearingSyst
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_FlavorQCD
+    input: FlavorQCD
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_FlavorQCD]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_FlavorQCD
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_RelativeBal
+    input: RelativeBal
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_RelativeBal]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_RelativeBal
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_HF
+    input: HF
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_HF]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_HF
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_BBEC1
+    input: BBEC1
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_BBEC1]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_BBEC1
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_EC2
+    input: EC2
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_EC2]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_EC2
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_Absolute
+    input: Absolute
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_Absolute]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_Absolute
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_RelativeSample_Uncor
+    input: RelativeSample_Uncor
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_RelativeSample_Uncor]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_RelativeSample_Uncor
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_HF_Uncor
+    input: HF_Uncor
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_HF_Uncor]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_HF_Uncor
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_BBEC1_Uncor
+    input: BBEC1_Uncor
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_BBEC1_Uncor]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_BBEC1_Uncor
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_EC2_Uncor
+    input: EC2_Uncor
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_EC2_Uncor]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_EC2_Uncor
+    Detail: false
+
+  - Name: JetEnergyScaleSyst_Absolute_Uncor
+    input: Absolute_Uncor
+    SystType: JetSelection
+    Iter: 2
+    Path: [era, sample, syst, JetEnergyScale_Absolute_Uncor]
+    MuonSrc: MuonPair_Nominal
+    JetSrc: Jets_ScaleSyst_Absolute_Uncor
+    Detail: false

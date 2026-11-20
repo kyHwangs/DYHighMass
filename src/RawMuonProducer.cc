@@ -44,7 +44,7 @@ void RawMuonProducer::Produce(EventContentPool& pool) {
   for (unsigned int i = 0; i < **nt.nMuon; i++) {
 
     if (!(nt.Muon_highPtId->At(i) == fId)) continue;
-    if (std::abs(nt.Muon_eta->At(i)) > fEta) continue;
+    if (std::abs(nt.Muon_eta->At(i)) >= fEta) continue;
     if (!nt.Muon_highPurity->At(i)) continue;
 
     TLorentzVector tMu;

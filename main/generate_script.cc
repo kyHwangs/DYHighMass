@@ -47,7 +47,7 @@ static std::map<std::string, std::map<std::string, std::map<std::string, std::ve
               "ST_tW_AntiTop",
               "ST_tW_Top",
               "TTTo2L2Nu",
-              "WJetsToLNu",
+              // "WJetsToLNu",
               "WW",
               "WZ",
               "ZZ",
@@ -66,26 +66,26 @@ static std::map<std::string, std::map<std::string, std::map<std::string, std::ve
               "GGToMuMu_50to200_ElEl",
               "GGToMuMu_50to200_InelElElInel",
               "GGToMuMu_50to200_InelInel",
-              "QCD_Pt-15To20_MuEnrichedPt5",
-              "QCD_Pt-20To30_MuEnrichedPt5",
-              "QCD_Pt-30To50_MuEnrichedPt5",
-              "QCD_Pt-50To80_MuEnrichedPt5",
-              "QCD_Pt-80To120_MuEnrichedPt5",
-              "QCD_Pt-120To170_MuEnrichedPt5",
-              "QCD_Pt-170To300_MuEnrichedPt5",
-              "QCD_Pt-300To470_MuEnrichedPt5",
-              "QCD_Pt-470To600_MuEnrichedPt5",
-              "QCD_Pt-600To800_MuEnrichedPt5",
-              "QCD_Pt-800To1000_MuEnrichedPt5",
-              "QCD_Pt-1000_MuEnrichedPt5",
-              "QCD_Pt-15to20_EMEnriched",
-              "QCD_Pt-20to30_EMEnriched",
-              "QCD_Pt-30to50_EMEnriched",
-              "QCD_Pt-50to80_EMEnriched",
-              "QCD_Pt-80to120_EMEnriched",
-              "QCD_Pt-120to170_EMEnriched",
-              "QCD_Pt-170to300_EMEnriched",
-              "QCD_Pt-300toInf_EMEnriched",
+              // "QCD_Pt-15To20_MuEnrichedPt5",
+              // "QCD_Pt-20To30_MuEnrichedPt5",
+              // "QCD_Pt-30To50_MuEnrichedPt5",
+              // "QCD_Pt-50To80_MuEnrichedPt5",
+              // "QCD_Pt-80To120_MuEnrichedPt5",
+              // "QCD_Pt-120To170_MuEnrichedPt5",
+              // "QCD_Pt-170To300_MuEnrichedPt5",
+              // "QCD_Pt-300To470_MuEnrichedPt5",
+              // "QCD_Pt-470To600_MuEnrichedPt5",
+              // "QCD_Pt-600To800_MuEnrichedPt5",
+              // "QCD_Pt-800To1000_MuEnrichedPt5",
+              // "QCD_Pt-1000_MuEnrichedPt5",
+              // "QCD_Pt-15to20_EMEnriched",
+              // "QCD_Pt-20to30_EMEnriched",
+              // "QCD_Pt-30to50_EMEnriched",
+              // "QCD_Pt-50to80_EMEnriched",
+              // "QCD_Pt-80to120_EMEnriched",
+              // "QCD_Pt-120to170_EMEnriched",
+              // "QCD_Pt-170to300_EMEnriched",
+              // "QCD_Pt-300toInf_EMEnriched",
             }}
           }
         },
@@ -117,7 +117,7 @@ static std::map<std::string, std::map<std::string, std::map<std::string, std::ve
               "ST_tW_AntiTop",
               "ST_tW_Top",
               "TTTo2L2Nu",
-              "WJetsToLNu",
+              // "WJetsToLNu",
               "WW",
               "WZ",
               "ZZ",
@@ -136,26 +136,26 @@ static std::map<std::string, std::map<std::string, std::map<std::string, std::ve
               "GGToMuMu_50to200_ElEl",
               "GGToMuMu_50to200_InelElElInel",
               "GGToMuMu_50to200_InelInel",
-              "QCD_Pt-15To20_MuEnrichedPt5",
-              "QCD_Pt-20To30_MuEnrichedPt5",
-              "QCD_Pt-30To50_MuEnrichedPt5",
-              "QCD_Pt-50To80_MuEnrichedPt5",
-              "QCD_Pt-80To120_MuEnrichedPt5",
-              "QCD_Pt-120To170_MuEnrichedPt5",
-              "QCD_Pt-170To300_MuEnrichedPt5",
-              "QCD_Pt-300To470_MuEnrichedPt5",
-              "QCD_Pt-470To600_MuEnrichedPt5",
-              "QCD_Pt-600To800_MuEnrichedPt5",
-              "QCD_Pt-800To1000_MuEnrichedPt5",
-              "QCD_Pt-1000_MuEnrichedPt5",
-              "QCD_Pt-15to20_EMEnriched",
-              "QCD_Pt-20to30_EMEnriched",
-              "QCD_Pt-30to50_EMEnriched",
-              "QCD_Pt-50to80_EMEnriched",
-              "QCD_Pt-80to120_EMEnriched",
-              "QCD_Pt-120to170_EMEnriched",
-              "QCD_Pt-170to300_EMEnriched",
-              "QCD_Pt-300toInf_EMEnriched",
+              // "QCD_Pt-15To20_MuEnrichedPt5",
+              // "QCD_Pt-20To30_MuEnrichedPt5",
+              // "QCD_Pt-30To50_MuEnrichedPt5",
+              // "QCD_Pt-50To80_MuEnrichedPt5",
+              // "QCD_Pt-80To120_MuEnrichedPt5",
+              // "QCD_Pt-120To170_MuEnrichedPt5",
+              // "QCD_Pt-170To300_MuEnrichedPt5",
+              // "QCD_Pt-300To470_MuEnrichedPt5",
+              // "QCD_Pt-470To600_MuEnrichedPt5",
+              // "QCD_Pt-600To800_MuEnrichedPt5",
+              // "QCD_Pt-800To1000_MuEnrichedPt5",
+              // "QCD_Pt-1000_MuEnrichedPt5",
+              // "QCD_Pt-15to20_EMEnriched",
+              // "QCD_Pt-20to30_EMEnriched",
+              // "QCD_Pt-30to50_EMEnriched",
+              // "QCD_Pt-50to80_EMEnriched",
+              // "QCD_Pt-80to120_EMEnriched",
+              // "QCD_Pt-120to170_EMEnriched",
+              // "QCD_Pt-170to300_EMEnriched",
+              // "QCD_Pt-300toInf_EMEnriched",
             }}
           }
         },
@@ -189,7 +189,7 @@ static std::map<std::string, std::map<std::string, std::map<std::string, std::ve
               "ST_tW_AntiTop",
               "ST_tW_Top",
               "TTTo2L2Nu",
-              "WJetsToLNu",
+              // "WJetsToLNu",
               "WW",
               "WZ",
               "ZZ",
@@ -208,26 +208,26 @@ static std::map<std::string, std::map<std::string, std::map<std::string, std::ve
               "GGToMuMu_50to200_ElEl",
               "GGToMuMu_50to200_InelElElInel",
               "GGToMuMu_50to200_InelInel",
-              "QCD_Pt-15To20_MuEnrichedPt5",
-              "QCD_Pt-20To30_MuEnrichedPt5",
-              "QCD_Pt-30To50_MuEnrichedPt5",
-              "QCD_Pt-50To80_MuEnrichedPt5",
-              "QCD_Pt-80To120_MuEnrichedPt5",
-              "QCD_Pt-120To170_MuEnrichedPt5",
-              "QCD_Pt-170To300_MuEnrichedPt5",
-              "QCD_Pt-300To470_MuEnrichedPt5",
-              "QCD_Pt-470To600_MuEnrichedPt5",
-              "QCD_Pt-600To800_MuEnrichedPt5",
-              "QCD_Pt-800To1000_MuEnrichedPt5",
-              "QCD_Pt-1000_MuEnrichedPt5",
-              "QCD_Pt-15to20_EMEnriched",
-              "QCD_Pt-20to30_EMEnriched",
-              "QCD_Pt-30to50_EMEnriched",
-              "QCD_Pt-50to80_EMEnriched",
-              "QCD_Pt-80to120_EMEnriched",
-              "QCD_Pt-120to170_EMEnriched",
-              "QCD_Pt-170to300_EMEnriched",
-              "QCD_Pt-300toInf_EMEnriched",
+              // "QCD_Pt-15To20_MuEnrichedPt5",
+              // "QCD_Pt-20To30_MuEnrichedPt5",
+              // "QCD_Pt-30To50_MuEnrichedPt5",
+              // "QCD_Pt-50To80_MuEnrichedPt5",
+              // "QCD_Pt-80To120_MuEnrichedPt5",
+              // "QCD_Pt-120To170_MuEnrichedPt5",
+              // "QCD_Pt-170To300_MuEnrichedPt5",
+              // "QCD_Pt-300To470_MuEnrichedPt5",
+              // "QCD_Pt-470To600_MuEnrichedPt5",
+              // "QCD_Pt-600To800_MuEnrichedPt5",
+              // "QCD_Pt-800To1000_MuEnrichedPt5",
+              // "QCD_Pt-1000_MuEnrichedPt5",
+              // "QCD_Pt-15to20_EMEnriched",
+              // "QCD_Pt-20to30_EMEnriched",
+              // "QCD_Pt-30to50_EMEnriched",
+              // "QCD_Pt-50to80_EMEnriched",
+              // "QCD_Pt-80to120_EMEnriched",
+              // "QCD_Pt-120to170_EMEnriched",
+              // "QCD_Pt-170to300_EMEnriched",
+              // "QCD_Pt-300toInf_EMEnriched",
             }}
           }
         },
@@ -260,7 +260,7 @@ static std::map<std::string, std::map<std::string, std::map<std::string, std::ve
               "ST_tW_AntiTop",
               "ST_tW_Top",
               "TTTo2L2Nu",
-              "WJetsToLNu",
+              // "WJetsToLNu",
               "WW",
               "WZ",
               "ZZ",
@@ -279,26 +279,26 @@ static std::map<std::string, std::map<std::string, std::map<std::string, std::ve
               "GGToMuMu_50to200_ElEl",
               "GGToMuMu_50to200_InelElElInel",
               "GGToMuMu_50to200_InelInel",
-              "QCD_Pt-15To20_MuEnrichedPt5",
-              "QCD_Pt-20To30_MuEnrichedPt5",
-              "QCD_Pt-30To50_MuEnrichedPt5",
-              "QCD_Pt-50To80_MuEnrichedPt5",
-              "QCD_Pt-80To120_MuEnrichedPt5",
-              "QCD_Pt-120To170_MuEnrichedPt5",
-              "QCD_Pt-170To300_MuEnrichedPt5",
-              "QCD_Pt-300To470_MuEnrichedPt5",
-              "QCD_Pt-470To600_MuEnrichedPt5",
-              "QCD_Pt-600To800_MuEnrichedPt5",
-              "QCD_Pt-800To1000_MuEnrichedPt5",
-              "QCD_Pt-1000_MuEnrichedPt5",
-              "QCD_Pt-15to20_EMEnriched",
-              "QCD_Pt-20to30_EMEnriched",
-              "QCD_Pt-30to50_EMEnriched",
-              "QCD_Pt-50to80_EMEnriched",
-              "QCD_Pt-80to120_EMEnriched",
-              "QCD_Pt-120to170_EMEnriched",
-              "QCD_Pt-170to300_EMEnriched",
-              "QCD_Pt-300toInf_EMEnriched",
+              // "QCD_Pt-15To20_MuEnrichedPt5",
+              // "QCD_Pt-20To30_MuEnrichedPt5",
+              // "QCD_Pt-30To50_MuEnrichedPt5",
+              // "QCD_Pt-50To80_MuEnrichedPt5",
+              // "QCD_Pt-80To120_MuEnrichedPt5",
+              // "QCD_Pt-120To170_MuEnrichedPt5",
+              // "QCD_Pt-170To300_MuEnrichedPt5",
+              // "QCD_Pt-300To470_MuEnrichedPt5",
+              // "QCD_Pt-470To600_MuEnrichedPt5",
+              // "QCD_Pt-600To800_MuEnrichedPt5",
+              // "QCD_Pt-800To1000_MuEnrichedPt5",
+              // "QCD_Pt-1000_MuEnrichedPt5",
+              // "QCD_Pt-15to20_EMEnriched",
+              // "QCD_Pt-20to30_EMEnriched",
+              // "QCD_Pt-30to50_EMEnriched",
+              // "QCD_Pt-50to80_EMEnriched",
+              // "QCD_Pt-80to120_EMEnriched",
+              // "QCD_Pt-120to170_EMEnriched",
+              // "QCD_Pt-170to300_EMEnriched",
+              // "QCD_Pt-300toInf_EMEnriched",
             }}
           }
         }
@@ -612,22 +612,21 @@ int main(int argc, char* argv[]) {
   if (fChannelTemp == "MUMU") fCondorSubmit = R"(universe              = vanilla
 executable            = condor_wrapper.sh
 getenv                = True
-arguments             = analysis_)" + fChannel + R"( --config $(config) --era $(era) --sample $(sample) --id $(id) --OutputDir $(base)
+arguments             = analysis_)" + fChannel + R"( --config $(config) --sample $(sample) --id $(id) --OutputDir $(base)
 
-request_memory        = 500 MB
+request_memory        = 1000 MB
 should_transfer_files = YES
 transfer_input_files = )" + fWorkspaceStr + R"(/envset.sh, \
                        )" + fWorkspaceStr + R"(/install/lib, \
                        )" + fWorkspaceStr + R"(/install/bin
 
 JobBatchName          = )" + fBaseDir + R"(
-+JobType = "long"
 
 output                = log/$(era)_$(sample)_$(id).out
 error                 = log/$(era)_$(sample)_$(id).err
 log                   = log/$(era)_$(sample)_$(id).log
 
-queue config,era,sample,id,base from joblist.txt
+queue config,sample,id,base from joblist.txt
 )"; 
   else fCondorSubmit = R"(universe              = vanilla
   executable            = condor_wrapper.sh
@@ -744,7 +743,7 @@ eval "$@"
         int nList = fConfig[fEraVec[i]][fSampleMap[k]]["nList"].as<int>();
         for (int l = 0; l < nList; l++) {
 
-          if (fChannelTemp == "MUMU") fJobList += R"(../../config/)" + fChannel + fSuffix + R"(/UL)" + fEraVec[i] + R"(.yml )" + fEraVec[i] + R"( )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + R"( /pnfs/knu.ac.kr/data/cms/store/user/khwang/CMS/HighMassDY/)" + fBaseDir + "\n";
+          if (fChannelTemp == "MUMU") fJobList += R"(../../Config/)" + fChannel + fSuffix + R"(/UL)" + fEraVec[i] + R"(.yml )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + R"( /pnfs/knu.ac.kr/data/cms/store/user/khwang/CMS/HighMassDY/)" + fBaseDir + "\n";
           else fJobList += R"(../../config/)" + fChannel + fSuffix + R"(/UL)" + fEraVec[i] + R"(.yml )" + fEraVec[i] + R"( )" + fSampleMap[k] + R"( )" + std::to_string(l + 1) + "\n";
         }
       }

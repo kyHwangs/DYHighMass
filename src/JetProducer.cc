@@ -130,6 +130,20 @@ void JetProducer::Produce(EventContentPool& pool) {
     JET::StdJets tBJets = {};
     JET::StdJets tHSJets = {};
 
+    JET::StdJets fJetCollection = {};
+    for (const auto& tJet : tJetCollection) {
+      fJetCollection.push_back(
+        JET::StdJet(
+          tJet.fVec,
+          ((tJet.fJetPUId & fPUId) != 0) ? 1 : 0,
+          tJet.fIsBJet,
+          tJet.fGenJetIdx,
+          tJet.fHadronFlavour
+        )
+      );
+    }
+
+
     for (const auto& tJet : tJetCollection) {
 
       if (tJet.fVec.Pt() < fPt) continue;

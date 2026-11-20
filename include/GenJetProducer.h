@@ -32,7 +32,8 @@ private:
   std::string fVeto;
 
   bool fIsMC;
+  std::string fSample;
 };
   
-  #endif
+#endif
   

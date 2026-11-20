@@ -27,14 +27,14 @@ public:
   const std::vector<JET::StdJets> Apply(const JET::RawJets& fJets, const GEN::Jets& fGenJets, const std::vector<JetSystConfigs>& fSystConfigs);
 
 private:
- std::string fName;
- std::string fPath;
- bool fIsMC;
- 
- std::vector<std::string> fSystNames;
- std::unordered_map<std::string, std::shared_ptr<const correction::Correction>> fCorrections;
- std::unordered_map<bool, std::shared_ptr<const correction::CompoundCorrection>> fCorrectionNominal;
- std::unordered_map<std::string, std::shared_ptr<const correction::Correction>> fSmearing;
+  std::string fName;
+  std::string fPath;
+  bool fIsMC;
+
+  std::vector<std::string> fSystNames;
+  std::unordered_map<std::string, std::shared_ptr<const correction::Correction>> fCorrections;
+  std::unordered_map<bool, std::shared_ptr<const correction::CompoundCorrection>> fCorrectionNominal;
+  std::unordered_map<std::string, std::shared_ptr<const correction::Correction>> fSmearing;
 };
 
 #endif

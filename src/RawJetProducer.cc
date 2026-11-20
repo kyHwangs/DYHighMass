@@ -43,8 +43,8 @@ void RawJetProducer::Produce(EventContentPool& pool) {
 
   for (unsigned int iJet = 0; iJet < **nt.nJet; iJet++) {
 
-    if (std::abs(nt.Jet_eta->At(iJet)) > fEta) continue;
-    if ((nt.Jet_jetId->At(iJet) & (1 << 2)) == 0) continue;
+    if (std::abs(nt.Jet_eta->At(iJet)) >= fEta) continue;
+    if ((nt.Jet_jetId->At(iJet) & (1 << fId)) == 0) continue;
 
     TLorentzVector tJetVec;
     tJetVec.SetPtEtaPhiM(

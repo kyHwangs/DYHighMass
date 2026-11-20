@@ -38,6 +38,13 @@ std::string TimeProgress::formatDuration(const std::chrono::high_resolution_cloc
   return ss.str();
 }
 
+std::string TimeProgress::getTotalTime() {
+  
+  auto tCurrentTime = std::chrono::system_clock::now();
+  auto tElapsed = tCurrentTime - fBegin;
+  return formatDuration(std::chrono::duration_cast<std::chrono::high_resolution_clock::duration>(tElapsed));
+}
+
 void TimeProgress::Print(int tCurrent) {
 
   auto tCurrentTime = std::chrono::system_clock::now();
@@ -80,6 +87,7 @@ DYLoopMUMU::DYLoopMUMU(options* fOpt) {
 
   std::unique_ptr<NT> tNtuples = std::make_unique<NT>(fEra, fIsMC, fSampleName, fJobID);
   fMaxEntries = tNtuples->GetEntries();
+  fElapsedLoop = 0;
 
   fPool = std::make_unique<EventContentPool>(std::move(tNtuples));
   fPool->SetEventInfo(EventInfo{fEra, fSampleName, fJobID, fOutputDir, fIsMC, fSeedForMuon, fSeedForJet, fSeedForMuonSmearing});
@@ -101,7 +109,11 @@ DYLoopMUMU::DYLoopMUMU(options* fOpt) {
   for (auto& tProducer : fProducers)
     tProducer->Init(*fPool);
 
-  const auto& tSystematics = fPool->GetSystematics();
+
+  fHistoBooker = std::make_unique<HistoBooker>(fConfig);
+  fHistoBooker->Init(*fPool);
+
+  fHistoBooker->FillEventInfo(3, fMaxEntries);
 
   std::cout << "######################################################################" << std::endl;
   std::cout << " Loop Information " << std::endl;
@@ -123,6 +135,7 @@ DYLoopMUMU::DYLoopMUMU(options* fOpt) {
   std::cout << "######################################################################" << std::endl;
   std::cout << " " << std::endl;
 
+  const auto& tSystematics = fPool->GetSystematics();
   std::cout << "######################################################################" << std::endl;
   std::cout << " Systematics Information " << std::endl;
   std::cout << "----------------------------------------------------------------------" << std::endl;
@@ -134,13 +147,14 @@ DYLoopMUMU::DYLoopMUMU(options* fOpt) {
 
 void DYLoopMUMU::Loop() {
 
-  long long tMaxLoop = 0;
   while (fPool->Next()) { // Event loop starts here
-    tMaxLoop++;
+    fElapsedLoop++;
 
-    if (tMaxLoop % 10000 == 0) fTimeProgress->Print(tMaxLoop);
+    fHistoBooker->FillEventInfo(1, 1.0);
 
-    if (tMaxLoop == 10) break;
+    if (fElapsedLoop % 10000 == 0) fTimeProgress->Print(fElapsedLoop);
+
+    // if (fElapsedLoop == 1000) break;
 
     for (const auto& fProducer : fProducers)
       fProducer->Produce(*fPool);
@@ -150,13 +164,31 @@ void DYLoopMUMU::Loop() {
       if (tLHEContent.fMass > 100) continue;
     }
 
-    const NT& nt = fPool->Source();
-
     bool tPassingTrigger = fPool->PassingTrigger();
     bool tPassingNoiseFilter = fPool->PassingNoiseFilter();
 
     fPool->Put("BaselineInfo", BaselineInfo{tPassingTrigger, tPassingNoiseFilter});
 
-
+    fHistoBooker->Fill(*fPool);
   }
+
+  fHistoBooker->FillEventInfo(2, fElapsedLoop);
+
+  EndOfJob();
+}
+
+void DYLoopMUMU::EndOfJob() {
+
+  fHistoBooker->Write();
+
+  std::cout << " " << std::endl;
+  std::cout << "######################################################################" << std::endl;
+  std::cout << "                             Loop summary                             " << std::endl;
+  std::cout << "----------------------------------------------------------------------" << std::endl;
+  std::cout << " Entries: " << fMaxEntries << std::endl;
+  std::cout << " nLoop: " << fElapsedLoop << std::endl;
+  std::cout << " Looping fraction: " << 100. * static_cast<float>(fElapsedLoop) / static_cast<float>(fMaxEntries) << "%" << std::endl;
+  std::cout << " Time taken: " << fTimeProgress->getTotalTime() << std::endl;
+  std::cout << "######################################################################" << std::endl;
+  std::cout << " " << std::endl;
 }
