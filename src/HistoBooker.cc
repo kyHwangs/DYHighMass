@@ -101,18 +101,23 @@ void HistoBooker::SetDetailHistos(const std::string& tPath) {
 void HistoBooker::Init(EventContentPool& pool) {
 
   fEra = pool.GetEventInfo().era;
-  fSample = pool.GetEventInfo().sampleName;
+  fSampleOrigin = pool.GetEventInfo().sampleName;
   fId = std::to_string(pool.GetEventInfo().jobID);
   fOutputDir = pool.GetEventInfo().outputDir;
   fIsMC = pool.GetEventInfo().isMC;
 
   fWeightCalc->Init(pool);
+  
+  fSample = fSampleOrigin;
 
-  if (fSample.find("NNLO_MUMU_10to50") != std::string::npos) fSample = "NNLO_MUMU_10to50";
+  if (fSample.find("NNLO_MUMU") != std::string::npos) fSample = "NNLO_MUMU";
+  if (fSample.find("GGToMuMu") != std::string::npos) fSample = "GG";
+  if (fSample.find("Run") != std::string::npos) fSample = "Data";
 
-  fOutputName = fOutputDir + "/" + fEra + "_" + fSample + "_" + fId + ".root";
+  fOutputName = fOutputDir + "/" + fEra + "_" + fSampleOrigin + "_" + fId + ".root";
+  if (fSampleOrigin.find("NNLO_MUMU_10to50") != std::string::npos) fSampleOrigin = "NNLO_MUMU_10to50";
 
-  fHistoCollection[fEra + ":" + fSample + ":EventInfo:dummy"] = std::make_unique<TH1F>("h_EventInfo", "", 5, 0.5, 5.5);
+  fHistoCollection[fEra + ":" + fSampleOrigin + ":EventInfo:dummy"] = std::make_unique<TH1D>("h_EventInfo", "", 5, 0.5, 5.5);
 
   fNominalConfig = PlottingSystConfigs{
     "None",
@@ -221,7 +226,7 @@ void HistoBooker::Init(EventContentPool& pool) {
 }
 
 void HistoBooker::FillEventInfo(const int nBinIdx, const float fWeight) {
-  fHistoCollection[fEra + ":" + fSample + ":EventInfo:dummy"]->Fill(nBinIdx, fWeight);
+  fHistoCollection[fEra + ":" + fSampleOrigin + ":EventInfo:dummy"]->Fill(nBinIdx, fWeight);
 }
 
 void HistoBooker::Fill(EventContentPool& pool) {
@@ -400,20 +405,20 @@ void HistoBooker::Write() {
     tHisto.second->Write();
   }
 
-  if (!fIsMC) {
-    for (const auto& tHisto : fHistoCollection) {
+  // if (!fIsMC) {
+  //   for (const auto& tHisto : fHistoCollection) {
     
-      fDir = fOutputFile;
+  //     fDir = fOutputFile;
   
-      std::vector<std::string> tChain = GetSplitString(tHisto.first);    
-      tChain.at(1) = "Data";
-      for (unsigned int i = 0; i < tChain.size() - 1; i++)
-        fDir = GetDir(fDir, tChain.at(i));
+  //     std::vector<std::string> tChain = GetSplitString(tHisto.first);    
+  //     tChain.at(1) = "Data";
+  //     for (unsigned int i = 0; i < tChain.size() - 1; i++)
+  //       fDir = GetDir(fDir, tChain.at(i));
   
-      fDir->cd();
-      tHisto.second->Write();
-    }
-  }
+  //     fDir->cd();
+  //     tHisto.second->Write();
+  //   }
+  // }
 
   fOutputFile->Close();
 

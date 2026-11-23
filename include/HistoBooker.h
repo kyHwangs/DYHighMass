@@ -35,6 +35,7 @@ private:
 
   std::string fEra;
   std::string fSample;
+  std::string fSampleOrigin;
   std::string fId;
   std::string fOutputDir;
   bool fIsMC;

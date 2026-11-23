@@ -67,13 +67,13 @@
     
   NNLO_MUMU_10to50_v2:
     Name: DYJetsToMuMu_M-10to50_ext1-v1
-    nList: 1
+    nList: 5
     nEvent: 17337557
     IsMC: true
     
   NNLO_MUMU_inc:
     Name: DYJetsToMuMu_M-50
-    nList: 6
+    nList: 45
     nEvent: 110564995
     IsMC: true
     
@@ -205,25 +205,25 @@
     
   NNLO_tautau:
     Name: DYJetsToTauTau_M-50_AtLeastOneEorMuDecay
-    nList: 4
+    nList: 13
     nEvent: 56388001
     IsMC: true
     
   ST_s:
     Name: ST_s-channel_4f_leptonDecays
-    nList: 2
+    nList: 3
     nEvent: 5518000
     IsMC: true
     
   ST_t_AntiTop:
     Name: ST_t-channel_anitop_4f_InclusiveDecays
-    nList: 5
+    nList: 15
     nEvent: 31024000
     IsMC: true
     
   ST_t_Top:
     Name: ST_t-channel_top_4f_InclusiveDecays
-    nList: 5
+    nList: 20
     nEvent: 55961000
     IsMC: true
     
@@ -241,7 +241,7 @@
     
   TTTo2L2Nu:
     Name: TTTo2L2Nu
-    nList: 4
+    nList: 15
     nEvent: 37505000
     IsMC: true
     
@@ -259,7 +259,7 @@
     
   WZ:
     Name: WZ
-    nList: 2
+    nList: 3
     nEvent: 7934000
     IsMC: true
     
@@ -614,13 +614,13 @@
     
   NNLO_MUMU_10to50_v2:
     Name: DYJetsToMuMu_M-10to50_ext1-v1
-    nList: 2
+    nList: 5
     nEvent: 19999995
     IsMC: true
     
   NNLO_MUMU_inc:
     Name: DYJetsToMuMu_H2ErratumFix_PDFExt
-    nList: 173
+    nList: 174
     nEvent: 296807639
     IsMC: true
     
@@ -764,13 +764,13 @@
     
   ST_t_AntiTop:
     Name: ST_t-channel_anitop_4f_InclusiveDecays
-    nList: 4
+    nList: 13
     nEvent: 30609000
     IsMC: true
     
   ST_t_Top:
     Name: ST_t-channel_top_4f_InclusiveDecays
-    nList: 9
+    nList: 26
     nEvent: 63073000
     IsMC: true
     
@@ -788,7 +788,7 @@
     
   TTTo2L2Nu:
     Name: TTTo2L2Nu
-    nList: 5
+    nList: 17
     nEvent: 43546000
     IsMC: true
     
@@ -1179,13 +1179,13 @@
     
   NNLO_MUMU_10to50:
     Name: DYJetsToMuMu_M-10to50_v1
-    nList: 1
+    nList: 3
     nEvent: 6999997
     IsMC: true
     
   NNLO_MUMU_10to50_v2:
     Name: DYJetsToMuMu_M-10to50_ext1-v1
-    nList: 3
+    nList: 10
     nEvent: 40033935
     IsMC: true
     
@@ -1197,7 +1197,7 @@
     
   NNLO_MUMU_100to200:
     Name: DYJetsToMuMu_M-100to200
-    nList: 1
+    nList: 2
     nEvent: 3469298
     IsMC: true
     
@@ -1329,19 +1329,19 @@
     
   ST_s:
     Name: ST_s-channel_4f_leptonDecays
-    nList: 2
+    nList: 4
     nEvent: 13620000
     IsMC: true
     
   ST_t_AntiTop:
     Name: ST_t-channel_anitop_4f_InclusiveDecays
-    nList: 6
+    nList: 23
     nEvent: 69793000
     IsMC: true
     
   ST_t_Top:
     Name: ST_t-channel_top_4f_InclusiveDecays
-    nList: 20
+    nList: 46
     nEvent: 129903000
     IsMC: true
     
@@ -1359,7 +1359,7 @@
     
   TTTo2L2Nu:
     Name: TTTo2L2Nu
-    nList: 10
+    nList: 44
     nEvent: 106724000
     IsMC: true
     
@@ -1738,13 +1738,13 @@
     
   NNLO_MUMU_10to50:
     Name: DYJetsToMuMu_M-10to50_v1
-    nList: 1
+    nList: 2
     nEvent: 7552720
     IsMC: true
     
   NNLO_MUMU_10to50_v2:
     Name: DYJetsToMuMu_M-10to50_ext1-v1
-    nList: 4
+    nList: 13
     nEvent: 57463716
     IsMC: true
     
@@ -1756,7 +1756,7 @@
     
   NNLO_MUMU_100to200:
     Name: DYJetsToMuMu_M-100to200
-    nList: 1
+    nList: 4
     nEvent: 4905208
     IsMC: true
     
@@ -1888,25 +1888,25 @@
     
   ST_s:
     Name: ST_s-channel_4f_leptonDecays
-    nList: 2
+    nList: 8
     nEvent: 19365999
     IsMC: true
     
   ST_t_AntiTop:
     Name: ST_t-channel_anitop_4f_InclusiveDecays
-    nList: 13
+    nList: 36
     nEvent: 95627000
     IsMC: true
     
   ST_t_Top:
     Name: ST_t-channel_top_4f_InclusiveDecays
-    nList: 15
+    nList: 54
     nEvent: 178336000
     IsMC: true
     
   ST_tW_AntiTop:
     Name: ST_tW_antitop_5f_inclusiveDecays
-    nList: 3
+    nList: 4
     nEvent: 7749000
     IsMC: true
     
@@ -1918,7 +1918,7 @@
     
   TTTo2L2Nu:
     Name: TTTo2L2Nu
-    nList: 16
+    nList: 55
     nEvent: 145020000
     IsMC: true
     
@@ -1936,7 +1936,7 @@
     
   WZ:
     Name: WZ
-    nList: 2
+    nList: 3
     nEvent: 7940000
     IsMC: true
     
