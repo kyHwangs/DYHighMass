@@ -539,7 +539,7 @@ int main(int argc, char* argv[]) {
   auto fChannelMap = InputMap[fChannelTemp];
   std::vector<std::string> fEraVec = {"2016_preVFP", "2016_postVFP", "2017", "2018"};
   std::vector<std::string> fTierVec = {"Data", "MC"};
-  YAML::Node fConfig = YAML::LoadFile(std::string("../../input/dataset.yml"));
+  YAML::Node fConfig = YAML::LoadFile(std::string("../../Input/dataset.yml"));
 
   std::vector<std::string> fErrorEra;
   std::vector<std::string> fErrorSample;
