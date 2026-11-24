@@ -81,7 +81,7 @@ private:
   std::unique_ptr<HistoBooker> fHistoBooker;
 
   double fMaxEntries;
-  int fElapsedLoop;
+  double fElapsedLoop;
   
 };
 

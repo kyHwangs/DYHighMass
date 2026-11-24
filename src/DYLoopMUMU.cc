@@ -87,7 +87,7 @@ DYLoopMUMU::DYLoopMUMU(options* fOpt) {
 
   std::unique_ptr<NT> tNtuples = std::make_unique<NT>(fEra, fIsMC, fSampleName, fJobID);
   fMaxEntries = tNtuples->GetEntries();
-  fElapsedLoop = 0;
+  fElapsedLoop = 0.;
 
   fPool = std::make_unique<EventContentPool>(std::move(tNtuples));
   fPool->SetEventInfo(EventInfo{fEra, fSampleName, fJobID, fOutputDir, fIsMC, fSeedForMuon, fSeedForJet, fSeedForMuonSmearing});
@@ -152,7 +152,7 @@ void DYLoopMUMU::Loop() {
 
     fHistoBooker->FillEventInfo(1, 1.0);
 
-    if (fElapsedLoop % 10000 == 0) fTimeProgress->Print(fElapsedLoop);
+    if (static_cast<int>(fElapsedLoop) % 10000 == 0) fTimeProgress->Print(static_cast<int>(fElapsedLoop));
 
     // if (fElapsedLoop == 1000) break;
 

@@ -225,7 +225,7 @@ void HistoBooker::Init(EventContentPool& pool) {
   std::cout << " " << std::endl;
 }
 
-void HistoBooker::FillEventInfo(const int nBinIdx, const float fWeight) {
+void HistoBooker::FillEventInfo(const int nBinIdx, const double fWeight) {
   fHistoCollection[fEra + ":" + fSampleOrigin + ":EventInfo:dummy"]->Fill(nBinIdx, fWeight);
 }
 

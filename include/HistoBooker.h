@@ -28,7 +28,7 @@ public:
 
   void Fill(EventContentPool& pool);
   void FillHisto(EventContentPool& pool, const std::string& tPath, const EfficiencyFactory::WeightInput& tWeightInput, float tWeightGen, float tWeightReco, bool tIsSyst, int tIter);
-  void FillEventInfo(const int nBinIdx, const float fWeight);
+  void FillEventInfo(const int nBinIdx, const double fWeight);
   float SetMassOutflow(float tMass);
 
 private:
