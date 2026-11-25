@@ -147,12 +147,12 @@ void JetProducer::Produce(EventContentPool& pool) {
     for (const auto& tJet : tJetCollection) {
 
       if (tJet.fVec.Pt() < fPt) continue;
-      if ((tJet.fVec.Pt() < 50 && ((tJet.fJetPUId & 4) != 0)) || tJet.fVec.Pt() >= 50) {
+      if ((tJet.fVec.Pt() < 50 && tJet.fJetPUId == 1) || tJet.fVec.Pt() >= 50) {
         tJets.push_back(tJet);
         if (tJet.fIsBJet) tBJets.push_back(tJet);
       }
 
-      if (tJet.fVec.Pt() < 50 && tJet.fGenJetIdx != -1) tHSJets.push_back(tJet);
+      if (tJet.fVec.Pt() < 50 && tJet.fGenJetIdx != -1 && tJet.fJetPUId == 1) tHSJets.push_back(tJet);
     }
 
     pool.Put(tOutputName, JET::JetsCollection{tJets, tBJets, tHSJets, static_cast<int>(tJets.size()), static_cast<int>(tBJets.size())});

@@ -119,15 +119,28 @@ void HistoBooker::Init(EventContentPool& pool) {
 
   fHistoCollection[fEra + ":" + fSampleOrigin + ":EventInfo:dummy"] = std::make_unique<TH1D>("h_EventInfo", "", 5, 0.5, 5.5);
 
+  const auto& tNominalConfig =  pool.GetSystematics().at("Nominal");
+
+  const auto& tPathNominal = tNominalConfig["Path"].as<std::vector<std::string>>();
+  std::string tPathStrNominal;
+  for (size_t i = 0; i < tPathNominal.size(); i++) {
+    std::string tToken = tPathNominal.at(i);
+    if (tToken == "era") tToken = fEra;
+    if (tToken == "sample") tToken = fSample;
+
+    tPathStrNominal += tToken;
+    if (i != tPathNominal.size() - 1) tPathStrNominal += ":";
+  }
+
   fNominalConfig = PlottingSystConfigs{
     "None",
-    "Nominal",
-    fEra + ":" + fSample + ":OS",
+    tNominalConfig["Name"].as<std::string>(),
+    tPathStrNominal,
     "None",
     "None",
-    1,
-    "MuonPair_Nominal",
-    "NominalJets",
+    tNominalConfig["Iter"].as<int>(),
+    tNominalConfig["MuonSrc"].as<std::string>(),
+    tNominalConfig["JetSrc"].as<std::string>(),
     false
   };
 
@@ -181,30 +194,30 @@ void HistoBooker::Init(EventContentPool& pool) {
     }
   }
 
-  fHistoCollection[fNominalConfig.fPath + ":dimuonMass"] = std::make_unique<TH1F>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
+  fHistoCollection[fNominalConfig.fPath + ":dimuonMass"] = std::make_unique<TH1D>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
   if (fSample.find("NNLO_MUMU") != std::string::npos) {
-    fHistoCollection[fNominalConfig.fPath + ":h_ResponseMatrix"] = std::make_unique<TH2F>("h_ResponseMatrix", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
-    fHistoCollection[fNominalConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH1F>("h_dimuonMuonGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
-    fHistoCollection[fNominalConfig.fPath + ":dimuonMassFake"] = std::make_unique<TH1F>("h_dimuonMuonFake", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
+    fHistoCollection[fNominalConfig.fPath + ":h_ResponseMatrix"] = std::make_unique<TH2D>("h_ResponseMatrix", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
+    fHistoCollection[fNominalConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH1D>("dimuonMassGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
+    fHistoCollection[fNominalConfig.fPath + ":dimuonMassFake"] = std::make_unique<TH1D>("dimuonMassFake", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
   }
 
   for (const auto& tPlottingSystConfig : fPlottingSystConfigsSelection) {
     
-    fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMass"] = std::make_unique<TH2F>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+    fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMass"] = std::make_unique<TH2D>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
     if (fSample.find("NNLO_MUMU") != std::string::npos) {
-      fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH2F>("h_dimuonMuonGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
-      fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassFake"] = std::make_unique<TH2F>("h_dimuonMuonFake", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
-      fHistoCollection[tPlottingSystConfig.fPath + ":h_ResponseMatrix"] = std::make_unique<TH3F>("h_ResponseMatrix", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+      fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH2D>("dimuonMassGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+      fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassFake"] = std::make_unique<TH2D>("dimuonMassFake", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+      fHistoCollection[tPlottingSystConfig.fPath + ":h_ResponseMatrix"] = std::make_unique<TH3D>("h_ResponseMatrix", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
     }
   }
 
   for (const auto& tPlottingSystConfig : fPlottingSystConfigsVariation) {
     
-    fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMass"] = std::make_unique<TH2F>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+    fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMass"] = std::make_unique<TH2D>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
     if (fSample.find("NNLO_MUMU") != std::string::npos) {
-      fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH2F>("h_dimuonMuonGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
-      fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassFake"] = std::make_unique<TH2F>("h_dimuonMuonFake", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
-      fHistoCollection[tPlottingSystConfig.fPath + ":h_ResponseMatrix"] = std::make_unique<TH3F>("h_ResponseMatrix", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+      fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH2D>("dimuonMassGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+      fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassFake"] = std::make_unique<TH2D>("dimuonMassFake", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+      fHistoCollection[tPlottingSystConfig.fPath + ":h_ResponseMatrix"] = std::make_unique<TH3D>("h_ResponseMatrix", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
     }
   }
   
@@ -309,16 +322,10 @@ void HistoBooker::FillHisto(
 
   bool tPassingOfflineSelection = tEventPass.fPassingTrigger && tEventPass.fPassingNoiseFilter && (nBJet == 0) && (tMass > 0.) && (tMass < 4000.) && (tMuonPair.nMuon == 2);
 
-  if (!tIsSyst) { 
-    if (tPassingOfflineSelection) fHistoCollection[tPath + ":dimuonMass"]->Fill(nMassBinIdx, tWeightGen * tWeightReco);
-  } else {
-    if (tPassingOfflineSelection) static_cast<TH2*>(fHistoCollection[tPath + ":dimuonMass"].get())->Fill(nMassBinIdx, tIter, tWeightGen * tWeightReco);
+  if (tPassingOfflineSelection) {
+    if (!tIsSyst) fHistoCollection[tPath + ":dimuonMass"]->Fill(nMassBinIdx, tWeightGen * tWeightReco);
+    else static_cast<TH2*>(fHistoCollection[tPath + ":dimuonMass"].get())->Fill(nMassBinIdx, tIter, tWeightGen * tWeightReco);
   }
-
-  // std::cout << tJetCollection.nJet << " " << nJet << " " << nJetNode << " " << nBJet << " " << std::endl;
-  // std::cout << tMuonPair.fMass << " " << tMassCut << " " << nMassBinIdx << " " << std::endl;
-  // std::cout << tPassingOfflineSelection << " " << tWeightGen << " " << tWeightReco << std::endl;
-  // std::cout << "----------------------------------------------------------------------" << std::endl;
 
   if (fSample.find("NNLO_MUMU") != std::string::npos) {
     
@@ -331,36 +338,29 @@ void HistoBooker::FillHisto(
     int nGenMassBinIdx = fMassBinning->FindNode(fJetNodeNames[nGenJet].c_str())->GetGlobalBinNumber(tGenMassCut);
 
     bool tPassingGenSelection = tGenMuon.nMuon == 2 && tGenMass > 0. && tGenMass < 4000.;
-
-    // std::cout << tPath << std::endl;
-    // std::cout << tJetCollection.nJet << " " << nJet << " " << nJetNode << " " << nBJet << " " << tGenJet.size() << " " << nGenJet << " " << nGenJet << std::endl;
-    // std::cout << tMuonPair.fMass << " " << tMassCut << " " << nMassBinIdx << " " << std::endl;
-    // std::cout << tGenMuon.fMass << " " << tGenMassCut << " " << nGenMassBinIdx << " " << std::endl;
-    // std::cout << tPassingOfflineSelection << " " << tPassingGenSelection << " " << tWeightGen << " " << tWeightReco << std::endl;
-    // std::cout << "----------------------------------------------------------------------" << std::endl;
-
+    bool tFailingGenSelection = tGenMuon.nMuon != 2 || tGenMass <= 0. || tGenMass >= 4000.;
 
     if (!tIsSyst) {
       if (tPassingGenSelection) fHistoCollection[tPath + ":dimuonMassGen"]->Fill(nGenMassBinIdx, tWeightGen);
-      if (!tPassingGenSelection && tPassingOfflineSelection) fHistoCollection[tPath + ":dimuonMassFake"]->Fill(nMassBinIdx, tWeightGen * tWeightReco);
+      if (tFailingGenSelection && tPassingOfflineSelection) fHistoCollection[tPath + ":dimuonMassFake"]->Fill(nMassBinIdx, tWeightGen * tWeightReco);
       
-      if (tPassingGenSelection && tPassingOfflineSelection) {
+      if (tPassingGenSelection && tPassingOfflineSelection) { // nominal
         static_cast<TH2*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(nMassBinIdx, nGenMassBinIdx, tWeightGen * tWeightReco); // nominal
-        if (tWeightReco != 1.) static_cast<TH2*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(0., nGenMassBinIdx, tWeightGen * (1. - tWeightReco));
+        if (tWeightReco != 1.) static_cast<TH2*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(-1, nGenMassBinIdx, tWeightGen * (1. - tWeightReco));
       }
       if (tPassingGenSelection && !tPassingOfflineSelection) {
-        static_cast<TH2*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(0., nGenMassBinIdx, tWeightGen);
+        static_cast<TH2*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(-1, nGenMassBinIdx, tWeightGen);
       }
     } else {
       if (tPassingGenSelection) static_cast<TH2*>(fHistoCollection[tPath + ":dimuonMassGen"].get())->Fill(nGenMassBinIdx, tIter, tWeightGen);
-      if (!tPassingGenSelection && tPassingOfflineSelection) static_cast<TH2*>(fHistoCollection[tPath + ":dimuonMassFake"].get())->Fill(nMassBinIdx, tIter, tWeightGen * tWeightReco);
+      if (tFailingGenSelection && tPassingOfflineSelection) static_cast<TH2*>(fHistoCollection[tPath + ":dimuonMassFake"].get())->Fill(nMassBinIdx, tIter, tWeightGen * tWeightReco);
       
       if (tPassingGenSelection && tPassingOfflineSelection) {
         static_cast<TH3*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(nMassBinIdx, nGenMassBinIdx, tIter, tWeightGen * tWeightReco); // nominal
-        if (tWeightReco != 1.) static_cast<TH3*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(0., nGenMassBinIdx, tIter, tWeightGen * (1. - tWeightReco));
+        if (tWeightReco != 1.) static_cast<TH3*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(-1, nGenMassBinIdx, tIter, tWeightGen * (1. - tWeightReco));
       }
       if (tPassingGenSelection &&!tPassingOfflineSelection) {
-        static_cast<TH3*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(0., nGenMassBinIdx, tIter, tWeightGen);
+        static_cast<TH3*>(fHistoCollection[tPath + ":h_ResponseMatrix"].get())->Fill(-1, nGenMassBinIdx, tIter, tWeightGen);
       }
     }
   }

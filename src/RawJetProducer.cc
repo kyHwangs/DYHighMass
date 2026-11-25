@@ -54,7 +54,7 @@ void RawJetProducer::Produce(EventContentPool& pool) {
       (1. - nt.Jet_rawFactor->At(iJet)) * nt.Jet_mass->At(iJet)
     );
 
-    bool isBJet = nt.Jet_btagDeepB->At(iJet) > fBDiscWP;
+    bool isBJet = nt.Jet_btagDeepFlavB->At(iJet) > fBDiscWP;
 
     int genJetIdx = -1;
     if (fIsMC) genJetIdx = nt.Jet_genJetIdx->At(iJet);
