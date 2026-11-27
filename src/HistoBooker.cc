@@ -112,7 +112,7 @@ void HistoBooker::Init(EventContentPool& pool) {
 
   // if (fSample.find("NNLO_MUMU") != std::string::npos) fSample = "NNLO_MUMU";
   // if (fSample.find("GGToMuMu") != std::string::npos) fSample = "GG";
-  // if (fSample.find("Run") != std::string::npos) fSample = "Data";
+  if (fSample.find("Run") != std::string::npos) fSample = "Data";
 
   fOutputName = fOutputDir + "/" + fEra + "_" + fSampleOrigin + "_" + fId + ".root";
   if (fSampleOrigin.find("NNLO_MUMU_10to50") != std::string::npos) fSampleOrigin = "NNLO_MUMU_10to50";
