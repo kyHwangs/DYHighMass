@@ -1,0 +1,86 @@
+logdir=/u/user/kyhwang/WorkingDir/CMS/HighMassDY/NanoAOD/dev_261123_Syst/DYHighMass/Batch/261126_MUMU_OS_Syst/log
+threshold=500.0
+over=63
+split=41
+cannot=22
+nList_updates=11
+nList_sum=2955->2997
+
+{'out': '2016_postVFP_NNLO_MUMU_inc_10.out', 'minutes': 533.0, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [266.5, 266.5]}
+{'out': '2016_postVFP_NNLO_MUMU_inc_13.out', 'minutes': 574.4, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [287.2, 287.2]}
+{'out': '2016_postVFP_NNLO_MUMU_inc_17.out', 'minutes': 552.5, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [276.2, 276.2]}
+{'out': '2016_postVFP_NNLO_MUMU_inc_22.out', 'minutes': 531.5, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [265.8, 265.8]}
+{'out': '2016_postVFP_NNLO_MUMU_inc_79.out', 'minutes': 572.9, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [286.4, 286.4]}
+{'out': '2016_postVFP_NNLO_MUMU_inc_87.out', 'minutes': 713.1, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [356.6, 356.6]}
+{'out': '2016_postVFP_NNLO_MUMU_inc_88.out', 'minutes': 529.0, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [264.5, 264.5]}
+{'out': '2016_postVFP_NNLO_MUMU_inc_91.out', 'minutes': 746.0, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [373.0, 373.0]}
+{'out': '2016_postVFP_NNLO_MUMU_inc_92.out', 'minutes': 524.1, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [262.1, 262.1]}
+{'out': '2016_postVFP_TTTo2L2Nu_9.out', 'minutes': 657.0, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [328.5, 328.5]}
+{'out': '2016_postVFP_TTTo2L2Nu_12.out', 'minutes': 888.6, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [444.3, 444.3]}
+{'out': '2016_postVFP_TTTo2L2Nu_13.out', 'minutes': 751.4, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [375.7, 375.7]}
+{'out': '2016_postVFP_TTTo2L2Nu_14.out', 'minutes': 1061.7, 'nfiles': 3, 'n_chunks': 3, 'sizes': [1, 1, 1], 'est': [353.9, 353.9, 353.9]}
+{'out': '2016_postVFP_TTTo2L2Nu_16.out', 'minutes': 716.2, 'nfiles': 4, 'n_chunks': 2, 'sizes': [2, 2], 'est': [358.1, 358.1]}
+{'out': '2016_postVFP_WZ_1.out', 'minutes': 610.3, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [305.2, 305.2]}
+{'out': '2016_preVFP_NNLO_MUMU_inc_10.out', 'minutes': 943.4, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [471.7, 471.7]}
+{'out': '2016_preVFP_NNLO_MUMU_inc_11.out', 'minutes': 670.5, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [335.2, 335.2]}
+{'out': '2016_preVFP_NNLO_tautau_13.out', 'minutes': 505.0, 'nfiles': 3, 'n_chunks': 2, 'sizes': [2, 1], 'est': [336.7, 168.3]}
+{'out': '2017_NNLO_MUMU_10to50_2.out', 'minutes': 670.7, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [335.4, 335.4]}
+{'out': '2017_NNLO_MUMU_10to50_v2_2.out', 'minutes': 595.8, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [297.9, 297.9]}
+{'out': '2017_NNLO_MUMU_10to50_v2_5.out', 'minutes': 600.4, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [300.2, 300.2]}
+{'out': '2017_NNLO_MUMU_10to50_v2_6.out', 'minutes': 664.3, 'nfiles': 3, 'n_chunks': 2, 'sizes': [2, 1], 'est': [442.9, 221.4]}
+{'out': '2017_NNLO_MUMU_10to50_v2_7.out', 'minutes': 567.4, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [283.7, 283.7]}
+{'out': '2017_NNLO_MUMU_10to50_v2_8.out', 'minutes': 852.2, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [426.1, 426.1]}
+{'out': '2017_NNLO_MUMU_inc_129.out', 'minutes': 532.0, 'nfiles': 10, 'n_chunks': 2, 'sizes': [5, 5], 'est': [266.0, 266.0]}
+{'out': '2017_TTTo2L2Nu_3.out', 'minutes': 546.4, 'nfiles': 3, 'n_chunks': 2, 'sizes': [2, 1], 'est': [364.3, 182.1]}
+{'out': '2017_TTTo2L2Nu_11.out', 'minutes': 718.3, 'nfiles': 3, 'n_chunks': 2, 'sizes': [2, 1], 'est': [478.9, 239.4]}
+{'out': '2017_TTTo2L2Nu_36.out', 'minutes': 549.3, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [274.7, 274.7]}
+{'out': '2017_TTTo2L2Nu_37.out', 'minutes': 503.7, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [251.9, 251.9]}
+{'out': '2017_TTTo2L2Nu_55.out', 'minutes': 530.9, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [265.5, 265.5]}
+{'out': '2018_NNLO_MUMU_10to50_v2_5.out', 'minutes': 533.7, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [266.9, 266.9]}
+{'out': '2018_NNLO_MUMU_10to50_v2_6.out', 'minutes': 596.8, 'nfiles': 3, 'n_chunks': 2, 'sizes': [2, 1], 'est': [397.9, 198.9]}
+{'out': '2018_NNLO_MUMU_10to50_v2_10.out', 'minutes': 683.3, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [341.7, 341.7]}
+{'out': '2018_TTTo2L2Nu_5.out', 'minutes': 533.0, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [266.5, 266.5]}
+{'out': '2018_TTTo2L2Nu_31.out', 'minutes': 587.7, 'nfiles': 4, 'n_chunks': 2, 'sizes': [2, 2], 'est': [293.9, 293.9]}
+{'out': '2018_TTTo2L2Nu_33.out', 'minutes': 633.4, 'nfiles': 4, 'n_chunks': 2, 'sizes': [2, 2], 'est': [316.7, 316.7]}
+{'out': '2018_TTTo2L2Nu_34.out', 'minutes': 521.8, 'nfiles': 4, 'n_chunks': 2, 'sizes': [2, 2], 'est': [260.9, 260.9]}
+{'out': '2018_TTTo2L2Nu_36.out', 'minutes': 638.1, 'nfiles': 2, 'n_chunks': 2, 'sizes': [1, 1], 'est': [319.1, 319.1]}
+{'out': '2018_TTTo2L2Nu_37.out', 'minutes': 641.8, 'nfiles': 3, 'n_chunks': 2, 'sizes': [2, 1], 'est': [427.8, 213.9]}
+{'out': '2018_TTTo2L2Nu_38.out', 'minutes': 528.2, 'nfiles': 3, 'n_chunks': 2, 'sizes': [2, 1], 'est': [352.1, 176.1]}
+{'out': '2018_TTTo2L2Nu_48.out', 'minutes': 522.1, 'nfiles': 4, 'n_chunks': 2, 'sizes': [2, 2], 'est': [261.1, 261.1]}
+
+CANNOT
+('2016_postVFP_TTTo2L2Nu_4.out', 538.0, 1)
+('2016_postVFP_TTTo2L2Nu_5.out', 515.0, 1)
+('2016_postVFP_TTTo2L2Nu_11.out', 545.0, 1)
+('2016_postVFP_TTTo2L2Nu_15.out', 563.5, 1)
+('2016_postVFP_TTTo2L2Nu_18.out', 500.6, 1)
+('2016_preVFP_NNLO_MUMU_10to50_v2_8.out', 579.9, 1)
+('2016_preVFP_NNLO_MUMU_200to400_1.out', 728.9, 1)
+('2016_preVFP_NNLO_MUMU_inc_4.out', 519.9, 1)
+('2016_preVFP_NNLO_MUMU_inc_7.out', 649.8, 1)
+('2016_preVFP_NNLO_MUMU_inc_12.out', 540.4, 1)
+('2016_preVFP_NNLO_MUMU_inc_15.out', 584.7, 1)
+('2016_preVFP_NNLO_MUMU_inc_31.out', 650.3, 1)
+('2016_preVFP_NNLO_MUMU_inc_32.out', 562.6, 1)
+('2016_preVFP_NNLO_MUMU_inc_33.out', 537.5, 1)
+('2016_preVFP_NNLO_MUMU_inc_41.out', 656.3, 1)
+('2016_preVFP_NNLO_MUMU_inc_48.out', 660.2, 1)
+('2016_preVFP_NNLO_MUMU_inc_50.out', 659.0, 1)
+('2016_preVFP_NNLO_MUMU_inc_54.out', 568.4, 1)
+('2016_preVFP_TTTo2L2Nu_14.out', 549.6, 1)
+('2016_preVFP_TTTo2L2Nu_21.out', 537.4, 1)
+('2017_NNLO_MUMU_10to50_v2_14.out', 548.7, 1)
+('2017_NNLO_MUMU_200to400_2.out', 579.7, 1)
+
+NLIST
+('2016_postVFP', 'NNLO_MUMU_inc'):(190, 199)
+('2016_postVFP', 'TTTo2L2Nu'):(29, 35)
+('2016_postVFP', 'WZ'):(3, 4)
+('2016_preVFP', 'NNLO_MUMU_inc'):(58, 60)
+('2016_preVFP', 'NNLO_tautau'):(24, 25)
+('2017', 'NNLO_MUMU_10to50'):(4, 5)
+('2017', 'NNLO_MUMU_10to50_v2'):(14, 19)
+('2017', 'NNLO_MUMU_inc'):(137, 138)
+('2017', 'TTTo2L2Nu'):(64, 69)
+('2018', 'NNLO_MUMU_10to50_v2'):(22, 25)
+('2018', 'TTTo2L2Nu'):(82, 90)

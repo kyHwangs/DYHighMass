@@ -19,6 +19,9 @@ void NormalizationFactory::Init(EventContentPool& pool) {
 }
 
 float NormalizationFactory::GetValue(EventContentPool& pool, const WeightInput& fWeightInput, const std::string& fSyst, const int fSystIdx) {
+
+  std::cout << "NormalizationFactory: " << fSyst << " " << fSystIdx << std::endl;
+  
   if (!fIsMC) return 1.;
 
   if (fSystIdx == 0 && fSyst != "Nominal") throw std::runtime_error("NormalizationFactory: SystIdx is 0 but Syst is not Nominal");

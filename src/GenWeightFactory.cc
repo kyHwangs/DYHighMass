@@ -49,7 +49,7 @@ float GenWeightFactory::GetValue(EventContentPool& pool, const WeightInput& fWei
     }
     if (fSyst == "alphaS") {
       if (**nLHEPdfWeight != 103)
-        return **genWeight;
+        return 1.;
 
       return LHEPdfWeight->At(fSystIdx + 100);
     }

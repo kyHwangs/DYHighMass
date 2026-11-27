@@ -133,7 +133,6 @@ EfficinecyFactory:
   - Type: L1PrefiringFactory
     Name: L1Prefiring
     
-    
 Systematics:
   - Name: Nominal
     SystType: None
@@ -169,36 +168,6 @@ Systematics:
     SystType: EfficiencyVariation
     Iter: 6
     Path: [era, sample, OS, syst, PDF_scale]
-    MuonSrc: MuonPair_Nominal
-    JetSrc: NominalJets
-    Detail: false
-  
-  - Name: Norm_uncorrelated
-    target: Normalization
-    input: uncorrelated
-    SystType: EfficiencyVariation
-    Iter: 2
-    Path: [era, sample, OS, syst, Norm_uncorrelated]
-    MuonSrc: MuonPair_Nominal
-    JetSrc: NominalJets
-    Detail: false
-
-  - Name: Norm_correlated_161718
-    target: Normalization
-    input: correlated_161718
-    SystType: EfficiencyVariation
-    Iter: 2
-    Path: [era, sample, OS, syst, Norm_correlated_161718]
-    MuonSrc: MuonPair_Nominal
-    JetSrc: NominalJets
-    Detail: false
-
-  - Name: Norm_correlated_1718
-    target: Normalization
-    input: correlated_1718
-    SystType: EfficiencyVariation
-    Iter: 2
-    Path: [era, sample, OS, syst, Norm_correlated_1718]
     MuonSrc: MuonPair_Nominal
     JetSrc: NominalJets
     Detail: false

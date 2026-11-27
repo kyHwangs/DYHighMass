@@ -25,6 +25,11 @@ float JetPUIdEfficiencyFactory::GetValue(EventContentPool& pool, const WeightInp
       
       float tSF = fCorrection->evaluate({tJet.fVec.Eta(), tJet.fVec.Pt(), "nom", "L"});
       float tEff = fCorrection->evaluate({tJet.fVec.Eta(), tJet.fVec.Pt(), "MCEff", "L"});
+
+      if (tEff > 1.) {
+        fNominal *= 1;
+        continue;
+      }
       
       if (tJet.fJetPUId == 1) {
         fNominal *= tSF;
@@ -44,6 +49,11 @@ float JetPUIdEfficiencyFactory::GetValue(EventContentPool& pool, const WeightInp
       
       float tSF = fCorrection->evaluate({tJet.fVec.Eta(), tJet.fVec.Pt(), tSystName, "L"});
       float tEff = fCorrection->evaluate({tJet.fVec.Eta(), tJet.fVec.Pt(), "MCEff", "L"});
+
+      if (tEff > 1.) {
+        fNominal *= 1;
+        continue;
+      }
       
       if (tJet.fJetPUId == 1) {
         tSystWeight *= tSF;

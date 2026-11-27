@@ -110,12 +110,13 @@ void HistoBooker::Init(EventContentPool& pool) {
   
   fSample = fSampleOrigin;
 
-  if (fSample.find("NNLO_MUMU") != std::string::npos) fSample = "NNLO_MUMU";
-  if (fSample.find("GGToMuMu") != std::string::npos) fSample = "GG";
-  if (fSample.find("Run") != std::string::npos) fSample = "Data";
+  // if (fSample.find("NNLO_MUMU") != std::string::npos) fSample = "NNLO_MUMU";
+  // if (fSample.find("GGToMuMu") != std::string::npos) fSample = "GG";
+  // if (fSample.find("Run") != std::string::npos) fSample = "Data";
 
   fOutputName = fOutputDir + "/" + fEra + "_" + fSampleOrigin + "_" + fId + ".root";
   if (fSampleOrigin.find("NNLO_MUMU_10to50") != std::string::npos) fSampleOrigin = "NNLO_MUMU_10to50";
+  if (fSample.find("NNLO_MUMU_10to50") != std::string::npos) fSample = "NNLO_MUMU_10to50";
 
   fHistoCollection[fEra + ":" + fSampleOrigin + ":EventInfo:dummy"] = std::make_unique<TH1D>("h_EventInfo", "", 5, 0.5, 5.5);
 
@@ -195,6 +196,7 @@ void HistoBooker::Init(EventContentPool& pool) {
   }
 
   fHistoCollection[fNominalConfig.fPath + ":dimuonMass"] = std::make_unique<TH1D>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
+  fHistoCollection[fNominalConfig.fPath + ":GenWeight"] = std::make_unique<TH1D>("GenWeight", "", 1, 0.5, 1.5);
   if (fSample.find("NNLO_MUMU") != std::string::npos) {
     fHistoCollection[fNominalConfig.fPath + ":h_ResponseMatrix"] = std::make_unique<TH2D>("h_ResponseMatrix", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
     fHistoCollection[fNominalConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH1D>("dimuonMassGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5);
@@ -204,6 +206,7 @@ void HistoBooker::Init(EventContentPool& pool) {
   for (const auto& tPlottingSystConfig : fPlottingSystConfigsSelection) {
     
     fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMass"] = std::make_unique<TH2D>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+    fHistoCollection[tPlottingSystConfig.fPath + ":GenWeight"] = std::make_unique<TH1D>("GenWeight", "", tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
     if (fSample.find("NNLO_MUMU") != std::string::npos) {
       fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH2D>("dimuonMassGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
       fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassFake"] = std::make_unique<TH2D>("dimuonMassFake", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
@@ -214,6 +217,7 @@ void HistoBooker::Init(EventContentPool& pool) {
   for (const auto& tPlottingSystConfig : fPlottingSystConfigsVariation) {
     
     fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMass"] = std::make_unique<TH2D>("h_dimuonMass", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
+    fHistoCollection[tPlottingSystConfig.fPath + ":GenWeight"] = std::make_unique<TH1D>("GenWeight", "", tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
     if (fSample.find("NNLO_MUMU") != std::string::npos) {
       fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassGen"] = std::make_unique<TH2D>("dimuonMassGen", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
       fHistoCollection[tPlottingSystConfig.fPath + ":dimuonMassFake"] = std::make_unique<TH2D>("dimuonMassFake", "", fNBins, 0.5, static_cast<float>(fNBins) + 0.5, tPlottingSystConfig.fIter, 0.5, static_cast<float>(tPlottingSystConfig.fIter) + 0.5);
@@ -253,7 +257,7 @@ void HistoBooker::Fill(EventContentPool& pool) {
 
   if (fIsMC) {
     tWeightGen = fWeightCalc->GetWeight(pool, tWeightInput, "GenWeight");
-    tWeightGen *= fWeightCalc->GetWeight(pool, tWeightInput, "Normalization");
+    // tWeightGen *= fWeightCalc->GetWeight(pool, tWeightInput, "Normalization");
     tWeightReco = fWeightCalc->GetWeight(pool, tWeightInput, "Reco");
   }
   
@@ -271,7 +275,7 @@ void HistoBooker::Fill(EventContentPool& pool) {
       float tWeightRecoSyst = 1.;
       
       if (tTarget == "GenWeight") tWeightGenSyst = fWeightCalc->GetWeight(pool, EfficiencyFactory::WeightInput{tMuonName, tJetName}, "GenWeight", tInput, i);
-      else if (tTarget == "Normalization") tWeightGenSyst = fWeightCalc->GetWeight(pool, EfficiencyFactory::WeightInput{tMuonName, tJetName}, "Normalization", tInput, i);
+      // else if (tTarget == "Normalization") tWeightGenSyst = fWeightCalc->GetWeight(pool, EfficiencyFactory::WeightInput{tMuonName, tJetName}, "Normalization", tInput, i);
       else tWeightRecoSyst = fWeightCalc->GetWeight(pool, EfficiencyFactory::WeightInput{tMuonName, tJetName}, tTarget, tInput, i);
 
       FillHisto(pool, tPlottingSystConfig.fPath, EfficiencyFactory::WeightInput{tMuonName, tJetName}, tWeightGen * tWeightGenSyst, tWeightReco * tWeightRecoSyst, true, i);
@@ -308,6 +312,9 @@ void HistoBooker::FillHisto(
   float tWeightReco, 
   bool tIsSyst, 
   int tIter) {
+
+  if (!tIsSyst) fHistoCollection[tPath + ":GenWeight"]->Fill(1, tWeightGen);
+  else fHistoCollection[tPath + ":GenWeight"]->Fill(tIter, tWeightGen);
 
   const auto& tEventPass = pool.Get<BaselineInfo>("BaselineInfo");
   const auto& tMuonPair = pool.Get<MUON::MuonPair>(tWeightInput.fMuonSrc);
